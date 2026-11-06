@@ -26,5 +26,12 @@
       "ST": "states-and-results",
       "BM": "boundary-mapping"
     }
+  },
+  "5": {
+    "files": {
+      "NT": "numbers-dates-text",
+      "LS": "lambda-and-stream",
+      "ND": "naming-packages-docs"
+    }
   }
 }
