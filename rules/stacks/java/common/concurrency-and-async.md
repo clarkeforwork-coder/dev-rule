@@ -32,19 +32,15 @@
 
 ## 驗收要求
 
-下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。
+共同驗收直接依主要來源執行：[工作所有權](../../../coding/concurrency-and-async.md#acceptance-task-ownership)、[執行資源與阻塞](../../../coding/concurrency-and-async.md#acceptance-execution-resources)、[期限與取消](../../../coding/concurrency-and-async.md#acceptance-deadline-cancellation)、[工作組合](../../../coding/concurrency-and-async.md#acceptance-task-composition)、[脈絡隔離](../../../coding/concurrency-and-async.md#acceptance-context-isolation)、[鎖定範圍](../../../coding/concurrency-and-async.md#acceptance-lock-scope)、[受控關閉](../../../coding/resource-lifecycle.md#acceptance-controlled-shutdown)、[受控交錯](../../../quality/testing.md#acceptance-controlled-interleaving)。共同案例不在此重述或另維護副本。
 
-依受影響流程與風險選擇案例，沿用[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
 
-| 對應決策 | 驗收內容 |
+下表只保留 Java 的語言機制驗收。
+
+| Java 條文 | 語言增量驗收 |
 | --- | --- |
-| 1、6 | 核對工作擁有者、責任移交與結果接收路徑；觸發成功、失敗及取消，確認故障可追查，例外分類保留，未以替代值假裝成功。 |
-| 2、8 | 核對實際執行配置、各階段執行位置及阻塞關係。依風險模擬容量耗盡、排隊與拒絕，確認不超出下游限制，也不因同一受限資源上的相互等待而無法前進。 |
-| 3、10 | 審查資料交付、同步範圍、鎖定與可見性保證，以受控交錯驗證不變條件及共享狀態。核對多鎖策略、退出釋放及持鎖期間的外部操作，不以測試偶然成功代替設計依據。 |
-| 4、5 | 驗證期限承接整體預算，逾時與取消後工作依契約停止或受控繼續。確認相關子工作收到所需訊號，未確認停止的工作仍有擁有者，執行名額依實際資源釋放回收。 |
-| 7 | 以不同完成順序及子工作失敗驗證全部成功、部分成功或競速等適用契約。核對每項結果與來源對應，剩餘工作持續受到管理，未將最快失敗當成第一個成功。 |
-| 9 | 在共用執行資源上交錯執行不同租戶或身分的工作，驗證脈絡正確傳遞，成功、失敗與取消後均清理或還原，沒有跨工作污染。核對延後執行的授權仍依契約確認。 |
-| 11 | 在排隊及執行中仍有工作時啟動關閉，核對停止受理、等待期限、取消或接手安排與資源釋放順序。期限後未完成或未知結果仍可追蹤，不被當成已結束。 |
-| 12 | 確認案例使用明確的協調與完成條件，等待有期限且失敗保留診斷資訊，涵蓋受影響的交錯與故障路徑。壓力測試結果須搭配同步及生命週期審查，不作為唯一安全證據。 |
+| <a id="acceptance-java-visibility"></a>3 | 審查 Java 跨執行緒資料交付的可見性保證、共享資料的同步範圍及適用的鎖定方式；以受控交錯核對不變條件與共享狀態，不能只以單一 `volatile` 欄位或偶然成功推定整個物件安全。 |
+| <a id="acceptance-java-task-results"></a>6 | 沿 Java `Future`／`CompletableFuture` 的實際接收及結果鏈路徑觸發成功、失敗與取消，核對故障可追查、原始原因與分類保留，且未以替代值把失敗變成成功。 |
 
 既有程式碼、框架限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低要求。

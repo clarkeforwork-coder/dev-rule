@@ -26,19 +26,10 @@
 
 ## 驗收要求
 
-下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。
+共同驗收直接依主要來源執行：[所有權與快照](../../../coding/collections-and-ownership.md#acceptance-collection-ownership)、[順序與重複](../../../coding/collections-and-ownership.md#acceptance-order-duplicates)、[遍歷修改](../../../coding/collections-and-ownership.md#acceptance-traversal-mutation)、[複合原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)、[資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)、[延遲資源](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)、[批次失敗](../../../coding/error-handling.md#acceptance-partial-operation)、[所有權覆蓋](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。共同案例不在此重述或另維護副本。
 
-依受影響契約與使用路徑選擇案例，沿用[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
+依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
 
-| 對應決策 | 驗收內容 |
-| --- | --- |
-| 1、2 | 修改傳入或回傳的集合與適用的可變元素，確認修改權及隔離符合契約。改變來源後核對快照仍固定、檢視依約反映變更，不能只測試增刪操作是否遭拒。 |
-| 3 | 以有順序意義、重複元素及重複鍵的資料驗證選用與轉換後的結果，確認拒絕、合併或取代符合契約，沒有默默丟失應保留項目。 |
-| 4 | 驗證適用的遍歷新增、移除或其他修改路徑，核對實際處理項目與副作用。確認沒有以例外後重跑掩蓋問題，不僅以未拋例外判定安全。 |
-| 5 | 對共享複合操作，以受控交錯或併發案例驗證約定的原子性及業務條件；跨鍵或跨集合的保證須驗證整個操作，不僅確認單一集合操作安全。 |
-| 6 | 使用代表性資料量核對載入範圍與處理界限，確認來源、中間操作及結果收集沒有無限制累積；依風險檢查排序、分組或去重的資源成本。 |
-| 7 | 對依賴外部資源的延遲讀取，分別驗證完成、提前停止及失敗後正確釋放，並確認讀取期間資源有效、擁有者與關閉責任明確。 |
-| 8 | 在批次處理中途製造契約適用的失敗，核對集合實際狀態符合全部成功或部分成功的保證；部分成功結果須可對應已完成與未完成的項目。 |
-| 9 | 核對測試涵蓋變更影響的所有權與行為保證，不以元素內容相同取代參考隔離、生命週期或失敗狀態的驗證，也不強制測試不適用的情境。 |
+本主題目前的驗收均由上述共同來源涵蓋，須經實際採用的 Java 集合、迭代與資源路徑執行；不為保留表格而重述相同案例。各條 Java 使用限制仍適用。
 
 既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低要求。
