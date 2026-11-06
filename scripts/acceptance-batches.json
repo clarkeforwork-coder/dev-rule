@@ -19,5 +19,12 @@
       "JT": "types-and-generics",
       "JN": "null-and-optional"
     }
+  },
+  "4": {
+    "files": {
+      "VO": "value-objects",
+      "ST": "states-and-results",
+      "BM": "boundary-mapping"
+    }
   }
 }

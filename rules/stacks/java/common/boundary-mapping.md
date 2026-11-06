@@ -26,20 +26,22 @@
 
 ## 驗收要求
 
-下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。
+依變更影響與實際使用路徑選擇案例，測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)。
 
-依變更影響與實際邊界選擇案例，沿用[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
+### 共同驗收
 
-| 對應決策 | 驗收內容 |
+- [boundary-separation](../../../architecture/boundary-objects.md#acceptance-boundary-separation)。
+- [mapping-fields](../../../architecture/data-mapping.md#acceptance-mapping-fields)。
+- [boundary-isolation](../../../architecture/boundary-objects.md#acceptance-boundary-isolation)。
+- [mapping-owner](../../../architecture/data-mapping.md#acceptance-mapping-owner)。
+- [mapping-3](../../../architecture/data-mapping.md#acceptance-mapping-3)。
+- [mapping-7](../../../architecture/data-mapping.md#acceptance-mapping-7)。
+- [mapping-9](../../../architecture/data-mapping.md#acceptance-mapping-9)。
+- [partial-operation](../../../coding/error-handling.md#acceptance-partial-operation)。
+- [update-intent](../../../coding/nullability.md#acceptance-update-intent)。
+
+### Java 語言增量驗收
+
+| Java 條文 | 語言增量驗收 |
 | --- | --- |
-| 1 | 審查邊界物件的契約責任與隔離依據，確認未因欄位相同而不當共用，也未僅因分層而重複建立 DTO。確認公開資料未直接暴露持久化或模組內部模型。 |
-| 2 | 核對允許欄位及來源，以含管理欄位的外部輸入驗證其無法覆寫可信資料，並確認內部敏感欄位未輸出。映射設定或契約變更時，確認新增來源或目標欄位不會自動擴大允許範圍。 |
-| 3 | 審查映射及其呼叫路徑，確認外部資料取得、業務決策與副作用由負責元件明確協調，沒有藏在單純轉換的方法中。 |
-| 4 | 驗證適用的不合法輸入、內部必要資料缺失及轉換失敗，確認沒有預設值或半成品掩蓋問題。批次允許部分成功時，核對每筆結果及對應關係，沒有遺漏失敗項目。 |
-| 5 | 對需要區分更新意圖的契約，從實際接收入口分別提供省略、明確清空及設定值，確認意圖傳遞到業務操作並產生約定效果。 |
-| 6 | 修改來源或目標的可變集合及適用的可變元素，確認另一方保持所需隔離；共用不可變值時核對其不可變性與共用契約，不以全面複製作為唯一合格方式。 |
-| 7 | 分別核對輸入與輸出欄位及轉換；驗證唯讀、衍生與遮罩資料不會被直接寫回。採用反向映射時，須有允許依據並確認可逆性。 |
-| 8 | 核對映射所有權、位置與依賴方向，相同契約沒有散落的不一致轉換，不同責任也未被不當集中。 |
-| 9 | 確認測試執行實際採用的映射實作或工具產出，必要時涵蓋序列化與反序列化邊界；斷言須涵蓋欄位值、拒絕結果與禁止傳遞的資料，不僅確認物件非空。 |
-
-既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低型別安全與邊界要求。
+| <a id="acceptance-java-bm-4"></a>4 | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。 |
