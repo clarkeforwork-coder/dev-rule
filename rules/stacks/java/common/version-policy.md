@@ -1,6 +1,6 @@
 # Java 適用範圍與版本判定
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 適用於 Java 應用程式、共用函式庫及多模組專案。以下要求由各專案依實際建置、交付及執行方式落實，並承接[開發共通規範](../../../README.md)。
 
@@ -35,18 +35,18 @@ Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rul
 
 ### 共同驗收
 
-- [check-configuration](../../../quality/rule-verification.md#acceptance-check-configuration)。
-- [check-execution](../../../quality/rule-verification.md#acceptance-check-execution)。
+- [規範驗證](../../../quality/rule-verification.md#acceptance-check-configuration)。
+- [規範驗證](../../../quality/rule-verification.md#acceptance-check-execution)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-jv-1-2"></a>1、2 | 核對版本宣告與實際建置設定。以不符合目標版本的語法或標準 API 案例，確認適用檢查會拒絕，並核對產物格式。 |
-| <a id="acceptance-java-jv-3-4"></a>3、4 | 查核各承諾執行版本的實際驗證結果。多模組按依賴關係核對使用端與提供端的相容範圍，不能只依單一較新環境通過推論所有版本符合。 |
-| <a id="acceptance-java-jv-5-6"></a>5、6 | 核對實際解析出的直接與間接依賴要求。提高最低版本時檢查使用端影響、遷移順序及回退安排，確認支援範圍變更已有明確決策。 |
-| <a id="acceptance-java-jv-7-8-9"></a>7、8、9 | 依實際使用情形核對 Preview、內部 API、存取放寬與棄用 API 的紀錄。確認適用核准、環境配套、維護責任及重新評估條件，並驗證替代做法符合目標版本。 |
-| <a id="acceptance-java-jv-12"></a>12 | 從指定發布產物查回建置環境、編譯目標、依賴與驗證紀錄，再核對部署環境中的實際產物及 Java 環境。 |
-| <a id="acceptance-java-jv-10-11"></a>10、11 | 確認產生碼與產物仍相容，並保留發行商及完整版本變更的驗證結果。 |
+| <a id="acceptance-java-version-target"></a>1、2 | 核對版本宣告與實際建置設定。以不符合目標版本的語法或標準 API 案例，確認適用檢查會拒絕，並核對產物格式。 |
+| <a id="acceptance-java-runtime-matrix"></a>3、4 | 查核各承諾執行版本的實際驗證結果。多模組按依賴關係核對使用端與提供端的相容範圍，不能只依單一較新環境通過推論所有版本符合。 |
+| <a id="acceptance-java-version-upgrade"></a>5、6 | 核對實際解析出的直接與間接依賴要求。提高最低版本時檢查使用端影響、遷移順序及回退安排，確認支援範圍變更已有明確決策。 |
+| <a id="acceptance-java-api-exceptions"></a>7、8、9 | 依實際使用情形核對 Preview、內部 API、存取放寬與棄用 API 的紀錄。確認適用核准、環境配套、維護責任及重新評估條件，並驗證替代做法符合目標版本。 |
+| <a id="acceptance-java-artifact-runtime"></a>12 | 從指定發布產物查回建置環境、編譯目標、依賴與驗證紀錄，再核對部署環境中的實際產物及 Java 環境。 |
+| <a id="acceptance-java-toolchain-compatibility"></a>10、11 | 確認產生碼與產物仍相容，並保留發行商及完整版本變更的驗證結果。 |
 
 無法取得某個承諾版本的執行結果時，須列為尚未驗證，明示缺少的環境或證據。審查與合併條件依[Git、PR 與程式碼審查](../../../workflow/git-pr-review.md)處理。

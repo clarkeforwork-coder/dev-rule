@@ -1,6 +1,6 @@
 # Java 相等性、雜湊與排序
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件延伸[專屬值型別與領域值物件](value-objects.md)的相等性要求，涵蓋 Entity、繼承關係及集合使用。型別與擴充設計另依[型別宣告與泛型](types-and-generics.md)及[類別、介面與物件建立](classes-and-construction.md)；ORM 代理等具體相容方式由 Framework 規範處理。
 
@@ -22,22 +22,22 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[比較語意](../../../coding/domain-modeling.md#acceptance-identity-semantics)、[識別碼生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。共同案例不在此重述或另維護副本。
+共同驗收直接依主要來源執行：[比較語意](../../../coding/domain-modeling.md#acceptance-identity-semantics)、[識別碼生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。
 
 下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
-<a id="acceptance-relationship-coverage"></a>
+<a id="acceptance-java-relationship-coverage"></a>
 
-依第 10 條，核對本次驗收同時涵蓋受影響的 Java 關係契約與實際集合操作；不能只測少數成對比較，也不能因方法由工具產生就省略驗證。不為這項覆蓋要求另設一列驗收。
+依第 10 條，核對本次驗收同時涵蓋受影響的 Java 關係契約與實際集合操作；不能只測少數成對比較，也不能因方法由工具產生就省略驗證。
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-equality-hash-contract"></a>2 | 對 Java `equals()` 驗證自反、對稱、遞移、一致性及 `null` 處理，並確認相等物件具有相同 `hashCode()`；不要求不同物件雜湊必不同，也不以雜湊相同判定相等。 |
-| <a id="acceptance-hash-collection-stability"></a>3 | 以實際 Java 雜湊集合核對鍵或元素的查找、去重及移除；需要變更比較依據時，驗證先移出、修改再加入的結果及重複處置。 |
-| <a id="acceptance-cross-type-equality"></a>5 | 對允許繼承的 Java 型別，以父子型別及必要的多物件組合驗證 `equals()` 的對稱、遞移與 `hashCode()` 契約；比較涉及框架代理時，經實際代理路徑驗證。 |
-| <a id="acceptance-ordering-choice"></a>6 | 審查 Java 型別採 `Comparable` 或用途明確的 `Comparator` 是否符合自然順序或情境排序的契約。 |
-| <a id="acceptance-comparator-relations"></a>7 | 驗證 Java 比較器的方向、同值與遞移關係，以及同次排序比較依據的穩定性；涵蓋適用的極端數值，確認不以相減造成溢位或精度損失及錯誤順序。 |
-| <a id="acceptance-sorted-key-equivalence"></a>8 | 核對比較為零與 `equals()` 的約定，將不同但排序值相同的資料放入實際採用的 Java 排序集合或映射，確認鍵判同及資料保留符合契約。 |
-| <a id="acceptance-sorted-collection-stability"></a>9 | 核對 Java 排序元素、鍵及比較器設定的變更路徑；驗證移出重加或重建後的順序、查找及資料保留，不依賴既有集合自動調整。 |
+| <a id="acceptance-java-equality-hash-contract"></a>2 | 對 Java `equals()` 驗證自反、對稱、遞移、一致性及 `null` 處理，並確認相等物件具有相同 `hashCode()`；不要求不同物件雜湊必不同，也不以雜湊相同判定相等。 |
+| <a id="acceptance-java-hash-collection-stability"></a>3 | 以實際 Java 雜湊集合核對鍵或元素的查找、去重及移除；需要變更比較依據時，驗證先移出、修改再加入的結果及重複處置。 |
+| <a id="acceptance-java-cross-type-equality"></a>5 | 對允許繼承的 Java 型別，以父子型別及必要的多物件組合驗證 `equals()` 的對稱、遞移與 `hashCode()` 契約；比較涉及框架代理時，經實際代理路徑驗證。 |
+| <a id="acceptance-java-ordering-choice"></a>6 | 審查 Java 型別採 `Comparable` 或用途明確的 `Comparator` 是否符合自然順序或情境排序的契約。 |
+| <a id="acceptance-java-comparator-relations"></a>7 | 驗證 Java 比較器的方向、同值與遞移關係，以及同次排序比較依據的穩定性；涵蓋適用的極端數值，確認不以相減造成溢位或精度損失及錯誤順序。 |
+| <a id="acceptance-java-sorted-key-equivalence"></a>8 | 核對比較為零與 `equals()` 的約定，將不同但排序值相同的資料放入實際採用的 Java 排序集合或映射，確認鍵判同及資料保留符合契約。 |
+| <a id="acceptance-java-sorted-collection-stability"></a>9 | 核對 Java 排序元素、鍵及比較器設定的變更路徑；驗證移出重加或重建後的順序、查找及資料保留，不依賴既有集合自動調整。 |
 
 既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

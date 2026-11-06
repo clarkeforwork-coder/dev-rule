@@ -1,6 +1,6 @@
 # Java 例外與資源管理
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[錯誤處理](../../../coding/error-handling.md)，定義 Java 例外傳遞、中斷及資源生命週期的共同要求。預期業務失敗依[狀態與結果建模](states-and-results.md)使用明確結果型別；元件建立及延遲讀取的所有權另依[類別、介面與物件建立](classes-and-construction.md)與[集合與資料所有權](collections-and-ownership.md)。
 
@@ -23,7 +23,7 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[部分取得與責任移交](../../../coding/resource-lifecycle.md#acceptance-partial-acquisition)、[資源有效期與關閉](../../../coding/resource-lifecycle.md#acceptance-close-contract)。共同案例不在此重述或另維護副本。
+共同驗收直接依主要來源執行：[部分取得與責任移交](../../../coding/resource-lifecycle.md#acceptance-partial-acquisition)、[資源有效期與關閉](../../../coding/resource-lifecycle.md#acceptance-close-contract)。
 
 依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
 
@@ -38,6 +38,6 @@
 
 <a id="acceptance-java-failure-coverage"></a>
 
-依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。本項是案例選擇的覆蓋檢查，不另設驗收它自己的表格列。
+依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。
 
 既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

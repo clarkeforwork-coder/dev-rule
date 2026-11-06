@@ -1,6 +1,6 @@
 # Java 命名、套件與文件
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[命名與可讀性](../../../coding/naming.md)、[程式碼設計與公開介面](../../../coding/code-design.md)及[模組責任與公開入口](../../../architecture/module-boundaries.md)，定義 Java 命名形式、套件組織與契約文件要求。
 
@@ -26,14 +26,14 @@
 ### 共同驗收
 
 - [審查清單](../../../quality/rule-verification.md#審查清單)。
-- [document-contract](../../../coding/code-design.md#acceptance-document-contract)。
-- [document-verification](../../../quality/rule-verification.md#acceptance-document-verification)。
+- [實作註解與暫時處理](../../../coding/code-design.md#acceptance-document-contract)。
+- [形式與語意分別驗收](../../../quality/rule-verification.md#acceptance-document-verification)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-nd-1-2"></a>1、2 | 自動檢查適用的命名形式與團隊縮寫慣例，確認未將所有 `final` 欄位機械式視為常數。 |
-| <a id="acceptance-java-nd-3"></a>3 | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 |
-| <a id="acceptance-java-nd-6"></a>6 | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |
-| <a id="acceptance-java-nd-7"></a>7 | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |
+| <a id="acceptance-java-naming-form"></a>1、2 | 自動檢查適用的命名形式與團隊縮寫慣例，確認未將所有 `final` 欄位機械式視為常數。 |
+| <a id="acceptance-java-package-boundaries"></a>3 | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 |
+| <a id="acceptance-java-rename-paths"></a>6 | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |
+| <a id="acceptance-java-javadoc-examples"></a>7 | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |

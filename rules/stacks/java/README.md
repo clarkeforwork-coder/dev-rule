@@ -24,12 +24,12 @@ Java 跨版本共用要求集中於 `common/`，此處的 common 不等於跨語
 | [反射、動態能力與檢查抑制](common/reflection-and-suppression.md) | 動態目標、契約驗證、特殊存取、故障分類、最小抑制範圍與產生碼 |
 | [命名、套件與文件](common/naming-packages-docs.md) | 命名形式與責任、套件邊界、Javadoc 契約、註解、重新命名及文件驗收 |
 
-上述 15 份主題已依共通與語言責任整理。自動檢查的 9 項決策已整合至共通規範驗證、規範治理及 Git／PR，不另建立重複的 Java 治理政策。Java 8、11、17、21 的版本差異、Framework 規範及具體工具配置仍待制定。
+Java 8、11、17、21 的版本差異、Framework 規範及具體工具配置仍待制定。
 
 ## 驗收入口
 
-驗收以唯一主要來源維護：共同案例引用共通文件，Java 只補語言機制的驗收增量。歷史 ID 保留在追溯紀錄，正式條號可依整理結果調整。目前已完成類別／建立、相等性／排序、反射／抑制，以及併發／非同步、集合／所有權、例外／資源六份文件的驗收去重，其餘九份主題待分批整理。必要檢查的對應、可重現設定、實際範圍、證據、有效門檻及安全診斷由[規範驗證](../../quality/rule-verification.md)維護；基準及抑制依[規範治理](../../workflow/rule-governance.md)，自動修正及合併依[Git／PR](../../workflow/git-pr-review.md)。
+驗收以唯一主要來源維護：共同案例引用共通文件，Java 只補語言機制的驗收增量。必要檢查的對應、可重現設定、實際範圍、證據、有效門檻及安全診斷由[規範驗證](../../quality/rule-verification.md)維護；基準及抑制依[規範治理](../../workflow/rule-governance.md)，自動修正及合併依[Git／PR](../../workflow/git-pr-review.md)。
 
 Java 專案須將宣告、泛型警告、空值、依賴邊界及版本限制等適用語言要求對應到實際編譯／分析／測試或人工審查；工具未涵蓋之處明列缺口。工具、規則版本與執行命令由專案依支援 JDK 及建置方式配置，不只依賴 IDE。
 
-新增共通主題：[集合與資料所有權](../../coding/collections-and-ownership.md)、[資源生命週期](../../coding/resource-lifecycle.md)、[併發與非同步](../../coding/concurrency-and-async.md)、[數值、日期時間與文字](../../coding/numbers-dates-text.md)。
+相關共通主題：[集合與資料所有權](../../coding/collections-and-ownership.md)、[資源生命週期](../../coding/resource-lifecycle.md)、[併發與非同步](../../coding/concurrency-and-async.md)、[數值、日期時間與文字](../../coding/numbers-dates-text.md)。

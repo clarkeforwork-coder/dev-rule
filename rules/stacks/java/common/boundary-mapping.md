@@ -1,6 +1,6 @@
 # Java 邊界物件與資料映射
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[邊界物件](../../../architecture/boundary-objects.md)與[資料映射](../../../architecture/data-mapping.md)，適用於 Java 的 API、模組、持久化及第三方整合邊界。實際分層與依賴方向由專案架構決定，具體映射與序列化工具設定由 Framework 規範及專案配置落實。
 
@@ -30,18 +30,18 @@
 
 ### 共同驗收
 
-- [boundary-separation](../../../architecture/boundary-objects.md#acceptance-boundary-separation)。
-- [mapping-fields](../../../architecture/data-mapping.md#acceptance-mapping-fields)。
-- [boundary-isolation](../../../architecture/boundary-objects.md#acceptance-boundary-isolation)。
-- [mapping-owner](../../../architecture/data-mapping.md#acceptance-mapping-owner)。
-- [mapping-3](../../../architecture/data-mapping.md#acceptance-mapping-3)。
-- [mapping-7](../../../architecture/data-mapping.md#acceptance-mapping-7)。
-- [mapping-9](../../../architecture/data-mapping.md#acceptance-mapping-9)。
-- [partial-operation](../../../coding/error-handling.md#acceptance-partial-operation)。
-- [update-intent](../../../coding/nullability.md#acceptance-update-intent)。
+- [隔離與拆分](../../../architecture/boundary-objects.md#acceptance-boundary-separation)。
+- [轉換要求、最小必要欄位](../../../architecture/data-mapping.md#acceptance-mapping-fields)。
+- [不可變性](../../../architecture/boundary-objects.md#acceptance-boundary-isolation)。
+- [責任配置](../../../architecture/data-mapping.md#acceptance-mapping-owner)。
+- [聚焦轉換與必要驗證](../../../architecture/data-mapping.md#acceptance-mapping-3)。
+- [各方向分別定義](../../../architecture/data-mapping.md#acceptance-mapping-7)。
+- [驗證實際映射路徑](../../../architecture/data-mapping.md#acceptance-mapping-9)。
+- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。
+- [空值語意](../../../coding/nullability.md#acceptance-update-intent)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-bm-4"></a>4 | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。 |
+| <a id="acceptance-java-mapping-failure"></a>4 | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。 |

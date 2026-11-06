@@ -1,6 +1,6 @@
 # Java 數值、日期時間與文字處理
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[型別安全](../../../coding/type-safety.md)與[領域建模](../../../coding/domain-modeling.md)，定義 Java 數值、時間與文字的表示及轉換要求。專屬型別與正規化依[值物件規範](value-objects.md)，比較與集合判同另依[相等性、雜湊與排序](equality-hashing-ordering.md)。
 
@@ -35,17 +35,17 @@
 
 ### 共同驗收
 
-- [data-1-2](../../../coding/numbers-dates-text.md#acceptance-data-1-2)。
-- [data-3-4](../../../coding/numbers-dates-text.md#acceptance-data-3-4)。
-- [data-6-7-8](../../../coding/numbers-dates-text.md#acceptance-data-6-7-8)。
-- [data-10](../../../coding/numbers-dates-text.md#acceptance-data-10)。
-- [data-11-12-13](../../../coding/numbers-dates-text.md#acceptance-data-11-12-13)。
-- [data-14](../../../coding/numbers-dates-text.md#acceptance-data-14)。
-- [time-source](../../../coding/numbers-dates-text.md#acceptance-time-source)。
+- [依語意選擇數值型別、從精確來源建立](../../../coding/numbers-dates-text.md#acceptance-data-1-2)。
+- [明訂捨入規則、範圍與轉換檢查](../../../coding/numbers-dates-text.md#acceptance-data-3-4)。
+- [依業務語意選擇時間型別、明確的時區轉換、區分時間長度與日曆規則](../../../coding/numbers-dates-text.md#acceptance-data-6-7-8)。
+- [解析與輸出契約](../../../coding/numbers-dates-text.md#acceptance-data-10)。
+- [明確指定字元編碼、長度與截取單位、用途明確的文字轉換](../../../coding/numbers-dates-text.md#acceptance-data-11-12-13)。
+- [邊界與環境差異驗收](../../../coding/numbers-dates-text.md#acceptance-data-14)。
+- [可控制的時間基準](../../../coding/numbers-dates-text.md#acceptance-time-source)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-nt-5"></a>5 | 以數值相同但小數位數不同及其他代表性資料，確認比較、正規化、雜湊與集合判同符合契約。 |
-| <a id="acceptance-java-nt-9"></a>9 | 以注入的 Clock 驗證業務時間邊界前、當下與之後，核對實際 Java 取時路徑使用該 Clock。 |
+| <a id="acceptance-java-decimal-equivalence"></a>5 | 以數值相同但小數位數不同及其他代表性資料，確認比較、正規化、雜湊與集合判同符合契約。 |
+| <a id="acceptance-java-clock-injection"></a>9 | 以注入的 Clock 驗證業務時間邊界前、當下與之後，核對實際 Java 取時路徑使用該 Clock。 |

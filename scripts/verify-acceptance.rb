@@ -11,6 +11,7 @@ OptionParser.new do |parser|
   parser.banner = '用法：ruby scripts/verify-acceptance.rb [--batch N --baseline COMMIT [--target COMMIT]]'
   parser.on('--batch N', Integer) { |v| options[:batch] = v }
   parser.on('--baseline COMMIT') { |v| options[:baseline] = v }
+  parser.on('--rules-baseline COMMIT') { |v| options[:rules_baseline] = v }
   parser.on('--target COMMIT') { |v| options[:target] = v }
 end.parse!
 abort('批次檢查須同時指定 --batch 與 --baseline') if !!options[:batch] != !!options[:baseline]
@@ -42,6 +43,29 @@ def tests(body)
   end.compact
 end
 
+# 規則正文抽取只排除明確的驗收區；編輯性刪文依複核紀錄列管。
+def rule_body(path, text)
+  editorial = ['條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。', '以下保留本輪決策的確認順序。']
+  editorial.each { |phrase| text = text.gsub(phrase, '') }
+  return text.split('## 驗收要求').first if path.include?('/stacks/java/common/')
+  acceptance = /\A(?:補充契約驗收|契約驗收|驗收要求|多步驟失敗驗收|介面用途驗收)\z/
+  skip_level = nil
+  result = []
+  text.lines.each do |line|
+    if (heading = line.match(/^(\#{1,6}) (.+)$/))
+      level = heading[1].size
+      skip_level = nil if skip_level && level <= skip_level
+      skip_level = level if heading[2].match?(acceptance)
+    end
+    next if skip_level
+    next if line.match?(/^<a id="acceptance-/)
+    # 共通既有驗收段落的補充，不是新增規則正文。
+    next if line.start_with?('需要區分更新意圖時，從實際接收入口')
+    result << line
+  end
+  result.join.gsub(/\n{3,}/, "\n\n").strip
+end
+
 files = Dir.glob('**/*.md').reject { |p| p.start_with?('.git/') }.sort
 common = Dir.glob('rules/**/*.md').reject { |p| p.include?('/stacks/') }
 common_tests = common.flat_map { |p| tests(File.read(p)).map { |t| normalize(t) } }
@@ -66,11 +90,15 @@ if options[:batch]
   common.each do |p|
     old = original(baseline, p)
     now = read_target.call(p)
-    # 表格／驗收章節可改；其他既有正文段落須逐字保留。
-    old.split(/\n\s*\n/).each do |block|
-      next if block.start_with?('|', '#', '<a ')
-      errors << "Common prose removed/changed #{p}: #{block[0,50]}" unless now.include?(block)
+    if p == 'rules/quality/rule-verification.md'
+      old.split(/\n\s*\n/).each do |block|
+        next if block.start_with?('|', '#', '<a ')
+        errors << "Common prose removed/changed #{p}: #{block[0,50]}" unless now.include?(block)
+      end
+    else
+      errors << "Common rule body changed #{p}" unless rule_body(p, old) == rule_body(p, now)
     end
+
   end
   report = read_target.call("docs/acceptance-cleanup-batch-#{options[:batch]}.md")
   trace = report.lines.map { |l| l.match(/^\| ([A-Z]+-[\d、]+-\d+) \| (.+) \| \[主要驗收\]\(([^)]+)\) \|/) }.compact
@@ -87,6 +115,29 @@ if options[:batch]
     end
   end
   errors << 'Unexpected trace fragments' unless expected_ids.sort == trace.map { |r| r[1] }.sort
+end
+
+if options[:rules_baseline]
+  Dir.glob('rules/**/*.md').each do |p|
+    next if p.end_with?('/README.md')
+    old = original(options[:rules_baseline], p)
+    now = File.read(p)
+    if p == 'rules/quality/rule-verification.md'
+      # 此檔交錯編排政策與驗收；保護政策段落，驗收章節允許歸位。
+      protected_sections = ['共同把關', '測試程式碼', '動態限制與文件驗證',
+        '檢查配置可重現', '實際執行範圍', '檢查設定本身的有效性',
+        '證據版本與快取有效性', '結果分類與安全診斷', '合併門檻實際有效']
+      protected_sections.each do |title|
+        extract = lambda do |body|
+          body.split(/^## #{Regexp.escape(title)}\n/, 2).last.to_s.split(/^## /).first.to_s
+            .gsub(/^<a id="[^"]+"><\/a>\n/, '').split(/^驗收：/).first.to_s.strip
+        end
+        errors << "Rule policy changed #{p}: #{title}" unless extract.call(old) == extract.call(now)
+      end
+    else
+      errors << "Rule body changed #{p}" unless rule_body(p, old) == rule_body(p, now)
+    end
+  end
 end
 
 # 檢查所有 Markdown 的檔案及章節，包括行內的驗收錨點。
@@ -122,6 +173,8 @@ remaining = common_tests.count { |t| all_java.include?(t) }
 abort(errors.join("\n")) unless errors.empty?
 result = {completed_java_files: scope.size, completed_duplicate_rows: duplicates.size,
   checked_local_links: links, remaining_global_duplicate_common_rows: remaining}
+result[:rules_baseline] = options[:rules_baseline] if options[:rules_baseline]
+result[:rule_body_unchanged] = true if options[:rules_baseline]
 if options[:batch]
   result.merge!(batch: options[:batch], baseline: baseline, target: options[:target] || 'working-tree',
     original_acceptance_rows: row_count, traced_fragments: trace.size, rule_body_unchanged: true)

@@ -1,6 +1,6 @@
 # Java 類別、介面與物件建立
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[框架與依賴組裝](../../../architecture/dependency-composition.md)及[程式碼設計與公開介面](../../../coding/code-design.md)，定義 Java 類別契約、建立方式與生命週期的共同要求。具體 DI、代理與啟動配置由 Framework 規範及專案落實，仍須符合專案架構的依賴方向。
 
@@ -27,13 +27,13 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[介面用途](../../../architecture/dependency-composition.md#acceptance-interface-purpose)、[可替代性](../../../coding/code-design.md#acceptance-substitutability)、[建立與就緒](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)、[依賴取得](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)、[建立入口](../../../coding/code-design.md#acceptance-construction-entrypoints)、[介面能力](../../../coding/code-design.md#acceptance-interface-capabilities)、[共享生命週期](../../../coding/resource-lifecycle.md#acceptance-shared-lifecycle)、[生命週期覆蓋](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。共同案例不在此重述或另維護副本。
+共同驗收直接依主要來源執行：[介面用途](../../../quality/rule-verification.md#acceptance-interface-purpose)、[可替代性](../../../coding/code-design.md#acceptance-substitutability)、[建立與就緒](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)、[依賴取得](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)、[建立入口](../../../coding/code-design.md#acceptance-construction-entrypoints)、[介面能力](../../../coding/code-design.md#acceptance-interface-capabilities)、[共享生命週期](../../../coding/resource-lifecycle.md#acceptance-shared-lifecycle)、[生命週期覆蓋](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。
 
 下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-construction-safety"></a>4 | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |
-| <a id="acceptance-override-safety"></a>7 | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |
+| <a id="acceptance-java-construction-safety"></a>4 | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |
+| <a id="acceptance-java-override-safety"></a>7 | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |
 
 既有程式碼、框架限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

@@ -34,16 +34,16 @@
 
 | 片段 ID | 基準原文 | 現行唯一主要來源 |
 | --- | --- | --- |
-| CL-1、8-1 | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 | [主要驗收](../rules/architecture/dependency-composition.md#acceptance-interface-purpose) |
+| CL-1、8-1 | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 | [主要驗收](../rules/quality/rule-verification.md#acceptance-interface-purpose) |
 | CL-1、8-2 | 核對實作能支援契約操作，介面拆分沒有取代授權。 | [主要驗收](../rules/coding/code-design.md#acceptance-interface-capabilities) |
 | CL-2、7-1 | 以受影響的子型別或替代實作驗證共同契約，確認輸入、結果與必要檢查未被破壞。 | [主要驗收](../rules/coding/code-design.md#acceptance-substitutability) |
-| CL-2、7-2 | 審查擴充範圍與覆寫方式； | [主要驗收](../rules/stacks/java/common/classes-and-construction.md#acceptance-override-safety) |
-| CL-2、7-3 | 涉及框架代理時，驗證實際配置仍維持保證。 | [主要驗收](../rules/stacks/java/common/classes-and-construction.md#acceptance-override-safety) |
+| CL-2、7-2 | 審查擴充範圍與覆寫方式； | [主要驗收](../rules/stacks/java/common/classes-and-construction.md#acceptance-java-override-safety) |
+| CL-2、7-3 | 涉及框架代理時，驗證實際配置仍維持保證。 | [主要驗收](../rules/stacks/java/common/classes-and-construction.md#acceptance-java-override-safety) |
 | CL-3、6-1 | 驗證必要資料與依賴的建立限制， | [主要驗收](../rules/coding/resource-lifecycle.md#acceptance-initialization-readiness) |
 | CL-3、6-2 | 所有建構子、工廠及適用的 Builder 均維持必要條件，不產出無效目標物件。 | [主要驗收](../rules/coding/code-design.md#acceptance-construction-entrypoints) |
 | CL-3、6-3 | 分階段元件未就緒時，須拒絕不允許的操作。 | [主要驗收](../rules/coding/resource-lifecycle.md#acceptance-initialization-readiness) |
-| CL-4-1 | 審查建構路徑有無 `this` 外洩或可覆寫方法呼叫。 | [主要驗收](../rules/stacks/java/common/classes-and-construction.md#acceptance-construction-safety) |
-| CL-4-2 | 適用時核對事件註冊、回呼與背景啟動時機，確認只能使用已完成建立且符合生命週期條件的物件。 | [主要驗收](../rules/stacks/java/common/classes-and-construction.md#acceptance-construction-safety) |
+| CL-4-1 | 審查建構路徑有無 `this` 外洩或可覆寫方法呼叫。 | [主要驗收](../rules/stacks/java/common/classes-and-construction.md#acceptance-java-construction-safety) |
+| CL-4-2 | 適用時核對事件註冊、回呼與背景啟動時機，確認只能使用已完成建立且符合生命週期條件的物件。 | [主要驗收](../rules/stacks/java/common/classes-and-construction.md#acceptance-java-construction-safety) |
 | CL-5-1 | 核對服務與外部能力可從明確依賴辨識，沒有隱藏的全域查找。 | [主要驗收](../rules/architecture/dependency-composition.md#acceptance-explicit-dependencies) |
 | CL-5-2 | 工廠或提供者具有明確責任，延後或按次建立的實例符合所需生命週期。 | [主要驗收](../rules/architecture/dependency-composition.md#acceptance-explicit-dependencies) |
 | CL-9-1 | 涉及共用實例或可變狀態時，依風險以多次或併發操作驗證資料隔離，確認不同使用者或請求不會互相覆蓋。 | [主要驗收](../rules/coding/resource-lifecycle.md#acceptance-shared-lifecycle) |
@@ -51,27 +51,27 @@
 | CL-10-1 | 核對測試涵蓋受影響的建立、替代、必要檢查與生命週期保證； | [主要驗收](../rules/coding/resource-lifecycle.md#acceptance-lifecycle-coverage) |
 | CL-10-2 | 需要框架行為才能成立的保證有實際組裝驗證，不以單純注入成功作為全部符合的證據。 | [主要驗收](../rules/coding/resource-lifecycle.md#acceptance-lifecycle-coverage) |
 | EQ-1、2-1 | 核對物件身分、實體身分與值內容的區分； | [主要驗收](../rules/coding/domain-modeling.md#acceptance-identity-semantics) |
-| EQ-1、2-2 | 驗證自反、對稱、遞移、一致性及 `null` 處理。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-equality-hash-contract) |
-| EQ-1、2-3 | 相等物件須具有相同雜湊值，不以不相等物件的雜湊值必須不同作為斷言，也不僅憑雜湊值判定相等。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-equality-hash-contract) |
-| EQ-3-1 | 以實際鍵或元素驗證雜湊集合的查找、去重與移除，確認在集合內比較依據保持穩定。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-hash-collection-stability) |
-| EQ-3-2 | 契約允許修改時，驗證先移出、修改、重新加入後的行為及重複處置。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-hash-collection-stability) |
+| EQ-1、2-2 | 驗證自反、對稱、遞移、一致性及 `null` 處理。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-equality-hash-contract) |
+| EQ-1、2-3 | 相等物件須具有相同雜湊值，不以不相等物件的雜湊值必須不同作為斷言，也不僅憑雜湊值判定相等。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-equality-hash-contract) |
+| EQ-3-1 | 以實際鍵或元素驗證雜湊集合的查找、去重與移除，確認在集合內比較依據保持穩定。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-hash-collection-stability) |
+| EQ-3-2 | 契約允許修改時，驗證先移出、修改、重新加入後的行為及重複處置。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-hash-collection-stability) |
 | EQ-4、5-1 | 對適用的 Entity 驗證識別碼產生前後的相等與集合行為； | [主要驗收](../rules/coding/domain-modeling.md#acceptance-identity-lifecycle) |
-| EQ-4、5-2 | 對允許繼承的型別，以父子型別及必要的多物件組合確認對稱、遞移與雜湊契約。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-cross-type-equality) |
-| EQ-4、5-3 | 框架代理涉及比較時，依實際使用路徑驗證。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-cross-type-equality) |
-| EQ-6、7-1 | 核對自然順序或情境排序的選擇， | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-ordering-choice) |
-| EQ-6、7-2 | 驗證方向、同值與遞移關係。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-comparator-relations) |
-| EQ-6、7-3 | 數值比較涵蓋適用的極端值，確認不因溢位或精度損失產生錯誤順序，且比較依據在同次排序中穩定。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-comparator-relations) |
-| EQ-8-1 | 驗證比較為零與 `equals()` 的約定； | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-sorted-key-equivalence) |
-| EQ-8-2 | 將不同但排序值相同的資料放入實際採用的排序集合或映射，確認資料保留與鍵判同符合契約。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-sorted-key-equivalence) |
-| EQ-9-1 | 核對排序元素、鍵與比較器設定的變更路徑。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-sorted-collection-stability) |
-| EQ-9-2 | 需要修改時，驗證移出後重新加入或重建的順序、查找及資料保留結果，不依賴原集合自動調整。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-sorted-collection-stability) |
-| EQ-10-1 | 確認驗收涵蓋變更影響的關係契約與實際集合操作，沒有只測少數成對比較或以方法由工具產生作為正確依據。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-relationship-coverage) |
-| RF-1、2-1 | 審查動態能力的必要性、管理位置與內部型別契約。 | [主要驗收](../rules/stacks/java/common/reflection-and-suppression.md#acceptance-reflection-boundary) |
+| EQ-4、5-2 | 對允許繼承的型別，以父子型別及必要的多物件組合確認對稱、遞移與雜湊契約。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-cross-type-equality) |
+| EQ-4、5-3 | 框架代理涉及比較時，依實際使用路徑驗證。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-cross-type-equality) |
+| EQ-6、7-1 | 核對自然順序或情境排序的選擇， | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-ordering-choice) |
+| EQ-6、7-2 | 驗證方向、同值與遞移關係。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-comparator-relations) |
+| EQ-6、7-3 | 數值比較涵蓋適用的極端值，確認不因溢位或精度損失產生錯誤順序，且比較依據在同次排序中穩定。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-comparator-relations) |
+| EQ-8-1 | 驗證比較為零與 `equals()` 的約定； | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-sorted-key-equivalence) |
+| EQ-8-2 | 將不同但排序值相同的資料放入實際採用的排序集合或映射，確認資料保留與鍵判同符合契約。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-sorted-key-equivalence) |
+| EQ-9-1 | 核對排序元素、鍵與比較器設定的變更路徑。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-sorted-collection-stability) |
+| EQ-9-2 | 需要修改時，驗證移出後重新加入或重建的順序、查找及資料保留結果，不依賴原集合自動調整。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-sorted-collection-stability) |
+| EQ-10-1 | 確認驗收涵蓋變更影響的關係契約與實際集合操作，沒有只測少數成對比較或以方法由工具產生作為正確依據。 | [主要驗收](../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-relationship-coverage) |
+| RF-1、2-1 | 審查動態能力的必要性、管理位置與內部型別契約。 | [主要驗收](../rules/stacks/java/common/reflection-and-suppression.md#acceptance-java-reflection-boundary) |
 | RF-1、2-2 | 驗證允許目標可依權限執行，未登錄或未知目標明確拒絕； | [主要驗收](../rules/quality/security.md#acceptance-dynamic-target-authorization) |
 | RF-1、2-3 | 已知且型別符合的目標仍須通過授權，拒絕時沒有不應發生的副作用。 | [主要驗收](../rules/quality/security.md#acceptance-dynamic-target-authorization) |
 | RF-3、4-1 | 以合法及不相容目標驗證註冊、啟動或執行前檢查； | [主要驗收](../rules/coding/type-safety.md#acceptance-dynamic-contract) |
 | RF-3、4-2 | 確認能力、版本、參數與結果型別符合所需契約。 | [主要驗收](../rules/coding/type-safety.md#acceptance-dynamic-contract) |
-| RF-3、4-3 | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。 | [主要驗收](../rules/stacks/java/common/reflection-and-suppression.md#acceptance-reflective-access) |
+| RF-3、4-3 | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。 | [主要驗收](../rules/stacks/java/common/reflection-and-suppression.md#acceptance-java-reflective-access) |
 | RF-5-1 | 分別觸發適用的解析、存取、契約及目標執行故障，確認原因與分類保留，未將已執行的故障誤當未找到目標，且未進行無安全依據的替換或重跑。 | [主要驗收](../rules/coding/error-handling.md#acceptance-dynamic-failure) |
 | RF-6-1 | 核對抑制規則、最小範圍、判定依據及適用核准。 | [主要驗收](../rules/workflow/rule-governance.md#acceptance-suppression-scope) |
 | RF-6-2 | 以代表性檢查案例確認範圍外仍受檢查，沒有因抑制一項問題而關閉整個類別、模組或專案的必要檢查。 | [主要驗收](../rules/workflow/rule-governance.md#acceptance-suppression-scope) |

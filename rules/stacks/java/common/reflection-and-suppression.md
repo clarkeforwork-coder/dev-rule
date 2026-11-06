@@ -1,6 +1,6 @@
 # Java 反射、動態能力與檢查抑制
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[型別安全](../../../coding/type-safety.md)及[規範治理](../../../workflow/rule-governance.md)，定義動態能力、特殊存取與檢查抑制的限制。手寫整合與測試程式碼適用相同要求，工具限制不構成自動例外。Java 型別要求另依[型別宣告與泛型](types-and-generics.md)，JDK 內部 API 與存取放寬另依[版本要求](version-policy.md)。
 
@@ -22,13 +22,13 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[動態目標授權](../../../quality/security.md#acceptance-dynamic-target-authorization)、[動態契約](../../../coding/type-safety.md#acceptance-dynamic-contract)、[動態故障](../../../coding/error-handling.md#acceptance-dynamic-failure)、[抑制範圍](../../../workflow/rule-governance.md#acceptance-suppression-scope)、[產生碼](../../../workflow/rule-governance.md#acceptance-generated-code)、[動態限制](../../../quality/rule-verification.md#acceptance-dynamic-controls)。共同案例不在此重述或另維護副本。
+共同驗收直接依主要來源執行：[動態目標授權](../../../quality/security.md#acceptance-dynamic-target-authorization)、[動態契約](../../../coding/type-safety.md#acceptance-dynamic-contract)、[動態故障](../../../coding/error-handling.md#acceptance-dynamic-failure)、[抑制範圍](../../../workflow/rule-governance.md#acceptance-suppression-scope)、[產生碼](../../../workflow/rule-governance.md#acceptance-generated-code)、[動態限制](../../../quality/rule-verification.md#acceptance-dynamic-controls)。
 
 下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-reflection-boundary"></a>1 | 審查採用 Java 反射的實際需求與管理位置，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |
-| <a id="acceptance-reflective-access"></a>3 | 核對 Java 反射特殊存取的必要性、受支援替代方式與核准範圍；經實際建立及還原路徑確認無法藉私有欄位寫入或存取放寬繞過必要驗證、不變條件及封裝。 |
+| <a id="acceptance-java-reflection-boundary"></a>1 | 審查採用 Java 反射的實際需求與管理位置，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |
+| <a id="acceptance-java-reflective-access"></a>3 | 核對 Java 反射特殊存取的必要性、受支援替代方式與核准範圍；經實際建立及還原路徑確認無法藉私有欄位寫入或存取放寬繞過必要驗證、不變條件及封裝。 |
 
 偏離禁止事項須依[例外核准流程](../../../workflow/rule-governance.md#例外核准)取得明確決策，不因工具限制自行放寬，也不得將核准擴及其他位置。

@@ -1,6 +1,6 @@
 # Java 專屬值型別與領域值物件
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[領域建模](../../../coding/domain-modeling.md)，適用於 Java 專屬值型別與領域值物件。型別使用與空值處理另依[型別宣告與泛型](types-and-generics.md)及[null 與 Optional](null-and-optional.md)。具有身分與生命週期的 Entity，其狀態變更另依業務規則管理，不因本文件而要求所有 Entity 不可變。
 
@@ -31,18 +31,18 @@
 
 ### 共同驗收
 
-- [value-validity](../../../coding/domain-modeling.md#acceptance-value-validity)。
-- [value-3](../../../coding/domain-modeling.md#acceptance-value-3)。
-- [value-5](../../../coding/domain-modeling.md#acceptance-value-5)。
-- [value-6](../../../coding/domain-modeling.md#acceptance-value-6)。
-- [value-7](../../../coding/domain-modeling.md#acceptance-value-7)。
-- [value-coverage](../../../coding/domain-modeling.md#acceptance-value-coverage)。
+- [專屬型別](../../../coding/domain-modeling.md#acceptance-value-validity)。
+- [不可變性](../../../coding/domain-modeling.md#acceptance-value-3)。
+- [正規化規則](../../../coding/domain-modeling.md#acceptance-value-5)。
+- [運算責任](../../../coding/domain-modeling.md#acceptance-value-6)。
+- [資料還原](../../../coding/domain-modeling.md#acceptance-value-7)。
+- [模型驗證與還原](../../../coding/domain-modeling.md#acceptance-value-coverage)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-vo-3"></a>3 | 檢查 final 欄位仍可能指向可變內容的路徑；不得以欄位修飾詞作為不可變性證據。 |
-| <a id="acceptance-java-vo-4"></a>4 | 驗證不同實例的相等值及具代表性的不相等值，相等物件的雜湊值須相同。適用時確認作為集合元素或映射鍵的行為符合契約，不要求不相等物件一定具有不同雜湊值。 |
-| <a id="acceptance-java-vo-8-9"></a>8、9 | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |
-| <a id="acceptance-java-vo-10"></a>10 | 依業務保證選擇 equals()、hashCode() 與 record 產生方法的案例，不要求無業務邏輯的存取方法逐一測試。 |
+| <a id="acceptance-java-final-references"></a>3 | 檢查 final 欄位仍可能指向可變內容的路徑；不得以欄位修飾詞作為不可變性證據。 |
+| <a id="acceptance-java-value-equality"></a>4 | 驗證不同實例的相等值及具代表性的不相等值，相等物件的雜湊值須相同。適用時確認作為集合元素或映射鍵的行為符合契約，不要求不相等物件一定具有不同雜湊值。 |
+| <a id="acceptance-java-generated-representation"></a>8、9 | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |
+| <a id="acceptance-java-value-method-coverage"></a>10 | 依業務保證選擇 equals()、hashCode() 與 record 產生方法的案例，不要求無業務邏輯的存取方法逐一測試。 |

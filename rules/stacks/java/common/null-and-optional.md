@@ -1,8 +1,8 @@
 # Java null 與 Optional
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
-本文件承接[空值語意](../../../coding/nullability.md)、[型別安全](../../../coding/type-safety.md)與[錯誤處理](../../../coding/error-handling.md)，適用於自行撰寫的 Java 程式碼，包含測試與整合元件。語法與 API 須符合[版本要求](version-policy.md)，型別使用另依[型別宣告與泛型](types-and-generics.md)。以下保留本輪決策的確認順序。
+本文件承接[空值語意](../../../coding/nullability.md)、[型別安全](../../../coding/type-safety.md)與[錯誤處理](../../../coding/error-handling.md)，適用於自行撰寫的 Java 程式碼，包含測試與整合元件。語法與 API 須符合[版本要求](version-policy.md)，型別使用另依[型別宣告與泛型](types-and-generics.md)。
 
 ## 查詢與 Optional
 
@@ -34,19 +34,19 @@
 ### 共同驗收
 
 - [更新意圖](../../../coding/nullability.md#acceptance-update-intent)。
-- [third-party-null](../../../coding/nullability.md#acceptance-third-party-null)。
-- [null-contract-change](../../../coding/nullability.md#acceptance-null-contract-change)。
+- [第三方空值行為](../../../coding/nullability.md#acceptance-third-party-null)。
+- [空值契約變更](../../../coding/nullability.md#acceptance-null-contract-change)。
 - [測試程式碼](../../../quality/rule-verification.md#測試程式碼)。
-- [api-absence](../../../interfaces/api-contracts.md#acceptance-api-absence)。
+- [API 邊界的缺值轉換](../../../interfaces/api-contracts.md#acceptance-api-absence)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-jn-1-2-3"></a>1、2、3 | 驗證有值、單筆正常查無資料、多筆空結果，以及適用的必須存在卻不存在、查詢故障與結果未知。確認 `Optional` 本身非空，呼叫端的缺值分支、替代值與失敗分類符合契約。 |
-| <a id="acceptance-java-jn-4-5"></a>4、5 | 審查參數與欄位採用 `Optional` 的必要性及配套。集合等輸入含不允許的空值時，確認依契約處理，沒有默默丟棄或替換資料。 |
-| <a id="acceptance-java-jn-6-7-11"></a>6、7、11 | 核對非空預設、可空標註、檢查範圍及實際驗證位置。確認適用工具能偵測違反契約的使用方式；必填外部輸入缺值時依契約拒絕，且未產生不應發生的副作用。 |
-| <a id="acceptance-java-jn-8"></a>8 | 檢查第三方回傳值轉成 `Optional` 的路徑，只有契約允許的正常缺值才能使用空的 `Optional`。 |
+| <a id="acceptance-java-optional-results"></a>1、2、3 | 驗證有值、單筆正常查無資料、多筆空結果，以及適用的必須存在卻不存在、查詢故障與結果未知。確認 `Optional` 本身非空，呼叫端的缺值分支、替代值與失敗分類符合契約。 |
+| <a id="acceptance-java-optional-positions"></a>4、5 | 審查參數與欄位採用 `Optional` 的必要性及配套。集合等輸入含不允許的空值時，確認依契約處理，沒有默默丟棄或替換資料。 |
+| <a id="acceptance-java-null-contract"></a>6、7、11 | 核對非空預設、可空標註、檢查範圍及實際驗證位置。確認適用工具能偵測違反契約的使用方式；必填外部輸入缺值時依契約拒絕，且未產生不應發生的副作用。 |
+| <a id="acceptance-java-optional-adaptation"></a>8 | 檢查第三方回傳值轉成 `Optional` 的路徑，只有契約允許的正常缺值才能使用空的 `Optional`。 |
 | <a id="acceptance-java-optional-coverage"></a>10 | 核對 Optional 查詢與取值案例涵蓋受影響的有值與缺值分類。 |
 
 既有程式碼、工具限制與個別例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

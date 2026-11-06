@@ -1,6 +1,6 @@
 # Java 集合與資料所有權
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[程式碼設計與公開介面](../../../coding/code-design.md)，定義集合及其元素的所有權、修改與處理契約。集合宣告依[型別宣告與泛型](types-and-generics.md)，空值依[null 與 Optional](null-and-optional.md)，鍵與元素的比較依[相等性、雜湊與排序](equality-hashing-ordering.md)。具體併發 API 與資源管理方式由後續 Java 主題展開。
 
@@ -26,10 +26,10 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[所有權與快照](../../../coding/collections-and-ownership.md#acceptance-collection-ownership)、[順序與重複](../../../coding/collections-and-ownership.md#acceptance-order-duplicates)、[遍歷修改](../../../coding/collections-and-ownership.md#acceptance-traversal-mutation)、[複合原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)、[資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)、[延遲資源](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)、[批次失敗](../../../coding/error-handling.md#acceptance-partial-operation)、[所有權覆蓋](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。共同案例不在此重述或另維護副本。
+共同驗收直接依主要來源執行：[所有權與快照](../../../coding/collections-and-ownership.md#acceptance-collection-ownership)、[順序與重複](../../../coding/collections-and-ownership.md#acceptance-order-duplicates)、[遍歷修改](../../../coding/collections-and-ownership.md#acceptance-traversal-mutation)、[複合原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)、[資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)、[延遲資源](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)、[批次失敗](../../../quality/rule-verification.md#acceptance-partial-operation)、[所有權覆蓋](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。
 
 依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
 
-本主題目前的驗收均由上述共同來源涵蓋，須經實際採用的 Java 集合、迭代與資源路徑執行；不為保留表格而重述相同案例。各條 Java 使用限制仍適用。
+上述驗收須經實際採用的 Java 集合、迭代與資源路徑執行，各條 Java 使用限制仍適用。
 
 既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低要求。

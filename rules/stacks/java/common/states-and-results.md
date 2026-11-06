@@ -1,6 +1,6 @@
 # Java 狀態與結果建模
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[領域建模](../../../coding/domain-modeling.md)與[錯誤處理](../../../coding/error-handling.md)，定義 Java 狀態與操作結果的型別要求。實作須符合[版本要求](version-policy.md)、[型別宣告與泛型](types-and-generics.md)及[空值契約](null-and-optional.md)。
 
@@ -31,16 +31,16 @@
 
 ### 共同驗收
 
-- [state-data](../../../coding/domain-modeling.md#acceptance-state-data)。
-- [state-transition](../../../coding/domain-modeling.md#acceptance-state-transition)。
-- [state-4-5](../../../coding/domain-modeling.md#acceptance-state-4-5)。
-- [state-6-8](../../../coding/domain-modeling.md#acceptance-state-6-8)。
-- [state-9](../../../coding/domain-modeling.md#acceptance-state-9)。
-- [state-10](../../../coding/domain-modeling.md#acceptance-state-10)。
+- [狀態建模](../../../coding/domain-modeling.md#acceptance-state-data)。
+- [狀態建模](../../../coding/domain-modeling.md#acceptance-state-transition)。
+- [結果與目前狀態分開表達、失敗分類](../../../coding/domain-modeling.md#acceptance-state-4-5)。
+- [處理完整性、封閉或允許擴充](../../../coding/domain-modeling.md#acceptance-state-6-8)。
+- [結果保留當時事實](../../../coding/domain-modeling.md#acceptance-state-9)。
+- [模型驗收](../../../coding/domain-modeling.md#acceptance-state-10)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-st-1-2"></a>1、2 | 審查不同業務面向分別建模並明訂相互限制，例如付款與配送狀態未被強行合併。 |
-| <a id="acceptance-java-st-7"></a>7 | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |
+| <a id="acceptance-java-independent-state-models"></a>1、2 | 審查不同業務面向分別建模並明訂相互限制，例如付款與配送狀態未被強行合併。 |
+| <a id="acceptance-java-enum-codes"></a>7 | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |

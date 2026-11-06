@@ -1,6 +1,6 @@
 # Java 併發與非同步處理
 
-本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
 本文件承接[錯誤處理](../../../coding/error-handling.md)與[效能與資源使用](../../../quality/performance.md)，定義 Java 併發工作的所有權、同步、結果及生命週期。中斷與資源清理另依[例外與資源管理](exceptions-and-resources.md)，具體 API 須符合[版本要求](version-policy.md)。
 
@@ -32,7 +32,7 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[工作所有權](../../../coding/concurrency-and-async.md#acceptance-task-ownership)、[執行資源與阻塞](../../../coding/concurrency-and-async.md#acceptance-execution-resources)、[期限與取消](../../../coding/concurrency-and-async.md#acceptance-deadline-cancellation)、[工作組合](../../../coding/concurrency-and-async.md#acceptance-task-composition)、[脈絡隔離](../../../coding/concurrency-and-async.md#acceptance-context-isolation)、[鎖定範圍](../../../coding/concurrency-and-async.md#acceptance-lock-scope)、[受控關閉](../../../coding/resource-lifecycle.md#acceptance-controlled-shutdown)、[受控交錯](../../../quality/testing.md#acceptance-controlled-interleaving)。共同案例不在此重述或另維護副本。
+共同驗收直接依主要來源執行：[工作所有權](../../../coding/concurrency-and-async.md#acceptance-task-ownership)、[執行資源與阻塞](../../../coding/concurrency-and-async.md#acceptance-execution-resources)、[期限與取消](../../../coding/concurrency-and-async.md#acceptance-deadline-cancellation)、[工作組合](../../../coding/concurrency-and-async.md#acceptance-task-composition)、[脈絡隔離](../../../coding/concurrency-and-async.md#acceptance-context-isolation)、[鎖定範圍](../../../coding/concurrency-and-async.md#acceptance-lock-scope)、[受控關閉](../../../coding/resource-lifecycle.md#acceptance-controlled-shutdown)、[受控交錯](../../../quality/testing.md#acceptance-controlled-interleaving)。
 
 依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
 
