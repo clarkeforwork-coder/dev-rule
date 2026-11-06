@@ -36,7 +36,6 @@
 - [正規化規則](../../../coding/domain-modeling.md#acceptance-value-5)。
 - [運算責任](../../../coding/domain-modeling.md#acceptance-value-6)。
 - [資料還原](../../../coding/domain-modeling.md#acceptance-value-7)。
-- [模型驗證與還原](../../../coding/domain-modeling.md#acceptance-value-coverage)。
 
 ### Java 語言增量驗收
 
@@ -45,4 +44,4 @@
 | <a id="acceptance-java-final-references"></a>3 | 檢查 final 欄位仍可能指向可變內容的路徑；不得以欄位修飾詞作為不可變性證據。 |
 | <a id="acceptance-java-value-equality"></a>4 | 驗證不同實例的相等值及具代表性的不相等值，相等物件的雜湊值須相同。適用時確認作為集合元素或映射鍵的行為符合契約，不要求不相等物件一定具有不同雜湊值。 |
 | <a id="acceptance-java-generated-representation"></a>8、9 | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |
-| <a id="acceptance-java-value-method-coverage"></a>10 | 依業務保證選擇 equals()、hashCode() 與 record 產生方法的案例，不要求無業務邏輯的存取方法逐一測試。 |
+| <a id="acceptance-java-value-method-coverage"></a>10 | 核對 Java 值物件的 equals()、hashCode()、record 產生方法與還原路徑涵蓋受影響的業務保證與失效邊界，不以只有建立成功代替驗收；不要求無業務邏輯的存取方法逐一測試。 |

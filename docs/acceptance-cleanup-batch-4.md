@@ -31,7 +31,7 @@
 | VO-5-1 | 以不同合法表示及不合法輸入驗證正規化、驗證順序與相等性符合契約，所有建立入口結果一致，沒有未授權的修剪或數值修正。 | [主要驗收](../rules/coding/domain-modeling.md#acceptance-value-5) |
 | VO-6-1 | 驗證適用運算的結果、單位與有效性限制，原物件維持不變。確認不相容的值依契約拒絕或處理，使用端未各自拆值繞過規則。 | [主要驗收](../rules/coding/domain-modeling.md#acceptance-value-6) |
 | VO-7-1 | 經實際採用的反序列化、持久化或框架映射路徑驗證合法與不合法資料。涉及歷史資料時，確認按明訂版本或遷移規則還原，不產出違反契約的物件。 | [主要驗收](../rules/coding/domain-modeling.md#acceptance-value-7) |
-| VO-10-1 | 核對測試涵蓋受影響的業務保證與失效邊界，不以只有建立成功的案例代替驗收， | [主要驗收](../rules/coding/domain-modeling.md#acceptance-value-coverage) |
+| VO-10-1 | 核對測試涵蓋受影響的業務保證與失效邊界，不以只有建立成功的案例代替驗收， | [主要驗收](../rules/stacks/java/common/value-objects.md#acceptance-java-value-method-coverage) |
 | VO-10-2 | 也不要求無業務邏輯的存取方法逐一測試。 | [主要驗收](../rules/stacks/java/common/value-objects.md#acceptance-java-value-method-coverage) |
 | ST-1、2-1 | 審查互斥狀態 | [主要驗收](../rules/coding/domain-modeling.md#acceptance-state-data) |
 | ST-1、2-2 | 與獨立業務面向是否正確分開， | [主要驗收](../rules/stacks/java/common/states-and-results.md#acceptance-java-independent-state-models) |
@@ -56,3 +56,5 @@
 ## 驗證方式
 
 執行 `ruby scripts/verify-acceptance.rb`、`ruby scripts/verify-acceptance.rb --batch 4 --baseline 15ee488028e09a00b05d8f1276ee83bfffc68050` 及 `git diff --check`。重現歷史差異時加上 `--target` 指定本批完成提交；常駐檢查不使用歷史範圍限制。
+
+後續人工複核：VO 10 的完整覆蓋來源涉及尚未列管的共通摘要，因此覆蓋片段與存取方法測試範圍均保留 Java 主要驗收，未利用該摘要新增共同驗收。原文片段不變。
