@@ -22,17 +22,13 @@
 
 ## 驗收要求
 
-下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。
+共同驗收直接依主要來源執行：[動態目標授權](../../../quality/security.md#acceptance-dynamic-target-authorization)、[動態契約](../../../coding/type-safety.md#acceptance-dynamic-contract)、[動態故障](../../../coding/error-handling.md#acceptance-dynamic-failure)、[抑制範圍](../../../workflow/rule-governance.md#acceptance-suppression-scope)、[產生碼](../../../workflow/rule-governance.md#acceptance-generated-code)、[動態限制](../../../quality/rule-verification.md#acceptance-dynamic-controls)。共同案例不在此重述或另維護副本。
 
-依變更影響選擇案例，沿用[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
+下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
-| 對應決策 | 驗收內容 |
+| Java 條文 | 語言增量驗收 |
 | --- | --- |
-| 1、2 | 審查動態能力的必要性、管理位置與內部型別契約。驗證允許目標可依權限執行，未登錄或未知目標明確拒絕；已知且型別符合的目標仍須通過授權，拒絕時沒有不應發生的副作用。 |
-| 3、4 | 以合法及不相容目標驗證註冊、啟動或執行前檢查；確認能力、版本、參數與結果型別符合所需契約。核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。 |
-| 5 | 分別觸發適用的解析、存取、契約及目標執行故障，確認原因與分類保留，未將已執行的故障誤當未找到目標，且未進行無安全依據的替換或重跑。 |
-| 6 | 核對抑制規則、最小範圍、判定依據及適用核准。以代表性檢查案例確認範圍外仍受檢查，沒有因抑制一項問題而關閉整個類別、模組或專案的必要檢查。 |
-| 7 | 依實際來源與設定重新產生，確認產出及例外範圍可重現，手寫銜接仍符合型別契約。工具或產生器更新時，重新確認例外依據，未沿用已失效的抑制。 |
-| 8 | 確認驗收包含成功與拒絕、故障及限制生效的證據，不以警告消失或合法目標成功作為全部符合的依據。 |
+| <a id="acceptance-reflection-boundary"></a>1 | 審查採用 Java 反射的實際需求與管理位置，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |
+| <a id="acceptance-reflective-access"></a>3 | 核對 Java 反射特殊存取的必要性、受支援替代方式與核准範圍；經實際建立及還原路徑確認無法藉私有欄位寫入或存取放寬繞過必要驗證、不變條件及封裝。 |
 
 偏離禁止事項須依[例外核准流程](../../../workflow/rule-governance.md#例外核准)取得明確決策，不因工具限制自行放寬，也不得將核准擴及其他位置。

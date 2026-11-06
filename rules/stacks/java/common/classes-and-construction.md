@@ -27,18 +27,13 @@
 
 ## 驗收要求
 
-下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。
+共同驗收直接依主要來源執行：[介面用途](../../../architecture/dependency-composition.md#acceptance-interface-purpose)、[可替代性](../../../coding/code-design.md#acceptance-substitutability)、[建立與就緒](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)、[依賴取得](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)、[建立入口](../../../coding/code-design.md#acceptance-construction-entrypoints)、[介面能力](../../../coding/code-design.md#acceptance-interface-capabilities)、[共享生命週期](../../../coding/resource-lifecycle.md#acceptance-shared-lifecycle)、[生命週期覆蓋](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。共同案例不在此重述或另維護副本。
 
-依變更影響選擇案例，沿用[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
-| 對應決策 | 驗收內容 |
+| Java 條文 | 語言增量驗收 |
 | --- | --- |
-| 1、8 | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。核對實作能支援契約操作，介面拆分沒有取代授權。 |
-| 2、7 | 以受影響的子型別或替代實作驗證共同契約，確認輸入、結果與必要檢查未被破壞。審查擴充範圍與覆寫方式；涉及框架代理時，驗證實際配置仍維持保證。 |
-| 3、6 | 驗證必要資料與依賴的建立限制，所有建構子、工廠及適用的 Builder 均維持必要條件，不產出無效目標物件。分階段元件未就緒時，須拒絕不允許的操作。 |
-| 4 | 審查建構路徑有無 `this` 外洩或可覆寫方法呼叫。適用時核對事件註冊、回呼與背景啟動時機，確認只能使用已完成建立且符合生命週期條件的物件。 |
-| 5 | 核對服務與外部能力可從明確依賴辨識，沒有隱藏的全域查找。工廠或提供者具有明確責任，延後或按次建立的實例符合所需生命週期。 |
-| 9 | 涉及共用實例或可變狀態時，依風險以多次或併發操作驗證資料隔離，確認不同使用者或請求不會互相覆蓋。核對實際依賴生命週期與取得方式相容。 |
-| 10 | 核對測試涵蓋受影響的建立、替代、必要檢查與生命週期保證；需要框架行為才能成立的保證有實際組裝驗證，不以單純注入成功作為全部符合的證據。 |
+| <a id="acceptance-construction-safety"></a>4 | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |
+| <a id="acceptance-override-safety"></a>7 | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |
 
 既有程式碼、框架限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。
