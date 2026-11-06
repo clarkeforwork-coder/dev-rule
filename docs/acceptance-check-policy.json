@@ -1,0 +1,1381 @@
+{
+  "baseline": "6a16349",
+  "changes": [
+    {
+      "path": "rules/README.md",
+      "baseline_line": 11,
+      "remove": [
+        "- 共通原則按實際設計適用，例如物件導向、非同步及 HTTP／JSON 規則不強制所有專案採用該設計。語言專屬文件放於 `stacks/<語言>/`，共同要求與版本差異分開維護。Java 已制定的主題與後續進度見語言索引。尚未制定的主題仍須遵守既有共通要求，具體語言能力限制須個別決策。"
+      ],
+      "insert": [
+        "- 共通原則按實際設計適用，例如物件導向、非同步及 HTTP／JSON 規則不強制所有專案採用該設計。語言專屬文件放於 `stacks/<語言>/`，共同要求與版本差異分開維護。Java 已制定的主題見語言索引。尚未制定的主題仍須遵守既有共通要求，具體語言能力限制須個別決策。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/architecture/boundary-objects.md",
+      "baseline_line": 33,
+      "remove": [
+
+      ],
+      "insert": [
+        "",
+        "## 契約驗收",
+        "",
+        "| 契約 | 驗收內容 |",
+        "| --- | --- |",
+        "| <a id=\"acceptance-boundary-separation\"></a>[隔離與拆分](#隔離與拆分) | 審查邊界物件的契約責任與隔離依據，確認未因欄位相同而不當共用，也未僅因分層而重複建立 DTO。確認公開資料未直接暴露持久化或模組內部模型。 |",
+        "| <a id=\"acceptance-boundary-isolation\"></a>[不可變性](#不可變性) | 修改來源或目標的可變集合及適用的可變元素，確認另一方保持所需隔離；共用不可變值時核對其不可變性與共用契約，不以全面複製作為唯一合格方式。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/architecture/data-mapping.md",
+      "baseline_line": 47,
+      "remove": [
+        "| [聚焦轉換與必要驗證](#bm-03) | 審查映射及其呼叫路徑，確認外部資料取得、業務決策與副作用由負責元件明確協調，沒有藏在單純轉換的方法中。 |",
+        "| [各方向分別定義](#bm-07) | 分別核對輸入與輸出欄位及轉換；驗證唯讀、衍生與遮罩資料不會被直接寫回。採用反向映射時，須有允許依據並確認可逆性。 |",
+        "| [驗證實際映射路徑](#bm-09) | 確認測試執行實際採用的映射實作或工具產出，必要時涵蓋序列化與反序列化邊界；斷言須涵蓋欄位值、拒絕結果與禁止傳遞的資料，不僅確認物件非空。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-mapping-responsibility\"></a>[聚焦轉換與必要驗證](#bm-03) | 審查映射及其呼叫路徑，確認外部資料取得、業務決策與副作用由負責元件明確協調，沒有藏在單純轉換的方法中。 |",
+        "| <a id=\"acceptance-directional-mapping\"></a>[各方向分別定義](#bm-07) | 分別核對輸入與輸出欄位及轉換；驗證唯讀、衍生與遮罩資料不會被直接寫回。採用反向映射時，須有允許依據並確認可逆性。 |",
+        "| <a id=\"acceptance-mapping-paths\"></a>[驗證實際映射路徑](#bm-09) | 確認測試執行實際採用的映射實作或工具產出，必要時涵蓋序列化與反序列化邊界；斷言須涵蓋欄位值、拒絕結果與禁止傳遞的資料，不僅確認物件非空。對需要區分更新意圖的契約，從實際接收入口分別提供省略、明確清空及設定值，確認意圖傳遞到業務操作並產生約定效果。 |",
+        "| <a id=\"acceptance-mapping-fields\"></a>[轉換要求](#轉換要求)、[最小必要欄位](boundary-objects.md#明確列出最小必要) | 核對允許欄位及來源，以含管理欄位的外部輸入驗證其無法覆寫可信資料，並確認內部敏感欄位未輸出。映射設定或契約變更時，確認新增來源或目標欄位不會自動擴大允許範圍。 |",
+        "| <a id=\"acceptance-mapping-owner\"></a>[責任配置](#責任配置) | 核對映射所有權、位置與依賴方向，相同契約沒有散落的不一致轉換，不同責任也未被不當集中。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/architecture/dependency-composition.md",
+      "baseline_line": 42,
+      "remove": [
+        "",
+        "## 介面用途驗收",
+        "",
+        "<a id=\"acceptance-interface-purpose\"></a>",
+        "",
+        "依本文件的[介面與抽象](#介面與抽象)，審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。"
+      ],
+      "insert": [
+
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/coding/code-design.md",
+      "baseline_line": 60,
+      "remove": [
+        "| [實作註解與暫時處理](#nd-05) | 比對文件、註解與實際行為，確認使用端所需契約完整，理由與限制仍有效，暫時性處理有可追蹤事項。移除過時說明，避免僅重述名稱或複製多份契約。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-document-contract\"></a>[註解與公開文件](#註解與公開文件)、[實作註解與暫時處理](#nd-05) | 比對文件、註解與實際行為，確認使用端所需契約完整，理由與限制仍有效，暫時性處理有可追蹤事項。移除過時說明，避免僅重述名稱或複製多份契約。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/coding/domain-modeling.md",
+      "baseline_line": 97,
+      "remove": [
+        "| [不可變性](#vo-03) | 對含可變資料的型別，修改傳入或取出的資料，確認原值物件未受影響。檢查封裝與必要的複製，不能只檢查外層欄位是否為唯讀。 |",
+        "| [正規化規則](#vo-05) | 以不同合法表示及不合法輸入驗證正規化、驗證順序與相等性符合契約，所有建立入口結果一致，沒有未授權的修剪或數值修正。 |",
+        "| [運算責任](#vo-06) | 驗證適用運算的結果、單位與有效性限制，原物件維持不變。確認不相容的值依契約拒絕或處理，使用端未各自拆值繞過規則。 |",
+        "| [資料還原](#vo-07) | 經實際採用的反序列化、持久化或框架映射路徑驗證合法與不合法資料。涉及歷史資料時，確認按明訂版本或遷移規則還原，不產出違反契約的物件。 |",
+        "| [結果與目前狀態分開表達](#st-04) | 驗證成功、重複操作、拒絕及未完成等適用結果。核對必要原因與資料可由型別判斷，業務完成與已受理有所區別，技術故障未被轉成一般拒絕。 |",
+        "| [處理完整性](#st-06)、[封閉或允許擴充](#st-08) | 核對模型的封閉或擴充契約與實作限制，審查受影響的使用端分支。模型新增情況時確認適用檢查能發現未處理處，工具未涵蓋者由測試與審查補足；未知或擴充結果不得落入假成功。 |",
+        "| [結果保留當時事實](#st-09) | 在結果產生後改變來源業務物件或其他可變資料，確認結果仍保留當時事實；核對結果只含必要資訊，最新狀態透過獨立查詢取得。 |",
+        "| [模型驗收](#st-10) | 核對測試涵蓋變更影響的轉換、拒絕、重複操作、資料及分支；以實際狀態與必要副作用驗證結果，而不只檢查回傳型別或成功標記。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-value-immutability\"></a>[不可變性](#vo-03) | 對含可變資料的型別，修改傳入或取出的資料，確認原值物件未受影響。檢查封裝與必要的複製，不能只檢查外層欄位是否為唯讀。 |",
+        "| <a id=\"acceptance-value-normalization\"></a>[正規化規則](#vo-05) | 以不同合法表示及不合法輸入驗證正規化、驗證順序與相等性符合契約，所有建立入口結果一致，沒有未授權的修剪或數值修正。 |",
+        "| <a id=\"acceptance-value-operations\"></a>[運算責任](#vo-06) | 驗證適用運算的結果、單位與有效性限制，原物件維持不變。確認不相容的值依契約拒絕或處理，使用端未各自拆值繞過規則。 |",
+        "| <a id=\"acceptance-value-restoration\"></a>[資料還原](#vo-07) | 經實際採用的反序列化、持久化或框架映射路徑驗證合法與不合法資料。涉及歷史資料時，確認按明訂版本或遷移規則還原，不產出違反契約的物件。 |",
+        "| <a id=\"acceptance-operation-results\"></a>[結果與目前狀態分開表達](#st-04) | 驗證成功、重複操作、拒絕及未完成等適用結果。核對必要原因與資料可由型別判斷，業務完成與已受理有所區別，技術故障未被轉成一般拒絕。 |",
+        "| <a id=\"acceptance-model-extensibility\"></a>[處理完整性](#st-06)、[封閉或允許擴充](#st-08) | 核對模型的封閉或擴充契約與實作限制，審查受影響的使用端分支。模型新增情況時確認適用檢查能發現未處理處，工具未涵蓋者由測試與審查補足；未知或擴充結果不得落入假成功。 |",
+        "| <a id=\"acceptance-result-facts\"></a>[結果保留當時事實](#st-09) | 在結果產生後改變來源業務物件或其他可變資料，確認結果仍保留當時事實；核對結果只含必要資訊，最新狀態透過獨立查詢取得。 |",
+        "| <a id=\"acceptance-model-coverage\"></a>[模型驗收](#st-10) | 核對測試涵蓋變更影響的轉換、拒絕、重複操作、資料及分支；以實際狀態與必要副作用驗證結果，而不只檢查回傳型別或成功標記。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/coding/error-handling.md",
+      "baseline_line": 106,
+      "remove": [
+        "",
+        "## 多步驟失敗驗收",
+        "",
+        "<a id=\"acceptance-partial-operation\"></a>",
+        "",
+        "依既有[多步驟與部分成功](#多步驟與部分成功)契約，在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目。集合批次修改適用同一驗收，不另維護副本。"
+      ],
+      "insert": [
+
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/coding/nullability.md",
+      "baseline_line": 39,
+      "remove": [
+        "| [第三方空值行為](#jn-08) | 依第三方契約分別驗證正常缺值及適用的異常空值、故障情境，確認內部轉換保留語意，未一律轉成正常缺值。 |",
+        "| [空值契約變更](#jn-09) | 檢查空值契約差異、使用端影響與必要遷移，確認相關標註、文件及驗證同步更新，不僅比對方法簽章。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-third-party-null\"></a>[第三方空值行為](#jn-08) | 依第三方契約分別驗證正常缺值及適用的異常空值、故障情境，確認內部轉換保留語意，未一律轉成正常缺值。 |",
+        "| <a id=\"acceptance-null-contract-change\"></a>[空值契約變更](#jn-09) | 檢查空值契約差異、使用端影響與必要遷移，確認相關標註、文件及驗證同步更新，不僅比對方法簽章。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/coding/numbers-dates-text.md",
+      "baseline_line": 93,
+      "remove": [
+        "| [依語意選擇數值型別](#nt-01)、[從精確來源建立](#nt-02) | 核對型別、來源、單位與精度要求，驗證合法及非法格式、範圍與小數位數。確認精確數值未先經浮點數轉換；近似計算有明確容許誤差。 |",
+        "| [明訂捨入規則](#nt-03)、[範圍與轉換檢查](#nt-04) | 驗證捨入邊界、套用階段及適用的極端值，核對累加、乘法、除法與縮小型別的結果，超限或不允許的精度損失須明確回報，不默默截斷或回繞。 |",
+        "| [依業務語意選擇時間型別](#nt-06)、[明確的時區轉換](#nt-07)、[區分時間長度與日曆規則](#nt-08) | 核對時間型別與業務意義，驗證適用的月底、閏日、時區切換、不存在或重複當地時間，以及日曆間隔與固定時間長度的差異。業務日期涉及假日時另驗證其規則。 |",
+        "| [可控制的時間基準](#nt-09) | 以可控制的時鐘驗證邊界前、當下與之後，確認需要一致判斷的流程共用基準。核對耗時與等待期限使用單調時間來源，沒有以系統日期時間差代替。 |",
+        "| [解析與輸出契約](#nt-10) | 驗證合法格式、不合法日期、多餘尾端內容與精度縮減；核對適用的地區、時區及偏移設定，不以環境預設決定結果。 |",
+        "| [明確指定字元編碼](#nt-11)、[長度與截取單位](#nt-12)、[用途明確的文字轉換](#nt-13) | 以適用的多位元組字元、表情符號、組合字元、無效編碼及地區差異驗證編解碼、長度、截取與比較。確認未切斷必要字元單位，也未透過未授權正規化改寫或合併識別值。 |",
+        "| [邊界與環境差異驗收](#nt-14) | 檢查案例涵蓋變更影響的邊界與環境條件，並經實際儲存、傳輸或格式化路徑確認值與語意仍符合契約，不僅測試工具函式的一般輸入。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-numeric-sources\"></a>[依語意選擇數值型別](#nt-01)、[從精確來源建立](#nt-02) | 核對型別、來源、單位與精度要求，驗證合法及非法格式、範圍與小數位數。確認精確數值未先經浮點數轉換；近似計算有明確容許誤差。 |",
+        "| <a id=\"acceptance-numeric-range-rounding\"></a>[明訂捨入規則](#nt-03)、[範圍與轉換檢查](#nt-04) | 驗證捨入邊界、套用階段及適用的極端值，核對累加、乘法、除法與縮小型別的結果，超限或不允許的精度損失須明確回報，不默默截斷或回繞。 |",
+        "| <a id=\"acceptance-temporal-semantics\"></a>[依業務語意選擇時間型別](#nt-06)、[明確的時區轉換](#nt-07)、[區分時間長度與日曆規則](#nt-08) | 核對時間型別與業務意義，驗證適用的月底、閏日、時區切換、不存在或重複當地時間，以及日曆間隔與固定時間長度的差異。業務日期涉及假日時另驗證其規則。 |",
+        "| <a id=\"acceptance-time-source\"></a>[可控制的時間基準](#nt-09) | 以可控制的時鐘驗證邊界前、當下與之後，確認需要一致判斷的流程共用基準。核對耗時與等待期限使用單調時間來源，沒有以系統日期時間差代替。 |",
+        "| <a id=\"acceptance-temporal-format\"></a>[解析與輸出契約](#nt-10) | 驗證合法格式、不合法日期、多餘尾端內容與精度縮減；核對適用的地區、時區及偏移設定，不以環境預設決定結果。 |",
+        "| <a id=\"acceptance-text-semantics\"></a>[明確指定字元編碼](#nt-11)、[長度與截取單位](#nt-12)、[用途明確的文字轉換](#nt-13) | 以適用的多位元組字元、表情符號、組合字元、無效編碼及地區差異驗證編解碼、長度、截取與比較。確認未切斷必要字元單位，也未透過未授權正規化改寫或合併識別值。 |",
+        "| <a id=\"acceptance-data-boundaries\"></a>[邊界與環境差異驗收](#nt-14) | 檢查案例涵蓋變更影響的邊界與環境條件，並經實際儲存、傳輸或格式化路徑確認值與語意仍符合契約，不僅測試工具函式的一般輸入。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/coding/type-safety.md",
+      "baseline_line": 49,
+      "remove": [
+
+      ],
+      "insert": [
+        "| <a id=\"acceptance-data-shape\"></a>[容器與泛型](#容器與泛型)、[禁止主動繞過檢查](#禁止主動繞過檢查) | 核對固定結構資料是否使用明確物件；動態資料的型別、結構與驗證是否有契約，並以受影響的合法及非法輸入確認驗證有效。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/interfaces/api-contracts.md",
+      "baseline_line": 107,
+      "remove": [
+        "| [API 邊界的缺值轉換](#jn-12) | 透過實際 API 回應路徑核對所採協定的狀態與資料表示；使用 HTTP／JSON 時，涵蓋契約適用的 HTTP 狀態、欄位省略、JSON `null` 與空集合。其他協定依其契約驗證，確認使用端可正確辨識，且未以預設序列化結果取代契約。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-api-absence\"></a>[API 邊界的缺值轉換](#jn-12) | 透過實際 API 回應路徑核對所採協定的狀態與資料表示；使用 HTTP／JSON 時，涵蓋契約適用的 HTTP 狀態、欄位省略、JSON `null` 與空集合。其他協定依其契約驗證，確認使用端可正確辨識，且未以預設序列化結果取代契約。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/quality/rule-verification.md",
+      "baseline_line": 27,
+      "remove": [
+
+      ],
+      "insert": [
+        "| 契約 | 驗收內容 |",
+        "| --- | --- |",
+        "| <a id=\"acceptance-interface-purpose\"></a>[介面與抽象](../architecture/dependency-composition.md#介面與抽象) | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 |",
+        ""
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/quality/rule-verification.md",
+      "baseline_line": 37,
+      "remove": [
+
+      ],
+      "insert": [
+        "| 契約 | 驗收內容 |",
+        "| --- | --- |",
+        "| <a id=\"acceptance-partial-operation\"></a>[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。 |",
+        ""
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/quality/rule-verification.md",
+      "baseline_line": 169,
+      "remove": [
+        "## 語言與新增共通主題驗收入口"
+      ],
+      "insert": [
+        "## 語言與共通主題驗收入口"
+      ],
+      "kind": "editorial",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/quality/rule-verification.md",
+      "baseline_line": 173,
+      "remove": [
+        "新增共通主題的具體驗收見[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)及[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)。領域、映射、空值與介面等補充契約的驗收由各自主要文件維護。"
+      ],
+      "insert": [
+        "共通主題的具體驗收見[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)及[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)。領域、映射、空值與介面等補充契約的驗收由各自主要文件維護。"
+      ],
+      "kind": "editorial",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/quality/rule-verification.md",
+      "baseline_line": 236,
+      "remove": [
+        "| [形式與語意分別驗收](#nd-07) | 驗證受影響的連結、文件參照與適用範例，確認在適用環境下可用。保留語意與契約審查，不把格式或文件產生成功當成全部符合。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-document-verification\"></a>[形式與語意分別驗收](#nd-07) | 驗證受影響的連結、文件參照與適用範例，確認在適用環境下可用。保留語意與契約審查，不把格式或文件產生成功當成全部符合。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/quality/rule-verification.md",
+      "baseline_line": 244,
+      "remove": [
+
+      ],
+      "insert": [
+        "<a id=\"acceptance-check-configuration\"></a>",
+        ""
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/quality/rule-verification.md",
+      "baseline_line": 252,
+      "remove": [
+
+      ],
+      "insert": [
+        "<a id=\"acceptance-check-execution\"></a>",
+        ""
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/README.md",
+      "baseline_line": 27,
+      "remove": [
+        "上述 15 份主題已依共通與語言責任整理。自動檢查的 9 項決策已整合至共通規範驗證、規範治理及 Git／PR，不另建立重複的 Java 治理政策。Java 8、11、17、21 的版本差異、Framework 規範及具體工具配置仍待制定。"
+      ],
+      "insert": [
+        "Java 8、11、17、21 的版本差異、Framework 規範及具體工具配置仍待制定。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/README.md",
+      "baseline_line": 31,
+      "remove": [
+        "驗收以唯一主要來源維護：共同案例引用共通文件，Java 只補語言機制的驗收增量。歷史 ID 保留在追溯紀錄，正式條號可依整理結果調整。目前已完成類別／建立、相等性／排序、反射／抑制，以及併發／非同步、集合／所有權、例外／資源六份文件的驗收去重，其餘九份主題待分批整理。必要檢查的對應、可重現設定、實際範圍、證據、有效門檻及安全診斷由[規範驗證](../../quality/rule-verification.md)維護；基準及抑制依[規範治理](../../workflow/rule-governance.md)，自動修正及合併依[Git／PR](../../workflow/git-pr-review.md)。"
+      ],
+      "insert": [
+        "驗收以唯一主要來源維護：共同案例引用共通文件，Java 只補語言機制的驗收增量。必要檢查的對應、可重現設定、實際範圍、證據、有效門檻及安全診斷由[規範驗證](../../quality/rule-verification.md)維護；基準及抑制依[規範治理](../../workflow/rule-governance.md)，自動修正及合併依[Git／PR](../../workflow/git-pr-review.md)。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/README.md",
+      "baseline_line": 35,
+      "remove": [
+        "新增共通主題：[集合與資料所有權](../../coding/collections-and-ownership.md)、[資源生命週期](../../coding/resource-lifecycle.md)、[併發與非同步](../../coding/concurrency-and-async.md)、[數值、日期時間與文字](../../coding/numbers-dates-text.md)。"
+      ],
+      "insert": [
+        "相關共通主題：[集合與資料所有權](../../coding/collections-and-ownership.md)、[資源生命週期](../../coding/resource-lifecycle.md)、[併發與非同步](../../coding/concurrency-and-async.md)、[數值、日期時間與文字](../../coding/numbers-dates-text.md)。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/boundary-mapping.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/boundary-mapping.md",
+      "baseline_line": 29,
+      "remove": [
+        "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [隔離與拆分](../../../architecture/boundary-objects.md#acceptance-boundary-separation)。",
+        "- [轉換要求、最小必要欄位](../../../architecture/data-mapping.md#acceptance-mapping-fields)。",
+        "- [不可變性](../../../architecture/boundary-objects.md#acceptance-boundary-isolation)。",
+        "- [責任配置](../../../architecture/data-mapping.md#acceptance-mapping-owner)。",
+        "- [聚焦轉換與必要驗證](../../../architecture/data-mapping.md#acceptance-mapping-responsibility)。",
+        "- [各方向分別定義](../../../architecture/data-mapping.md#acceptance-directional-mapping)。",
+        "- [驗證實際映射路徑](../../../architecture/data-mapping.md#acceptance-mapping-paths)。",
+        "- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/boundary-mapping.md",
+      "baseline_line": 31,
+      "remove": [
+        "依變更影響與實際邊界選擇案例，沿用[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/boundary-mapping.md",
+      "baseline_line": 33,
+      "remove": [
+        "| 對應決策 | 驗收內容 |"
+      ],
+      "insert": [
+        "| Java 條文 | 語言增量驗收 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/boundary-mapping.md",
+      "baseline_line": 35,
+      "remove": [
+        "| 1 | 審查邊界物件的契約責任與隔離依據，確認未因欄位相同而不當共用，也未僅因分層而重複建立 DTO。確認公開資料未直接暴露持久化或模組內部模型。 |",
+        "| 2 | 核對允許欄位及來源，以含管理欄位的外部輸入驗證其無法覆寫可信資料，並確認內部敏感欄位未輸出。映射設定或契約變更時，確認新增來源或目標欄位不會自動擴大允許範圍。 |",
+        "| 3 | 審查映射及其呼叫路徑，確認外部資料取得、業務決策與副作用由負責元件明確協調，沒有藏在單純轉換的方法中。 |",
+        "| 4 | 驗證適用的不合法輸入、內部必要資料缺失及轉換失敗，確認沒有預設值或半成品掩蓋問題。批次允許部分成功時，核對每筆結果及對應關係，沒有遺漏失敗項目。 |",
+        "| 5 | 對需要區分更新意圖的契約，從實際接收入口分別提供省略、明確清空及設定值，確認意圖傳遞到業務操作並產生約定效果。 |",
+        "| 6 | 修改來源或目標的可變集合及適用的可變元素，確認另一方保持所需隔離；共用不可變值時核對其不可變性與共用契約，不以全面複製作為唯一合格方式。 |",
+        "| 7 | 分別核對輸入與輸出欄位及轉換；驗證唯讀、衍生與遮罩資料不會被直接寫回。採用反向映射時，須有允許依據並確認可逆性。 |",
+        "| 8 | 核對映射所有權、位置與依賴方向，相同契約沒有散落的不一致轉換，不同責任也未被不當集中。 |",
+        "| 9 | 確認測試執行實際採用的映射實作或工具產出，必要時涵蓋序列化與反序列化邊界；斷言須涵蓋欄位值、拒絕結果與禁止傳遞的資料，不僅確認物件非空。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-mapping-failure\"></a>4 | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。 |",
+        "| <a id=\"acceptance-java-update-intent\"></a>5 | 核對 Java 欄位、預設值與反序列化路徑未合併省略、明確清空及設定值的不同意圖。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "baseline_line": 30,
+      "remove": [
+        "共同驗收直接依主要來源執行：[介面用途](../../../architecture/dependency-composition.md#acceptance-interface-purpose)、[可替代性](../../../coding/code-design.md#acceptance-substitutability)、[建立與就緒](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)、[依賴取得](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)、[建立入口](../../../coding/code-design.md#acceptance-construction-entrypoints)、[介面能力](../../../coding/code-design.md#acceptance-interface-capabilities)、[共享生命週期](../../../coding/resource-lifecycle.md#acceptance-shared-lifecycle)、[生命週期覆蓋](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。共同案例不在此重述或另維護副本。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [介面與抽象](../../../quality/rule-verification.md#acceptance-interface-purpose)。",
+        "- [繼承的可替代性](../../../coding/code-design.md#acceptance-substitutability)。",
+        "- [必要資料與依賴齊備](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)。",
+        "- [明確取得依賴](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)。",
+        "- [依需求選擇建立方式](../../../coding/code-design.md#acceptance-construction-entrypoints)。",
+        "- [介面的能力劃分](../../../coding/code-design.md#acceptance-interface-capabilities)。",
+        "- [生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#acceptance-shared-lifecycle)。",
+        "- [契約與生命週期驗收](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "baseline_line": 32,
+      "remove": [
+        "下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "baseline_line": 36,
+      "remove": [
+        "| <a id=\"acceptance-construction-safety\"></a>4 | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |",
+        "| <a id=\"acceptance-override-safety\"></a>7 | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-construction-safety\"></a>4 | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |",
+        "| <a id=\"acceptance-java-override-safety\"></a>7 | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "baseline_line": 29,
+      "remove": [
+        "共同驗收直接依主要來源執行：[所有權與快照](../../../coding/collections-and-ownership.md#acceptance-collection-ownership)、[順序與重複](../../../coding/collections-and-ownership.md#acceptance-order-duplicates)、[遍歷修改](../../../coding/collections-and-ownership.md#acceptance-traversal-mutation)、[複合原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)、[資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)、[延遲資源](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)、[批次失敗](../../../coding/error-handling.md#acceptance-partial-operation)、[所有權覆蓋](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。共同案例不在此重述或另維護副本。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [明確定義修改權與參考關係、區分不可修改與不可變快照](../../../coding/collections-and-ownership.md#acceptance-collection-ownership)。",
+        "- [順序與重複資料](../../../coding/collections-and-ownership.md#acceptance-order-duplicates)。",
+        "- [遍歷期間的修改](../../../coding/collections-and-ownership.md#acceptance-traversal-mutation)。",
+        "- [複合操作的原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)。",
+        "- [限制資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)。",
+        "- [延遲讀取的資源責任](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)。",
+        "- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。",
+        "- [所有權與行為驗收](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "baseline_line": 31,
+      "remove": [
+        "依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "baseline_line": 33,
+      "remove": [
+        "本主題目前的驗收均由上述共同來源涵蓋，須經實際採用的 Java 集合、迭代與資源路徑執行；不為保留表格而重述相同案例。各條 Java 使用限制仍適用。"
+      ],
+      "insert": [
+        "上述驗收須經實際採用的 Java 集合、迭代與資源路徑執行，各條 Java 使用限制仍適用。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/concurrency-and-async.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/concurrency-and-async.md",
+      "baseline_line": 35,
+      "remove": [
+        "共同驗收直接依主要來源執行：[工作所有權](../../../coding/concurrency-and-async.md#acceptance-task-ownership)、[執行資源與阻塞](../../../coding/concurrency-and-async.md#acceptance-execution-resources)、[期限與取消](../../../coding/concurrency-and-async.md#acceptance-deadline-cancellation)、[工作組合](../../../coding/concurrency-and-async.md#acceptance-task-composition)、[脈絡隔離](../../../coding/concurrency-and-async.md#acceptance-context-isolation)、[鎖定範圍](../../../coding/concurrency-and-async.md#acceptance-lock-scope)、[受控關閉](../../../coding/resource-lifecycle.md#acceptance-controlled-shutdown)、[受控交錯](../../../quality/testing.md#acceptance-controlled-interleaving)。共同案例不在此重述或另維護副本。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/concurrency-and-async.md",
+      "baseline_line": 37,
+      "remove": [
+        "依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "- [明確的工作擁有者](../../../coding/concurrency-and-async.md#acceptance-task-ownership)。",
+        "- [統一管理執行資源、執行位置與阻塞行為](../../../coding/concurrency-and-async.md#acceptance-execution-resources)。",
+        "- [等待期限與逾時處置、取消傳遞與實際停止](../../../coding/concurrency-and-async.md#acceptance-deadline-cancellation)。",
+        "- [多工作組合的完成條件](../../../coding/concurrency-and-async.md#acceptance-task-composition)。",
+        "- [明確傳遞與清理脈絡](../../../coding/concurrency-and-async.md#acceptance-context-isolation)。",
+        "- [鎖定範圍與取得策略](../../../coding/concurrency-and-async.md#acceptance-lock-scope)。",
+        "- [受控關閉](../../../coding/resource-lifecycle.md#acceptance-controlled-shutdown)。",
+        "- [可控制的併發驗收](../../../quality/testing.md#acceptance-controlled-interleaving)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/concurrency-and-async.md",
+      "baseline_line": 39,
+      "remove": [
+        "下表只保留 Java 的語言機制驗收。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/equality-hashing-ordering.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/equality-hashing-ordering.md",
+      "baseline_line": 25,
+      "remove": [
+        "共同驗收直接依主要來源執行：[比較語意](../../../coding/domain-modeling.md#acceptance-identity-semantics)、[識別碼生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。共同案例不在此重述或另維護副本。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [明訂比較語意](../../../coding/domain-modeling.md#acceptance-identity-semantics)。",
+        "- [Entity 識別碼的生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/equality-hashing-ordering.md",
+      "baseline_line": 27,
+      "remove": [
+        "下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/equality-hashing-ordering.md",
+      "baseline_line": 29,
+      "remove": [
+        "<a id=\"acceptance-relationship-coverage\"></a>"
+      ],
+      "insert": [
+        "<a id=\"acceptance-java-relationship-coverage\"></a>"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/equality-hashing-ordering.md",
+      "baseline_line": 31,
+      "remove": [
+        "依第 10 條，核對本次驗收同時涵蓋受影響的 Java 關係契約與實際集合操作；不能只測少數成對比較，也不能因方法由工具產生就省略驗證。不為這項覆蓋要求另設一列驗收。"
+      ],
+      "insert": [
+        "依第 10 條，核對本次驗收同時涵蓋受影響的 Java 關係契約與實際集合操作；不能只測少數成對比較，也不能因方法由工具產生就省略驗證。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/equality-hashing-ordering.md",
+      "baseline_line": 35,
+      "remove": [
+        "| <a id=\"acceptance-equality-hash-contract\"></a>2 | 對 Java `equals()` 驗證自反、對稱、遞移、一致性及 `null` 處理，並確認相等物件具有相同 `hashCode()`；不要求不同物件雜湊必不同，也不以雜湊相同判定相等。 |",
+        "| <a id=\"acceptance-hash-collection-stability\"></a>3 | 以實際 Java 雜湊集合核對鍵或元素的查找、去重及移除；需要變更比較依據時，驗證先移出、修改再加入的結果及重複處置。 |",
+        "| <a id=\"acceptance-cross-type-equality\"></a>5 | 對允許繼承的 Java 型別，以父子型別及必要的多物件組合驗證 `equals()` 的對稱、遞移與 `hashCode()` 契約；比較涉及框架代理時，經實際代理路徑驗證。 |",
+        "| <a id=\"acceptance-ordering-choice\"></a>6 | 審查 Java 型別採 `Comparable` 或用途明確的 `Comparator` 是否符合自然順序或情境排序的契約。 |",
+        "| <a id=\"acceptance-comparator-relations\"></a>7 | 驗證 Java 比較器的方向、同值與遞移關係，以及同次排序比較依據的穩定性；涵蓋適用的極端數值，確認不以相減造成溢位或精度損失及錯誤順序。 |",
+        "| <a id=\"acceptance-sorted-key-equivalence\"></a>8 | 核對比較為零與 `equals()` 的約定，將不同但排序值相同的資料放入實際採用的 Java 排序集合或映射，確認鍵判同及資料保留符合契約。 |",
+        "| <a id=\"acceptance-sorted-collection-stability\"></a>9 | 核對 Java 排序元素、鍵及比較器設定的變更路徑；驗證移出重加或重建後的順序、查找及資料保留，不依賴既有集合自動調整。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-equality-hash-contract\"></a>2 | 對 Java `equals()` 驗證自反、對稱、遞移、一致性及 `null` 處理，並確認相等物件具有相同 `hashCode()`；不要求不同物件雜湊必不同，也不以雜湊相同判定相等。 |",
+        "| <a id=\"acceptance-java-hash-collection-stability\"></a>3 | 以實際 Java 雜湊集合核對鍵或元素的查找、去重及移除；確認在集合內比較依據保持穩定。需要變更比較依據時，驗證先移出、修改再加入的結果及重複處置。 |",
+        "| <a id=\"acceptance-java-cross-type-equality\"></a>5 | 對允許繼承的 Java 型別，以父子型別及必要的多物件組合驗證 `equals()` 的對稱、遞移與 `hashCode()` 契約；比較涉及框架代理時，經實際代理路徑驗證。 |",
+        "| <a id=\"acceptance-java-ordering-choice\"></a>6 | 審查 Java 型別採 `Comparable` 或用途明確的 `Comparator` 是否符合自然順序或情境排序的契約。 |",
+        "| <a id=\"acceptance-java-comparator-relations\"></a>7 | 驗證 Java 比較器的方向、同值與遞移關係，以及同次排序比較依據的穩定性；涵蓋適用的極端數值，確認不以相減造成溢位或精度損失及錯誤順序。 |",
+        "| <a id=\"acceptance-java-sorted-key-equivalence\"></a>8 | 核對比較為零與 `equals()` 的約定，將不同但排序值相同的資料放入實際採用的 Java 排序集合或映射，確認鍵判同及資料保留符合契約。 |",
+        "| <a id=\"acceptance-java-sorted-collection-stability\"></a>9 | 核對 Java 排序元素、鍵及比較器設定的變更路徑；驗證移出重加或重建後的順序、查找及資料保留，不依賴既有集合自動調整。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/exceptions-and-resources.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/exceptions-and-resources.md",
+      "baseline_line": 26,
+      "remove": [
+        "共同驗收直接依主要來源執行：[部分取得與責任移交](../../../coding/resource-lifecycle.md#acceptance-partial-acquisition)、[資源有效期與關閉](../../../coding/resource-lifecycle.md#acceptance-close-contract)。共同案例不在此重述或另維護副本。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [部分取得與所有權移交](../../../coding/resource-lifecycle.md#acceptance-partial-acquisition)。",
+        "- [有效期與關閉契約](../../../coding/resource-lifecycle.md#acceptance-close-contract)。",
+        "",
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/exceptions-and-resources.md",
+      "baseline_line": 28,
+      "remove": [
+        "依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "<a id=\"acceptance-java-failure-coverage\"></a>"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/exceptions-and-resources.md",
+      "baseline_line": 30,
+      "remove": [
+        "下表只保留 Java 的語言機制驗收。"
+      ],
+      "insert": [
+        "依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/exceptions-and-resources.md",
+      "baseline_line": 39,
+      "remove": [
+        "<a id=\"acceptance-java-failure-coverage\"></a>",
+        "",
+        "依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。本項是案例選擇的覆蓋檢查，不另設驗收它自己的表格列。",
+        ""
+      ],
+      "insert": [
+
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/lambda-and-stream.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/lambda-and-stream.md",
+      "baseline_line": 39,
+      "remove": [
+        "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。",
+        "- [延遲讀取的資源責任](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/lambda-and-stream.md",
+      "baseline_line": 41,
+      "remove": [
+        "依變更影響選擇案例，沿用[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/lambda-and-stream.md",
+      "baseline_line": 43,
+      "remove": [
+        "| 對應決策 | 驗收內容 |"
+      ],
+      "insert": [
+        "| Java 條文 | 語言增量驗收 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/lambda-and-stream.md",
+      "baseline_line": 45,
+      "remove": [
+        "| 1、2 | 審查流程意圖與責任是否清楚，複雜邏輯有合適表達；檢查 Lambda 參數明確標註、泛型資訊完整，方法參考可辨識目標與用途，不以縮短行數作為採用依據。 |",
+        "| 3、4 | 審查中間操作及呼叫方法，確認沒有隱藏業務副作用或修改外部狀態。必要執行步驟的順序、失敗及部分完成有明確契約，跨元素狀態有管理責任。 |",
+        "| 5 | 以空資料、單筆、多筆及會短路的案例核對實際處理範圍，確認完整驗證或必要工作沒有因延遲與短路而遺漏，不把建立流程視為完成。 |",
+        "| 6 | 採平行處理時，以代表性資料與負載確認結果、順序、隔離及失敗語意，評估阻塞與資源競爭影響，保留量測收益的依據。 |",
+        "| 7 | 驗證初始值、累積與合併結果；適用時以不同分段方式核對契約一致性。順序敏感運算保留約定順序，可變收集結果不受其他分段或執行污染。 |",
+        "| 8 | 在適用的處理階段觸發失敗，確認分類與原始原因保留，沒有以空值、替代值或篩除項目掩蓋問題。部分成功結果可對應原始項目，副作用符合契約。 |",
+        "| 9 | 核對 Stream 的建立與消費路徑，沒有重用或共用消費；重複取得資料時依契約驗證快照或最新資料語意。外部資源在實際使用期間有效，完成、提前停止及失敗後正確釋放。 |",
+        "| 10 | 確認案例涵蓋受影響的執行語意與資源保證，平行處理有額外隔離及效能證據，不僅比對一般成功案例的最終元素內容。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-lambda-types\"></a>1、2 | 審查流程意圖與責任是否清楚，複雜邏輯有合適表達；檢查 Lambda 參數明確標註、泛型資訊完整，方法參考可辨識目標與用途，不以縮短行數作為採用依據。 |",
+        "| <a id=\"acceptance-java-stream-side-effects\"></a>3、4 | 審查中間操作及呼叫方法，確認沒有隱藏業務副作用或修改外部狀態。必要執行步驟的順序、失敗及部分完成有明確契約，跨元素狀態有管理責任。 |",
+        "| <a id=\"acceptance-java-stream-short-circuit\"></a>5 | 以空資料、單筆、多筆及會短路的案例核對實際處理範圍，確認完整驗證或必要工作沒有因延遲與短路而遺漏，不把建立流程視為完成。 |",
+        "| <a id=\"acceptance-java-parallel-stream\"></a>6 | 採平行處理時，以代表性資料與負載確認結果、順序、隔離及失敗語意，評估阻塞與資源競爭影響，保留量測收益的依據。 |",
+        "| <a id=\"acceptance-java-stream-reduction\"></a>7 | 驗證初始值、累積與合併結果；適用時以不同分段方式核對契約一致性。順序敏感運算保留約定順序，可變收集結果不受其他分段或執行污染。 |",
+        "| <a id=\"acceptance-java-functional-exceptions\"></a>8 | 在適用的處理階段觸發失敗，確認分類與原始原因保留，沒有以空值、替代值或篩除項目掩蓋問題。另核對 Lambda／Stream 函式介面的例外宣告限制與轉換路徑。 |",
+        "| <a id=\"acceptance-java-stream-consumption\"></a>9 | 核對 Stream 的建立與消費路徑，沒有重用或共用消費；重複取得資料時依契約驗證快照或最新資料語意。 |",
+        "| <a id=\"acceptance-java-stream-coverage\"></a>10 | 確認案例涵蓋受影響的執行語意與資源保證，平行處理有額外隔離及效能證據，不僅比對一般成功案例的最終元素內容。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/naming-packages-docs.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/naming-packages-docs.md",
+      "baseline_line": 24,
+      "remove": [
+        "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [註解與公開文件、實作註解與暫時處理](../../../coding/code-design.md#acceptance-document-contract)。",
+        "- [形式與語意分別驗收](../../../quality/rule-verification.md#acceptance-document-verification)。",
+        "- [審查清單](../../../quality/rule-verification.md#審查清單)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/naming-packages-docs.md",
+      "baseline_line": 26,
+      "remove": [
+        "依變更影響選擇檢查，沿用[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/naming-packages-docs.md",
+      "baseline_line": 28,
+      "remove": [
+        "| 對應決策 | 驗收內容 |"
+      ],
+      "insert": [
+        "| Java 條文 | 語言增量驗收 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/naming-packages-docs.md",
+      "baseline_line": 30,
+      "remove": [
+        "| 1、2 | 自動檢查適用的命名形式與團隊縮寫慣例，人工從使用處核對名稱與實際責任一致。確認未將所有 `final` 欄位機械式視為常數，也未用籠統後綴掩蓋不同用途。 |",
+        "| 3 | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 |",
+        "| 4、5 | 比對文件、註解與實際行為，確認使用端所需契約完整，理由與限制仍有效，暫時性處理有可追蹤事項。移除過時說明，避免僅重述名稱或複製多份契約。 |",
+        "| 6 | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |",
+        "| 7 | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。保留語意與契約審查，不把格式或文件產生成功當成全部符合。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-naming-form\"></a>1、2 | 自動檢查適用的命名形式與團隊縮寫慣例，人工從使用處核對名稱與實際責任一致。確認未將所有 `final` 欄位機械式視為常數，也未用籠統後綴掩蓋不同用途。 |",
+        "| <a id=\"acceptance-java-package-boundaries\"></a>3 | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 |",
+        "| <a id=\"acceptance-java-javadoc-contract\"></a>4 | 核對供使用端依賴的類別與方法優先以 Javadoc 就近維護必要契約，或明確引用既有權威契約；確認 Javadoc 與實際前置條件、結果、失敗、副作用及適用生命週期一致。 |",
+        "| <a id=\"acceptance-java-rename-paths\"></a>6 | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |",
+        "| <a id=\"acceptance-java-javadoc-examples\"></a>7 | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "baseline_line": 5,
+      "remove": [
+        "本文件承接[空值語意](../../../coding/nullability.md)、[型別安全](../../../coding/type-safety.md)與[錯誤處理](../../../coding/error-handling.md)，適用於自行撰寫的 Java 程式碼，包含測試與整合元件。語法與 API 須符合[版本要求](version-policy.md)，型別使用另依[型別宣告與泛型](types-and-generics.md)。以下保留本輪決策的確認順序。"
+      ],
+      "insert": [
+        "本文件承接[空值語意](../../../coding/nullability.md)、[型別安全](../../../coding/type-safety.md)與[錯誤處理](../../../coding/error-handling.md)，適用於自行撰寫的 Java 程式碼，包含測試與整合元件。語法與 API 須符合[版本要求](version-policy.md)，型別使用另依[型別宣告與泛型](types-and-generics.md)。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "baseline_line": 32,
+      "remove": [
+        "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "baseline_line": 36,
+      "remove": [
+        "| 對應決策 | 驗收內容 |"
+      ],
+      "insert": [
+        "### 共同驗收",
+        "",
+        "- [第三方空值行為](../../../coding/nullability.md#acceptance-third-party-null)。",
+        "- [空值契約變更](../../../coding/nullability.md#acceptance-null-contract-change)。",
+        "- [API 邊界的缺值轉換](../../../interfaces/api-contracts.md#acceptance-api-absence)。",
+        "- [測試程式碼](../../../quality/rule-verification.md#測試程式碼)。",
+        "",
+        "### Java 語言增量驗收",
+        "",
+        "| Java 條文 | 語言增量驗收 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "baseline_line": 38,
+      "remove": [
+        "| 1、2、3 | 驗證有值、單筆正常查無資料、多筆空結果，以及適用的必須存在卻不存在、查詢故障與結果未知。確認 `Optional` 本身非空，呼叫端的缺值分支、替代值與失敗分類符合契約。 |",
+        "| 4、5 | 審查參數與欄位採用 `Optional` 的必要性及配套。需要多狀態時分別驗證未提供、清空與設定值；集合等輸入含不允許的空值時，確認依契約處理，沒有默默丟棄或替換資料。 |",
+        "| 6、7、11 | 核對非空預設、可空標註、檢查範圍及實際驗證位置。確認適用工具能偵測違反契約的使用方式；必填外部輸入缺值時依契約拒絕，且未產生不應發生的副作用。 |",
+        "| 8 | 依第三方契約分別驗證正常缺值及適用的異常空值、故障情境，確認內部轉換保留語意，未一律轉成空的 `Optional`。 |",
+        "| 9 | 檢查空值契約差異、使用端影響與必要遷移，確認相關標註、文件及驗證同步更新，不僅比對方法簽章。 |",
+        "| 10 | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。 |",
+        "| 12 | 透過實際 API 回應路徑核對 HTTP 狀態與序列化結果，涵蓋契約適用的欄位省略、JSON `null` 與空集合，確認使用端可正確辨識，且未以預設序列化結果取代契約。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-optional-results\"></a>1、2、3 | 驗證有值、單筆正常查無資料、多筆空結果，以及適用的必須存在卻不存在、查詢故障與結果未知。確認 `Optional` 本身非空，呼叫端的缺值分支、替代值與失敗分類符合契約。 |",
+        "| <a id=\"acceptance-java-optional-positions\"></a>4、5 | 審查參數與欄位採用 `Optional` 的必要性及配套。需要多狀態時分別驗證未提供、清空與設定值；集合等輸入含不允許的空值時，確認依契約處理，沒有默默丟棄或替換資料。 |",
+        "| <a id=\"acceptance-java-null-contract\"></a>6、7、11 | 核對非空預設、可空標註、檢查範圍及實際驗證位置。確認適用工具能偵測違反契約的使用方式；必填外部輸入缺值時依契約拒絕，且未產生不應發生的副作用。 |",
+        "| <a id=\"acceptance-java-optional-adaptation\"></a>8 | 檢查第三方回傳值轉成 `Optional` 的路徑，只有契約允許的正常缺值才能使用空的 `Optional`。 |",
+        "| <a id=\"acceptance-java-optional-coverage\"></a>10 | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。Optional、非空標註與實際 API 路徑均納入適用案例。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "baseline_line": 34,
+      "remove": [
+        "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [依語意選擇數值型別、從精確來源建立](../../../coding/numbers-dates-text.md#acceptance-numeric-sources)。",
+        "- [明訂捨入規則、範圍與轉換檢查](../../../coding/numbers-dates-text.md#acceptance-numeric-range-rounding)。",
+        "- [依業務語意選擇時間型別、明確的時區轉換、區分時間長度與日曆規則](../../../coding/numbers-dates-text.md#acceptance-temporal-semantics)。",
+        "- [解析與輸出契約](../../../coding/numbers-dates-text.md#acceptance-temporal-format)。",
+        "- [明確指定字元編碼、長度與截取單位、用途明確的文字轉換](../../../coding/numbers-dates-text.md#acceptance-text-semantics)。",
+        "- [邊界與環境差異驗收](../../../coding/numbers-dates-text.md#acceptance-data-boundaries)。",
+        "- [可控制的時間基準](../../../coding/numbers-dates-text.md#acceptance-time-source)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "baseline_line": 36,
+      "remove": [
+        "依受影響契約選擇案例，沿用[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "baseline_line": 38,
+      "remove": [
+        "| 對應決策 | 驗收內容 |"
+      ],
+      "insert": [
+        "| Java 條文 | 語言增量驗收 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "baseline_line": 40,
+      "remove": [
+        "| 1、2 | 核對型別、來源、單位與精度要求，驗證合法及非法格式、範圍與小數位數。確認精確數值未先經浮點數轉換；近似計算有明確容許誤差。 |",
+        "| 3、4 | 驗證捨入邊界、套用階段及適用的極端值，核對累加、乘法、除法與縮小型別的結果，超限或不允許的精度損失須明確回報，不默默截斷或回繞。 |",
+        "| 5 | 以數值相同但小數位數不同及其他代表性資料，確認比較、正規化、雜湊與集合判同符合契約。 |",
+        "| 6、7、8 | 核對時間型別與業務意義，驗證適用的月底、閏日、時區切換、不存在或重複當地時間，以及日曆間隔與固定時間長度的差異。業務日期涉及假日時另驗證其規則。 |",
+        "| 9 | 以可控制的 `Clock` 驗證邊界前、當下與之後，確認需要一致判斷的流程共用基準。核對耗時與等待期限使用單調時間來源，沒有以系統日期時間差代替。 |",
+        "| 10 | 驗證合法格式、不合法日期、多餘尾端內容與精度縮減；核對適用的地區、時區及偏移設定，不以環境預設決定結果。 |",
+        "| 11、12、13 | 以適用的多位元組字元、表情符號、組合字元、無效編碼及地區差異驗證編解碼、長度、截取與比較。確認未切斷必要字元單位，也未透過未授權正規化改寫或合併識別值。 |",
+        "| 14 | 檢查案例涵蓋變更影響的邊界與環境條件，並經實際儲存、傳輸或格式化路徑確認值與語意仍符合契約，不僅測試工具函式的一般輸入。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-decimal-equivalence\"></a>5 | 以數值相同但小數位數不同及其他代表性資料，確認比較、正規化、雜湊與集合判同符合契約。 |",
+        "| <a id=\"acceptance-java-clock-injection\"></a>9 | 以注入的 Clock 驗證業務時間邊界前、當下與之後，核對實際 Java 取時路徑使用該 Clock。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/reflection-and-suppression.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/reflection-and-suppression.md",
+      "baseline_line": 25,
+      "remove": [
+        "共同驗收直接依主要來源執行：[動態目標授權](../../../quality/security.md#acceptance-dynamic-target-authorization)、[動態契約](../../../coding/type-safety.md#acceptance-dynamic-contract)、[動態故障](../../../coding/error-handling.md#acceptance-dynamic-failure)、[抑制範圍](../../../workflow/rule-governance.md#acceptance-suppression-scope)、[產生碼](../../../workflow/rule-governance.md#acceptance-generated-code)、[動態限制](../../../quality/rule-verification.md#acceptance-dynamic-controls)。共同案例不在此重述或另維護副本。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [受控目標與授權](../../../quality/security.md#acceptance-dynamic-target-authorization)。",
+        "- [使用前驗證契約](../../../coding/type-safety.md#acceptance-dynamic-contract)。",
+        "- [區分故障與執行結果](../../../coding/error-handling.md#acceptance-dynamic-failure)。",
+        "- [限定檢查抑制](../../../workflow/rule-governance.md#acceptance-suppression-scope)。",
+        "- [產生碼不擴大豁免](../../../workflow/rule-governance.md#acceptance-generated-code)。",
+        "- [驗證限制實際有效](../../../quality/rule-verification.md#acceptance-dynamic-controls)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/reflection-and-suppression.md",
+      "baseline_line": 27,
+      "remove": [
+        "下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/reflection-and-suppression.md",
+      "baseline_line": 31,
+      "remove": [
+        "| <a id=\"acceptance-reflection-boundary\"></a>1 | 審查採用 Java 反射的實際需求與管理位置，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |",
+        "| <a id=\"acceptance-reflective-access\"></a>3 | 核對 Java 反射特殊存取的必要性、受支援替代方式與核准範圍；經實際建立及還原路徑確認無法藉私有欄位寫入或存取放寬繞過必要驗證、不變條件及封裝。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-reflection-boundary\"></a>1 | 審查採用 Java 反射的實際需求與管理位置，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |",
+        "| <a id=\"acceptance-java-reflective-access\"></a>3 | 核對 Java 反射特殊存取的必要性、受支援替代方式與核准範圍；經實際建立及還原路徑確認無法藉私有欄位寫入或存取放寬繞過必要驗證、不變條件及封裝。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "baseline_line": 30,
+      "remove": [
+        "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [結果與目前狀態分開表達](../../../coding/domain-modeling.md#acceptance-operation-results)。",
+        "- [處理完整性、封閉或允許擴充](../../../coding/domain-modeling.md#acceptance-model-extensibility)。",
+        "- [結果保留當時事實](../../../coding/domain-modeling.md#acceptance-result-facts)。",
+        "- [模型驗收](../../../coding/domain-modeling.md#acceptance-model-coverage)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "baseline_line": 32,
+      "remove": [
+        "依受影響的模型與呼叫端選擇案例，沿用[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "baseline_line": 34,
+      "remove": [
+        "| 對應決策 | 驗收內容 |"
+      ],
+      "insert": [
+        "| Java 條文 | 語言增量驗收 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "baseline_line": 36,
+      "remove": [
+        "| 1、2 | 審查互斥狀態與獨立業務面向是否正確分開，必要資料是否由對應型別保護。確認不能建立契約禁止的狀態與資料組合，不以僅存在狀態碼作為符合依據。 |",
+        "| 3 | 驗證允許與不允許的來源狀態、前置條件及轉換後資料。確認公開介面沒有可繞過規則的任意設定路徑，拒絕時未產生不應發生的副作用。 |",
+        "| 4、5 | 驗證成功、重複操作、拒絕及未完成等適用結果。核對必要原因與資料可由型別判斷，業務完成與已受理有所區別，技術故障未被轉成一般拒絕。 |",
+        "| 6、8 | 核對模型的封閉或擴充契約與實作限制，審查受影響的使用端分支。模型新增情況時確認適用檢查能發現未處理處，工具未涵蓋者由測試與審查補足；未知或擴充結果不得落入假成功。 |",
+        "| 7 | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |",
+        "| 9 | 在結果產生後改變來源業務物件或其他可變資料，確認結果仍保留當時事實；核對結果只含必要資訊，最新狀態透過獨立查詢取得。 |",
+        "| 10 | 核對測試涵蓋變更影響的轉換、拒絕、重複操作、資料及分支；以實際狀態與必要副作用驗證結果，而不只檢查回傳型別或成功標記。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-independent-state-models\"></a>1、2 | 審查互斥狀態與獨立業務面向是否正確分開，必要資料是否由對應型別保護。確認不能建立契約禁止的狀態與資料組合，不以僅存在狀態碼作為符合依據。 |",
+        "| <a id=\"acceptance-java-state-transition\"></a>3 | 驗證允許與不允許的來源狀態、前置條件及轉換後資料。確認公開介面沒有可繞過規則的任意設定路徑，拒絕時未產生不應發生的副作用。 |",
+        "| <a id=\"acceptance-java-enum-codes\"></a>7 | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/types-and-generics.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/types-and-generics.md",
+      "baseline_line": 37,
+      "remove": [
+        "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/types-and-generics.md",
+      "baseline_line": 41,
+      "remove": [
+        "| 對應決策 | 驗收內容 |"
+      ],
+      "insert": [
+        "### 共同驗收",
+        "",
+        "- [容器與泛型、禁止主動繞過檢查](../../../coding/type-safety.md#acceptance-data-shape)。",
+        "",
+        "### Java 語言增量驗收",
+        "",
+        "| Java 條文 | 語言增量驗收 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/types-and-generics.md",
+      "baseline_line": 43,
+      "remove": [
+        "| 1、9 | 檢查參數、回傳值、欄位與區域變數的明確宣告及泛型資訊，拒絕以 `var` 代替標註。允許的 `<>` 不得被誤判為 raw type，且宣告端須保留完整型別。 |",
+        "| 2、3、7 | 從實際呼叫處確認泛型的需求、約束及輸入輸出關聯，沒有用 `Object`、萬用字元或無依據的型別參數掩蓋業務型別。以代表性不相容型別案例確認適用的編譯檢查會拒絕。 |",
+        "| 4、5 | 啟用適用的 raw type 與 unchecked 警告檢查，確認新增與修改部分沒有違規，且未透過抑制或關閉檢查隱藏問題。審查向下轉型是否在補回遺失的業務型別；外部輸入以合法及不合法資料驗證邊界處理，必要例外須有核准及驗證依據。 |",
+        "| 6 | 核對固定結構資料是否使用明確物件；動態資料的型別、結構與驗證是否有契約，並以受影響的合法及非法輸入確認驗證有效。 |",
+        "| 8、10 | 從使用端確認集合介面及回傳型別足以完成契約操作，不需要補做轉型；檢查暴露實作類別或萬用字元是否有必要，且未將其誤作不可變性保證。 |",
+        "| 11 | 審查泛型參數名稱是否足以辨識責任及關聯，複雜契約有必要說明，不僅依名稱長度判定。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-explicit-types\"></a>1、9 | 檢查參數、回傳值、欄位與區域變數的明確宣告及泛型資訊，拒絕以 `var` 代替標註。允許的 `<>` 不得被誤判為 raw type，且宣告端須保留完整型別。 |",
+        "| <a id=\"acceptance-java-generic-relations\"></a>2、3、7 | 從實際呼叫處確認泛型的需求、約束及輸入輸出關聯，沒有用 `Object`、萬用字元或無依據的型別參數掩蓋業務型別。以代表性不相容型別案例確認適用的編譯檢查會拒絕。 |",
+        "| <a id=\"acceptance-java-unsafe-casts\"></a>4、5 | 啟用適用的 raw type 與 unchecked 警告檢查，確認新增與修改部分沒有違規，且未透過抑制或關閉檢查隱藏問題。審查向下轉型是否在補回遺失的業務型別；外部輸入以合法及不合法資料驗證邊界處理，必要例外須有核准及驗證依據。 |",
+        "| <a id=\"acceptance-java-generic-return\"></a>8、10 | 從使用端確認集合介面及回傳型別足以完成契約操作，不需要補做轉型；檢查暴露實作類別或萬用字元是否有必要，且未將其誤作不可變性保證。 |",
+        "| <a id=\"acceptance-java-type-parameter-names\"></a>11 | 審查泛型參數名稱是否足以辨識責任及關聯，複雜契約有必要說明，不僅依名稱長度判定。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "baseline_line": 30,
+      "remove": [
+        "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [不可變性](../../../coding/domain-modeling.md#acceptance-value-immutability)。",
+        "- [正規化規則](../../../coding/domain-modeling.md#acceptance-value-normalization)。",
+        "- [運算責任](../../../coding/domain-modeling.md#acceptance-value-operations)。",
+        "- [資料還原](../../../coding/domain-modeling.md#acceptance-value-restoration)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "baseline_line": 32,
+      "remove": [
+        "依受影響的值型別與實際使用路徑選擇案例，沿用[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "baseline_line": 34,
+      "remove": [
+        "| 對應決策 | 驗收內容 |"
+      ],
+      "insert": [
+        "| Java 條文 | 語言增量驗收 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "baseline_line": 36,
+      "remove": [
+        "| 1、2 | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |",
+        "| 3 | 對含可變資料的型別，修改傳入或取出的資料，確認原值物件未受影響。檢查封裝與必要的複製，不能只檢查欄位是否為 `final`。 |",
+        "| 4 | 驗證不同實例的相等值及具代表性的不相等值，相等物件的雜湊值須相同。適用時確認作為集合元素或映射鍵的行為符合契約，不要求不相等物件一定具有不同雜湊值。 |",
+        "| 5 | 以不同合法表示及不合法輸入驗證正規化、驗證順序與相等性符合契約，所有建立入口結果一致，沒有未授權的修剪或數值修正。 |",
+        "| 6 | 驗證適用運算的結果、單位與有效性限制，原物件維持不變。確認不相容的值依契約拒絕或處理，使用端未各自拆值繞過規則。 |",
+        "| 7 | 經實際採用的反序列化、持久化或框架映射路徑驗證合法與不合法資料。涉及歷史資料時，確認按明訂版本或遷移規則還原，不產出違反契約的物件。 |",
+        "| 8、9 | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |",
+        "| 10 | 核對測試涵蓋受影響的業務保證與失效邊界，不以只有建立成功的案例代替驗收，也不要求無業務邏輯的存取方法逐一測試。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-value-validity\"></a>1、2 | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |",
+        "| <a id=\"acceptance-java-final-references\"></a>3 | 檢查 final 欄位仍可能指向可變內容的路徑；不得以欄位修飾詞作為不可變性證據。 |",
+        "| <a id=\"acceptance-java-value-equality\"></a>4 | 驗證不同實例的相等值及具代表性的不相等值，相等物件的雜湊值須相同。適用時確認作為集合元素或映射鍵的行為符合契約，不要求不相等物件一定具有不同雜湊值。 |",
+        "| <a id=\"acceptance-java-generated-representation\"></a>8、9 | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |",
+        "| <a id=\"acceptance-java-value-method-coverage\"></a>10 | 核對測試涵蓋受影響的業務保證與失效邊界，不以只有建立成功的案例代替驗收，也不要求無業務邏輯的存取方法逐一測試。Java 的 equals()、hashCode()、record 產生方法與還原路徑均納入適用案例。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/version-policy.md",
+      "baseline_line": 3,
+      "remove": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。"
+      ],
+      "insert": [
+        "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+      ],
+      "kind": "editorial",
+      "reason": "刪除整理進度或歷史追蹤說明；完整原句與替換句逐行列明。"
+    },
+    {
+      "path": "rules/stacks/java/common/version-policy.md",
+      "baseline_line": 34,
+      "remove": [
+        "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
+      ],
+      "insert": [
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/version-policy.md",
+      "baseline_line": 38,
+      "remove": [
+        "| 對應決策 | 驗收內容 |"
+      ],
+      "insert": [
+        "### 共同驗收",
+        "",
+        "- [檢查配置一致性](../../../quality/rule-verification.md#acceptance-check-configuration)。",
+        "- [必要檢查實際執行](../../../quality/rule-verification.md#acceptance-check-execution)。",
+        "",
+        "### Java 語言增量驗收",
+        "",
+        "| Java 條文 | 語言增量驗收 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    },
+    {
+      "path": "rules/stacks/java/common/version-policy.md",
+      "baseline_line": 40,
+      "remove": [
+        "| 1、2 | 核對版本宣告與實際建置設定。以不符合目標版本的語法或標準 API 案例，確認適用檢查會拒絕，並核對產物格式。本機與 CI 的規則須一致。 |",
+        "| 3、4 | 查核各承諾執行版本的實際驗證結果。多模組按依賴關係核對使用端與提供端的相容範圍，不能只依單一較新環境通過推論所有版本符合。 |",
+        "| 5、6 | 核對實際解析出的直接與間接依賴要求。提高最低版本時檢查使用端影響、遷移順序及回退安排，確認支援範圍變更已有明確決策。 |",
+        "| 7、8、9 | 依實際使用情形核對 Preview、內部 API、存取放寬與棄用 API 的紀錄。確認適用核准、環境配套、維護責任及重新評估條件，並驗證替代做法符合目標版本。 |",
+        "| 10、11 | Java 環境或工具變更後，核對必要測試與分析確實執行，避免將被略過的檢查計為通過。確認產生碼與產物仍相容，並保留發行商及完整版本變更的驗證結果。 |",
+        "| 12 | 從指定發布產物查回建置環境、編譯目標、依賴與驗證紀錄，再核對部署環境中的實際產物及 Java 環境。 |"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-version-target\"></a>1、2 | 核對版本宣告與實際建置設定。以不符合目標版本的語法或標準 API 案例，確認適用檢查會拒絕，並核對產物格式。 |",
+        "| <a id=\"acceptance-java-runtime-matrix\"></a>3、4 | 查核各承諾執行版本的實際驗證結果。多模組按依賴關係核對使用端與提供端的相容範圍，不能只依單一較新環境通過推論所有版本符合。 |",
+        "| <a id=\"acceptance-java-version-upgrade\"></a>5、6 | 核對實際解析出的直接與間接依賴要求。提高最低版本時檢查使用端影響、遷移順序及回退安排，確認支援範圍變更已有明確決策。 |",
+        "| <a id=\"acceptance-java-api-exceptions\"></a>7、8、9 | 依實際使用情形核對 Preview、內部 API、存取放寬與棄用 API 的紀錄。確認適用核准、環境配套、維護責任及重新評估條件，並驗證替代做法符合目標版本。 |",
+        "| <a id=\"acceptance-java-toolchain-compatibility\"></a>10、11 | Java 環境或工具變更後，核對必要測試與分析確實執行，避免將被略過的檢查計為通過。確認產生碼與產物仍相容，並保留發行商及完整版本變更的驗證結果。 |",
+        "| <a id=\"acceptance-java-artifact-runtime\"></a>12 | 從指定發布產物查回建置環境、編譯目標、依賴與驗證紀錄，再核對部署環境中的實際產物及 Java 環境。 |"
+      ],
+      "kind": "acceptance",
+      "reason": "驗收歸位、原斷言還原、語意錨點或驗收引言統一；詳見各批追溯表與審閱修正紀錄。"
+    }
+  ]
+}

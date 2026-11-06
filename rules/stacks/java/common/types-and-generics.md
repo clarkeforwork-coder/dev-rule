@@ -34,7 +34,9 @@ Map<OrderId, Order> ordersById = new HashMap<>();
 
 ## 驗收要求
 
-依變更影響與實際使用路徑選擇案例，測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+
+依變更範圍核對下列項目，包含受影響的呼叫端與測試程式碼。可自動判斷的要求依[規範驗證](../../../quality/rule-verification.md)納入檢查；型別是否表達正確業務語意則由人工審查。
 
 ### 共同驗收
 

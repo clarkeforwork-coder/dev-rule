@@ -23,11 +23,18 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[部分取得與責任移交](../../../coding/resource-lifecycle.md#acceptance-partial-acquisition)、[資源有效期與關閉](../../../coding/resource-lifecycle.md#acceptance-close-contract)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
-依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
+### 共同驗收
 
-下表只保留 Java 的語言機制驗收。
+- [部分取得與所有權移交](../../../coding/resource-lifecycle.md#acceptance-partial-acquisition)。
+- [有效期與關閉契約](../../../coding/resource-lifecycle.md#acceptance-close-contract)。
+
+### Java 語言增量驗收
+
+<a id="acceptance-java-failure-coverage"></a>
+
+依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
@@ -35,9 +42,5 @@
 | <a id="acceptance-java-interruption"></a>4 | 對可中斷的 Java 操作送出中斷，確認 `InterruptedException` 依契約向上傳遞；無法傳遞時恢復中斷旗標並停止或取消。核對沒有吞掉後繼續等待、執行或重試，必要清理仍完成。 |
 | <a id="acceptance-java-resource-closing"></a>5 | 以正常完成、提前退出及操作失敗路徑核對 Java 自行擁有的 `AutoCloseable`／`try-with-resources` 資源確實釋放，借用或框架管理資源未被擅自關閉；非區域生命週期有明確釋放責任，不依賴垃圾回收。 |
 | <a id="acceptance-java-suppressed-failures"></a>6 | 模擬 Java 操作與清理同時失敗，確認原始故障及 suppressed exceptions 或相應關係可追查，沒有被 `finally` 控制流程覆蓋；另驗證只有清理失敗時的完成判定與回報。 |
-
-<a id="acceptance-java-failure-coverage"></a>
-
-依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。
 
 既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

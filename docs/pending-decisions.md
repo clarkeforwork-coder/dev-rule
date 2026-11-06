@@ -1,6 +1,6 @@
 # 共通與 Java 規範分離：待確認事項
 
-日期：2026-11-06。檢視版本：`490bd43`。本文件僅提出決策選項，**未執行正文重編、刪除純引用條目、合併文件、提升義務或變更規則錨點**。
+日期：2026-11-06。檢視基準：`6a16349`；本次依獨立審閱修正（修正提交見驗證紀錄）。本文件僅提出決策選項，**未執行正文重編、刪除純引用條目、合併文件、提升義務或變更規則錨點**。
 
 依據：[原始分類](java-rule-classification.md)、[第一輪去向](java-rule-migration.md)、[第一批](acceptance-cleanup-batch-1.md)、[第二批](acceptance-cleanup-batch-2.md)、[第三批](acceptance-cleanup-batch-3.md)、[第四批](acceptance-cleanup-batch-4.md)、[第五批](acceptance-cleanup-batch-5.md)及[複核修正](acceptance-cleanup-review.md)。以下 ID 是歷史決策 ID；連結指向現行文件，並明列現行條號。
 
@@ -25,7 +25,7 @@
 | [集合跨主題契約](../rules/coding/collections-and-ownership.md#跨主題契約)，CO-08 | 「不得假設拋例外即未修改」未以獨立 ID 登錄；既有全部／部分成功規則只規範結果保證。 | 在錯誤處理正式定義失敗不等於無副作用，沿用部分操作驗收並補例外後實際狀態核對。 | 集合 API 失敗後狀態提醒保留 Java 第 8 條。 | 建議 A，仍需核准；同時保留「不要求全部集合操作具交易能力」的適用邊界。 |
 | [映射共同保證](../rules/architecture/data-mapping.md#既有共同保證的落實)，BM-04 | 「不得略過欄位或產生不完整物件掩蓋失敗」沒有自己的列管去向；錯誤處理有停止缺陷與禁止預設值，但未逐字定義半成品映射。 | 把映射完整性正式列入既有轉換要求，補非法外部值、內部缺陷與半成品拒絕驗收。 | 保留 Java 第 4 條的情境及驗收，共通摘要只引用既有錯誤規則。 | 暫選 B；現行 Java 半成品驗收可保住要求，待確認是否正式跨語言化。 |
 | [映射共同保證](../rules/architecture/data-mapping.md#既有共同保證的落實)，BM-04／CO-08 | 「部分成功保留各筆結果及來源對應」已有錯誤處理規則，但摘要沒有追溯列。 | 登錄為錯誤處理「多步驟與部分成功」的引用，沿用唯一驗收。 | 移回 Java 映射情境；共同規則不變。 | 建議 A，以引用登錄，不新增義務或複製驗收。 |
-| [映射共同保證](../rules/architecture/data-mapping.md#既有共同保證的落實)，BM-05 | 「未提供、清空、設定值」已有空值語意；摘要未列管。 | 登錄為空值語意引用，沿用接收入口至業務操作驗收。 | 移回 Java null／Optional 的具體表示說明。 | 建議 A 只保留連結，Java 保留表示限制。 |
+| [映射共同保證](../rules/architecture/data-mapping.md#既有共同保證的落實)，BM-05 | 「未提供、清空、設定值」已有空值語意；摘要未列管。 | 登錄為空值語意引用；本階段曾在空值正文新增的驗收句已撤回，原斷言歸入既有映射驗收列。 | 移回 Java null／Optional 的具體表示說明。 | 建議 A 只保留連結，Java 保留表示限制。 |
 | [映射共同保證](../rules/architecture/data-mapping.md#既有共同保證的落實)，BM-06 | 隔離、共用不可變值與不強制深層複製分散在邊界、值物件、集合規則，摘要像另一份規則。 | 登錄各保證的主要來源，沿用邊界隔離驗收；明確限定共用值須符合契約。 | 移回 Java 集合複製情境，移除摘要中的獨立義務。 | 建議 A，以既有規則引用收斂；不能把「不強制複製」誤讀成免除隔離。 |
 | [映射共同保證](../rules/architecture/data-mapping.md#既有共同保證的落實)，BM-08 | 「簡單方法或專責類別依需求選擇、不強制 Mapper 介面」已有責任配置及介面原則。 | 登錄責任配置／介面用途來源，沿用既有驗收。 | 移回 Java 方法／類別例子。 | 建議 A，只保留引用，避免摘要成為第二個維護位置。 |
 | [領域模型驗證與還原](../rules/coding/domain-modeling.md#模型驗證與還原)，VO-10 | 建立、邊界、相等、不可變、運算／還原的覆蓋義務原分類為改引用；摘要比早期共通概括驗證更完整。 | 正式登錄至既有模型驗收範圍；本次將完整覆蓋片段保留 Java，沒有利用該摘要新增共同驗收。 | 保留 Java 第 10 條的語言保證覆蓋，撤除未確認的共通擴寫部分。 | 建議 A，逐一連回已核准的 VO-03／05／06／07，避免以摘要產生額外測試義務。 |
@@ -103,11 +103,11 @@
 | [CO-08 第 8 條](../rules/stacks/java/common/collections-and-ownership.md#資料規模資源與批次結果) | Java 批次集合方法拋出例外不代表未修改；不要求所有集合操作具有交易能力，須核對約定的失敗後狀態。 | 待確認 | 拋例外不代表未修改是原摘要中的未列管義務；不可只因已寫入共通摘要便刪去 Java 提醒。 共通對照：[錯誤處理](../rules/coding/error-handling.md)。 |
 | [CO-09 第 9 條](../rules/stacks/java/common/collections-and-ownership.md#資料規模資源與批次結果) | Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。 | 重述 | 共通已明訂集合介面／包裝不保證所有權或快照、轉換順序、支援的遍歷操作、複合原子性、延遲累積與資源責任；現行附句未增加 Java API 細節。 共通對照：[所有權與行為驗收的共通要求](../rules/coding/collections-and-ownership.md#co-09)。 |
 | [EX-07 第 7 條](../rules/stacks/java/common/exceptions-and-resources.md#資源所有權與失敗清理) | Java 多資源取得及建構失敗亦須清理；資源移交前仍由取得方負責，釋放順序遵循依賴。 | 重述 | 多資源取得、建構失敗、正式移交前責任與依賴順序已由共通完整涵蓋。 共通對照：[部分取得與所有權移交的共通要求](../rules/coding/resource-lifecycle.md#ex-07)。 |
-| [EX-08 第 8 條](../rules/stacks/java/common/exceptions-and-resources.md#資源所有權與失敗清理) | Java `AutoCloseable` 資源不可在非同步工作仍使用時提前關閉，不無依據假設所有 `close()` 都可重複呼叫。 | 增量 | AutoCloseable／close 的具體使用限制保留於 Java 資源機制；非同步有效期政策只引用共通。 共通對照：[有效期與關閉契約的共通要求](../rules/coding/resource-lifecycle.md#ex-08)。 |
+| [EX-08 第 8 條](../rules/stacks/java/common/exceptions-and-resources.md#資源所有權與失敗清理) | Java `AutoCloseable` 資源不可在非同步工作仍使用時提前關閉，不無依據假設所有 `close()` 都可重複呼叫。 | 重述 | 共通 ex-08 已禁止提前關閉與無依據假設重複關閉；AutoCloseable／close 名稱沒有額外限制。 共通對照：[有效期與關閉契約的共通要求](../rules/coding/resource-lifecycle.md#ex-08)。 |
 | [NT-01 第 1 條](../rules/stacks/java/common/numbers-dates-text.md#數值表示與運算) | Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。 | 增量 | BigDecimal／最小單位整數的選擇與浮點轉 BigDecimal 無法復原，是 Java 標準型別落實。 共通對照：[依語意選擇數值型別的共通要求](../rules/coding/numbers-dates-text.md#nt-01)。 |
 | [NT-02 第 2 條](../rules/stacks/java/common/numbers-dates-text.md#數值表示與運算) | Java 精確值不可先轉浮點數再轉 `BigDecimal` 期待還原；直接從契約允許的精確來源建立後仍須驗證業務限制。 | 增量 | BigDecimal／最小單位整數的選擇與浮點轉 BigDecimal 無法復原，是 Java 標準型別落實。 共通對照：[從精確來源建立的共通要求](../rules/coding/numbers-dates-text.md#nt-02)。 |
 | [NT-03 第 3 條](../rules/stacks/java/common/numbers-dates-text.md#數值表示與運算) | Java 數值運算依契約指定精度、捨入模式及時機，不能讓 API 預設或各呼叫端自行決定。 | 重述 | 精度捨入、地區／時區、完整解析及字元編碼皆重述共通；僅加上 Java 或 API 字樣不構成增量。 共通對照：[明訂捨入規則的共通要求](../rules/coding/numbers-dates-text.md#nt-03)。 |
-| [NT-04 第 4 條](../rules/stacks/java/common/numbers-dates-text.md#數值表示與運算) | Java 縮窄轉型、整數溢位回繞與小數捨棄須明確檢查，不能用強制轉型掩蓋超限。 | 混合 | Java 整數溢位回繞及縮窄轉型是語言失效情境；超限須檢查與不得掩蓋已共通。 共通對照：[範圍與轉換檢查的共通要求](../rules/coding/numbers-dates-text.md#nt-04)。 |
+| [NT-04 第 4 條](../rules/stacks/java/common/numbers-dates-text.md#數值表示與運算) | Java 縮窄轉型、整數溢位回繞與小數捨棄須明確檢查，不能用強制轉型掩蓋超限。 | 重述 | 共通 nt-04 已明列溢位回繞、縮小範圍及強制轉型；現行附句沒有額外 Java 限制。 共通對照：[範圍與轉換檢查的共通要求](../rules/coding/numbers-dates-text.md#nt-04)。 |
 | [NT-06 第 6 條](../rules/stacks/java/common/numbers-dates-text.md#日期時間語意與來源) | Java 優先使用 `java.time`：日期可用 `LocalDate`，確切時點可用 `Instant`；不得以 `LocalDateTime` 冒充唯一時點，必要時保留時區或偏移。 | 增量 | java.time 型別選擇、Duration／Period、Clock 與 String.length 的 UTF-16 單位，增加具體 Java 操作方式或失效情境。 共通對照：[依業務語意選擇時間型別的共通要求](../rules/coding/numbers-dates-text.md#nt-06)。 |
 | [NT-07 第 7 條](../rules/stacks/java/common/numbers-dates-text.md#日期時間語意與來源) | Java 時區轉換須明確指定契約時區或偏移，不讓函式庫預設決定不存在或重複當地時間的業務處置。 | 重述 | 精度捨入、地區／時區、完整解析及字元編碼皆重述共通；僅加上 Java 或 API 字樣不構成增量。 共通對照：[明確的時區轉換的共通要求](../rules/coding/numbers-dates-text.md#nt-07)。 |
 | [NT-08 第 8 條](../rules/stacks/java/common/numbers-dates-text.md#日期時間語意與來源) | Java 按語意使用 `Duration`、`Period` 或業務計算，不假設一般日曆間隔包含營業日規則。 | 增量 | java.time 型別選擇、Duration／Period、Clock 與 String.length 的 UTF-16 單位，增加具體 Java 操作方式或失效情境。 共通對照：[區分時間長度與日曆規則的共通要求](../rules/coding/numbers-dates-text.md#nt-08)。 |
@@ -134,7 +134,7 @@
 | [RF-06 第 6 條](../rules/stacks/java/common/reflection-and-suppression.md#檢查抑制與產生碼) | Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。 | 混合 | SuppressWarnings 及 raw／unchecked 禁令由 Java 型別政策承接；最小抑制與核准程序只引用共通。 共通對照：[限定檢查抑制的共通要求](../rules/workflow/rule-governance.md#rf-06)。 |
 | [RF-07 第 7 條](../rules/stacks/java/common/reflection-and-suppression.md#檢查抑制與產生碼) | Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。 | 驗收入口 | 來源重建、手寫銜接與拒絕／限制生效皆有共通主要驗收；Java 反射的實際驗收入口保留，不重訂治理。 共通對照：[產生碼不擴大豁免的共通要求](../rules/workflow/rule-governance.md#rf-07)。 |
 | [RF-08 第 8 條](../rules/stacks/java/common/reflection-and-suppression.md#檢查抑制與產生碼) | Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。 | 驗收入口 | 來源重建、手寫銜接與拒絕／限制生效皆有共通主要驗收；Java 反射的實際驗收入口保留，不重訂治理。 共通對照：[驗證限制實際有效的共通要求](../rules/quality/rule-verification.md#rf-08)。 |
-| [ND-02 第 2 條](../rules/stacks/java/common/naming-packages-docs.md#命名與套件責任) | Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。 | 重述 | Service／Handler／Helper／Utils 與 TODO 是例子，沒有超出共通責任命名及後續追蹤的新要求。 共通對照：[命名與可讀性](../rules/coding/naming.md)、[程式碼設計與公開介面](../rules/coding/code-design.md)。 |
+| [ND-02 第 2 條](../rules/stacks/java/common/naming-packages-docs.md#命名與套件責任) | Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。 | 待補證 | 共通命名的具體名稱主要針對變數，沒有類別名稱與責任一致的直接條文；先保留 Java 原文與驗收，不先刪除純引用條目。 共通對照：[命名與可讀性](../rules/coding/naming.md)、[程式碼設計與公開介面](../rules/coding/code-design.md)。 |
 | [ND-05 第 5 條](../rules/stacks/java/common/naming-packages-docs.md#契約文件與維護) | Java 註解及 TODO 依共同追蹤要求維護，不以模糊標記代替負責事項。 | 重述 | Service／Handler／Helper／Utils 與 TODO 是例子，沒有超出共通責任命名及後續追蹤的新要求。 共通對照：[實作註解與暫時處理的共通要求](../rules/coding/code-design.md#nd-05)。 |
 | [ND-07 第 7 條](../rules/stacks/java/common/naming-packages-docs.md#契約文件與維護) | Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。 | 增量 | Javadoc 參照及可執行範例在支援 Java 版本驗證，保留實際語言驗收；形式不能代替語意只引用共通。 共通對照：[形式與語意分別驗收的共通要求](../rules/quality/rule-verification.md#nd-07)。 |
 
@@ -144,7 +144,7 @@
 
 | 歷史 ID／現行位置 | 可拆的共通背景 | 須保留的 Java 增量 | 是否形成新跨語言義務 |
 | --- | --- | --- | --- |
-| [JV-01 第 1 條](../rules/stacks/java/common/version-policy.md#版本宣告與相容性) | 支援範圍與相容承諾可引用資料契約 | 建置 JDK、目標語言、標準 API、位元碼及執行版本分開 | 否：引用現有共通即可 |
+| [JV-01 第 1 條](../rules/stacks/java/common/version-policy.md#版本宣告與相容性) | 未找到涵蓋 JDK 執行支援範圍的共通來源；資料契約不能代替 | 建置 JDK、目標語言、標準 API、位元碼及執行版本分開 | 否：先保留 Java，若提升執行版本支援義務須另行核准 |
 | [JV-02 第 2 條](../rules/stacks/java/common/version-policy.md#版本宣告與相容性) | 受控設定、本機／CI 一致引用規範驗證 | Java 語言、API、位元碼編譯限制 | 否：引用現有共通即可 |
 | [JV-03 第 3 條](../rules/stacks/java/common/version-policy.md#版本宣告與相容性) | 風險選案與證據引用共通測試 | 每個承諾 runtime 實際啟動、載入與函式庫使用端驗證 | 否：引用現有共通即可 |
 | [JV-04 第 4 條](../rules/stacks/java/common/version-policy.md#版本宣告與相容性) | 跨模組相容責任引用資料契約 | 逐模組編譯目標與 runtime 範圍 | 否：引用現有共通即可 |
@@ -154,7 +154,7 @@
 | [JV-08 第 8 條](../rules/stacks/java/common/version-policy.md#依賴升級與特殊功能) | 例外核准及替代方案引用治理 | JDK 內部 API、存取限制及升級重驗 | 否：引用現有共通即可 |
 | [JV-09 第 9 條](../rules/stacks/java/common/version-policy.md#依賴升級與特殊功能) | 移除風險與例外程序引用依賴／治理 | Java 棄用 API 與目標版本替代方式 | 否：引用現有共通即可 |
 | [JV-10 第 10 條](../rules/stacks/java/common/version-policy.md#工具環境與發布追溯) | 必要檢查實際執行引用規範驗證 | 註解處理器、編譯外掛及產物處理相容性 | 否：引用現有共通即可 |
-| [JV-11 第 11 條](../rules/stacks/java/common/version-policy.md#工具環境與發布追溯) | 環境識別與變更證據引用依賴管理 | JDK 發行商、完整修補版本與啟動配置 | 否：引用現有共通即可 |
+| [JV-11 第 11 條](../rules/stacks/java/common/version-policy.md#工具環境與發布追溯) | 未找到涵蓋 JDK 發行商與執行環境識別的共通來源；第三方依賴管理不能代替 | JDK 發行商、完整修補版本與啟動配置 | 否：先保留 Java，若提升執行環境識別義務須另行核准 |
 | [JV-12 第 12 條](../rules/stacks/java/common/version-policy.md#工具環境與發布追溯) | 產物及證據追溯引用規範驗證 | 建置 JDK、目標與部署 runtime 的具體追溯欄位 | 否：引用現有共通即可 |
 | [JT-01 第 1 條](../rules/stacks/java/common/types-and-generics.md#明確宣告與型別關係) | 明確宣告引用型別安全 | 禁用 var 與各宣告位置保留泛型 | 否：引用現有共通即可 |
 | [JT-02 第 2 條](../rules/stacks/java/common/types-and-generics.md#明確宣告與型別關係) | 真實型別關聯及不得隱藏業務型別引用型別安全 | raw type 禁令、Object／萬用字元的選用界線 | 否：引用現有共通即可 |
@@ -319,8 +319,41 @@
 | [CL-01 第 1 條](../rules/stacks/java/common/classes-and-construction.md#介面繼承與建立條件) | [框架與依賴組裝](../rules/architecture/dependency-composition.md)、[模組責任與公開入口](../rules/architecture/module-boundaries.md) | 摘要可涵蓋：依架構、替換、多型引入抽象，DI 可注入具體類別；不能因單一實作省略隔離須合讀架構邊界。 | 保留共同介面用途驗收及架構來源；原全文是否另有能力條件無法確認。 |
 | [CO-08 第 8 條](../rules/stacks/java/common/collections-and-ownership.md#資料規模資源與批次結果) | [錯誤處理](../rules/coding/error-handling.md) | 待補證：多步驟規則涵蓋全部／部分成功及項目對應；「拋例外不代表未修改」和「不要求全部集合具交易能力」只在未列管摘要直接出現。 | 暫不刪 Java 附句；核准共通失敗後狀態義務或明確移回 Java。 |
 | [LS-01 第 1 條](../rules/stacks/java/common/lambda-and-stream.md#表達與狀態管理) | [程式碼設計與公開介面](../rules/coding/code-design.md)、[命名與可讀性](../rules/coding/naming.md) | 摘要可涵蓋責任、可讀性與不訂行數；不強制 Stream／每個 Lambda 抽方法是 Java 表達選擇，沒有反向強制規則。 | 可移除純引用項，保留示例或語法章的適用說明。 |
-| [ND-02 第 2 條](../rules/stacks/java/common/naming-packages-docs.md#命名與套件責任) | [命名與可讀性](../rules/coding/naming.md)、[程式碼設計與公開介面](../rules/coding/code-design.md) | 摘要可涵蓋：名稱表達領域與責任、避免空泛通用命名；沒有所有 Service／Utils 後綴一律禁止的規則。 | 保留允許但須明確責任的解釋時，作範例而非新義務；不得新增後綴禁令。 |
+| [ND-02 第 2 條](../rules/stacks/java/common/naming-packages-docs.md#命名與套件責任) | [命名與可讀性](../rules/coding/naming.md)、[程式碼設計與公開介面](../rules/coding/code-design.md) | 待補證：類別名稱與責任一致、不得用籠統後綴掩蓋不同用途，未在現行共通找到直接條文；沒有一律禁止 Service／Utils 的規則。 | 先保留 Java 第 2 條及命名驗收；只有核准共通來源後才能移除附句，不得新增後綴禁令。 |
 
 ## 尚未執行事項
 
 本清單的所有選項均待決定：未提升可見性、結果接收、跨型別相等或其他新跨語言義務；未移動或刪除任何正文條目；未重編正式條號；未合併／刪除 Java 主題；未改動歷史規則錨點；未自行還原或補造 19 條遺失原文。上述動作必須在使用者選定方向後另開正文整理批次，建立新的基準及逐條追溯。
+
+## 七、獨立審閱後仍須決定的事項
+
+本節是待決事項，不授權改動規則正文。原要求已先還原；「零逐字重複」不代表沒有語意重複。以下保留重疊是正文不變與不降低要求優先的結果。
+
+| 審閱項目／位置 | 選項與建議 |
+| --- | --- |
+| H1：value-objects、states-and-results、boundary-mapping、numbers-dates-text、lambda-and-stream、naming-packages-docs 的驗收尾句 | 六句已依 `6a16349` 逐字還原。可保留各文件治理入口，或日後集中索引；建議保留，因句子另含工具、既有資料、外部契約等文件專屬的不得豁免條件，不能當成無效重複刪除。 |
+| H2：[規範驗證](../rules/quality/rule-verification.md#架構檢查與可測試性)「不因此強制每個類別建立介面」及「部分成功、降級與補償失敗」 | 已還原政策原句。日後可保留政策與驗收的不同責任，或經核准合併；建議保留原政策，驗收只列證據，不以去重為由再刪政策。 |
+| M1：VO-10、JN-10、LS-8、JV-10／11、ND-1／2、LS-1／2 | 本次保留完整原斷言，Java 機制僅補充。日後若刪除共同背景，先確認共通列逐項承接；ND 後綴與 LS 複雜邏輯目前沒有完整共通依據，建議留 Java。 |
+| M2：[空值語意](../rules/coding/nullability.md)、[映射驗收](../rules/architecture/data-mapping.md#acceptance-mapping-paths) | 已撤回寫入空值正文的新驗收句與錨點。三種更新意圖的原斷言補入既有映射驗收列，依據 bm-09 與既有空值語意；Java 第 5 條的表示失效情境另列。日後若改歸位方向須一併決定，不再把曾新增的句子描述成基準既有驗收。 |
+| M4：共通驗收歸位 | 選項 A：按規則檔維護驗收，規範驗證只維護共同把關；選項 B：集中規範驗證並從各規則引用。建議 A，專屬情境緊鄰依據，規範驗證維持跨主題機制；但本次不執行搬移，已有指向規範驗證的介面用途與多步驟案例維持現況。 |
+| M4：[領域建模](../rules/coding/domain-modeling.md#模型驗證與還原)、[資料映射](../rules/architecture/data-mapping.md#轉換要求)與補充契約驗收 | 撤回本階段新加的失敗分類連結與三列專屬型別／狀態詳細驗收；完整原斷言保留 Java。基準已有的領域驗證摘要、失敗分類與結果驗收，以及映射摘要與實際路徑驗收仍有重疊。建議先決定 A／B，再整合既有內容，本次不刪正文。 |
+| L2：[null／Optional 第 10 條](../rules/stacks/java/common/null-and-optional.md#契約維護與對外表示) | 「本文件驗收表」的 API 案例分散於共同引用與 Java 覆蓋列；建議日後改指整個驗收章節或確切語意錨點，現在不改正文。 |
+| L2：[值物件第 10 條](../rules/stacks/java/common/value-objects.md#還原實作形式與對外表示) | 還原路徑的詳細斷言位於共同引用；建議改為精確引用共同還原與 Java 覆蓋兩處。 |
+| L2：[狀態與結果第 10 條](../rules/stacks/java/common/states-and-results.md#外部代碼擴充與結果資料) | 使用端分支及封閉模型已引用共通，並非下方 Java 表格列；建議改指共同處理完整性驗收。 |
+| L2：[邊界映射第 4 條](../rules/stacks/java/common/boundary-mapping.md#轉換完整性與隔離) | 部分成功驗收已在規範驗證，不能只指下方 Java 表格；建議日後改精確引用部分操作列。 |
+| L2：[數值時間文字第 14 條](../rules/stacks/java/common/numbers-dates-text.md#文字編碼長度與比較) | java.time 與字串轉換案例主要由共同驗收及 Java 實際路徑引言承接；建議改指整個驗收章節，不宣稱 Java 表內均有獨立列。 |
+| L6：[集合開頭](../rules/stacks/java/common/collections-and-ownership.md)「由後續 Java 主題展開」 | 主題已存在，可改現行連結；因位於正文，本次保留，建議下次正文整理處理。 |
+| L6：[映射「既有共同保證的落實」](../rules/architecture/data-mapping.md#既有共同保證的落實) | 可改中性標題或刪除重述；先處理第一節未列管義務，不能連同義務直接刪除。 |
+| L6：[規範驗證](../rules/quality/rule-verification.md#測試程式碼)「遵守下列型別安全要求」 | 「下列」本來已沒有明確對象；建議日後改成型別安全文件連結，本次保持基準正文。 |
+| L7：BM 轉換失敗與半成品、ST 獨立業務面向、VO 不只測建立成功、JT 外部非法資料、JN 必填拒絕與故障分類 | 這五組 Java 驗收仍與共通正文或驗收有換句話說的重複。選項是先核准共通依據並拆出引用，或保留 Java 原斷言等待正文整理；建議後者優先，避免再次縮小範圍。機械檢查不宣稱消除此類重複。 |
+| L5：[邊界隔離驗收](../rules/architecture/boundary-objects.md#acceptance-boundary-isolation)後半 | 本階段已把共用不可變值與不強制全面複製寫成驗收，依據包含尚未列管的映射摘要。這是既有適用邊界的具體核對，並非新增強制複製，但不能據此宣稱摘要已正式提升。選項為正式列管來源或把此段驗收移回 Java；建議先決定第一節 BM-06，原要求保持。 |
+
+### AU-01／07／09 與第六節的範圍
+
+原分類「改引用」共 22 條；第六節限於十五份 Java 文件的 19 條，故未包含自動檢查主題 AU-01、AU-07、AU-09。這三條來源是討論摘要，從未有來源 Rule 檔或驗收表；與第六節曾有 Java 原文但未提交的證據限制不同。第一輪遷移紀錄已記載後續確認與實際落實，故不能沿用分類快照把 AU-09 當成現行未核准規則；也不能混入 153 條 Java 條文的 84／69 統計。
+
+| 歷史 ID | 現行對照與尚待確認 |
+| --- | --- |
+| AU-01 | [規範驗證](../rules/quality/rule-verification.md)的共同把關與檢查對應；原摘要是規範對應自動檢查、行為測試或人工審查並標示缺口；已由 au-01 承接，證據限於討論摘要而非遺失的 Java 條文。 |
+| AU-07 | [自動修正的審查](../rules/workflow/git-pr-review.md#au-07)：原摘要要求審查差異與行為契約，不得加未核准抑制、移除必要測試或降低規則；現行共同條款有對應，並非既有違規基準那一條。 |
+| AU-09 | [Git／PR](../rules/workflow/git-pr-review.md)與[規範驗證](../rules/quality/rule-verification.md)的合併把關；原摘要要求必要檢查的合併阻擋實際有效，不只提供報告；分類快照原為待確認，後續遷移紀錄記載已確認落實至 au-09。建議保留兩份紀錄的時間先後，不把歷史待確認誤列為本輪待決。 |

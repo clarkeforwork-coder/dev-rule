@@ -31,12 +31,14 @@ Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rul
 
 ## 驗收要求
 
-依變更影響與實際使用路徑選擇案例，測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+
+依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)制定。
 
 ### 共同驗收
 
-- [規範驗證](../../../quality/rule-verification.md#acceptance-check-configuration)。
-- [規範驗證](../../../quality/rule-verification.md#acceptance-check-execution)。
+- [檢查配置一致性](../../../quality/rule-verification.md#acceptance-check-configuration)。
+- [必要檢查實際執行](../../../quality/rule-verification.md#acceptance-check-execution)。
 
 ### Java 語言增量驗收
 
@@ -46,7 +48,7 @@ Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rul
 | <a id="acceptance-java-runtime-matrix"></a>3、4 | 查核各承諾執行版本的實際驗證結果。多模組按依賴關係核對使用端與提供端的相容範圍，不能只依單一較新環境通過推論所有版本符合。 |
 | <a id="acceptance-java-version-upgrade"></a>5、6 | 核對實際解析出的直接與間接依賴要求。提高最低版本時檢查使用端影響、遷移順序及回退安排，確認支援範圍變更已有明確決策。 |
 | <a id="acceptance-java-api-exceptions"></a>7、8、9 | 依實際使用情形核對 Preview、內部 API、存取放寬與棄用 API 的紀錄。確認適用核准、環境配套、維護責任及重新評估條件，並驗證替代做法符合目標版本。 |
+| <a id="acceptance-java-toolchain-compatibility"></a>10、11 | Java 環境或工具變更後，核對必要測試與分析確實執行，避免將被略過的檢查計為通過。確認產生碼與產物仍相容，並保留發行商及完整版本變更的驗證結果。 |
 | <a id="acceptance-java-artifact-runtime"></a>12 | 從指定發布產物查回建置環境、編譯目標、依賴與驗證紀錄，再核對部署環境中的實際產物及 Java 環境。 |
-| <a id="acceptance-java-toolchain-compatibility"></a>10、11 | 確認產生碼與產物仍相容，並保留發行商及完整版本變更的驗證結果。 |
 
 無法取得某個承諾版本的執行結果時，須列為尚未驗證，明示缺少的環境或證據。審查與合併條件依[Git、PR 與程式碼審查](../../../workflow/git-pr-review.md)處理。

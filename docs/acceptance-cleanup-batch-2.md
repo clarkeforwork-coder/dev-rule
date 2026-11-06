@@ -87,3 +87,7 @@
 - 所有 1,380 個本地連結及章節引用、`git diff --check` 通過。機械檢查只能證明結構、追溯與逐字差異；上述責任分工另經人工審查。
 
 常駐檢查：`ruby scripts/verify-acceptance.rb`。批次差異以 `--target` 指定歷史受驗提交；省略時檢查工作區。歷史批次的範圍限制不套用到後續提交。
+
+## 獨立審閱後的重現方式
+
+上文保留當批執行紀錄；舊提交沒有逐句差異與已改寫清單，不能用修正後檢查器回報通過。現行追溯檢查：`ruby scripts/verify-acceptance.rb --batch 2 --trace-only`；基準自本文讀取。常駐檢查預設同時執行五批追溯與全檔保護；`--target` 的全部讀取及統計皆來自指定提交，不混入工作區。精確差異與改寫理由見 [檢查差異清單](acceptance-check-policy.json)、[已改寫片段清單](acceptance-rewritten-fragments.json)及[審閱修正紀錄](review-remediation.md)。

@@ -22,9 +22,14 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[比較語意](../../../coding/domain-modeling.md#acceptance-identity-semantics)、[識別碼生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
-下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+### 共同驗收
+
+- [明訂比較語意](../../../coding/domain-modeling.md#acceptance-identity-semantics)。
+- [Entity 識別碼的生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。
+
+### Java 語言增量驗收
 
 <a id="acceptance-java-relationship-coverage"></a>
 
@@ -33,7 +38,7 @@
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
 | <a id="acceptance-java-equality-hash-contract"></a>2 | 對 Java `equals()` 驗證自反、對稱、遞移、一致性及 `null` 處理，並確認相等物件具有相同 `hashCode()`；不要求不同物件雜湊必不同，也不以雜湊相同判定相等。 |
-| <a id="acceptance-java-hash-collection-stability"></a>3 | 以實際 Java 雜湊集合核對鍵或元素的查找、去重及移除；需要變更比較依據時，驗證先移出、修改再加入的結果及重複處置。 |
+| <a id="acceptance-java-hash-collection-stability"></a>3 | 以實際 Java 雜湊集合核對鍵或元素的查找、去重及移除；確認在集合內比較依據保持穩定。需要變更比較依據時，驗證先移出、修改再加入的結果及重複處置。 |
 | <a id="acceptance-java-cross-type-equality"></a>5 | 對允許繼承的 Java 型別，以父子型別及必要的多物件組合驗證 `equals()` 的對稱、遞移與 `hashCode()` 契約；比較涉及框架代理時，經實際代理路徑驗證。 |
 | <a id="acceptance-java-ordering-choice"></a>6 | 審查 Java 型別採 `Comparable` 或用途明確的 `Comparator` 是否符合自然順序或情境排序的契約。 |
 | <a id="acceptance-java-comparator-relations"></a>7 | 驗證 Java 比較器的方向、同值與遞移關係，以及同次排序比較依據的穩定性；涵蓋適用的極端數值，確認不以相減造成溢位或精度損失及錯誤順序。 |

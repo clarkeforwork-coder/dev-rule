@@ -27,21 +27,23 @@
 
 ## 驗收要求
 
-依變更影響與實際使用路徑選擇案例，測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
 ### 共同驗收
 
-- [專屬型別](../../../coding/domain-modeling.md#acceptance-value-validity)。
-- [不可變性](../../../coding/domain-modeling.md#acceptance-value-3)。
-- [正規化規則](../../../coding/domain-modeling.md#acceptance-value-5)。
-- [運算責任](../../../coding/domain-modeling.md#acceptance-value-6)。
-- [資料還原](../../../coding/domain-modeling.md#acceptance-value-7)。
+- [不可變性](../../../coding/domain-modeling.md#acceptance-value-immutability)。
+- [正規化規則](../../../coding/domain-modeling.md#acceptance-value-normalization)。
+- [運算責任](../../../coding/domain-modeling.md#acceptance-value-operations)。
+- [資料還原](../../../coding/domain-modeling.md#acceptance-value-restoration)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
+| <a id="acceptance-java-value-validity"></a>1、2 | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |
 | <a id="acceptance-java-final-references"></a>3 | 檢查 final 欄位仍可能指向可變內容的路徑；不得以欄位修飾詞作為不可變性證據。 |
 | <a id="acceptance-java-value-equality"></a>4 | 驗證不同實例的相等值及具代表性的不相等值，相等物件的雜湊值須相同。適用時確認作為集合元素或映射鍵的行為符合契約，不要求不相等物件一定具有不同雜湊值。 |
 | <a id="acceptance-java-generated-representation"></a>8、9 | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |
-| <a id="acceptance-java-value-method-coverage"></a>10 | 核對 Java 值物件的 equals()、hashCode()、record 產生方法與還原路徑涵蓋受影響的業務保證與失效邊界，不以只有建立成功代替驗收；不要求無業務邏輯的存取方法逐一測試。 |
+| <a id="acceptance-java-value-method-coverage"></a>10 | 核對測試涵蓋受影響的業務保證與失效邊界，不以只有建立成功的案例代替驗收，也不要求無業務邏輯的存取方法逐一測試。Java 的 equals()、hashCode()、record 產生方法與還原路徑均納入適用案例。 |
+
+既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)辦理，不因工具或框架產生物件而自行豁免。

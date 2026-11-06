@@ -22,16 +22,16 @@
 
 | 片段 ID | 基準原文 | 現行唯一主要來源 |
 | --- | --- | --- |
-| NT-1、2-1 | 核對型別、來源、單位與精度要求，驗證合法及非法格式、範圍與小數位數。確認精確數值未先經浮點數轉換；近似計算有明確容許誤差。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-data-1-2) |
-| NT-3、4-1 | 驗證捨入邊界、套用階段及適用的極端值，核對累加、乘法、除法與縮小型別的結果，超限或不允許的精度損失須明確回報，不默默截斷或回繞。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-data-3-4) |
-| NT-6、7、8-1 | 核對時間型別與業務意義，驗證適用的月底、閏日、時區切換、不存在或重複當地時間，以及日曆間隔與固定時間長度的差異。業務日期涉及假日時另驗證其規則。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-data-6-7-8) |
-| NT-10-1 | 驗證合法格式、不合法日期、多餘尾端內容與精度縮減；核對適用的地區、時區及偏移設定，不以環境預設決定結果。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-data-10) |
-| NT-11、12、13-1 | 以適用的多位元組字元、表情符號、組合字元、無效編碼及地區差異驗證編解碼、長度、截取與比較。確認未切斷必要字元單位，也未透過未授權正規化改寫或合併識別值。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-data-11-12-13) |
-| NT-14-1 | 檢查案例涵蓋變更影響的邊界與環境條件，並經實際儲存、傳輸或格式化路徑確認值與語意仍符合契約，不僅測試工具函式的一般輸入。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-data-14) |
+| NT-1、2-1 | 核對型別、來源、單位與精度要求，驗證合法及非法格式、範圍與小數位數。確認精確數值未先經浮點數轉換；近似計算有明確容許誤差。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-numeric-sources) |
+| NT-3、4-1 | 驗證捨入邊界、套用階段及適用的極端值，核對累加、乘法、除法與縮小型別的結果，超限或不允許的精度損失須明確回報，不默默截斷或回繞。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-numeric-range-rounding) |
+| NT-6、7、8-1 | 核對時間型別與業務意義，驗證適用的月底、閏日、時區切換、不存在或重複當地時間，以及日曆間隔與固定時間長度的差異。業務日期涉及假日時另驗證其規則。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-temporal-semantics) |
+| NT-10-1 | 驗證合法格式、不合法日期、多餘尾端內容與精度縮減；核對適用的地區、時區及偏移設定，不以環境預設決定結果。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-temporal-format) |
+| NT-11、12、13-1 | 以適用的多位元組字元、表情符號、組合字元、無效編碼及地區差異驗證編解碼、長度、截取與比較。確認未切斷必要字元單位，也未透過未授權正規化改寫或合併識別值。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-text-semantics) |
+| NT-14-1 | 檢查案例涵蓋變更影響的邊界與環境條件，並經實際儲存、傳輸或格式化路徑確認值與語意仍符合契約，不僅測試工具函式的一般輸入。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-data-boundaries) |
 | NT-5-1 | 以數值相同但小數位數不同及其他代表性資料，確認比較、正規化、雜湊與集合判同符合契約。 | [主要驗收](../rules/stacks/java/common/numbers-dates-text.md#acceptance-java-decimal-equivalence) |
 | NT-9-1 | 以可控制的 `Clock` 驗證邊界前、當下與之後， | [主要驗收](../rules/stacks/java/common/numbers-dates-text.md#acceptance-java-clock-injection) |
 | NT-9-2 | 確認需要一致判斷的流程共用基準。核對耗時與等待期限使用單調時間來源，沒有以系統日期時間差代替。 | [主要驗收](../rules/coding/numbers-dates-text.md#acceptance-time-source) |
-| LS-1、2-1 | 審查流程意圖與責任是否清楚，複雜邏輯有合適表達； | [主要驗收](../rules/quality/rule-verification.md#審查清單) |
+| LS-1、2-1 | 審查流程意圖與責任是否清楚，複雜邏輯有合適表達； | [主要驗收](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-lambda-types) |
 | LS-1、2-2 | 檢查 Lambda 參數明確標註、泛型資訊完整，方法參考可辨識目標與用途，不以縮短行數作為採用依據。 | [主要驗收](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-lambda-types) |
 | LS-3、4-1 | 審查中間操作及呼叫方法，確認沒有隱藏業務副作用或修改外部狀態。必要執行步驟的順序、失敗及部分完成有明確契約，跨元素狀態有管理責任。 | [主要驗收](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-stream-side-effects) |
 | LS-5-1 | 以空資料、單筆、多筆及會短路的案例核對實際處理範圍，確認完整驗證或必要工作沒有因延遲與短路而遺漏，不把建立流程視為完成。 | [主要驗收](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-stream-short-circuit) |
@@ -43,9 +43,9 @@
 | LS-9-1 | 核對 Stream 的建立與消費路徑，沒有重用或共用消費；重複取得資料時依契約驗證快照或最新資料語意。 | [主要驗收](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-stream-consumption) |
 | LS-9-2 | 外部資源在實際使用期間有效，完成、提前停止及失敗後正確釋放。 | [主要驗收](../rules/coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime) |
 | ND-1、2-1 | 自動檢查適用的命名形式與團隊縮寫慣例， | [主要驗收](../rules/stacks/java/common/naming-packages-docs.md#acceptance-java-naming-form) |
-| ND-1、2-2 | 人工從使用處核對名稱與實際責任一致。 | [主要驗收](../rules/quality/rule-verification.md#審查清單) |
+| ND-1、2-2 | 人工從使用處核對名稱與實際責任一致。 | [主要驗收](../rules/stacks/java/common/naming-packages-docs.md#acceptance-java-naming-form) |
 | ND-1、2-3 | 確認未將所有 `final` 欄位機械式視為常數， | [主要驗收](../rules/stacks/java/common/naming-packages-docs.md#acceptance-java-naming-form) |
-| ND-1、2-4 | 也未用籠統後綴掩蓋不同用途。 | [主要驗收](../rules/quality/rule-verification.md#審查清單) |
+| ND-1、2-4 | 也未用籠統後綴掩蓋不同用途。 | [主要驗收](../rules/stacks/java/common/naming-packages-docs.md#acceptance-java-naming-form) |
 | ND-3-1 | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 | [主要驗收](../rules/stacks/java/common/naming-packages-docs.md#acceptance-java-package-boundaries) |
 | ND-6-1 | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 | [主要驗收](../rules/stacks/java/common/naming-packages-docs.md#acceptance-java-rename-paths) |
 | ND-4、5-1 | 比對文件、註解與實際行為，確認使用端所需契約完整，理由與限制仍有效，暫時性處理有可追蹤事項。移除過時說明，避免僅重述名稱或複製多份契約。 | [主要驗收](../rules/coding/code-design.md#acceptance-document-contract) |
@@ -55,3 +55,7 @@
 ## 驗證方式
 
 執行 `ruby scripts/verify-acceptance.rb`、`ruby scripts/verify-acceptance.rb --batch 5 --baseline 0186c6adfce282cbf180207d9ec60833e5c66ce7` 及 `git diff --check`。重現歷史差異時加上 `--target` 指定本批完成提交；常駐檢查不使用歷史範圍限制。
+
+## 獨立審閱後的重現方式
+
+上文保留當批執行紀錄；舊提交沒有逐句差異與已改寫清單，不能用修正後檢查器回報通過。現行追溯檢查：`ruby scripts/verify-acceptance.rb --batch 5 --trace-only`；基準自本文讀取。常駐檢查預設同時執行五批追溯與全檔保護；`--target` 的全部讀取及統計皆來自指定提交，不混入工作區。精確差異與改寫理由見 [檢查差異清單](acceptance-check-policy.json)、[已改寫片段清單](acceptance-rewritten-fragments.json)及[審閱修正紀錄](review-remediation.md)。

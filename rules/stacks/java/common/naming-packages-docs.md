@@ -21,19 +21,22 @@
 
 ## 驗收要求
 
-依變更影響與實際使用路徑選擇案例，測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
 ### 共同驗收
 
-- [審查清單](../../../quality/rule-verification.md#審查清單)。
-- [實作註解與暫時處理](../../../coding/code-design.md#acceptance-document-contract)。
+- [註解與公開文件、實作註解與暫時處理](../../../coding/code-design.md#acceptance-document-contract)。
 - [形式與語意分別驗收](../../../quality/rule-verification.md#acceptance-document-verification)。
+- [審查清單](../../../quality/rule-verification.md#審查清單)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-naming-form"></a>1、2 | 自動檢查適用的命名形式與團隊縮寫慣例，確認未將所有 `final` 欄位機械式視為常數。 |
+| <a id="acceptance-java-naming-form"></a>1、2 | 自動檢查適用的命名形式與團隊縮寫慣例，人工從使用處核對名稱與實際責任一致。確認未將所有 `final` 欄位機械式視為常數，也未用籠統後綴掩蓋不同用途。 |
 | <a id="acceptance-java-package-boundaries"></a>3 | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 |
+| <a id="acceptance-java-javadoc-contract"></a>4 | 核對供使用端依賴的類別與方法優先以 Javadoc 就近維護必要契約，或明確引用既有權威契約；確認 Javadoc 與實際前置條件、結果、失敗、副作用及適用生命週期一致。 |
 | <a id="acceptance-java-rename-paths"></a>6 | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |
 | <a id="acceptance-java-javadoc-examples"></a>7 | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |
+
+既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

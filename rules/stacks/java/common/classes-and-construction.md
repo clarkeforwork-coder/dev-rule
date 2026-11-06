@@ -27,9 +27,20 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[介面用途](../../../quality/rule-verification.md#acceptance-interface-purpose)、[可替代性](../../../coding/code-design.md#acceptance-substitutability)、[建立與就緒](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)、[依賴取得](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)、[建立入口](../../../coding/code-design.md#acceptance-construction-entrypoints)、[介面能力](../../../coding/code-design.md#acceptance-interface-capabilities)、[共享生命週期](../../../coding/resource-lifecycle.md#acceptance-shared-lifecycle)、[生命週期覆蓋](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
-下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+### 共同驗收
+
+- [介面與抽象](../../../quality/rule-verification.md#acceptance-interface-purpose)。
+- [繼承的可替代性](../../../coding/code-design.md#acceptance-substitutability)。
+- [必要資料與依賴齊備](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)。
+- [明確取得依賴](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)。
+- [依需求選擇建立方式](../../../coding/code-design.md#acceptance-construction-entrypoints)。
+- [介面的能力劃分](../../../coding/code-design.md#acceptance-interface-capabilities)。
+- [生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#acceptance-shared-lifecycle)。
+- [契約與生命週期驗收](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。
+
+### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |

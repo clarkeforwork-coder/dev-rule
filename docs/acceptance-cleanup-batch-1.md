@@ -95,3 +95,7 @@
 重現機械檢查：在儲存庫根目錄執行 `ruby scripts/verify-acceptance.rb --batch 1 --baseline 6f7ae5d --target e8d32e7`。腳本對照上述固定基準，核對本批範圍、逐字重複、原文片段覆蓋、正文未變及本地連結；語意與範圍是否合理仍須人工審查。後續正文重整會有意改變本批「正文未變」條件，屆時應另建批次基準與檢查，不能把這份歷史批次檢查當作永久全站門檻。
 
 常駐檢查：`ruby scripts/verify-acceptance.rb`。批次差異以 `--target` 指定歷史受驗提交；省略時檢查工作區。歷史批次的範圍限制不套用到後續提交。
+
+## 獨立審閱後的重現方式
+
+上文保留當批執行紀錄；舊提交沒有逐句差異與已改寫清單，不能用修正後檢查器回報通過。現行追溯檢查：`ruby scripts/verify-acceptance.rb --batch 1 --trace-only`；基準自本文讀取。常駐檢查預設同時執行五批追溯與全檔保護；`--target` 的全部讀取及統計皆來自指定提交，不混入工作區。精確差異與改寫理由見 [檢查差異清單](acceptance-check-policy.json)、[已改寫片段清單](acceptance-rewritten-fragments.json)及[審閱修正紀錄](review-remediation.md)。

@@ -32,11 +32,20 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[工作所有權](../../../coding/concurrency-and-async.md#acceptance-task-ownership)、[執行資源與阻塞](../../../coding/concurrency-and-async.md#acceptance-execution-resources)、[期限與取消](../../../coding/concurrency-and-async.md#acceptance-deadline-cancellation)、[工作組合](../../../coding/concurrency-and-async.md#acceptance-task-composition)、[脈絡隔離](../../../coding/concurrency-and-async.md#acceptance-context-isolation)、[鎖定範圍](../../../coding/concurrency-and-async.md#acceptance-lock-scope)、[受控關閉](../../../coding/resource-lifecycle.md#acceptance-controlled-shutdown)、[受控交錯](../../../quality/testing.md#acceptance-controlled-interleaving)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
-依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
+### 共同驗收
 
-下表只保留 Java 的語言機制驗收。
+- [明確的工作擁有者](../../../coding/concurrency-and-async.md#acceptance-task-ownership)。
+- [統一管理執行資源、執行位置與阻塞行為](../../../coding/concurrency-and-async.md#acceptance-execution-resources)。
+- [等待期限與逾時處置、取消傳遞與實際停止](../../../coding/concurrency-and-async.md#acceptance-deadline-cancellation)。
+- [多工作組合的完成條件](../../../coding/concurrency-and-async.md#acceptance-task-composition)。
+- [明確傳遞與清理脈絡](../../../coding/concurrency-and-async.md#acceptance-context-isolation)。
+- [鎖定範圍與取得策略](../../../coding/concurrency-and-async.md#acceptance-lock-scope)。
+- [受控關閉](../../../coding/resource-lifecycle.md#acceptance-controlled-shutdown)。
+- [可控制的併發驗收](../../../quality/testing.md#acceptance-controlled-interleaving)。
+
+### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |

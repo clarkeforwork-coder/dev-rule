@@ -27,20 +27,21 @@
 
 ## 驗收要求
 
-依變更影響與實際使用路徑選擇案例，測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
 ### 共同驗收
 
-- [狀態建模](../../../coding/domain-modeling.md#acceptance-state-data)。
-- [狀態建模](../../../coding/domain-modeling.md#acceptance-state-transition)。
-- [結果與目前狀態分開表達、失敗分類](../../../coding/domain-modeling.md#acceptance-state-4-5)。
-- [處理完整性、封閉或允許擴充](../../../coding/domain-modeling.md#acceptance-state-6-8)。
-- [結果保留當時事實](../../../coding/domain-modeling.md#acceptance-state-9)。
-- [模型驗收](../../../coding/domain-modeling.md#acceptance-state-10)。
+- [結果與目前狀態分開表達](../../../coding/domain-modeling.md#acceptance-operation-results)。
+- [處理完整性、封閉或允許擴充](../../../coding/domain-modeling.md#acceptance-model-extensibility)。
+- [結果保留當時事實](../../../coding/domain-modeling.md#acceptance-result-facts)。
+- [模型驗收](../../../coding/domain-modeling.md#acceptance-model-coverage)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-independent-state-models"></a>1、2 | 審查不同業務面向分別建模並明訂相互限制，例如付款與配送狀態未被強行合併。 |
+| <a id="acceptance-java-independent-state-models"></a>1、2 | 審查互斥狀態與獨立業務面向是否正確分開，必要資料是否由對應型別保護。確認不能建立契約禁止的狀態與資料組合，不以僅存在狀態碼作為符合依據。 |
+| <a id="acceptance-java-state-transition"></a>3 | 驗證允許與不允許的來源狀態、前置條件及轉換後資料。確認公開介面沒有可繞過規則的任意設定路徑，拒絕時未產生不應發生的副作用。 |
 | <a id="acceptance-java-enum-codes"></a>7 | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |
+
+既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不因版本或工具限制自行降低要求。

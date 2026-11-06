@@ -1,187 +1,195 @@
 # frozen_string_literal: true
-# 常駐結構檢查；--batch 搭配 --baseline、--target 執行批次差異檢查。
 require 'open3'
 require 'pathname'
 require 'json'
 require 'optparse'
+require 'tmpdir'
 
 Dir.chdir(File.expand_path('..', __dir__))
 options = {}
-OptionParser.new do |parser|
-  parser.banner = '用法：ruby scripts/verify-acceptance.rb [--batch N --baseline COMMIT [--target COMMIT]]'
-  parser.on('--batch N', Integer) { |v| options[:batch] = v }
-  parser.on('--trace-only') { options[:trace_only] = true }
-  parser.on('--baseline COMMIT') { |v| options[:baseline] = v }
-  parser.on('--rules-baseline COMMIT') { |v| options[:rules_baseline] = v }
-  parser.on('--target COMMIT') { |v| options[:target] = v }
+OptionParser.new do |p|
+  p.on('--batch N', Integer) { |v| options[:batch] = v }
+  p.on('--baseline COMMIT') { |v| options[:baseline] = v }
+  p.on('--rules-baseline COMMIT') { |v| options[:rules_baseline] = v }
+  p.on('--target COMMIT') { |v| options[:target] = v }
+  p.on('--trace-only') { options[:trace_only] = true }
+  p.on('--check-scope') { options[:check_scope] = true }
 end.parse!
-abort('批次檢查須同時指定 --batch 與 --baseline') if !!options[:batch] != !!options[:baseline]
-abort('--target 僅用於批次檢查') if options[:target] && !options[:batch]
-abort('--trace-only 須搭配 --batch 與 --baseline') if options[:trace_only] && !options[:batch]
-manifest = JSON.parse(File.read('scripts/acceptance-batches.json'))
-completed = manifest.values.flat_map { |b| b.fetch('files').values }.uniq
-scope = completed.map { |s| "rules/stacks/java/common/#{s}.md" }
-errors = []
+abort('--check-scope 須指定 --batch，且不能與 --trace-only 併用') if options[:check_scope] && (!options[:batch] || options[:trace_only])
+# --target 的所有檔案及數字都來自該提交，執行的是目前這支檢查器。
+if options[:target]
+  target = options.delete(:target)
+  Dir.mktmpdir('acceptance-target-') do |dir|
+    archive, status = Open3.capture2('git', 'archive', target)
+    abort('無法匯出目標提交') unless status.success?
+    _, status = Open3.capture2('tar', '-x', '-C', dir, stdin_data: archive)
+    abort('無法解開目標提交') unless status.success?
+    env = {'ACCEPTANCE_ROOT'=>dir, 'ACCEPTANCE_GIT_DIR'=>File.expand_path(`git rev-parse --git-common-dir`.strip), 'ACCEPTANCE_SOURCE'=>target}
+    args = options.flat_map { |k,v| v == true ? ["--#{k.to_s.tr('_','-')}"] : ["--#{k.to_s.tr('_','-')}",v.to_s] }
+    output, status = Open3.capture2e(env, 'ruby', File.expand_path(__FILE__), *args)
+    puts output
+    exit status.exitstatus
+  end
+end
+Dir.chdir(ENV.fetch('ACCEPTANCE_ROOT', Dir.pwd))
 def original(commit, path)
-  output, status = Open3.capture2('git', 'show', "#{commit}:#{path}")
-  raise "Cannot read #{path}" unless status.success?
+  args = ['git']
+  args << "--git-dir=#{ENV['ACCEPTANCE_GIT_DIR']}" if ENV['ACCEPTANCE_GIT_DIR']
+  output, status = Open3.capture2e(*args, 'show', "#{commit}:#{path}")
+  raise "無法讀取 #{commit}:#{path}" unless status.success?
   output
 end
 def normalize(text)
   text.gsub(/<[^>]*>/, '').gsub(/\[([^\]]+)\]\([^)]+\)/, '\1').delete('`*_').gsub(/\s+/, '')
 end
-def tests(body)
+def visible_markdown(text)
+  fence = nil
+  text.lines.map do |line|
+    if (m = line.match(/^\s*(`{3,}|~{3,})/))
+      fence = fence ? nil : m[1]
+      "\n"
+    else
+      fence ? "\n" : line
+    end
+  end.join
+end
+def row_content(line)
+  m = line.match(/^\| (.+) \| (.+) \|\s*$/)
+  m && !m[1].start_with?('---') ? m[2] : nil
+end
+def acceptance_rows(body)
   active = false
   body.lines.map do |line|
     if line.match?(/^\| (?:契約|對應決策|Java 條文) \| (?:驗收內容|語言增量驗收) \|/)
-      active = true
-      nil
-    elsif active && line.start_with?('|') && !line.start_with?('| ---')
-      line.split(' | ', 3).last.sub(/ \|\s*$/, '')
-    else
-      active = false unless line.start_with?('|')
-      nil
+      active = true; next
     end
+    active = false unless line.start_with?('|')
+    row_content(line) if active
   end.compact
 end
-
-# 規則正文抽取只排除明確的驗收區；編輯性刪文依複核紀錄列管。
-def rule_body(path, text)
-  editorial = ['條號保留供既有決策與驗收追蹤，不代表引用條目另有一套政策。', '以下保留本輪決策的確認順序。']
-  editorial.each { |phrase| text = text.gsub(phrase, '') }
-  return text.split('## 驗收要求').first if path.include?('/stacks/java/common/')
-  acceptance = /\A(?:補充契約驗收|契約驗收|驗收要求|多步驟失敗驗收|介面用途驗收)\z/
-  skip_level = nil
-  result = []
-  text.lines.each do |line|
-    if (heading = line.match(/^(\#{1,6}) (.+)$/))
-      level = heading[1].size
-      skip_level = nil if skip_level && level <= skip_level
-      skip_level = level if heading[2].match?(acceptance)
-    end
-    next if skip_level
-    next if line.match?(/^<a id="acceptance-/)
-    # 共通既有驗收段落的補充，不是新增規則正文。
-    next if line.start_with?('需要區分更新意圖時，從實際接收入口')
-    result << line
-  end
-  result.join.gsub(/\n{3,}/, "\n\n").strip
+def destination(uri)
+  path, anchor = uri.split('#',2)
+  path = Pathname.new(File.join('docs',path)).cleanpath.to_s
+  return nil unless anchor && File.file?(path)
+  lines = File.readlines(path)
+  idx = lines.index { |l| l.include?(%(<a id="#{anchor}"></a>)) }
+  return nil unless idx
+  return row_content(lines[idx]) if lines[idx].start_with?('|')
+  # 獨立錨點只對應緊接的一段，不能用整節掩蓋指錯位置。
+  tail = lines[idx].sub(/.*?<\/a>/,'').strip
+  return tail unless tail.empty?
+  rest = lines[(idx+1)..].drop_while { |l| l.strip.empty? }
+  rest.take_while { |l| !l.strip.empty? }.join.strip
 end
-
-files = Dir.glob('**/*.md').reject { |p| p.start_with?('.git/') }.sort
-common = Dir.glob('rules/**/*.md').reject { |p| p.include?('/stacks/') }
-common_tests = common.flat_map { |p| tests(File.read(p)).map { |t| normalize(t) } }
-duplicates = scope.flat_map do |p|
-  tests(File.read(p)).select { |t| common_tests.include?(normalize(t)) }.map { |t| [p, t] }
-end
-errors << "Scoped duplicate acceptance: #{duplicates}" unless duplicates.empty?
-
-trace = []
-row_count = 0
-if options[:batch]
-  batch = manifest.fetch(options[:batch].to_s)
-  baseline = options[:baseline]
-  read_target = ->(p) { options[:target] ? original(options[:target], p) : File.read(p) }
-  batch_scope = batch.fetch('files').values.map { |s| "rules/stacks/java/common/#{s}.md" }
-  unless options[:trace_only]
-    Dir.glob('rules/stacks/java/common/*.md').each do |p|
-      old = original(baseline, p)
-      now = read_target.call(p)
-      errors << "Java rule body changed #{p}" unless old.split('## 驗收要求').first == now.split('## 驗收要求').first
-      errors << "Out of scope Java change #{p}" if !batch_scope.include?(p) && old != now
-    end
-    common.each do |p|
-      old = original(baseline, p)
-      now = read_target.call(p)
-      if p == 'rules/quality/rule-verification.md'
-        old.split(/\n\s*\n/).each do |block|
-          next if block.start_with?('|', '#', '<a ')
-          errors << "Common prose removed/changed #{p}: #{block[0,50]}" unless now.include?(block)
-        end
-      else
-        errors << "Common rule body changed #{p}" unless rule_body(p, old) == rule_body(p, now)
-      end
-
-    end
+errors=[]
+policy_path='docs/acceptance-check-policy.json'
+abort('此受驗版本沒有逐句差異清單；不可用新檢查器宣稱舊版本通過') unless File.file?(policy_path)
+policy=JSON.parse(File.read(policy_path))
+base=options[:rules_baseline] || policy.fetch('baseline')
+git_args = ['git']
+git_args << "--git-dir=#{ENV['ACCEPTANCE_GIT_DIR']}" if ENV['ACCEPTANCE_GIT_DIR']
+resolve = ->(ref) { value, status = Open3.capture2e(*git_args, 'rev-parse', '--verify', "#{ref}^{commit}"); status.success? ? value.strip : nil }
+abort('正文基準與逐句差異清單不一致') unless resolve.call(base) && resolve.call(base) == resolve.call(policy.fetch('baseline'))
+manifest=JSON.parse(File.read('scripts/acceptance-batches.json'))
+paths=Dir.glob('rules/**/*').select { |p| File.file?(p) }.sort
+base_paths_args=['git'];base_paths_args<<"--git-dir=#{ENV['ACCEPTANCE_GIT_DIR']}" if ENV['ACCEPTANCE_GIT_DIR']
+base_paths,status=Open3.capture2(*base_paths_args,'ls-tree','-r','--name-only',base,'rules')
+expected_paths=base_paths.lines.map(&:strip).sort
+errors << 'Rules file inventory changed' unless paths==expected_paths
+preserved=0
+paths.each do |path|
+  source=original(base,path).lines.map(&:chomp)
+  edits=policy.fetch('changes').select{|c| c['path']==path}.sort_by{|c| c['baseline_line']}
+  expected=[];cursor=0
+  edits.each do |edit|
+    pos=edit.fetch('baseline_line')-1; removed=edit.fetch('remove')
+    errors << "Invalid approved edit #{path}:#{pos+1}" unless pos>=cursor && source[pos,removed.size]==removed && !edit.fetch('reason').empty?
+    expected.concat(source[cursor...pos]);expected.concat(edit.fetch('insert'));cursor=pos+removed.size
   end
-  report = read_target.call("docs/acceptance-cleanup-batch-#{options[:batch]}.md")
-  trace = report.lines.map { |l| l.match(/^\| ([A-Z]+-[\d、]+-\d+) \| (.+) \| \[主要驗收\]\(([^)]+)\) \|/) }.compact
-  errors << 'Duplicate trace IDs' unless trace.map { |m| m[1] }.uniq.size == trace.size
-  expected_ids = []
-  batch.fetch('files').each do |prefix, slug|
-    original(baseline, "rules/stacks/java/common/#{slug}.md").lines.each do |line|
-      m = line.match(/^\| ([\d、]+) \| (.+) \|\s*$/)
-      next unless m
-      row_count += 1
-      pieces = trace.select { |r| r[1].match?(/\A#{prefix}-#{Regexp.escape(m[1])}-\d+\z/) }
-      expected_ids.concat(pieces.map { |r| r[1] })
-      errors << "Missing/changed original fragments #{prefix}-#{m[1]}" unless pieces.map { |r| r[2] }.join == m[2]
-    end
-  end
-  errors << 'Unexpected trace fragments' unless expected_ids.sort == trace.map { |r| r[1] }.sort
-end
-
-if options[:rules_baseline]
-  Dir.glob('rules/**/*.md').each do |p|
-    next if p.end_with?('/README.md')
-    old = original(options[:rules_baseline], p)
-    now = File.read(p)
-    if p == 'rules/quality/rule-verification.md'
-      # 此檔交錯編排政策與驗收；保護政策段落，驗收章節允許歸位。
-      protected_sections = ['共同把關', '測試程式碼', '動態限制與文件驗證',
-        '檢查配置可重現', '實際執行範圍', '檢查設定本身的有效性',
-        '證據版本與快取有效性', '結果分類與安全診斷', '合併門檻實際有效']
-      protected_sections.each do |title|
-        extract = lambda do |body|
-          body.split(/^## #{Regexp.escape(title)}\n/, 2).last.to_s.split(/^## /).first.to_s
-            .gsub(/^<a id="[^"]+"><\/a>\n/, '').split(/^驗收：/).first.to_s.strip
-        end
-        errors << "Rule policy changed #{p}: #{title}" unless extract.call(old) == extract.call(now)
-      end
+  expected.concat(source[cursor..]); actual=File.readlines(path).map(&:chomp)
+  i=0;active=false
+  actual.each_with_index do |line,n|
+    if line==expected[i]
+      i+=1;preserved+=1
+      active=true if line.match?(/^\| (?:契約|對應決策|Java 條文) \| (?:驗收內容|語言增量驗收) \|/)
+      active=false unless line.start_with?('|')
+    elsif active && row_content(line) && row_content(line).size>8 && line.include?('acceptance-')
+      # 允許在既有驗收表增加完整列；不能刪除或改寫已核對列。
     else
-      errors << "Rule body changed #{p}" unless rule_body(p, old) == rule_body(p, now)
+      errors << "Protected rule text changed #{path}:#{n+1}: #{line}"
+      break
     end
   end
+  errors << "Protected rule text missing #{path}: #{expected[i]}" if i<expected.size
+  acceptance_rows(actual.join("\n")).each { |t| errors << "Empty acceptance #{path}" if t.strip.size<9 }
 end
-
-# 檢查所有 Markdown 的檔案及章節，包括行內的驗收錨點。
-anchors = {}
-files.each do |p|
-  body = File.read(p)
-  explicit = body.scan(/<a id="([^"]+)"/).flatten
-  errors << "Duplicate anchor #{p}" unless explicit.uniq == explicit
-  counts = Hash.new(0)
-  implicit = body.scan(/^\#{1,6}\s+(.+)$/).flatten.map do |title|
-    slug = title.downcase.gsub(/[\p{P}\p{S}&&[^_-]]/, '').gsub(/\s/, '-')
-    n = counts[slug]; counts[slug] += 1
-    n.zero? ? slug : "#{slug}-#{n}"
+common=paths.reject{|p| p.include?('/stacks/')}
+scope=manifest.values.flat_map{|b|b.fetch('files').values}.uniq.map{|s|"rules/stacks/java/common/#{s}.md"}
+common_tests=common.flat_map{|p| acceptance_rows(File.read(p)).map{|t|normalize(t)}}
+duplicates=scope.flat_map{|p| acceptance_rows(File.read(p)).select{|t|common_tests.include?(normalize(t))}.map{|t|[p,t]}}
+errors << "Scoped duplicate acceptance: #{duplicates}" unless duplicates.empty?
+rewrites=JSON.parse(File.read('docs/acceptance-rewritten-fragments.json'))
+batches=options[:batch] ? [options[:batch].to_s] : manifest.keys
+stats=[]
+batches.each do |n|
+  report="docs/acceptance-cleanup-batch-#{n}.md"
+  body=File.read(report)
+  baseline=options[:baseline] || body[/基準提交：`([^`]+)`/,1]
+  if options[:check_scope]
+    batch_paths = manifest.fetch(n).fetch('files').values.map { |slug| "rules/stacks/java/common/#{slug}.md" }
+    scope.each do |path|
+      old = original(baseline, path)
+      current = File.read(path)
+      errors << "Out of scope Java change #{path}" if !batch_paths.include?(path) && old != current
+      errors << "Batch Java body changed #{path}" unless old.split('## 驗收要求').first == current.split('## 驗收要求').first
+    end
   end
-  anchors[p] = explicit + implicit
-  errors << "Colliding explicit/heading anchor #{p}" unless anchors[p].uniq == anchors[p]
-end
-links = 0
-files.each do |p|
-  File.read(p).scan(/\]\(([^\s)]+)\)/).flatten.each do |uri|
-    next if uri.match?(/\A(?:https?:|mailto:)/)
-    links += 1
-    file, fragment = uri.split('#', 2)
-    target = file.empty? ? p : Pathname.new(File.join(File.dirname(p), file)).cleanpath.to_s
-    errors << "Missing file #{p}: #{uri}" unless File.file?(target)
-    errors << "Missing fragment #{p}: #{uri}" if fragment && anchors.key?(target) && !anchors[target].include?(fragment)
+  traces=body.lines.map{|l| l.match(/^\| ([A-Z]+-[\d、]+-\d+) \| (.+) \| \[主要驗收\]\(([^)]+)\) \|\s*$/)}.compact
+  malformed=body.lines.select{|l|l.match?(/^\| [A-Z]+-/) && !traces.any?{|m|m[0]==l}}
+  errors << "Malformed trace rows batch #{n}" unless malformed.empty?
+  errors << "Duplicate trace IDs batch #{n}" unless traces.map{|m|m[1]}.uniq.size==traces.size
+  expected_ids=[];rows=0;verbatim=0;rewritten=0
+  manifest.fetch(n).fetch('files').each do |prefix,slug|
+    original(baseline,"rules/stacks/java/common/#{slug}.md").lines.each do |line|
+      m=line.match(/^\| ([\d、]+) \| (.+) \|\s*$/);next unless m
+      rows+=1
+      pieces=traces.select{|r|r[1].match?(/\A#{prefix}-#{Regexp.escape(m[1])}-\d+\z/)}
+      expected_ids.concat(pieces.map{|r|r[1]})
+      errors << "Missing/changed original fragments #{prefix}-#{m[1]}" unless pieces.map{|r|r[2]}.join==m[2] && pieces.map{|r|r[1].split('-').last.to_i}==(1..pieces.size).to_a
+    end
   end
+  errors << "Unexpected trace fragments batch #{n}" unless expected_ids.sort==traces.map{|r|r[1]}.sort
+  traces.each do |m|
+    text=destination(m[3])
+    if text && text.include?(m[2]);verbatim+=1;next;end
+    entry=rewrites.find{|r|r['batch']==n && r['id']==m[1]}
+    if entry && entry['original']==m[2] && entry['target']==m[3] && text && text.include?(entry['replacement']) && !entry['replacement'].empty? && !entry['reason'].empty?
+      rewritten+=1
+    else
+      errors << "Trace fragment absent from destination #{m[1]}: #{m[3]}"
+    end
+  end
+  stats << {batch:n.to_i,baseline:baseline,original_rows:rows,verbatim_fragments:verbatim,listed_rewritten_fragments:rewritten}
 end
-
-# 全站數字用於顯示剩餘工作，不能把本批零重複宣稱為全部完成。
-all_java = Dir.glob('rules/stacks/java/common/*.md').flat_map { |p| tests(File.read(p)).map { |t| normalize(t) } }
-remaining = common_tests.count { |t| all_java.include?(t) }
-abort(errors.join("\n")) unless errors.empty?
-result = {completed_java_files: scope.size, completed_duplicate_rows: duplicates.size,
-  checked_local_links: links, remaining_global_duplicate_common_rows: remaining}
-result[:rules_baseline] = options[:rules_baseline] if options[:rules_baseline]
-result[:rule_body_unchanged] = true if options[:rules_baseline]
-if options[:batch]
-  result.merge!(batch: options[:batch], baseline: baseline, target: options[:target] || 'working-tree',
-    original_acceptance_rows: row_count, traced_fragments: trace.size, trace_only: !!options[:trace_only])
-  result[:rule_body_unchanged] = true unless options[:trace_only]
+# 只檢查儲存庫列管的 Markdown 與新增 docs/rules；不讀未提交的審閱報告。
+files=(Dir.glob('{rules,docs}/**/*.md')+['README.md']).select{|p|File.file?(p)}.sort
+anchors={}
+files.each do |p|
+ body=visible_markdown(File.read(p));explicit=body.scan(/<a id="([^"]+)"/).flatten;counts=Hash.new(0)
+ implicit=body.scan(/^\#{1,6}\s+(.+)$/).flatten.map do |title|
+  slug=title.downcase.gsub(/[\p{P}\p{S}&&[^_-]]/,'').gsub(/\s/,'-');n=counts[slug];counts[slug]+=1;n.zero? ? slug : "#{slug}-#{n}"
+ end
+ anchors[p]=explicit+implicit
+ errors << "Duplicate/colliding anchor #{p}" unless anchors[p].uniq==anchors[p]
 end
-puts JSON.pretty_generate(result)
+links=0
+files.each do |p|
+ visible_markdown(File.read(p)).scan(/\]\(([^\s)]+)\)/).flatten.each do |uri|
+  next if uri.match?(/\A(?:https?:|mailto:)/)
+  links+=1;file,fragment=uri.split('#',2);target=file.empty? ? p : Pathname.new(File.join(File.dirname(p),file)).cleanpath.to_s
+  errors << "Missing file #{p}: #{uri}" unless File.file?(target)
+  errors << "Missing fragment #{p}: #{uri}" if fragment && anchors.key?(target) && !anchors[target].include?(fragment)
+ end
+end
+abort(errors.uniq.join("\n")) unless errors.empty?
+puts JSON.pretty_generate({source:ENV.fetch('ACCEPTANCE_SOURCE','working-tree'),rules_baseline:base,protected_rule_files:paths.size,matched_approved_rule_lines:preserved,explicit_change_blocks:policy['changes'].size,completed_java_files:scope.size,completed_duplicate_rows:duplicates.size,remaining_global_duplicate_common_rows:common_tests.count{|t|scope.any?{|p|acceptance_rows(File.read(p)).any?{|v|normalize(v)==t}}},checked_local_links:links,trace_checks:stats,semantic_duplication_check:'人工檢查項目；換句話說的重複無法由本腳本判斷（T3）'})

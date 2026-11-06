@@ -1,0 +1,450 @@
+[
+  {
+    "batch": "1",
+    "id": "CL-1、8-2",
+    "original": "核對實作能支援契約操作，介面拆分沒有取代授權。",
+    "target": "../rules/coding/code-design.md#acceptance-interface-capabilities",
+    "replacement": "核對實作能支援介面承諾的操作，沒有被迫提供不支援的方法；驗證介面劃分未取代操作所需的授權檢查。",
+    "reason": "介面承諾的操作與操作授權分開驗證；沒有以介面拆分代替授權。"
+  },
+  {
+    "batch": "1",
+    "id": "CL-2、7-1",
+    "original": "以受影響的子型別或替代實作驗證共同契約，確認輸入、結果與必要檢查未被破壞。",
+    "target": "../rules/coding/code-design.md#acceptance-substitutability",
+    "replacement": "以受影響的子型別或替代實作驗證父型別承諾的輸入、結果及必要檢查，確認替代後仍符合共同契約。",
+    "reason": "共同替代契約與 Java 擴充／代理路徑分列；必要檢查、實際配置及共同保證均保留。"
+  },
+  {
+    "batch": "1",
+    "id": "CL-2、7-2",
+    "original": "審查擴充範圍與覆寫方式；",
+    "target": "../rules/stacks/java/common/classes-and-construction.md#acceptance-java-override-safety",
+    "replacement": "核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。",
+    "reason": "共同替代契約與 Java 擴充／代理路徑分列；必要檢查、實際配置及共同保證均保留。"
+  },
+  {
+    "batch": "1",
+    "id": "CL-2、7-3",
+    "original": "涉及框架代理時，驗證實際配置仍維持保證。",
+    "target": "../rules/stacks/java/common/classes-and-construction.md#acceptance-java-override-safety",
+    "replacement": "核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。",
+    "reason": "共同替代契約與 Java 擴充／代理路徑分列；必要檢查、實際配置及共同保證均保留。"
+  },
+  {
+    "batch": "1",
+    "id": "CL-3、6-1",
+    "original": "驗證必要資料與依賴的建立限制，",
+    "target": "../rules/coding/resource-lifecycle.md#acceptance-initialization-readiness",
+    "replacement": "以缺少必要資料或依賴的情境驗證建立限制；分階段啟動元件在未就緒時須拒絕尚不允許的操作。",
+    "reason": "建立限制、所有建構入口與未就緒拒絕分列；以缺少必要資料或依賴具體表達建立限制。"
+  },
+  {
+    "batch": "1",
+    "id": "CL-3、6-2",
+    "original": "所有建構子、工廠及適用的 Builder 均維持必要條件，不產出無效目標物件。",
+    "target": "../rules/coding/code-design.md#acceptance-construction-entrypoints",
+    "replacement": "逐一驗證實際提供的建構子、工廠及 Builder 都執行一致的有效性檢查；組裝中資料不完整時不得產出無效目標物件。",
+    "reason": "建立限制、所有建構入口與未就緒拒絕分列；以缺少必要資料或依賴具體表達建立限制。"
+  },
+  {
+    "batch": "1",
+    "id": "CL-3、6-3",
+    "original": "分階段元件未就緒時，須拒絕不允許的操作。",
+    "target": "../rules/coding/resource-lifecycle.md#acceptance-initialization-readiness",
+    "replacement": "以缺少必要資料或依賴的情境驗證建立限制；分階段啟動元件在未就緒時須拒絕尚不允許的操作。",
+    "reason": "建立限制、所有建構入口與未就緒拒絕分列；以缺少必要資料或依賴具體表達建立限制。"
+  },
+  {
+    "batch": "1",
+    "id": "CL-4-1",
+    "original": "審查建構路徑有無 `this` 外洩或可覆寫方法呼叫。",
+    "target": "../rules/stacks/java/common/classes-and-construction.md#acceptance-java-construction-safety",
+    "replacement": "審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。",
+    "reason": "合併為建構路徑與註冊／回呼／背景啟動的同列驗收；完成建構且就緒對應生命週期條件。"
+  },
+  {
+    "batch": "1",
+    "id": "CL-4-2",
+    "original": "適用時核對事件註冊、回呼與背景啟動時機，確認只能使用已完成建立且符合生命週期條件的物件。",
+    "target": "../rules/stacks/java/common/classes-and-construction.md#acceptance-java-construction-safety",
+    "replacement": "審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。",
+    "reason": "合併為建構路徑與註冊／回呼／背景啟動的同列驗收；完成建構且就緒對應生命週期條件。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-1、2-1",
+    "original": "核對物件身分、實體身分與值內容的區分；",
+    "target": "../rules/coding/domain-modeling.md#acceptance-identity-semantics",
+    "replacement": "核對比較用途是否為物件身分、實體身分或值內容，確認內容比對與版本一致性沒有誤用實體識別。",
+    "reason": "以 equals 與 hashCode 明示 Java 機制，保留五種相等契約與兩種不可採用的雜湊推論。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-1、2-2",
+    "original": "驗證自反、對稱、遞移、一致性及 `null` 處理。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-equality-hash-contract",
+    "replacement": "對 Java `equals()` 驗證自反、對稱、遞移、一致性及 `null` 處理，並確認相等物件具有相同 `hashCode()`；不要求不同物件雜湊必不同，也不以雜湊相同判定相等。",
+    "reason": "以 equals 與 hashCode 明示 Java 機制，保留五種相等契約與兩種不可採用的雜湊推論。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-1、2-3",
+    "original": "相等物件須具有相同雜湊值，不以不相等物件的雜湊值必須不同作為斷言，也不僅憑雜湊值判定相等。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-equality-hash-contract",
+    "replacement": "對 Java `equals()` 驗證自反、對稱、遞移、一致性及 `null` 處理，並確認相等物件具有相同 `hashCode()`；不要求不同物件雜湊必不同，也不以雜湊相同判定相等。",
+    "reason": "以 equals 與 hashCode 明示 Java 機制，保留五種相等契約與兩種不可採用的雜湊推論。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-3-1",
+    "original": "以實際鍵或元素驗證雜湊集合的查找、去重與移除，確認在集合內比較依據保持穩定。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-hash-collection-stability",
+    "replacement": "以實際 Java 雜湊集合核對鍵或元素的查找、去重及移除；確認在集合內比較依據保持穩定。需要變更比較依據時，驗證先移出、修改再加入的結果及重複處置。",
+    "reason": "以實際 Java 雜湊集合檢查查找、去重、移除及移出修改重加，集合內比較穩定性另在同列明列。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-3-2",
+    "original": "契約允許修改時，驗證先移出、修改、重新加入後的行為及重複處置。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-hash-collection-stability",
+    "replacement": "以實際 Java 雜湊集合核對鍵或元素的查找、去重及移除；確認在集合內比較依據保持穩定。需要變更比較依據時，驗證先移出、修改再加入的結果及重複處置。",
+    "reason": "以實際 Java 雜湊集合檢查查找、去重、移除及移出修改重加，集合內比較穩定性另在同列明列。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-4、5-1",
+    "original": "對適用的 Entity 驗證識別碼產生前後的相等與集合行為；",
+    "target": "../rules/coding/domain-modeling.md#acceptance-identity-lifecycle",
+    "replacement": "對適用的 Entity 驗證識別碼尚未產生、產生後及變更時的相等與集合行為；缺值識別碼不得使不同實體被誤判為相等。",
+    "reason": "Entity 生命週期與 Java 繼承／代理比較分列；識別前後、父子多物件契約與代理實際路徑均保留。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-4、5-2",
+    "original": "對允許繼承的型別，以父子型別及必要的多物件組合確認對稱、遞移與雜湊契約。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-cross-type-equality",
+    "replacement": "對允許繼承的 Java 型別，以父子型別及必要的多物件組合驗證 `equals()` 的對稱、遞移與 `hashCode()` 契約；比較涉及框架代理時，經實際代理路徑驗證。",
+    "reason": "Entity 生命週期與 Java 繼承／代理比較分列；識別前後、父子多物件契約與代理實際路徑均保留。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-4、5-3",
+    "original": "框架代理涉及比較時，依實際使用路徑驗證。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-cross-type-equality",
+    "replacement": "對允許繼承的 Java 型別，以父子型別及必要的多物件組合驗證 `equals()` 的對稱、遞移與 `hashCode()` 契約；比較涉及框架代理時，經實際代理路徑驗證。",
+    "reason": "Entity 生命週期與 Java 繼承／代理比較分列；識別前後、父子多物件契約與代理實際路徑均保留。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-6、7-1",
+    "original": "核對自然順序或情境排序的選擇，",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-ordering-choice",
+    "replacement": "審查 Java 型別採 `Comparable` 或用途明確的 `Comparator` 是否符合自然順序或情境排序的契約。",
+    "reason": "自然／情境排序改以 Comparable／Comparator 表達；方向、同值、遞移、極端值、精度及同次排序穩定均在目的列。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-6、7-2",
+    "original": "驗證方向、同值與遞移關係。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-comparator-relations",
+    "replacement": "驗證 Java 比較器的方向、同值與遞移關係，以及同次排序比較依據的穩定性；涵蓋適用的極端數值，確認不以相減造成溢位或精度損失及錯誤順序。",
+    "reason": "自然／情境排序改以 Comparable／Comparator 表達；方向、同值、遞移、極端值、精度及同次排序穩定均在目的列。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-6、7-3",
+    "original": "數值比較涵蓋適用的極端值，確認不因溢位或精度損失產生錯誤順序，且比較依據在同次排序中穩定。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-comparator-relations",
+    "replacement": "驗證 Java 比較器的方向、同值與遞移關係，以及同次排序比較依據的穩定性；涵蓋適用的極端數值，確認不以相減造成溢位或精度損失及錯誤順序。",
+    "reason": "自然／情境排序改以 Comparable／Comparator 表達；方向、同值、遞移、極端值、精度及同次排序穩定均在目的列。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-8-1",
+    "original": "驗證比較為零與 `equals()` 的約定；",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-sorted-key-equivalence",
+    "replacement": "核對比較為零與 `equals()` 的約定，將不同但排序值相同的資料放入實際採用的 Java 排序集合或映射，確認鍵判同及資料保留符合契約。",
+    "reason": "兩片段合成同列，保留比較為零與 equals 約定、實際集合鍵判同及資料保留。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-8-2",
+    "original": "將不同但排序值相同的資料放入實際採用的排序集合或映射，確認資料保留與鍵判同符合契約。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-sorted-key-equivalence",
+    "replacement": "核對比較為零與 `equals()` 的約定，將不同但排序值相同的資料放入實際採用的 Java 排序集合或映射，確認鍵判同及資料保留符合契約。",
+    "reason": "兩片段合成同列，保留比較為零與 equals 約定、實際集合鍵判同及資料保留。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-9-1",
+    "original": "核對排序元素、鍵與比較器設定的變更路徑。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-sorted-collection-stability",
+    "replacement": "核對 Java 排序元素、鍵及比較器設定的變更路徑；驗證移出重加或重建後的順序、查找及資料保留，不依賴既有集合自動調整。",
+    "reason": "以移出重加或重建簡寫完整步驟，變更路徑、順序、查找、資料保留及不自動調整均在同列。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-9-2",
+    "original": "需要修改時，驗證移出後重新加入或重建的順序、查找及資料保留結果，不依賴原集合自動調整。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-sorted-collection-stability",
+    "replacement": "核對 Java 排序元素、鍵及比較器設定的變更路徑；驗證移出重加或重建後的順序、查找及資料保留，不依賴既有集合自動調整。",
+    "reason": "以移出重加或重建簡寫完整步驟，變更路徑、順序、查找、資料保留及不自動調整均在同列。"
+  },
+  {
+    "batch": "1",
+    "id": "EQ-10-1",
+    "original": "確認驗收涵蓋變更影響的關係契約與實際集合操作，沒有只測少數成對比較或以方法由工具產生作為正確依據。",
+    "target": "../rules/stacks/java/common/equality-hashing-ordering.md#acceptance-java-relationship-coverage",
+    "replacement": "依第 10 條，核對本次驗收同時涵蓋受影響的 Java 關係契約與實際集合操作；不能只測少數成對比較，也不能因方法由工具產生就省略驗證。",
+    "reason": "表格外的明確驗收段保留受影響關係、集合操作及不得省略驗證，並非指向整節。"
+  },
+  {
+    "batch": "1",
+    "id": "RF-1、2-1",
+    "original": "審查動態能力的必要性、管理位置與內部型別契約。",
+    "target": "../rules/stacks/java/common/reflection-and-suppression.md#acceptance-java-reflection-boundary",
+    "replacement": "審查採用 Java 反射的實際需求與管理位置，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。",
+    "reason": "反射必要性及內部型別與授權分列；未知拒絕、已知仍授權與拒絕無副作用均有明文。"
+  },
+  {
+    "batch": "1",
+    "id": "RF-1、2-2",
+    "original": "驗證允許目標可依權限執行，未登錄或未知目標明確拒絕；",
+    "target": "../rules/quality/security.md#acceptance-dynamic-target-authorization",
+    "replacement": "驗證登錄或允許清單內的目標依權限執行，未知目標被拒絕；型別符合但未授權的目標也須被拒絕，且沒有不應發生的副作用。",
+    "reason": "反射必要性及內部型別與授權分列；未知拒絕、已知仍授權與拒絕無副作用均有明文。"
+  },
+  {
+    "batch": "1",
+    "id": "RF-1、2-3",
+    "original": "已知且型別符合的目標仍須通過授權，拒絕時沒有不應發生的副作用。",
+    "target": "../rules/quality/security.md#acceptance-dynamic-target-authorization",
+    "replacement": "驗證登錄或允許清單內的目標依權限執行，未知目標被拒絕；型別符合但未授權的目標也須被拒絕，且沒有不應發生的副作用。",
+    "reason": "反射必要性及內部型別與授權分列；未知拒絕、已知仍授權與拒絕無副作用均有明文。"
+  },
+  {
+    "batch": "1",
+    "id": "RF-3、4-1",
+    "original": "以合法及不相容目標驗證註冊、啟動或執行前檢查；",
+    "target": "../rules/coding/type-safety.md#acceptance-dynamic-contract",
+    "replacement": "分別使用合法及不相容的目標，確認可提早判斷的能力、版本與參數／結果型別在註冊或啟動時檢查，依輸入決定的條件在呼叫前檢查；不符合時拒絕執行。",
+    "reason": "契約檢查時機與特殊存取分列，保留能力、版本、參數／結果型別及建立還原不能繞過驗證。"
+  },
+  {
+    "batch": "1",
+    "id": "RF-3、4-2",
+    "original": "確認能力、版本、參數與結果型別符合所需契約。",
+    "target": "../rules/coding/type-safety.md#acceptance-dynamic-contract",
+    "replacement": "分別使用合法及不相容的目標，確認可提早判斷的能力、版本與參數／結果型別在註冊或啟動時檢查，依輸入決定的條件在呼叫前檢查；不符合時拒絕執行。",
+    "reason": "契約檢查時機與特殊存取分列，保留能力、版本、參數／結果型別及建立還原不能繞過驗證。"
+  },
+  {
+    "batch": "1",
+    "id": "RF-3、4-3",
+    "original": "核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。",
+    "target": "../rules/stacks/java/common/reflection-and-suppression.md#acceptance-java-reflective-access",
+    "replacement": "核對 Java 反射特殊存取的必要性、受支援替代方式與核准範圍；經實際建立及還原路徑確認無法藉私有欄位寫入或存取放寬繞過必要驗證、不變條件及封裝。",
+    "reason": "契約檢查時機與特殊存取分列，保留能力、版本、參數／結果型別及建立還原不能繞過驗證。"
+  },
+  {
+    "batch": "2",
+    "id": "CA-1、6-1",
+    "original": "核對工作擁有者、責任移交",
+    "target": "../rules/coding/concurrency-and-async.md#acceptance-task-ownership",
+    "replacement": "核對每項工作及脫離原呼叫流程後的擁有者，確認責任移交明確，結果、失敗、取消與資源均有負責元件追蹤，不留下無人接手的工作。",
+    "reason": "所有權與 Future 結果接收分列，結果鏈列保留成功、失敗、取消、分類與禁止替代值假成功。"
+  },
+  {
+    "batch": "2",
+    "id": "CA-1、6-2",
+    "original": "與結果接收路徑；",
+    "target": "../rules/stacks/java/common/concurrency-and-async.md#acceptance-java-task-results",
+    "replacement": "沿 Java `Future`／`CompletableFuture` 的實際接收及結果鏈路徑觸發成功、失敗與取消，核對故障可追查、原始原因與分類保留，且未以替代值把失敗變成成功。",
+    "reason": "所有權與 Future 結果接收分列，結果鏈列保留成功、失敗、取消、分類與禁止替代值假成功。"
+  },
+  {
+    "batch": "2",
+    "id": "CA-1、6-3",
+    "original": "觸發成功、失敗及取消，確認故障可追查，例外分類保留，未以替代值假裝成功。",
+    "target": "../rules/stacks/java/common/concurrency-and-async.md#acceptance-java-task-results",
+    "replacement": "沿 Java `Future`／`CompletableFuture` 的實際接收及結果鏈路徑觸發成功、失敗與取消，核對故障可追查、原始原因與分類保留，且未以替代值把失敗變成成功。",
+    "reason": "所有權與 Future 結果接收分列，結果鏈列保留成功、失敗、取消、分類與禁止替代值假成功。"
+  },
+  {
+    "batch": "2",
+    "id": "CA-3、10-1",
+    "original": "審查資料交付、同步範圍、鎖定與可見性保證，以受控交錯驗證不變條件及共享狀態。",
+    "target": "../rules/stacks/java/common/concurrency-and-async.md#acceptance-java-visibility",
+    "replacement": "審查 Java 跨執行緒資料交付的可見性保證、共享資料的同步範圍及適用的鎖定方式；以受控交錯核對不變條件與共享狀態，不能只以單一 `volatile` 欄位或偶然成功推定整個物件安全。",
+    "reason": "可見性與鎖定分列，交錯、不變條件、共享狀態、多鎖、退出釋放及外部操作均明列。"
+  },
+  {
+    "batch": "2",
+    "id": "CA-3、10-2",
+    "original": "核對多鎖策略、退出釋放及持鎖期間的外部操作，不以測試偶然成功代替設計依據。",
+    "target": "../rules/coding/concurrency-and-async.md#acceptance-lock-scope",
+    "replacement": "以受控交錯核對鎖定範圍完整保護必要條件；檢查多鎖取得策略、所有退出路徑的釋放及持鎖期間的阻塞或外部回呼，不以偶然成功代替鎖定設計依據。",
+    "reason": "可見性與鎖定分列，交錯、不變條件、共享狀態、多鎖、退出釋放及外部操作均明列。"
+  },
+  {
+    "batch": "2",
+    "id": "CO-8-1",
+    "original": "在批次處理中途製造契約適用的失敗，核對集合實際狀態符合全部成功或部分成功的保證；",
+    "target": "../rules/quality/rule-verification.md#acceptance-partial-operation",
+    "replacement": "在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。",
+    "reason": "歸入共通部分操作驗收；明訂集合批次修改適用，實際狀態及完成／未完成項目對應未刪。"
+  },
+  {
+    "batch": "2",
+    "id": "CO-8-2",
+    "original": "部分成功結果須可對應已完成與未完成的項目。",
+    "target": "../rules/quality/rule-verification.md#acceptance-partial-operation",
+    "replacement": "在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。",
+    "reason": "歸入共通部分操作驗收；明訂集合批次修改適用，實際狀態及完成／未完成項目對應未刪。"
+  },
+  {
+    "batch": "2",
+    "id": "EX-1、2、3-1",
+    "original": "核對例外型別、宣告、轉換及捕捉範圍是否符合契約與處置責任。",
+    "target": "../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-exception-contract",
+    "replacement": "核對 Java 例外型別、Checked／Unchecked 宣告、邊界轉換及 `try`／捕捉範圍與處置責任一致；以適用故障來源驗證業務失敗、技術故障與程式缺陷沒有混淆，包裝後仍保留原始原因。",
+    "reason": "合列明示 Java 宣告與捕捉機制，保留分類、處置責任與原始原因。"
+  },
+  {
+    "batch": "2",
+    "id": "EX-1、2、3-2",
+    "original": "以適用的不同故障來源驗證分類，確認業務失敗、技術故障與程式缺陷未混淆，包裝後仍保留原始原因。",
+    "target": "../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-exception-contract",
+    "replacement": "核對 Java 例外型別、Checked／Unchecked 宣告、邊界轉換及 `try`／捕捉範圍與處置責任一致；以適用故障來源驗證業務失敗、技術故障與程式缺陷沒有混淆，包裝後仍保留原始原因。",
+    "reason": "合列明示 Java 宣告與捕捉機制，保留分類、處置責任與原始原因。"
+  },
+  {
+    "batch": "2",
+    "id": "EX-4-1",
+    "original": "對可中斷的操作送出中斷，確認依契約向上傳遞，或在無法傳遞時恢復旗標並停止或取消；",
+    "target": "../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-interruption",
+    "replacement": "對可中斷的 Java 操作送出中斷，確認 `InterruptedException` 依契約向上傳遞；無法傳遞時恢復中斷旗標並停止或取消。核對沒有吞掉後繼續等待、執行或重試，必要清理仍完成。",
+    "reason": "明示 InterruptedException，恢復旗標、停止／取消、不得吞掉繼續及清理均在同列。"
+  },
+  {
+    "batch": "2",
+    "id": "EX-4-2",
+    "original": "沒有吞掉後繼續等待、執行或重試，必要清理仍正確完成。",
+    "target": "../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-interruption",
+    "replacement": "對可中斷的 Java 操作送出中斷，確認 `InterruptedException` 依契約向上傳遞；無法傳遞時恢復中斷旗標並停止或取消。核對沒有吞掉後繼續等待、執行或重試，必要清理仍完成。",
+    "reason": "明示 InterruptedException，恢復旗標、停止／取消、不得吞掉繼續及清理均在同列。"
+  },
+  {
+    "batch": "2",
+    "id": "EX-5-1",
+    "original": "分別驗證正常完成、提前退出與操作失敗時釋放自行擁有的資源，借用與框架管理資源未被擅自關閉。",
+    "target": "../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-resource-closing",
+    "replacement": "以正常完成、提前退出及操作失敗路徑核對 Java 自行擁有的 `AutoCloseable`／`try-with-resources` 資源確實釋放，借用或框架管理資源未被擅自關閉；非區域生命週期有明確釋放責任，不依賴垃圾回收。",
+    "reason": "以 AutoCloseable／try-with-resources 表達自行擁有資源，三條退出路徑、借用資源及非區域釋放均保留。"
+  },
+  {
+    "batch": "2",
+    "id": "EX-5-2",
+    "original": "核對非區域生命週期的釋放責任，不依賴垃圾回收。",
+    "target": "../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-resource-closing",
+    "replacement": "以正常完成、提前退出及操作失敗路徑核對 Java 自行擁有的 `AutoCloseable`／`try-with-resources` 資源確實釋放，借用或框架管理資源未被擅自關閉；非區域生命週期有明確釋放責任，不依賴垃圾回收。",
+    "reason": "以 AutoCloseable／try-with-resources 表達自行擁有資源，三條退出路徑、借用資源及非區域釋放均保留。"
+  },
+  {
+    "batch": "2",
+    "id": "EX-6-1",
+    "original": "模擬操作與清理同時失敗，確認原始故障及 suppressed exceptions 或相應故障關係可追查，未被 `finally` 的控制流程覆蓋。",
+    "target": "../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-suppressed-failures",
+    "replacement": "模擬 Java 操作與清理同時失敗，確認原始故障及 suppressed exceptions 或相應關係可追查，沒有被 `finally` 控制流程覆蓋；另驗證只有清理失敗時的完成判定與回報。",
+    "reason": "以 Java 操作與清理明確化，原故障、suppressed 關係與 finally 不覆蓋均保留。"
+  },
+  {
+    "batch": "2",
+    "id": "EX-9-1",
+    "original": "核對案例覆蓋變更影響的故障、中斷與清理路徑。",
+    "target": "../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-failure-coverage",
+    "replacement": "依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。",
+    "reason": "表格外明確覆蓋段保留故障、中斷、清理及框架實際生命週期，另補部分初始化。"
+  },
+  {
+    "batch": "2",
+    "id": "EX-9-2",
+    "original": "依賴框架行為的保證須有實際生命週期驗證，不只測試替身或成功流程。",
+    "target": "../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-failure-coverage",
+    "replacement": "依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。",
+    "reason": "表格外明確覆蓋段保留故障、中斷、清理及框架實際生命週期，另補部分初始化。"
+  },
+  {
+    "batch": "3",
+    "id": "JV-1、2-2",
+    "original": "本機與 CI 的規則須一致。",
+    "target": "../rules/quality/rule-verification.md#acceptance-check-configuration",
+    "replacement": "驗收：在依專案文件建立的環境執行同一入口，核對版本、規則及設定一致；確認不是只有 IDE 能執行。",
+    "reason": "既有配置重現驗收以專案文件建立環境並執行同一入口、核對版本規則設定，承接本機與 CI 一致；Java 引言保留環境要求。"
+  },
+  {
+    "batch": "3",
+    "id": "JN-8-2",
+    "original": "未一律轉成空的 `Optional`。",
+    "target": "../rules/stacks/java/common/null-and-optional.md#acceptance-java-optional-adaptation",
+    "replacement": "檢查第三方回傳值轉成 `Optional` 的路徑，只有契約允許的正常缺值才能使用空的 `Optional`。",
+    "reason": "改以只有契約允許的正常缺值才可轉空 Optional，等價保留不得一律轉空的否定要求。"
+  },
+  {
+    "batch": "3",
+    "id": "JN-12-1",
+    "original": "透過實際 API 回應路徑核對 HTTP 狀態與序列化結果，涵蓋契約適用的欄位省略、JSON `null` 與空集合，確認使用端可正確辨識，且未以預設序列化結果取代契約。",
+    "target": "../rules/interfaces/api-contracts.md#acceptance-api-absence",
+    "replacement": "透過實際 API 回應路徑核對所採協定的狀態與資料表示；使用 HTTP／JSON 時，涵蓋契約適用的 HTTP 狀態、欄位省略、JSON `null` 與空集合。其他協定依其契約驗證，確認使用端可正確辨識，且未以預設序列化結果取代契約。",
+    "reason": "共通列適用其他協定，但明確保留使用 HTTP／JSON 時的原狀態、缺值表示及實際回應路徑。"
+  },
+  {
+    "batch": "4",
+    "id": "VO-3-2",
+    "original": "不能只檢查欄位是否為 `final`。",
+    "target": "../rules/stacks/java/common/value-objects.md#acceptance-java-final-references",
+    "replacement": "檢查 final 欄位仍可能指向可變內容的路徑；不得以欄位修飾詞作為不可變性證據。",
+    "reason": "以 final 仍可指向可變內容具體說明，不得只憑欄位修飾詞判定不可變性。"
+  },
+  {
+    "batch": "4",
+    "id": "BM-4-1",
+    "original": "驗證適用的不合法輸入、內部必要資料缺失及轉換失敗，確認沒有預設值或半成品掩蓋問題。",
+    "target": "../rules/stacks/java/common/boundary-mapping.md#acceptance-java-mapping-failure",
+    "replacement": "透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。",
+    "reason": "Java 列保留三類非法／失敗資料與禁止半成品；共同部分操作列保留每筆結果對應及不得隱藏失敗。"
+  },
+  {
+    "batch": "4",
+    "id": "BM-4-2",
+    "original": "批次允許部分成功時，核對每筆結果及對應關係，沒有遺漏失敗項目。",
+    "target": "../rules/quality/rule-verification.md#acceptance-partial-operation",
+    "replacement": "在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。",
+    "reason": "Java 列保留三類非法／失敗資料與禁止半成品；共同部分操作列保留每筆結果對應及不得隱藏失敗。"
+  },
+  {
+    "batch": "5",
+    "id": "NT-9-1",
+    "original": "以可控制的 `Clock` 驗證邊界前、當下與之後，",
+    "target": "../rules/stacks/java/common/numbers-dates-text.md#acceptance-java-clock-injection",
+    "replacement": "以注入的 Clock 驗證業務時間邊界前、當下與之後，核對實際 Java 取時路徑使用該 Clock。",
+    "reason": "注入 Clock 明示可控制取時路徑，保留邊界前、當下與之後三點。"
+  },
+  {
+    "batch": "5",
+    "id": "LS-8-2",
+    "original": "部分成功結果可對應原始項目，副作用符合契約。",
+    "target": "../rules/quality/rule-verification.md#acceptance-partial-operation",
+    "replacement": "在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。",
+    "reason": "實際狀態符合契約承接副作用符合契約；結果對應完成、未完成、未知項目，未遺失原始項目對應。"
+  },
+  {
+    "batch": "5",
+    "id": "LS-9-2",
+    "original": "外部資源在實際使用期間有效，完成、提前停止及失敗後正確釋放。",
+    "target": "../rules/coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime",
+    "replacement": "對依賴外部資源的延遲讀取，分別驗證完成、提前停止及失敗後正確釋放，並確認讀取期間資源有效、擁有者與關閉責任明確。",
+    "reason": "共同延遲讀取列明訂讀取期間資源有效及完成、提前停止、失敗後釋放，增補擁有者責任。"
+  }
+]

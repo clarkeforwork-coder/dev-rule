@@ -31,16 +31,16 @@
 
 ## 驗收要求
 
-依變更影響與實際使用路徑選擇案例，測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
 ### 共同驗收
 
-- [依語意選擇數值型別、從精確來源建立](../../../coding/numbers-dates-text.md#acceptance-data-1-2)。
-- [明訂捨入規則、範圍與轉換檢查](../../../coding/numbers-dates-text.md#acceptance-data-3-4)。
-- [依業務語意選擇時間型別、明確的時區轉換、區分時間長度與日曆規則](../../../coding/numbers-dates-text.md#acceptance-data-6-7-8)。
-- [解析與輸出契約](../../../coding/numbers-dates-text.md#acceptance-data-10)。
-- [明確指定字元編碼、長度與截取單位、用途明確的文字轉換](../../../coding/numbers-dates-text.md#acceptance-data-11-12-13)。
-- [邊界與環境差異驗收](../../../coding/numbers-dates-text.md#acceptance-data-14)。
+- [依語意選擇數值型別、從精確來源建立](../../../coding/numbers-dates-text.md#acceptance-numeric-sources)。
+- [明訂捨入規則、範圍與轉換檢查](../../../coding/numbers-dates-text.md#acceptance-numeric-range-rounding)。
+- [依業務語意選擇時間型別、明確的時區轉換、區分時間長度與日曆規則](../../../coding/numbers-dates-text.md#acceptance-temporal-semantics)。
+- [解析與輸出契約](../../../coding/numbers-dates-text.md#acceptance-temporal-format)。
+- [明確指定字元編碼、長度與截取單位、用途明確的文字轉換](../../../coding/numbers-dates-text.md#acceptance-text-semantics)。
+- [邊界與環境差異驗收](../../../coding/numbers-dates-text.md#acceptance-data-boundaries)。
 - [可控制的時間基準](../../../coding/numbers-dates-text.md#acceptance-time-source)。
 
 ### Java 語言增量驗收
@@ -49,3 +49,5 @@
 | --- | --- |
 | <a id="acceptance-java-decimal-equivalence"></a>5 | 以數值相同但小數位數不同及其他代表性資料，確認比較、正規化、雜湊與集合判同符合契約。 |
 | <a id="acceptance-java-clock-injection"></a>9 | 以注入的 Clock 驗證業務時間邊界前、當下與之後，核對實際 Java 取時路徑使用該 Clock。 |
+
+既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低要求。

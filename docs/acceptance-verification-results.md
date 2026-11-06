@@ -1,237 +1,295 @@
-# 驗收整理最終驗證紀錄
+# 驗收驗證實際輸出
 
-日期：2026-11-06。以下為實際執行輸出，非預期值。所有命令均在儲存庫根目錄執行。
+本檔由 `ruby scripts/record-acceptance-verification.rb` 擷取工作區的實際標準輸出、錯誤輸出及結束碼。執行方式與人工檢查邊界見 `docs/review-remediation.md`；數字不代表語意零重複。
 
-常駐檢查無基準參數，僅檢查本地連結／錨點、已完成文件零逐字重複並回報全站剩餘量。`scripts/acceptance-batches.json` 只記錄完成範圍，不寫死提交。
-
-批次差異檢查使用 `--batch N --baseline COMMIT --target COMMIT`；省略 target 時檢查工作區。後續批次可合法變更其他文件，因此歷史範圍檢查應指定歷史受驗提交。
-
-`--trace-only` 只核對指定基準與現行追溯片段，仍執行常駐檢查，但不宣稱歷史範圍及正文未變。`--rules-baseline` 額外核對全部規則正文；明確排除驗收區與複核紀錄列管的整理敘述。索引由人工核對。
-
-最終現行追溯共 107 列原驗收、171 個片段；所有片段依序串回原句。連結／錨點與文字重組不能證明目的地語意正確，目的地內容另逐片核對。
-
-## 保守判斷
-
-- ST 1、2：獨立業務面向分開建模留 Java，未採未列管摘要當提升依據。
-- BM 4：半成品與內部缺陷處理留 Java；部分成功項目對應引用共通。
-- VO 10：完整覆蓋要求及存取方法測試範圍留 Java；不以未列管摘要新增共同覆蓋列。
-- JN 4、5／6、7、11：Java Optional 使用位置、容器非空預設及標註工具契約留 Java；更新意圖引用共通。
-- NT 9：Clock 取時路徑留 Java，整體時間基準及單調時間要求引用共通。
-- LS 8／9：函式介面例外限制與 Stream 消費機制留 Java，部分成功及外部資源有效期引用共通。
-
-19 條改引用的整理前全文無法由儲存庫還原，未補造原文；逐條覆蓋疑點記於 pending-decisions。待確認的正文變更均未執行。
-
-## 常駐與正文基準
-
-
-`ruby scripts/verify-acceptance.rb`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0
-}
-```
-
-`ruby scripts/verify-acceptance.rb --rules-baseline 6a16349`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "rules_baseline": "6a16349",
-  "rule_body_unchanged": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 1 --baseline 6f7ae5d --target e8d32e7`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 1,
-  "baseline": "6f7ae5d",
-  "target": "e8d32e7",
-  "original_acceptance_rows": 20,
-  "traced_fragments": 44,
-  "trace_only": false,
-  "rule_body_unchanged": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 2 --baseline e8d32e7 --target 6a16349`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 2,
-  "baseline": "e8d32e7",
-  "target": "6a16349",
-  "original_acceptance_rows": 23,
-  "traced_fragments": 44,
-  "trace_only": false,
-  "rule_body_unchanged": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 3 --baseline 163af59 --target 15ee488`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 3,
-  "baseline": "163af59",
-  "target": "15ee488",
-  "original_acceptance_rows": 19,
-  "traced_fragments": 25,
-  "trace_only": false,
-  "rule_body_unchanged": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 4 --baseline 15ee488 --target 0186c6a`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 4,
-  "baseline": "15ee488",
-  "target": "0186c6a",
-  "original_acceptance_rows": 24,
-  "traced_fragments": 29,
-  "trace_only": false,
-  "rule_body_unchanged": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 5 --baseline 0186c6a --target 782fcdf`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 5,
-  "baseline": "0186c6a",
-  "target": "782fcdf",
-  "original_acceptance_rows": 21,
-  "traced_fragments": 29,
-  "trace_only": false,
-  "rule_body_unchanged": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 1 --baseline 6f7ae5d --trace-only`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 1,
-  "baseline": "6f7ae5d",
-  "target": "working-tree",
-  "original_acceptance_rows": 20,
-  "traced_fragments": 44,
-  "trace_only": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 2 --baseline e8d32e7 --trace-only`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 2,
-  "baseline": "e8d32e7",
-  "target": "working-tree",
-  "original_acceptance_rows": 23,
-  "traced_fragments": 44,
-  "trace_only": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 3 --baseline 163af59 --trace-only`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 3,
-  "baseline": "163af59",
-  "target": "working-tree",
-  "original_acceptance_rows": 19,
-  "traced_fragments": 25,
-  "trace_only": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 4 --baseline 15ee488 --trace-only`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 4,
-  "baseline": "15ee488",
-  "target": "working-tree",
-  "original_acceptance_rows": 24,
-  "traced_fragments": 29,
-  "trace_only": true
-}
-```
-
-`ruby scripts/verify-acceptance.rb --batch 5 --baseline 0186c6a --trace-only`
-
-```json
-{
-  "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "checked_local_links": 1924,
-  "remaining_global_duplicate_common_rows": 0,
-  "batch": 5,
-  "baseline": "0186c6a",
-  "target": "working-tree",
-  "original_acceptance_rows": 21,
-  "traced_fragments": 29,
-  "trace_only": true
-}
-```
-
-## 格式與負向檢查
-
-`git diff --check`：結束碼 0，無輸出。
-
-在臨時複本植入反例後執行同一常駐腳本，四項均正確拒絕；臨時檔案已移除。
+## `ruby scripts/verify-acceptance.rb`
 
 ```text
-失效連結：正確拒絕
-重複錨點：正確拒絕
-標題與錨點衝突：正確拒絕
-已完成文件重複驗收：正確拒絕
+{
+  "source": "working-tree",
+  "rules_baseline": "6a16349",
+  "protected_rule_files": 55,
+  "matched_approved_rule_lines": 3024,
+  "explicit_change_blocks": 91,
+  "completed_java_files": 15,
+  "completed_duplicate_rows": 0,
+  "remaining_global_duplicate_common_rows": 0,
+  "checked_local_links": 1971,
+  "trace_checks": [
+    {
+      "batch": 1,
+      "baseline": "6f7ae5d5250b7573a96c85f551b58878eb02c7e4",
+      "original_rows": 20,
+      "verbatim_fragments": 13,
+      "listed_rewritten_fragments": 31
+    },
+    {
+      "batch": 2,
+      "baseline": "e8d32e7bd1b9e073f62f8092398daf7d1b57dce1",
+      "original_rows": 23,
+      "verbatim_fragments": 28,
+      "listed_rewritten_fragments": 16
+    },
+    {
+      "batch": 3,
+      "baseline": "163af59f52ddee97b98ad2ddeac1dc918bde8010",
+      "original_rows": 19,
+      "verbatim_fragments": 22,
+      "listed_rewritten_fragments": 3
+    },
+    {
+      "batch": 4,
+      "baseline": "15ee488028e09a00b05d8f1276ee83bfffc68050",
+      "original_rows": 24,
+      "verbatim_fragments": 26,
+      "listed_rewritten_fragments": 3
+    },
+    {
+      "batch": 5,
+      "baseline": "0186c6adfce282cbf180207d9ec60833e5c66ce7",
+      "original_rows": 21,
+      "verbatim_fragments": 26,
+      "listed_rewritten_fragments": 3
+    }
+  ],
+  "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
+}
+exit=0
+```
+
+## `ruby scripts/verify-acceptance.rb --batch 1 --trace-only`
+
+```text
+{
+  "source": "working-tree",
+  "rules_baseline": "6a16349",
+  "protected_rule_files": 55,
+  "matched_approved_rule_lines": 3024,
+  "explicit_change_blocks": 91,
+  "completed_java_files": 15,
+  "completed_duplicate_rows": 0,
+  "remaining_global_duplicate_common_rows": 0,
+  "checked_local_links": 1971,
+  "trace_checks": [
+    {
+      "batch": 1,
+      "baseline": "6f7ae5d5250b7573a96c85f551b58878eb02c7e4",
+      "original_rows": 20,
+      "verbatim_fragments": 13,
+      "listed_rewritten_fragments": 31
+    }
+  ],
+  "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
+}
+exit=0
+```
+
+## `ruby scripts/verify-acceptance.rb --batch 2 --trace-only`
+
+```text
+{
+  "source": "working-tree",
+  "rules_baseline": "6a16349",
+  "protected_rule_files": 55,
+  "matched_approved_rule_lines": 3024,
+  "explicit_change_blocks": 91,
+  "completed_java_files": 15,
+  "completed_duplicate_rows": 0,
+  "remaining_global_duplicate_common_rows": 0,
+  "checked_local_links": 1971,
+  "trace_checks": [
+    {
+      "batch": 2,
+      "baseline": "e8d32e7bd1b9e073f62f8092398daf7d1b57dce1",
+      "original_rows": 23,
+      "verbatim_fragments": 28,
+      "listed_rewritten_fragments": 16
+    }
+  ],
+  "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
+}
+exit=0
+```
+
+## `ruby scripts/verify-acceptance.rb --batch 3 --trace-only`
+
+```text
+{
+  "source": "working-tree",
+  "rules_baseline": "6a16349",
+  "protected_rule_files": 55,
+  "matched_approved_rule_lines": 3024,
+  "explicit_change_blocks": 91,
+  "completed_java_files": 15,
+  "completed_duplicate_rows": 0,
+  "remaining_global_duplicate_common_rows": 0,
+  "checked_local_links": 1971,
+  "trace_checks": [
+    {
+      "batch": 3,
+      "baseline": "163af59f52ddee97b98ad2ddeac1dc918bde8010",
+      "original_rows": 19,
+      "verbatim_fragments": 22,
+      "listed_rewritten_fragments": 3
+    }
+  ],
+  "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
+}
+exit=0
+```
+
+## `ruby scripts/verify-acceptance.rb --batch 4 --trace-only`
+
+```text
+{
+  "source": "working-tree",
+  "rules_baseline": "6a16349",
+  "protected_rule_files": 55,
+  "matched_approved_rule_lines": 3024,
+  "explicit_change_blocks": 91,
+  "completed_java_files": 15,
+  "completed_duplicate_rows": 0,
+  "remaining_global_duplicate_common_rows": 0,
+  "checked_local_links": 1971,
+  "trace_checks": [
+    {
+      "batch": 4,
+      "baseline": "15ee488028e09a00b05d8f1276ee83bfffc68050",
+      "original_rows": 24,
+      "verbatim_fragments": 26,
+      "listed_rewritten_fragments": 3
+    }
+  ],
+  "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
+}
+exit=0
+```
+
+## `ruby scripts/verify-acceptance.rb --batch 5 --trace-only`
+
+```text
+{
+  "source": "working-tree",
+  "rules_baseline": "6a16349",
+  "protected_rule_files": 55,
+  "matched_approved_rule_lines": 3024,
+  "explicit_change_blocks": 91,
+  "completed_java_files": 15,
+  "completed_duplicate_rows": 0,
+  "remaining_global_duplicate_common_rows": 0,
+  "checked_local_links": 1971,
+  "trace_checks": [
+    {
+      "batch": 5,
+      "baseline": "0186c6adfce282cbf180207d9ec60833e5c66ce7",
+      "original_rows": 21,
+      "verbatim_fragments": 26,
+      "listed_rewritten_fragments": 3
+    }
+  ],
+  "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
+}
+exit=0
+```
+
+## `ruby scripts/test-verify-acceptance.rb`
+
+```text
+[
+  {
+    "test": "T1",
+    "description": "失效錨點",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Missing fragment rules/stacks/java/common/types-and-generics.md: ../../../coding/type-safety.md#acceptance-missing"
+  },
+  {
+    "test": "T2",
+    "description": "逐字重複",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Scoped duplicate acceptance: [[\"rules/stacks/java/common/types-and-generics.md\", \"核對固定結構資料是否使用明確物件；動態資料的型別、結構與驗證是否有契約，並以受影響的合法及非法輸入確認驗證有效。\"]]"
+  },
+  {
+    "test": "T3",
+    "description": "換句話說重複：僅人工可判斷",
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "matched_expectation": true,
+    "diagnostic": "人工檢查：腳本不判斷換句話說的重複"
+  },
+  {
+    "test": "T4",
+    "description": "追溯指錯現存列",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Trace fragment absent from destination NT-9-2: ../rules/coding/domain-modeling.md#acceptance-identity-lifecycle"
+  },
+  {
+    "test": "T5",
+    "description": "刪除核心業務政策",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Protected rule text changed rules/quality/rule-verification.md:22: - 純計算、狀態判斷與業務限制可直接建立物件測試；外部能力透過明確依賴提供測試替身，不因此強制每個類別建立介面。"
+  },
+  {
+    "test": "T6a",
+    "description": "刪除驗收尾段治理句",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Protected rule text missing rules/stacks/java/common/null-and-optional.md: 既有程式碼、工具限制與個別例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。"
+  },
+  {
+    "test": "T6b",
+    "description": "掏空 Java 驗收列",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Protected rule text changed rules/stacks/java/common/types-and-generics.md:49: | <a id=\"acceptance-java-explicit-types\"></a>1、9 | 略。 |"
+  },
+  {
+    "test": "T7",
+    "description": "README 政策改寫",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Protected rule text changed rules/README.md:8: - 通用規範定義共同底線，語言規範負責語法與型別使用，Framework 規範負責框架機制的落實方式。各專案自行管理實際架構、技術組合、配置與核准例外。各層可以具體化或加嚴要求，得自行降低標準。"
+  },
+  {
+    "test": "T8",
+    "description": "刪除受保護章節文字",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Protected rule text changed rules/quality/rule-verification.md:45:"
+  },
+  {
+    "test": "T9",
+    "description": "共通驗收列刪除後半斷言",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Protected rule text changed rules/quality/rule-verification.md:44:"
+  },
+  {
+    "test": "T10",
+    "description": "重複錨點",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Duplicate/colliding anchor rules/stacks/java/common/types-and-generics.md"
+  }
+]
+exit=0
+```
+
+## `git diff --check`
+
+```text
+exit=0
 ```

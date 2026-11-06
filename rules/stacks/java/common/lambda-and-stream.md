@@ -36,11 +36,10 @@ orders.stream().filter(Order::isCancellable);
 
 ## 驗收要求
 
-依變更影響與實際使用路徑選擇案例，測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
 ### 共同驗收
 
-- [審查清單](../../../quality/rule-verification.md#審查清單)。
 - [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。
 - [延遲讀取的資源責任](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)。
 
@@ -48,11 +47,13 @@ orders.stream().filter(Order::isCancellable);
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-lambda-types"></a>1、2 | 檢查 Lambda 參數明確標註、泛型資訊完整，方法參考可辨識目標與用途，不以縮短行數作為採用依據。 |
+| <a id="acceptance-java-lambda-types"></a>1、2 | 審查流程意圖與責任是否清楚，複雜邏輯有合適表達；檢查 Lambda 參數明確標註、泛型資訊完整，方法參考可辨識目標與用途，不以縮短行數作為採用依據。 |
 | <a id="acceptance-java-stream-side-effects"></a>3、4 | 審查中間操作及呼叫方法，確認沒有隱藏業務副作用或修改外部狀態。必要執行步驟的順序、失敗及部分完成有明確契約，跨元素狀態有管理責任。 |
 | <a id="acceptance-java-stream-short-circuit"></a>5 | 以空資料、單筆、多筆及會短路的案例核對實際處理範圍，確認完整驗證或必要工作沒有因延遲與短路而遺漏，不把建立流程視為完成。 |
 | <a id="acceptance-java-parallel-stream"></a>6 | 採平行處理時，以代表性資料與負載確認結果、順序、隔離及失敗語意，評估阻塞與資源競爭影響，保留量測收益的依據。 |
 | <a id="acceptance-java-stream-reduction"></a>7 | 驗證初始值、累積與合併結果；適用時以不同分段方式核對契約一致性。順序敏感運算保留約定順序，可變收集結果不受其他分段或執行污染。 |
-| <a id="acceptance-java-stream-coverage"></a>10 | 確認案例涵蓋受影響的執行語意與資源保證，平行處理有額外隔離及效能證據，不僅比對一般成功案例的最終元素內容。 |
-| <a id="acceptance-java-functional-exceptions"></a>8 | 在 Lambda／Stream 的函式介面限制與例外轉換路徑觸發故障，核對調整流程或邊界轉換保留分類與原始原因，未以空值、替代值或篩除項目規避例外契約。 |
+| <a id="acceptance-java-functional-exceptions"></a>8 | 在適用的處理階段觸發失敗，確認分類與原始原因保留，沒有以空值、替代值或篩除項目掩蓋問題。另核對 Lambda／Stream 函式介面的例外宣告限制與轉換路徑。 |
 | <a id="acceptance-java-stream-consumption"></a>9 | 核對 Stream 的建立與消費路徑，沒有重用或共用消費；重複取得資料時依契約驗證快照或最新資料語意。 |
+| <a id="acceptance-java-stream-coverage"></a>10 | 確認案例涵蓋受影響的執行語意與資源保證，平行處理有額外隔離及效能證據，不僅比對一般成功案例的最終元素內容。 |
+
+既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

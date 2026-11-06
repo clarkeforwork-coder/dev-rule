@@ -26,9 +26,20 @@
 
 ## 驗收要求
 
-共同驗收直接依主要來源執行：[所有權與快照](../../../coding/collections-and-ownership.md#acceptance-collection-ownership)、[順序與重複](../../../coding/collections-and-ownership.md#acceptance-order-duplicates)、[遍歷修改](../../../coding/collections-and-ownership.md#acceptance-traversal-mutation)、[複合原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)、[資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)、[延遲資源](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)、[批次失敗](../../../quality/rule-verification.md#acceptance-partial-operation)、[所有權覆蓋](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
-依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。
+### 共同驗收
+
+- [明確定義修改權與參考關係、區分不可修改與不可變快照](../../../coding/collections-and-ownership.md#acceptance-collection-ownership)。
+- [順序與重複資料](../../../coding/collections-and-ownership.md#acceptance-order-duplicates)。
+- [遍歷期間的修改](../../../coding/collections-and-ownership.md#acceptance-traversal-mutation)。
+- [複合操作的原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)。
+- [限制資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)。
+- [延遲讀取的資源責任](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)。
+- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。
+- [所有權與行為驗收](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。
+
+### Java 語言增量驗收
 
 上述驗收須經實際採用的 Java 集合、迭代與資源路徑執行，各條 Java 使用限制仍適用。
 

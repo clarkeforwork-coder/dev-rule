@@ -26,7 +26,7 @@
 
 ## 驗收要求
 
-依變更影響與實際使用路徑選擇案例，測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
 
 ### 共同驗收
 
@@ -34,14 +34,16 @@
 - [轉換要求、最小必要欄位](../../../architecture/data-mapping.md#acceptance-mapping-fields)。
 - [不可變性](../../../architecture/boundary-objects.md#acceptance-boundary-isolation)。
 - [責任配置](../../../architecture/data-mapping.md#acceptance-mapping-owner)。
-- [聚焦轉換與必要驗證](../../../architecture/data-mapping.md#acceptance-mapping-3)。
-- [各方向分別定義](../../../architecture/data-mapping.md#acceptance-mapping-7)。
-- [驗證實際映射路徑](../../../architecture/data-mapping.md#acceptance-mapping-9)。
+- [聚焦轉換與必要驗證](../../../architecture/data-mapping.md#acceptance-mapping-responsibility)。
+- [各方向分別定義](../../../architecture/data-mapping.md#acceptance-directional-mapping)。
+- [驗證實際映射路徑](../../../architecture/data-mapping.md#acceptance-mapping-paths)。
 - [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。
-- [空值語意](../../../coding/nullability.md#acceptance-update-intent)。
 
 ### Java 語言增量驗收
 
 | Java 條文 | 語言增量驗收 |
 | --- | --- |
 | <a id="acceptance-java-mapping-failure"></a>4 | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。 |
+| <a id="acceptance-java-update-intent"></a>5 | 核對 Java 欄位、預設值與反序列化路徑未合併省略、明確清空及設定值的不同意圖。 |
+
+既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低型別安全與邊界要求。
