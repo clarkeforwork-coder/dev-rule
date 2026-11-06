@@ -10,12 +10,14 @@ options = {}
 OptionParser.new do |parser|
   parser.banner = '用法：ruby scripts/verify-acceptance.rb [--batch N --baseline COMMIT [--target COMMIT]]'
   parser.on('--batch N', Integer) { |v| options[:batch] = v }
+  parser.on('--trace-only') { options[:trace_only] = true }
   parser.on('--baseline COMMIT') { |v| options[:baseline] = v }
   parser.on('--rules-baseline COMMIT') { |v| options[:rules_baseline] = v }
   parser.on('--target COMMIT') { |v| options[:target] = v }
 end.parse!
 abort('批次檢查須同時指定 --batch 與 --baseline') if !!options[:batch] != !!options[:baseline]
 abort('--target 僅用於批次檢查') if options[:target] && !options[:batch]
+abort('--trace-only 須搭配 --batch 與 --baseline') if options[:trace_only] && !options[:batch]
 manifest = JSON.parse(File.read('scripts/acceptance-batches.json'))
 completed = manifest.values.flat_map { |b| b.fetch('files').values }.uniq
 scope = completed.map { |s| "rules/stacks/java/common/#{s}.md" }
@@ -81,24 +83,26 @@ if options[:batch]
   baseline = options[:baseline]
   read_target = ->(p) { options[:target] ? original(options[:target], p) : File.read(p) }
   batch_scope = batch.fetch('files').values.map { |s| "rules/stacks/java/common/#{s}.md" }
-  Dir.glob('rules/stacks/java/common/*.md').each do |p|
-    old = original(baseline, p)
-    now = read_target.call(p)
-    errors << "Java rule body changed #{p}" unless old.split('## 驗收要求').first == now.split('## 驗收要求').first
-    errors << "Out of scope Java change #{p}" if !batch_scope.include?(p) && old != now
-  end
-  common.each do |p|
-    old = original(baseline, p)
-    now = read_target.call(p)
-    if p == 'rules/quality/rule-verification.md'
-      old.split(/\n\s*\n/).each do |block|
-        next if block.start_with?('|', '#', '<a ')
-        errors << "Common prose removed/changed #{p}: #{block[0,50]}" unless now.include?(block)
-      end
-    else
-      errors << "Common rule body changed #{p}" unless rule_body(p, old) == rule_body(p, now)
+  unless options[:trace_only]
+    Dir.glob('rules/stacks/java/common/*.md').each do |p|
+      old = original(baseline, p)
+      now = read_target.call(p)
+      errors << "Java rule body changed #{p}" unless old.split('## 驗收要求').first == now.split('## 驗收要求').first
+      errors << "Out of scope Java change #{p}" if !batch_scope.include?(p) && old != now
     end
+    common.each do |p|
+      old = original(baseline, p)
+      now = read_target.call(p)
+      if p == 'rules/quality/rule-verification.md'
+        old.split(/\n\s*\n/).each do |block|
+          next if block.start_with?('|', '#', '<a ')
+          errors << "Common prose removed/changed #{p}: #{block[0,50]}" unless now.include?(block)
+        end
+      else
+        errors << "Common rule body changed #{p}" unless rule_body(p, old) == rule_body(p, now)
+      end
 
+    end
   end
   report = read_target.call("docs/acceptance-cleanup-batch-#{options[:batch]}.md")
   trace = report.lines.map { |l| l.match(/^\| ([A-Z]+-[\d、]+-\d+) \| (.+) \| \[主要驗收\]\(([^)]+)\) \|/) }.compact
@@ -153,7 +157,7 @@ files.each do |p|
     n.zero? ? slug : "#{slug}-#{n}"
   end
   anchors[p] = explicit + implicit
-  errors << "Colliding explicit/heading anchor scripts/verify-acceptance-batch-2.rb" unless anchors[p].uniq == anchors[p]
+  errors << "Colliding explicit/heading anchor #{p}" unless anchors[p].uniq == anchors[p]
 end
 links = 0
 files.each do |p|
@@ -177,6 +181,7 @@ result[:rules_baseline] = options[:rules_baseline] if options[:rules_baseline]
 result[:rule_body_unchanged] = true if options[:rules_baseline]
 if options[:batch]
   result.merge!(batch: options[:batch], baseline: baseline, target: options[:target] || 'working-tree',
-    original_acceptance_rows: row_count, traced_fragments: trace.size, rule_body_unchanged: true)
+    original_acceptance_rows: row_count, traced_fragments: trace.size, trace_only: !!options[:trace_only])
+  result[:rule_body_unchanged] = true unless options[:trace_only]
 end
 puts JSON.pretty_generate(result)
