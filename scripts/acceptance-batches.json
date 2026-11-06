@@ -1,0 +1,16 @@
+{
+  "1": {
+    "files": {
+      "CL": "classes-and-construction",
+      "EQ": "equality-hashing-ordering",
+      "RF": "reflection-and-suppression"
+    }
+  },
+  "2": {
+    "files": {
+      "CA": "concurrency-and-async",
+      "CO": "collections-and-ownership",
+      "EX": "exceptions-and-resources"
+    }
+  }
+}
