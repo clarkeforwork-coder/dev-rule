@@ -12,5 +12,12 @@
       "CO": "collections-and-ownership",
       "EX": "exceptions-and-resources"
     }
+  },
+  "3": {
+    "files": {
+      "JV": "version-policy",
+      "JT": "types-and-generics",
+      "JN": "null-and-optional"
+    }
   }
 }
