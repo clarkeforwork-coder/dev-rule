@@ -422,6 +422,14 @@
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#驗收要求",
           "text": "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，測試層級、證據及其餘事項另依[規範驗證](../../../quality/rule-verification.md)及[共通測試策略](../../../quality/testing.md)辦理。"
+        },
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#驗收要求",
+          "text": "不合法資料從允許承接它的邊界輸入；型別要求依[型別安全](../../../coding/type-safety.md)。"
+        },
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#acceptance-java-optional-coverage",
+          "text": "| <a id=\"acceptance-java-optional-coverage\"></a>[驗收要求](#驗收要求) | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。Optional、非空標註與實際 API 路徑均納入適用案例。 |"
         }
       ],
       "reason": "正文驗收入口改由整個驗收章節承接；共同規範連結及 Optional、非空標註、實際 API 案例仍在，非法資料須從允許邊界輸入逐字保留。原全文未提交，無法證明原整理前完整覆蓋。"
@@ -432,7 +440,15 @@
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#驗收要求",
+          "text": "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，測試層級、證據及其餘事項另依[規範驗證](../../../quality/rule-verification.md)及[共通測試策略](../../../quality/testing.md)辦理。"
+        },
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#驗收要求",
           "text": "不合法資料從允許承接它的邊界輸入；型別要求依[型別安全](../../../coding/type-safety.md)。"
+        },
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#acceptance-java-optional-coverage",
+          "text": "| <a id=\"acceptance-java-optional-coverage\"></a>[驗收要求](#驗收要求) | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。Optional、非空標註與實際 API 路徑均納入適用案例。 |"
         }
       ],
       "reason": "正文驗收入口改由整個驗收章節承接；共同規範連結及 Optional、非空標註、實際 API 案例仍在，非法資料須從允許邊界輸入逐字保留。原全文未提交，無法證明原整理前完整覆蓋。"
