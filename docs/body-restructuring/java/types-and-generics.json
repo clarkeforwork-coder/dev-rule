@@ -1,95 +1,95 @@
 {
   "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
   "path": "rules/stacks/java/common/types-and-generics.md",
-  "status": "pending",
+  "status": "completed",
   "rules": [
     {
       "id": "JT-01",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#明確宣告與型別關係"
+        "rules/stacks/java/common/types-and-generics.md#java-explicit-types"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節否的判斷原句保留，維持各宣告位置的泛型資訊及禁止使用 var 的限制。"
     },
     {
       "id": "JT-02",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#明確宣告與型別關係"
+        "rules/stacks/java/common/types-and-generics.md#java-generic-type-information"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節否的判斷原句保留，維持 raw type 禁令及 Object、萬用字元與泛型抽象的使用界線。"
     },
     {
       "id": "JT-03",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#明確宣告與型別關係"
+        "rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通容器與泛型允許真實關係或解析驗證機制，未直接要求 Java 泛型簽章實際連結輸入輸出及特定業務操作不要求呼叫端轉型補回，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "JT-04",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#明確宣告與型別關係"
+        "rules/stacks/java/common/types-and-generics.md#java-business-type-casts"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節否的判斷原句保留，維持參考型別向下轉型禁令、外部邊界驗證、個別例外及數值轉換適用範圍。"
     },
     {
       "id": "JT-05",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#明確宣告與型別關係"
+        "rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節否的判斷原句保留，維持 raw type 與 unchecked 警告、不得抑制檢查及例外核准紀錄要求。"
     },
     {
       "id": "JT-06",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約"
+        "rules/stacks/java/common/types-and-generics.md#java-business-data-shape"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通容器與泛型禁止以任意鍵值容器替代固定結構，未直接列出 Object[] 陣列承載的禁止事項，無法確認直接涵蓋，故連同 Map 反例及動態映射明確鍵值要求整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "JT-07",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約"
+        "rules/stacks/java/common/types-and-generics.md#java-generic-capabilities"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節否的判斷原句保留，維持型別參數、上界及參數契約的能力表達與不得額外建立介面的界線。"
     },
     {
       "id": "JT-08",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約"
+        "rules/stacks/java/common/types-and-generics.md#java-collection-declarations"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節否的判斷原句保留，維持集合介面與實作類別的選擇，以及可修改性與排序須另訂契約的要求。"
     },
     {
       "id": "JT-09",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約"
+        "rules/stacks/java/common/types-and-generics.md#java-diamond-construction"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節否的判斷原句保留，維持完整宣告前提下僅建構端允許菱形運算子的界線。"
     },
     {
       "id": "JT-10",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約"
+        "rules/stacks/java/common/types-and-generics.md#java-generic-return-types"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節否的判斷原句保留，維持萬用字元回傳與上下界的必要條件，以及不得代替不可變性設計的限制。"
     },
     {
       "id": "JT-11",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約"
+        "rules/stacks/java/common/types-and-generics.md#java-type-parameter-names"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節否的判斷原句保留，維持泛型參數用途關聯可辨識、慣例短名稱及複雜角色命名與說明的界線。"
     }
   ],
   "sentences": [
@@ -140,7 +140,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-explicit-types",
           "text": "參數、回傳值、欄位與區域變數須明確宣告型別，保留必要的泛型資訊，不使用 `var` 取代型別標註。"
         }
       ],
@@ -154,7 +154,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-generic-type-information",
           "text": "使用泛型型別時須宣告型別參數，禁止 raw type。"
         }
       ],
@@ -168,7 +168,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-generic-type-information",
           "text": "承載業務語意的參數、回傳值與欄位須保留業務所需的型別資訊，不得以 `Object`、萬用字元或無必要的泛型隱藏已知型別。"
         }
       ],
@@ -182,7 +182,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-generic-type-information",
           "text": "泛型與萬用字元僅在確有型別抽象需求，且能維持必要約束與關聯時使用；不僅依所在層級或是否出現 `?` 判定合理性。"
         }
       ],
@@ -196,35 +196,37 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation",
           "text": "依[型別安全](../../../coding/type-safety.md)執行。"
         }
       ],
       "history_id": "JT-03",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "保留整份型別安全引用，與同條未能確認共通直接涵蓋的 Java 具體要求一併維持。"
     },
     {
       "source": "Java 泛型簽章須實際連結輸入與輸出的型別；特定業務操作直接使用其型別，不要求呼叫端轉型補回。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation",
           "text": "Java 泛型簽章須實際連結輸入與輸出的型別；特定業務操作直接使用其型別，不要求呼叫端轉型補回。"
         }
       ],
       "history_id": "JT-03",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通容器與泛型允許真實關係或解析驗證機制，未直接要求 Java 泛型簽章實際連結輸入輸出及特定業務操作不要求呼叫端轉型補回，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "自行撰寫的程式碼不得以強制向下轉型補回遺失的業務型別資訊，應透過資料契約、泛型或多型設計保留型別。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-business-type-casts",
           "text": "自行撰寫的程式碼不得以強制向下轉型補回遺失的業務型別資訊，應透過資料契約、泛型或多型設計保留型別。"
         }
       ],
@@ -238,7 +240,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-business-type-casts",
           "text": "外部資料須在邊界完成驗證與明確型別轉換，不能讓型別不明的資料流入業務流程。"
         }
       ],
@@ -252,7 +254,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-business-type-casts",
           "text": "工具或第三方 API 限制須依例外流程個別處理，不預先開放整合處例外。"
         }
       ],
@@ -266,7 +268,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-business-type-casts",
           "text": "本項針對參考型別的向下轉型，數值轉換另依適用規範處理。"
         }
       ],
@@ -280,7 +282,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings",
           "text": "新增或修改程式碼不得留下 raw type 或 unchecked 警告，須修正造成警告的契約與實作，不得以 `@SuppressWarnings` 或關閉檢查規避要求。"
         }
       ],
@@ -294,7 +296,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings",
           "text": "工具限制須依例外流程個別核准，記錄影響範圍、型別安全依據與驗證方式。"
         }
       ],
@@ -308,7 +310,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-closing-requirements",
           "text": "既有程式碼的漸進導入、工具產生碼與個別例外依[規範治理](../../../workflow/rule-governance.md)辦理。"
         }
       ],
@@ -322,7 +324,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-closing-requirements",
           "text": "測試不得透過不安全轉型偽造有效物件，另見[測試程式碼要求](../../../quality/rule-verification.md#測試程式碼)。"
         }
       ],
@@ -336,35 +338,37 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-business-data-shape",
           "text": "依[型別安全](../../../coding/type-safety.md)執行。"
         }
       ],
       "history_id": "JT-06",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "保留整份型別安全引用，與同條未能確認共通直接涵蓋的 Java 具體要求一併維持。"
     },
     {
       "source": "例如固定欄位資料不得改以 `Map<String, Object>` 或 `Object[]` 承載；真正動態的映射仍須保留明確鍵值型別。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-business-data-shape",
           "text": "例如固定欄位資料不得改以 `Map<String, Object>` 或 `Object[]` 承載；真正動態的映射仍須保留明確鍵值型別。"
         }
       ],
       "history_id": "JT-06",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通容器與泛型禁止以任意鍵值容器替代固定結構，未直接列出 Object[] 陣列承載的禁止事項，無法確認直接涵蓋，故連同 Map 反例及動態映射明確鍵值要求整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "泛型操作所需的型別能力與關聯，須透過型別參數、上界或明確的參數契約表達，不得依賴未宣告的型別假設、執行期猜測或強制轉型。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-generic-capabilities",
           "text": "泛型操作所需的型別能力與關聯，須透過型別參數、上界或明確的參數契約表達，不得依賴未宣告的型別假設、執行期猜測或強制轉型。"
         }
       ],
@@ -378,7 +382,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-generic-capabilities",
           "text": "無實際通用需求時，直接使用明確型別，不為使用泛型而額外建立介面。"
         }
       ],
@@ -392,7 +396,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-collection-declarations",
           "text": "宣告型別須表達使用端所需的操作與語意，優先使用能完整表達契約的介面；不得過度泛化而迫使使用端轉型，也不應無必要地暴露具體實作類別。"
         }
       ],
@@ -406,7 +410,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-collection-declarations",
           "text": "可修改性、排序方式等保證須依契約另行明訂，不僅憑集合介面推定。"
         }
       ],
@@ -420,7 +424,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-diamond-construction",
           "text": "變數已明確宣告完整型別時，允許使用 `<>` 省略建構時重複的泛型參數；不得因此省略宣告端所需的型別資訊或改用 raw type。"
         }
       ],
@@ -434,7 +438,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-generic-return-types",
           "text": "回傳值須提供明確、可直接使用的型別；只有契約確實需要表達未知型別或其上下界時，才使用萬用字元，不得為預留彈性而增加使用端負擔，也不得以萬用字元取代不可變性設計。"
         }
       ],
@@ -448,7 +452,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-type-parameter-names",
           "text": "名稱須能辨識用途與關聯。"
         }
       ],
@@ -462,7 +466,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-type-parameter-names",
           "text": "簡單情境可使用 `T`、`K`、`V` 等通行慣例名稱；具有不同責任或較複雜關聯時，應使用能表達角色的名稱，例如 `Source` 與 `Target`，並在必要時補充契約說明，不強制所有泛型參數使用長名稱。"
         }
       ],
@@ -476,7 +480,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-closing-requirements",
           "text": "例如，下列宣告保留元素與鍵值型別，並允許建構端省略重複資訊；其中 `ordersById` 表達依識別碼查找訂單的關係，不是用任意欄位名稱拼湊單一訂單："
         }
       ],
@@ -490,7 +494,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-closing-requirements",
           "text": "```java"
         }
       ],
@@ -504,7 +508,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-closing-requirements",
           "text": "List<Order> orders = new ArrayList<>();"
         }
       ],
@@ -518,7 +522,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-closing-requirements",
           "text": "Map<OrderId, Order> ordersById = new HashMap<>();"
         }
       ],
@@ -532,7 +536,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-closing-requirements",
           "text": "```"
         }
       ],
@@ -546,7 +550,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-closing-requirements",
           "text": "固定結構的訂單輸入則應使用明確物件，例如 `CreateOrderRequest`。"
         }
       ],
@@ -560,7 +564,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
+          "uri": "rules/stacks/java/common/types-and-generics.md#java-closing-requirements",
           "text": "邊界物件的拆分與映射責任另依[邊界物件](../../../architecture/boundary-objects.md)與[資料映射](../../../architecture/data-mapping.md)。"
         }
       ],
@@ -571,10 +575,189 @@
     }
   ],
   "edits": [
+    {
+      "baseline_line": 9,
+      "remove": [
+        "1. **明確宣告型別**。參數、回傳值、欄位與區域變數須明確宣告型別，保留必要的泛型資訊，不使用 `var` 取代型別標註。\n",
+        "2. **禁止 raw type 與不必要的型別抽象**。使用泛型型別時須宣告型別參數，禁止 raw type。承載業務語意的參數、回傳值與欄位須保留業務所需的型別資訊，不得以 `Object`、萬用字元或無必要的泛型隱藏已知型別。泛型與萬用字元僅在確有型別抽象需求，且能維持必要約束與關聯時使用；不僅依所在層級或是否出現 `?` 判定合理性。\n",
+        "3. **輸入與輸出的型別關聯**。依[型別安全](../../../coding/type-safety.md)執行。Java 泛型簽章須實際連結輸入與輸出的型別；特定業務操作直接使用其型別，不要求呼叫端轉型補回。\n",
+        "4. **不得以向下轉型補回業務型別**。自行撰寫的程式碼不得以強制向下轉型補回遺失的業務型別資訊，應透過資料契約、泛型或多型設計保留型別。外部資料須在邊界完成驗證與明確型別轉換，不能讓型別不明的資料流入業務流程。工具或第三方 API 限制須依例外流程個別處理，不預先開放整合處例外。本項針對參考型別的向下轉型，數值轉換另依適用規範處理。\n",
+        "5. **型別安全警告**。新增或修改程式碼不得留下 raw type 或 unchecked 警告，須修正造成警告的契約與實作，不得以 `@SuppressWarnings` 或關閉檢查規避要求。工具限制須依例外流程個別核准，記錄影響範圍、型別安全依據與驗證方式。\n"
+      ],
+      "insert": [
+        "<a id=\"java-explicit-types\"></a>\n"
+      ],
+      "reason": "各條依判斷保留原句並改為語意小標題；尾段與範例原樣移至補充要求，驗收僅更新定位與表頭。"
+    },
+    {
+      "baseline_line": 15,
+      "remove": [
+        "既有程式碼的漸進導入、工具產生碼與個別例外依[規範治理](../../../workflow/rule-governance.md)辦理。測試不得透過不安全轉型偽造有效物件，另見[測試程式碼要求](../../../quality/rule-verification.md#測試程式碼)。\n"
+      ],
+      "insert": [
+        "### 明確宣告型別\n"
+      ],
+      "reason": "各條依判斷保留原句並改為語意小標題；尾段與範例原樣移至補充要求，驗收僅更新定位與表頭。"
+    },
+    {
+      "baseline_line": 17,
+      "remove": [
 
+      ],
+      "insert": [
+        "參數、回傳值、欄位與區域變數須明確宣告型別，保留必要的泛型資訊，不使用 `var` 取代型別標註。\n",
+        "\n",
+        "<a id=\"java-generic-type-information\"></a>\n",
+        "\n",
+        "### 禁止 raw type 與不必要的型別抽象\n",
+        "\n",
+        "使用泛型型別時須宣告型別參數，禁止 raw type。承載業務語意的參數、回傳值與欄位須保留業務所需的型別資訊，不得以 `Object`、萬用字元或無必要的泛型隱藏已知型別。泛型與萬用字元僅在確有型別抽象需求，且能維持必要約束與關聯時使用；不僅依所在層級或是否出現 `?` 判定合理性。\n",
+        "\n",
+        "<a id=\"java-input-output-type-relation\"></a>\n",
+        "\n",
+        "### 輸入與輸出的型別關聯\n",
+        "\n",
+        "依[型別安全](../../../coding/type-safety.md)執行。Java 泛型簽章須實際連結輸入與輸出的型別；特定業務操作直接使用其型別，不要求呼叫端轉型補回。\n",
+        "\n",
+        "<a id=\"java-business-type-casts\"></a>\n",
+        "\n",
+        "### 不得以向下轉型補回業務型別\n",
+        "\n",
+        "自行撰寫的程式碼不得以強制向下轉型補回遺失的業務型別資訊，應透過資料契約、泛型或多型設計保留型別。外部資料須在邊界完成驗證與明確型別轉換，不能讓型別不明的資料流入業務流程。工具或第三方 API 限制須依例外流程個別處理，不預先開放整合處例外。本項針對參考型別的向下轉型，數值轉換另依適用規範處理。\n",
+        "\n",
+        "<a id=\"java-type-safety-warnings\"></a>\n",
+        "\n",
+        "### 型別安全警告\n",
+        "\n",
+        "新增或修改程式碼不得留下 raw type 或 unchecked 警告，須修正造成警告的契約與實作，不得以 `@SuppressWarnings` 或關閉檢查規避要求。工具限制須依例外流程個別核准，記錄影響範圍、型別安全依據與驗證方式。\n",
+        "\n"
+      ],
+      "reason": "各條依判斷保留原句並改為語意小標題；尾段與範例原樣移至補充要求，驗收僅更新定位與表頭。"
+    },
+    {
+      "baseline_line": 19,
+      "remove": [
+        "6. **業務資料結構**。依[型別安全](../../../coding/type-safety.md)執行。例如固定欄位資料不得改以 `Map<String, Object>` 或 `Object[]` 承載；真正動態的映射仍須保留明確鍵值型別。\n",
+        "7. **型別能力與約束**。泛型操作所需的型別能力與關聯，須透過型別參數、上界或明確的參數契約表達，不得依賴未宣告的型別假設、執行期猜測或強制轉型。無實際通用需求時，直接使用明確型別，不為使用泛型而額外建立介面。\n",
+        "8. **集合與映射的宣告型別**。宣告型別須表達使用端所需的操作與語意，優先使用能完整表達契約的介面；不得過度泛化而迫使使用端轉型，也不應無必要地暴露具體實作類別。可修改性、排序方式等保證須依契約另行明訂，不僅憑集合介面推定。\n",
+        "9. **允許建構端使用菱形運算子**。變數已明確宣告完整型別時，允許使用 `<>` 省略建構時重複的泛型參數；不得因此省略宣告端所需的型別資訊或改用 raw type。\n",
+        "10. **泛型回傳值**。回傳值須提供明確、可直接使用的型別；只有契約確實需要表達未知型別或其上下界時，才使用萬用字元，不得為預留彈性而增加使用端負擔，也不得以萬用字元取代不可變性設計。\n",
+        "11. **泛型參數命名**。名稱須能辨識用途與關聯。簡單情境可使用 `T`、`K`、`V` 等通行慣例名稱；具有不同責任或較複雜關聯時，應使用能表達角色的名稱，例如 `Source` 與 `Target`，並在必要時補充契約說明，不強制所有泛型參數使用長名稱。\n"
+      ],
+      "insert": [
+        "<a id=\"java-business-data-shape\"></a>\n"
+      ],
+      "reason": "各條依判斷保留原句並改為語意小標題；尾段與範例原樣移至補充要求，驗收僅更新定位與表頭。"
+    },
+    {
+      "baseline_line": 26,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 業務資料結構\n",
+        "\n",
+        "依[型別安全](../../../coding/type-safety.md)執行。例如固定欄位資料不得改以 `Map<String, Object>` 或 `Object[]` 承載；真正動態的映射仍須保留明確鍵值型別。\n",
+        "\n",
+        "<a id=\"java-generic-capabilities\"></a>\n",
+        "\n",
+        "### 型別能力與約束\n",
+        "\n",
+        "泛型操作所需的型別能力與關聯，須透過型別參數、上界或明確的參數契約表達，不得依賴未宣告的型別假設、執行期猜測或強制轉型。無實際通用需求時，直接使用明確型別，不為使用泛型而額外建立介面。\n",
+        "\n",
+        "<a id=\"java-collection-declarations\"></a>\n",
+        "\n",
+        "### 集合與映射的宣告型別\n",
+        "\n",
+        "宣告型別須表達使用端所需的操作與語意，優先使用能完整表達契約的介面；不得過度泛化而迫使使用端轉型，也不應無必要地暴露具體實作類別。可修改性、排序方式等保證須依契約另行明訂，不僅憑集合介面推定。\n",
+        "\n",
+        "<a id=\"java-diamond-construction\"></a>\n",
+        "\n",
+        "### 允許建構端使用菱形運算子\n",
+        "\n",
+        "變數已明確宣告完整型別時，允許使用 `<>` 省略建構時重複的泛型參數；不得因此省略宣告端所需的型別資訊或改用 raw type。\n",
+        "\n",
+        "<a id=\"java-generic-return-types\"></a>\n",
+        "\n",
+        "### 泛型回傳值\n",
+        "\n",
+        "回傳值須提供明確、可直接使用的型別；只有契約確實需要表達未知型別或其上下界時，才使用萬用字元，不得為預留彈性而增加使用端負擔，也不得以萬用字元取代不可變性設計。\n",
+        "\n",
+        "<a id=\"java-type-parameter-names\"></a>\n",
+        "\n",
+        "### 泛型參數命名\n",
+        "\n",
+        "名稱須能辨識用途與關聯。簡單情境可使用 `T`、`K`、`V` 等通行慣例名稱；具有不同責任或較複雜關聯時，應使用能表達角色的名稱，例如 `Source` 與 `Target`，並在必要時補充契約說明，不強制所有泛型參數使用長名稱。\n",
+        "\n",
+        "<a id=\"java-closing-requirements\"></a>\n",
+        "\n",
+        "## 補充要求\n",
+        "\n",
+        "既有程式碼的漸進導入、工具產生碼與個別例外依[規範治理](../../../workflow/rule-governance.md)辦理。測試不得透過不安全轉型偽造有效物件，另見[測試程式碼要求](../../../quality/rule-verification.md#測試程式碼)。\n",
+        "\n"
+      ],
+      "reason": "各條依判斷保留原句並改為語意小標題；尾段與範例原樣移至補充要求，驗收僅更新定位與表頭。"
+    },
+    {
+      "baseline_line": 45,
+      "remove": [
+        "| Java 條文 | 語言增量驗收 |\n"
+      ],
+      "insert": [
+        "| 對應要求 | 語言增量驗收 |\n"
+      ],
+      "reason": "各條依判斷保留原句並改為語意小標題；尾段與範例原樣移至補充要求，驗收僅更新定位與表頭。"
+    },
+    {
+      "baseline_line": 47,
+      "remove": [
+        "| <a id=\"acceptance-java-explicit-types\"></a>1、9 | 檢查參數、回傳值、欄位與區域變數的明確宣告及泛型資訊，拒絕以 `var` 代替標註。允許的 `<>` 不得被誤判為 raw type，且宣告端須保留完整型別。 |\n",
+        "| <a id=\"acceptance-java-generic-relations\"></a>2、3、7 | 從實際呼叫處確認泛型的需求、約束及輸入輸出關聯，沒有用 `Object`、萬用字元或無依據的型別參數掩蓋業務型別。以代表性不相容型別案例確認適用的編譯檢查會拒絕。 |\n",
+        "| <a id=\"acceptance-java-unsafe-casts\"></a>4、5 | 啟用適用的 raw type 與 unchecked 警告檢查，確認新增與修改部分沒有違規，且未透過抑制或關閉檢查隱藏問題。審查向下轉型是否在補回遺失的業務型別；外部輸入以合法及不合法資料驗證邊界處理，必要例外須有核准及驗證依據。 |\n",
+        "| <a id=\"acceptance-java-generic-return\"></a>8、10 | 從使用端確認集合介面及回傳型別足以完成契約操作，不需要補做轉型；檢查暴露實作類別或萬用字元是否有必要，且未將其誤作不可變性保證。 |\n",
+        "| <a id=\"acceptance-java-type-parameter-names\"></a>11 | 審查泛型參數名稱是否足以辨識責任及關聯，複雜契約有必要說明，不僅依名稱長度判定。 |\n"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-explicit-types\"></a>[明確宣告型別](#java-explicit-types)、[允許建構端使用菱形運算子](#java-diamond-construction) | 檢查參數、回傳值、欄位與區域變數的明確宣告及泛型資訊，拒絕以 `var` 代替標註。允許的 `<>` 不得被誤判為 raw type，且宣告端須保留完整型別。 |\n",
+        "| <a id=\"acceptance-java-generic-relations\"></a>[禁止 raw type 與不必要的型別抽象](#java-generic-type-information)、[輸入與輸出的型別關聯](#java-input-output-type-relation)、[型別能力與約束](#java-generic-capabilities) | 從實際呼叫處確認泛型的需求、約束及輸入輸出關聯，沒有用 `Object`、萬用字元或無依據的型別參數掩蓋業務型別。以代表性不相容型別案例確認適用的編譯檢查會拒絕。 |\n",
+        "| <a id=\"acceptance-java-unsafe-casts\"></a>[不得以向下轉型補回業務型別](#java-business-type-casts)、[型別安全警告](#java-type-safety-warnings) | 啟用適用的 raw type 與 unchecked 警告檢查，確認新增與修改部分沒有違規，且未透過抑制或關閉檢查隱藏問題。審查向下轉型是否在補回遺失的業務型別；外部輸入以合法及不合法資料驗證邊界處理，必要例外須有核准及驗證依據。 |\n",
+        "| <a id=\"acceptance-java-generic-return\"></a>[集合與映射的宣告型別](#java-collection-declarations)、[泛型回傳值](#java-generic-return-types) | 從使用端確認集合介面及回傳型別足以完成契約操作，不需要補做轉型；檢查暴露實作類別或萬用字元是否有必要，且未將其誤作不可變性保證。 |\n",
+        "| <a id=\"acceptance-java-type-parameter-names\"></a>[泛型參數命名](#java-type-parameter-names) | 審查泛型參數名稱是否足以辨識責任及關聯，複雜契約有必要說明，不僅依名稱長度判定。 |\n"
+      ],
+      "reason": "各條依判斷保留原句並改為語意小標題；尾段與範例原樣移至補充要求，驗收僅更新定位與表頭。"
+    }
   ],
   "acceptance_changes": [
-
+    {
+      "before": "| Java 條文 | 語言增量驗收 |\n",
+      "after": "| 對應要求 | 語言增量驗收 |\n",
+      "reason": "僅將表頭統一為對應要求並將舊條號定位改為語意小節連結，第二欄所有驗收條件逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-explicit-types\"></a>1、9 | 檢查參數、回傳值、欄位與區域變數的明確宣告及泛型資訊，拒絕以 `var` 代替標註。允許的 `<>` 不得被誤判為 raw type，且宣告端須保留完整型別。 |\n",
+      "after": "| <a id=\"acceptance-java-explicit-types\"></a>[明確宣告型別](#java-explicit-types)、[允許建構端使用菱形運算子](#java-diamond-construction) | 檢查參數、回傳值、欄位與區域變數的明確宣告及泛型資訊，拒絕以 `var` 代替標註。允許的 `<>` 不得被誤判為 raw type，且宣告端須保留完整型別。 |\n",
+      "reason": "僅將表頭統一為對應要求並將舊條號定位改為語意小節連結，第二欄所有驗收條件逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-generic-relations\"></a>2、3、7 | 從實際呼叫處確認泛型的需求、約束及輸入輸出關聯，沒有用 `Object`、萬用字元或無依據的型別參數掩蓋業務型別。以代表性不相容型別案例確認適用的編譯檢查會拒絕。 |\n",
+      "after": "| <a id=\"acceptance-java-generic-relations\"></a>[禁止 raw type 與不必要的型別抽象](#java-generic-type-information)、[輸入與輸出的型別關聯](#java-input-output-type-relation)、[型別能力與約束](#java-generic-capabilities) | 從實際呼叫處確認泛型的需求、約束及輸入輸出關聯，沒有用 `Object`、萬用字元或無依據的型別參數掩蓋業務型別。以代表性不相容型別案例確認適用的編譯檢查會拒絕。 |\n",
+      "reason": "僅將表頭統一為對應要求並將舊條號定位改為語意小節連結，第二欄所有驗收條件逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-unsafe-casts\"></a>4、5 | 啟用適用的 raw type 與 unchecked 警告檢查，確認新增與修改部分沒有違規，且未透過抑制或關閉檢查隱藏問題。審查向下轉型是否在補回遺失的業務型別；外部輸入以合法及不合法資料驗證邊界處理，必要例外須有核准及驗證依據。 |\n",
+      "after": "| <a id=\"acceptance-java-unsafe-casts\"></a>[不得以向下轉型補回業務型別](#java-business-type-casts)、[型別安全警告](#java-type-safety-warnings) | 啟用適用的 raw type 與 unchecked 警告檢查，確認新增與修改部分沒有違規，且未透過抑制或關閉檢查隱藏問題。審查向下轉型是否在補回遺失的業務型別；外部輸入以合法及不合法資料驗證邊界處理，必要例外須有核准及驗證依據。 |\n",
+      "reason": "僅將表頭統一為對應要求並將舊條號定位改為語意小節連結，第二欄所有驗收條件逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-generic-return\"></a>8、10 | 從使用端確認集合介面及回傳型別足以完成契約操作，不需要補做轉型；檢查暴露實作類別或萬用字元是否有必要，且未將其誤作不可變性保證。 |\n",
+      "after": "| <a id=\"acceptance-java-generic-return\"></a>[集合與映射的宣告型別](#java-collection-declarations)、[泛型回傳值](#java-generic-return-types) | 從使用端確認集合介面及回傳型別足以完成契約操作，不需要補做轉型；檢查暴露實作類別或萬用字元是否有必要，且未將其誤作不可變性保證。 |\n",
+      "reason": "僅將表頭統一為對應要求並將舊條號定位改為語意小節連結，第二欄所有驗收條件逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-type-parameter-names\"></a>11 | 審查泛型參數名稱是否足以辨識責任及關聯，複雜契約有必要說明，不僅依名稱長度判定。 |\n",
+      "after": "| <a id=\"acceptance-java-type-parameter-names\"></a>[泛型參數命名](#java-type-parameter-names) | 審查泛型參數名稱是否足以辨識責任及關聯，複雜契約有必要說明，不僅依名稱長度判定。 |\n",
+      "reason": "僅將表頭統一為對應要求並將舊條號定位改為語意小節連結，第二欄所有驗收條件逐字保留。"
+    }
   ],
   "imports": [
 
@@ -583,6 +766,9 @@
 
   ],
   "acceptance_additions": [
+
+  ],
+  "group_routes": [
 
   ]
 }
