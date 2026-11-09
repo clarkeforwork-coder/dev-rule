@@ -55,11 +55,11 @@
 | --- | --- | --- | --- |
 | [JT-03 第 3 條](../rules/stacks/java/common/types-and-generics.md#明確宣告與型別關係) | Java 泛型簽章須實際連結輸入與輸出的型別；特定業務操作直接使用其型別，不要求呼叫端轉型補回。 | 重述 | 泛型關聯、固定物件與明確鍵值型別已在共通型別安全定義；Java 名稱或範例未增加限制，建議移除純引用條目。 共通對照：[型別安全](../rules/coding/type-safety.md)。 |
 | [JT-06 第 6 條](../rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約) | 例如固定欄位資料不得改以 `Map<String, Object>` 或 `Object[]` 承載；真正動態的映射仍須保留明確鍵值型別。 | 重述 | 泛型關聯、固定物件與明確鍵值型別已在共通型別安全定義；Java 名稱或範例未增加限制，建議移除純引用條目。 共通對照：[型別安全](../rules/coding/type-safety.md)。 |
-| [JN-06 第 6 條](../rules/stacks/java/common/null-and-optional.md#空值限制與整合責任) | Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。 | 重述 | 接收／建立／變更驗證與可靠內部契約免重複檢查，均由共通責任分工承接。 共通對照：[資料驗證](../rules/coding/validation.md)、[錯誤處理](../rules/coding/error-handling.md)、[領域建模](../rules/coding/domain-modeling.md)。 |
-| [JN-08 第 8 條](../rules/stacks/java/common/null-and-optional.md#空值限制與整合責任) | 第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`；契約不明或違約的 `null` 不得擅自視為正常缺值。 | 增量 | 保留第三方 null 轉 Optional 的具體表示；第三方語意不明不得推測的政策只引用共通。 共通對照：[第三方空值行為的共通要求](../rules/coding/nullability.md#jn-08)。 |
-| [JN-09 第 9 條](../rules/stacks/java/common/null-and-optional.md#契約維護與對外表示) | Java 空值標註、`Optional` 使用及缺值處置須同步更新，不因 Java 方法簽章未變就視為相容。 | 混合 | 標註與 Optional 同步更新是 Java 落實；簽章不變不代表相容已在共通，刪除重述部分。 共通對照：[空值契約變更的共通要求](../rules/coding/nullability.md#jn-09)。 |
-| [JN-10 第 10 條](../rules/stacks/java/common/null-and-optional.md#契約維護與對外表示) | 保留本文件驗收表中的 `Optional`、非空標註及實際 API 路徑案例；不合法資料從允許承接它的邊界輸入。 | 驗收入口 | Optional／非空標註及 API 路徑是現行驗收的索引，無須再設正文義務；保留驗收入口。 共通對照：[規範驗證](../rules/quality/rule-verification.md)、[共通測試策略](../rules/quality/testing.md)、[型別安全](../rules/coding/type-safety.md)。 |
-| [JN-12 第 12 條](../rules/stacks/java/common/null-and-optional.md#契約維護與對外表示) | Java 的 `Optional` 與內部 `null` 在 API 邊界轉換；不要求對外暴露 `Optional`。具體序列化配置由 Framework 規範落實，不能用預設輸出代替契約。 | 混合 | Optional／內部 null 的邊界轉換是 Java 表示；不外露包裝型別及不得用框架預設取代契約已共通。 共通對照：[API 邊界的缺值轉換的共通要求](../rules/interfaces/api-contracts.md#jn-12)。 |
+| [JN-06 第 6 條](../rules/coding/validation.md#責任分工) | Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。 | 重述 | 接收／建立／變更驗證與可靠內部契約免重複檢查，均由共通責任分工承接。 共通對照：[資料驗證](../rules/coding/validation.md)、[錯誤處理](../rules/coding/error-handling.md)、[領域建模](../rules/coding/domain-modeling.md)。 |
+| [JN-08 第 8 條](../rules/stacks/java/common/null-and-optional.md#java-third-party-optional) | 第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`；契約不明或違約的 `null` 不得擅自視為正常缺值。 | 增量 | 保留第三方 null 轉 Optional 的具體表示；第三方語意不明不得推測的政策只引用共通。 共通對照：[第三方空值行為的共通要求](../rules/coding/nullability.md#jn-08)。 |
+| [JN-09 第 9 條](../rules/stacks/java/common/null-and-optional.md#java-null-contract-evolution) | Java 空值標註、`Optional` 使用及缺值處置須同步更新，不因 Java 方法簽章未變就視為相容。 | 混合 | 標註與 Optional 同步更新是 Java 落實；簽章不變不代表相容已在共通，刪除重述部分。 共通對照：[空值契約變更的共通要求](../rules/coding/nullability.md#jn-09)。 |
+| [JN-10 第 10 條](../rules/stacks/java/common/null-and-optional.md#驗收要求) | 保留本文件驗收表中的 `Optional`、非空標註及實際 API 路徑案例；不合法資料從允許承接它的邊界輸入。 | 驗收入口 | Optional／非空標註及 API 路徑是現行驗收的索引，無須再設正文義務；保留驗收入口。 共通對照：[規範驗證](../rules/quality/rule-verification.md)、[共通測試策略](../rules/quality/testing.md)、[型別安全](../rules/coding/type-safety.md)。 |
+| [JN-12 第 12 條](../rules/stacks/java/common/null-and-optional.md#java-api-absence) | Java 的 `Optional` 與內部 `null` 在 API 邊界轉換；不要求對外暴露 `Optional`。具體序列化配置由 Framework 規範落實，不能用預設輸出代替契約。 | 混合 | Optional／內部 null 的邊界轉換是 Java 表示；不外露包裝型別及不得用框架預設取代契約已共通。 共通對照：[API 邊界的缺值轉換的共通要求](../rules/interfaces/api-contracts.md#jn-12)。 |
 | [VO-01 第 1 條](../rules/stacks/java/common/value-objects.md#型別責任與有效性) | Java 的 `OrderId` 與 `CustomerId` 須維持不同業務型別；一般描述性資料不要求機械式包裝。 | 重述 | OrderId／CustomerId 與建構子／工廠只是既有型別隔離、建立有效及授權分離的例子。 共通對照：[領域建模](../rules/coding/domain-modeling.md)。 |
 | [VO-02 第 2 條](../rules/stacks/java/common/value-objects.md#型別責任與有效性) | Java 建構子或工廠維持一致驗證；合法 `OrderId` 不代表訂單存在或已取得存取權。 | 重述 | OrderId／CustomerId 與建構子／工廠只是既有型別隔離、建立有效及授權分離的例子。 共通對照：[領域建模](../rules/coding/domain-modeling.md)、[資料驗證](../rules/coding/validation.md)。 |
 | [VO-03 第 3 條](../rules/stacks/java/common/value-objects.md#型別責任與有效性) | Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。 | 增量 | final 只限制欄位重新指定，不能證明被參考內容不可變；保留此 Java 失效情境，隔離政策引用共通。 共通對照：[不可變性的共通要求](../rules/coding/domain-modeling.md#vo-03)。 |
@@ -165,13 +165,13 @@
 | [JT-09 第 9 條](../rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約) | 宣告端明確引用型別安全 | 僅建構端允許菱形運算子 | 否：引用現有共通即可 |
 | [JT-10 第 10 條](../rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約) | 必要型別與不可變性政策引用共通 | 萬用字元回傳及上下界採用條件 | 否：引用現有共通即可 |
 | [JT-11 第 11 條](../rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約) | 用途／關聯可辨識引用命名 | T／K／V 與角色型別參數的適用界線 | 否：引用現有共通即可 |
-| [JN-01 第 1 條](../rules/stacks/java/common/null-and-optional.md#查詢與-optional) | 正常缺值、必須存在與技術故障分類引用共通 | 單筆 Optional、多筆非 null 空集合 | 否：引用現有共通即可 |
-| [JN-02 第 2 條](../rules/stacks/java/common/null-and-optional.md#查詢與-optional) | 不得用正常缺值掩蓋故障引用錯誤處理 | Optional 物件本身必須非 null | 否：引用現有共通即可 |
-| [JN-03 第 3 條](../rules/stacks/java/common/null-and-optional.md#查詢與-optional) | 替代結果及缺陷分類引用錯誤處理 | Optional 取值前處置與不變條件成立時的例外路徑 | 否：引用現有共通即可 |
-| [JN-04 第 4 條](../rules/stacks/java/common/null-and-optional.md#查詢與-optional) | 三種更新意圖引用空值語意 | Optional 使用位置及框架配套，不全面禁止／包裝 | 否：引用現有共通即可 |
-| [JN-05 第 5 條](../rules/stacks/java/common/null-and-optional.md#空值限制與整合責任) | 邊界拒絕不合法資料引用資料驗證 | 集合、陣列、映射鍵值預設非 null | 是：全面容器非空是額外跨語言義務，建議留 Java |
-| [JN-07 第 7 條](../rules/stacks/java/common/null-and-optional.md#空值限制與整合責任) | 工具缺口、行為一致及執行期驗證引用規範驗證 | 統一 Java 空值標註方式與適用範圍 | 否：引用現有共通即可 |
-| [JN-11 第 11 條](../rules/stacks/java/common/null-and-optional.md#契約維護與對外表示) | 空值必須具有明確語意引用空值語意 | Java 參數、欄位及回傳值預設非 null | 是：全語言預設非空不得直接提升，建議留 Java |
+| [JN-01 第 1 條](../rules/stacks/java/common/null-and-optional.md#java-query-absence) | 正常缺值、必須存在與技術故障分類引用共通 | 單筆 Optional、多筆非 null 空集合 | 否：引用現有共通即可 |
+| [JN-02 第 2 條](../rules/stacks/java/common/null-and-optional.md#java-optional-nonnull) | 不得用正常缺值掩蓋故障引用錯誤處理 | Optional 物件本身必須非 null | 否：引用現有共通即可 |
+| [JN-03 第 3 條](../rules/stacks/java/common/null-and-optional.md#java-optional-access) | 替代結果及缺陷分類引用錯誤處理 | Optional 取值前處置與不變條件成立時的例外路徑 | 否：引用現有共通即可 |
+| [JN-04 第 4 條](../rules/stacks/java/common/null-and-optional.md#java-optional-positions) | 三種更新意圖引用空值語意 | Optional 使用位置及框架配套，不全面禁止／包裝 | 否：引用現有共通即可 |
+| [JN-05 第 5 條](../rules/stacks/java/common/null-and-optional.md#java-container-nulls) | 邊界拒絕不合法資料引用資料驗證 | 集合、陣列、映射鍵值預設非 null | 是：全面容器非空是額外跨語言義務，建議留 Java |
+| [JN-07 第 7 條](../rules/stacks/java/common/null-and-optional.md#java-null-contract-tools) | 工具缺口、行為一致及執行期驗證引用規範驗證 | 統一 Java 空值標註方式與適用範圍 | 否：引用現有共通即可 |
+| [JN-11 第 11 條](../rules/stacks/java/common/null-and-optional.md#java-nonnull-default) | 空值必須具有明確語意引用空值語意 | Java 參數、欄位及回傳值預設非 null | 是：全語言預設非空不得直接提升，建議留 Java |
 | [VO-04 第 4 條](../rules/stacks/java/common/value-objects.md#相等性正規化與運算) | 業務概念區別與比較語意引用領域建模 | equals／hashCode、一致雜湊及不得盲用產生方法 | 否：引用現有共通即可 |
 | [VO-08 第 8 條](../rules/stacks/java/common/value-objects.md#還原實作形式與對外表示) | 有效性、不可變性與敏感資料引用共通 | record／一般類別選擇、產生方法與可變成員 | 否：引用現有共通即可 |
 | [VO-09 第 9 條](../rules/stacks/java/common/value-objects.md#還原實作形式與對外表示) | 交換契約與敏感資訊引用資料契約／可觀測性 | toString 不默認為穩定交換格式 | 可能：若提升為所有語言診斷字串不得交換，須另確認；現行共通僅提供格式契約原則 |
@@ -303,8 +303,8 @@
 | --- | --- | --- | --- |
 | [JT-03 第 3 條](../rules/stacks/java/common/types-and-generics.md#明確宣告與型別關係) | [型別安全](../rules/coding/type-safety.md) | 摘要可涵蓋：容器與泛型要求真實輸入輸出關聯、禁止無保證回傳；現行 Java 簽章／呼叫端不補轉型沒有可見額外缺口。 | 可移除重述，保留泛型機制驗收；原全文缺失須保留註記。 |
 | [JT-06 第 6 條](../rules/stacks/java/common/types-and-generics.md#資料結構與泛型契約) | [型別安全](../rules/coding/type-safety.md) | 摘要可涵蓋：固定結構用明確型別、動態映射鍵值明確；Map／Object[] 只是具體反例。 | 直接引用型別安全；不要宣稱已逐字還原原要求。 |
-| [JN-06 第 6 條](../rules/stacks/java/common/null-and-optional.md#空值限制與整合責任) | [資料驗證](../rules/coding/validation.md)、[錯誤處理](../rules/coding/error-handling.md)、[領域建模](../rules/coding/domain-modeling.md) | 摘要可涵蓋：邊界結構驗證、建立有效、可信內部不逐層重查與缺陷分類均有明文。 | 引用三個主要來源，非空預設留 Java JN-11。 |
-| [JN-10 第 10 條](../rules/stacks/java/common/null-and-optional.md#契約維護與對外表示) | [規範驗證](../rules/quality/rule-verification.md)、[共通測試策略](../rules/quality/testing.md)、[型別安全](../rules/coding/type-safety.md) | 待補證：共通有空值行為與測試型別安全，但沒有 Optional／非空標註及全部分類的 Java 覆蓋清單。 | 保留 Java 機制驗收及 Optional 分類覆蓋；可移除正文純入口。 |
+| [JN-06 第 6 條](../rules/coding/validation.md#責任分工) | [資料驗證](../rules/coding/validation.md)、[錯誤處理](../rules/coding/error-handling.md)、[領域建模](../rules/coding/domain-modeling.md) | 摘要可涵蓋：邊界結構驗證、建立有效、可信內部不逐層重查與缺陷分類均有明文。 | 引用三個主要來源，非空預設留 Java JN-11。 |
+| [JN-10 第 10 條](../rules/stacks/java/common/null-and-optional.md#驗收要求) | [規範驗證](../rules/quality/rule-verification.md)、[共通測試策略](../rules/quality/testing.md)、[型別安全](../rules/coding/type-safety.md) | 待補證：共通有空值行為與測試型別安全，但沒有 Optional／非空標註及全部分類的 Java 覆蓋清單。 | 保留 Java 機制驗收及 Optional 分類覆蓋；可移除正文純入口。 |
 | [VO-01 第 1 條](../rules/stacks/java/common/value-objects.md#型別責任與有效性) | [領域建模](../rules/coding/domain-modeling.md) | 摘要可涵蓋：容易混用的值使用專屬型別，內部介面維持型別，一般描述資料不強制包裝。 | 可引用專屬型別；原文中的更多採用例外無法確認。 |
 | [VO-02 第 2 條](../rules/stacks/java/common/value-objects.md#型別責任與有效性) | [領域建模](../rules/coding/domain-modeling.md)、[資料驗證](../rules/coding/validation.md) | 摘要可涵蓋：建立驗證及格式有效不代表存在性／授權均有明文；所有建立入口一致另由 cl-06 承接。 | 主要連結應同時指建立入口，避免只引用領域建模而漏掉入口一致。 |
 | [VO-10 第 10 條](../rules/stacks/java/common/value-objects.md#還原實作形式與對外表示) | [領域建模](../rules/coding/domain-modeling.md)、[共通測試策略](../rules/quality/testing.md) | 待補證：早期共通只有型別誤用、無效建立與狀態轉換；完整值物件覆蓋清單寫在未列管摘要。一般測試策略也未明訂「無業務邏輯存取方法免逐一測試」。 | 先確認摘要歸屬；保留 Java equals／record 及存取方法的原有驗收範圍。 |

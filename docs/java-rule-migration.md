@@ -44,18 +44,18 @@
 | JT-09 | 允許建構端使用菱形運算子 | 保留 | [允許建構端使用菱形運算子](../rules/stacks/java/common/types-and-generics.md) | [原第 9 條及驗收表](../rules/stacks/java/common/types-and-generics.md#驗收要求) |
 | JT-10 | 泛型回傳值 | 保留 | [泛型回傳值](../rules/stacks/java/common/types-and-generics.md) | [原第 10 條及驗收表](../rules/stacks/java/common/types-and-generics.md#驗收要求) |
 | JT-11 | 泛型參數命名 | 保留 | [泛型參數命名](../rules/stacks/java/common/types-and-generics.md) | [原第 11 條及驗收表](../rules/stacks/java/common/types-and-generics.md#驗收要求) |
-| JN-01 | 查詢的正常缺值 | 保留 | [查詢的正常缺值](../rules/stacks/java/common/null-and-optional.md) | [原第 1 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-02 | Optional 本身非空 | 保留 | [Optional 本身非空](../rules/stacks/java/common/null-and-optional.md) | [原第 2 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-03 | 取值與缺值處置 | 保留 | [取值與缺值處置](../rules/stacks/java/common/null-and-optional.md) | [原第 3 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-04 | 使用位置與狀態表達 | 保留 | [使用位置與狀態表達](../rules/stacks/java/common/null-and-optional.md) | [原第 4 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-05 | 集合內容的空值 | 保留 | [集合內容的空值](../rules/stacks/java/common/null-and-optional.md) | [原第 5 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-06 | 非空驗證的位置 | 改引用 | [非空驗證的位置](../rules/coding/validation.md) | [原第 6 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-07 | 工具可辨識的契約 | 保留 | [工具可辨識的契約](../rules/stacks/java/common/null-and-optional.md) | [原第 7 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-08 | 第三方空值行為 | 提升共通 | [第三方空值行為](../rules/coding/nullability.md#jn-08) | [原第 8 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-09 | 空值契約變更 | 提升共通 | [空值契約變更](../rules/coding/nullability.md#jn-09) | [原第 9 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-10 | 空值情境驗收 | 改引用 | [空值情境驗收](../rules/quality/rule-verification.md) | [原第 10 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-11 | 預設非空與明確語意 | 保留 | [預設非空與明確語意](../rules/stacks/java/common/null-and-optional.md) | [原第 11 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
-| JN-12 | API 邊界的缺值轉換 | 提升共通 | [API 邊界的缺值轉換](../rules/interfaces/api-contracts.md#jn-12) | [原第 12 條及驗收表](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-01 | 查詢的正常缺值 | 保留 | [查詢的正常缺值](../rules/stacks/java/common/null-and-optional.md#java-query-absence) | [原第 1 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-query-absence)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-02 | Optional 本身非空 | 保留 | [Optional 本身非空](../rules/stacks/java/common/null-and-optional.md#java-optional-nonnull) | [原第 2 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-optional-nonnull)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-03 | 取值與缺值處置 | 保留 | [取值與缺值處置](../rules/stacks/java/common/null-and-optional.md#java-optional-access) | [原第 3 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-optional-access)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-04 | 使用位置與狀態表達 | 保留 | [使用位置與狀態表達](../rules/stacks/java/common/null-and-optional.md#java-optional-positions) | [原第 4 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-optional-positions)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-05 | 集合內容的空值 | 保留 | [集合內容的空值](../rules/stacks/java/common/null-and-optional.md#java-container-nulls) | [原第 5 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-container-nulls)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-06 | 非空驗證的位置 | 改引用 | [非空驗證的位置](../rules/coding/validation.md) | [原第 6 條的現行去向](../rules/coding/validation.md#責任分工)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-07 | 工具可辨識的契約 | 保留 | [工具可辨識的契約](../rules/stacks/java/common/null-and-optional.md#java-null-contract-tools) | [原第 7 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-null-contract-tools)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-08 | 第三方空值行為 | 提升共通 | [第三方空值行為](../rules/coding/nullability.md#jn-08) | [原第 8 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-third-party-optional)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-09 | 空值契約變更 | 提升共通 | [空值契約變更](../rules/coding/nullability.md#jn-09) | [原第 9 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-null-contract-evolution)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-10 | 空值情境驗收 | 改引用 | [空值情境驗收](../rules/quality/rule-verification.md) | [原第 10 條的現行去向](../rules/stacks/java/common/null-and-optional.md#驗收要求)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-11 | 預設非空與明確語意 | 保留 | [預設非空與明確語意](../rules/stacks/java/common/null-and-optional.md#java-nonnull-default) | [原第 11 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-nonnull-default)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
+| JN-12 | API 邊界的缺值轉換 | 提升共通 | [API 邊界的缺值轉換](../rules/interfaces/api-contracts.md#jn-12) | [原第 12 條的現行去向](../rules/stacks/java/common/null-and-optional.md#java-api-absence)；[Java 驗收](../rules/stacks/java/common/null-and-optional.md#驗收要求) |
 | VO-01 | 建立專屬型別的條件 | 改引用 | [建立專屬型別的條件](../rules/coding/domain-modeling.md) | [原第 1 條及驗收表](../rules/stacks/java/common/value-objects.md#驗收要求) |
 | VO-02 | 建立時保護不變條件 | 改引用 | [建立時保護不變條件](../rules/coding/domain-modeling.md) | [原第 2 條及驗收表](../rules/stacks/java/common/value-objects.md#驗收要求) |
 | VO-03 | 不可變性 | 提升共通 | [不可變性](../rules/coding/domain-modeling.md#vo-03) | [原第 3 條及驗收表](../rules/stacks/java/common/value-objects.md#驗收要求) |
