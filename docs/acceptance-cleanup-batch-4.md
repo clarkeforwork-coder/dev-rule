@@ -50,7 +50,7 @@
 | BM-7-1 | 分別核對輸入與輸出欄位及轉換；驗證唯讀、衍生與遮罩資料不會被直接寫回。採用反向映射時，須有允許依據並確認可逆性。 | [主要驗收](../rules/architecture/data-mapping.md#acceptance-directional-mapping) |
 | BM-9-1 | 確認測試執行實際採用的映射實作或工具產出，必要時涵蓋序列化與反序列化邊界；斷言須涵蓋欄位值、拒絕結果與禁止傳遞的資料，不僅確認物件非空。 | [主要驗收](../rules/architecture/data-mapping.md#acceptance-mapping-paths) |
 | BM-4-1 | 驗證適用的不合法輸入、內部必要資料缺失及轉換失敗，確認沒有預設值或半成品掩蓋問題。 | [主要驗收](../rules/stacks/java/common/boundary-mapping.md#acceptance-java-mapping-failure) |
-| BM-4-2 | 批次允許部分成功時，核對每筆結果及對應關係，沒有遺漏失敗項目。 | [主要驗收](../rules/quality/rule-verification.md#acceptance-partial-operation) |
+| BM-4-2 | 批次允許部分成功時，核對每筆結果及對應關係，沒有遺漏失敗項目。 | [主要驗收](../rules/coding/error-handling.md#acceptance-partial-operation) |
 | BM-5-1 | 對需要區分更新意圖的契約，從實際接收入口分別提供省略、明確清空及設定值，確認意圖傳遞到業務操作並產生約定效果。 | [主要驗收](../rules/architecture/data-mapping.md#acceptance-mapping-paths) |
 
 ## 驗證方式

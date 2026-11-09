@@ -4,7 +4,7 @@
 
 ## 共通驗收的唯一來源
 
-- 多步驟與部分成功驗收移至 [錯誤處理驗證與驗收](../rules/quality/rule-verification.md#acceptance-partial-operation)。該處本來即負責錯誤處理驗收，error-handling 的規則正文也指向它。原摘要列中的部分成功分出並合併原詳細案例，保留中途失敗、實際狀態及項目對應；當時錯誤地把既有政策中的「部分成功、」刪除，本次已逐字還原；降級與補償維持原文。
+- 多步驟與部分成功驗收移至 [錯誤處理驗證與驗收](../rules/coding/error-handling.md#acceptance-partial-operation)。該處本來即負責錯誤處理驗收，error-handling 的規則正文也指向它。原摘要列中的部分成功分出並合併原詳細案例，保留中途失敗、實際狀態及項目對應；當時錯誤地把既有政策中的「部分成功、」刪除，本次已逐字還原；降級與補償維持原文。
 - 介面用途驗收移至 [架構檢查與可測試性](../rules/architecture/dependency-composition.md#acceptance-interface-purpose)。依賴組裝文件已有此驗收入口；當時誤刪了「不因此強制每個類別建立介面」政策片語，不能以詳細驗收列代替政策原文；本次已逐字還原。能力、多型、依賴方向及必要隔離驗收維持。
 - 第一至第五批追溯表只更新目的地，基準原文片段不改寫。
 

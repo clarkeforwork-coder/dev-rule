@@ -64,7 +64,7 @@
 - [複合操作的原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)。
 - [限制資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)。
 - [延遲讀取的資源責任](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)。
-- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。
+- [多步驟與部分成功](../../../coding/error-handling.md#acceptance-partial-operation)。
 - [所有權與行為驗收](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。
 - [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。
 

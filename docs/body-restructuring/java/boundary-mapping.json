@@ -473,7 +473,7 @@
       "insert": [
         "本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 13,
@@ -488,7 +488,7 @@
         "依[資料映射](../../../architecture/data-mapping.md)、[API 操作語意與介面設計](../../../interfaces/api-contracts.md)、[安全](../../../quality/security.md)執行。Java 映射工具不得因同名或來源新增欄位而擴大傳遞範圍；租戶與建立者等可信欄位仍依伺服器契約取得。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 15,
@@ -501,7 +501,7 @@
       "insert": [
         "<a id=\"java-mapping-integrity\"></a>\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 20,
@@ -532,7 +532,7 @@
         "依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#directional-mapping)執行。Java 映射工具支援反向產生不代表可直接採用；具體工具配置另由 Framework 規範落實。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 22,
@@ -543,7 +543,7 @@
       "insert": [
         "<a id=\"java-mapping-ownership\"></a>\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 25,
@@ -566,7 +566,17 @@
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
+    },
+    {
+      "baseline_line": 40,
+      "remove": [
+        "- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。\n"
+      ],
+      "insert": [
+        "- [多步驟與部分成功](../../../coding/error-handling.md#acceptance-partial-operation)。\n"
+      ],
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 44,
@@ -576,7 +586,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 46,
@@ -588,7 +598,7 @@
         "| <a id=\"acceptance-java-mapping-failure\"></a>[失敗明確回報](#java-mapping-integrity) | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。 |\n",
         "| <a id=\"acceptance-java-update-intent\"></a>[保留更新意圖](#java-update-intent) | 核對 Java 欄位、預設值與反序列化路徑未合併省略、明確清空及設定值的不同意圖。 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     }
   ],
   "acceptance_changes": [

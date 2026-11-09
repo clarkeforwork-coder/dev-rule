@@ -482,7 +482,7 @@
       "insert": [
         "本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 13,
@@ -503,7 +503,7 @@
         "依[區分不可修改與不可變快照的共通要求](../../../coding/collections-and-ownership.md#snapshots-and-views)執行。Java 不可修改包裝可能仍是來源的檢視；外層複製可能保留相同可變元素，須驗證實際隔離。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 15,
@@ -514,7 +514,7 @@
       "insert": [
         "本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 20,
@@ -527,7 +527,7 @@
       "insert": [
         "本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 25,
@@ -558,7 +558,17 @@
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
+    },
+    {
+      "baseline_line": 39,
+      "remove": [
+        "- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。\n"
+      ],
+      "insert": [
+        "- [多步驟與部分成功](../../../coding/error-handling.md#acceptance-partial-operation)。\n"
+      ],
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 41,
@@ -568,7 +578,7 @@
       "insert": [
         "- [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     }
   ],
   "acceptance_changes": [

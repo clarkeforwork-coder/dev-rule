@@ -73,7 +73,7 @@
 - [聚焦轉換與必要驗證](../../../architecture/data-mapping.md#acceptance-mapping-responsibility)。
 - [各方向分別定義](../../../architecture/data-mapping.md#acceptance-directional-mapping)。
 - [驗證實際映射路徑](../../../architecture/data-mapping.md#acceptance-mapping-paths)。
-- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。
+- [多步驟與部分成功](../../../coding/error-handling.md#acceptance-partial-operation)。
 
 ### Java 語言增量驗收
 

@@ -91,7 +91,7 @@ orders.stream().filter(Order::isCancellable);
 
 ### 共同驗收
 
-- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。
+- [多步驟與部分成功](../../../coding/error-handling.md#acceptance-partial-operation)。
 - [延遲讀取的資源責任](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)。
 
 ### Java 語言增量驗收

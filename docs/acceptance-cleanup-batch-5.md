@@ -39,7 +39,7 @@
 | LS-7-1 | 驗證初始值、累積與合併結果；適用時以不同分段方式核對契約一致性。順序敏感運算保留約定順序，可變收集結果不受其他分段或執行污染。 | [主要驗收](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-stream-reduction) |
 | LS-10-1 | 確認案例涵蓋受影響的執行語意與資源保證，平行處理有額外隔離及效能證據，不僅比對一般成功案例的最終元素內容。 | [主要驗收](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-stream-coverage) |
 | LS-8-1 | 在適用的處理階段觸發失敗，確認分類與原始原因保留，沒有以空值、替代值或篩除項目掩蓋問題。 | [主要驗收](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-functional-exceptions) |
-| LS-8-2 | 部分成功結果可對應原始項目，副作用符合契約。 | [主要驗收](../rules/quality/rule-verification.md#acceptance-partial-operation) |
+| LS-8-2 | 部分成功結果可對應原始項目，副作用符合契約。 | [主要驗收](../rules/coding/error-handling.md#acceptance-partial-operation) |
 | LS-9-1 | 核對 Stream 的建立與消費路徑，沒有重用或共用消費；重複取得資料時依契約驗證快照或最新資料語意。 | [主要驗收](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-stream-consumption) |
 | LS-9-2 | 外部資源在實際使用期間有效，完成、提前停止及失敗後正確釋放。 | [主要驗收](../rules/coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime) |
 | ND-1、2-1 | 自動檢查適用的命名形式與團隊縮寫慣例， | [主要驗收](../rules/stacks/java/common/naming-packages-docs.md#acceptance-java-naming-form) |

@@ -100,6 +100,29 @@
             "to": "rules/architecture/dependency-composition.md#acceptance-interface-purpose"
           }
         ]
+      },
+      {
+        "id": "partial",
+        "blocks": [
+          {
+            "path": "rules/quality/rule-verification.md",
+            "before": "| 契約 | 驗收內容 |\n| --- | --- |\n| <a id=\"acceptance-partial-operation\"></a>[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。 |\n",
+            "after": "多步驟與部分成功的驗收見[多步驟與部分成功驗收](../coding/error-handling.md#acceptance-partial-operation)。\n",
+            "reason": "七／M4：單列驗收移回規則檔，原位置保留導向，移除空表頭。"
+          },
+          {
+            "path": "rules/coding/error-handling.md",
+            "before": "| <a id=\"acceptance-failure-state\"></a>[失敗後狀態](#failure-state-guarantee) | 觸發批次修改的適用失敗路徑，核對例外後實際狀態符合約定，不以拋例外推定未修改，也不要求所有集合操作具備交易能力。 |\n",
+            "after": "| <a id=\"acceptance-failure-state\"></a>[失敗後狀態](#failure-state-guarantee) | 觸發批次修改的適用失敗路徑，核對例外後實際狀態符合約定，不以拋例外推定未修改，也不要求所有集合操作具備交易能力。 |\n| <a id=\"acceptance-partial-operation\"></a>[多步驟與部分成功](#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。 |\n",
+            "reason": "七／M4：逐字接收驗收列，僅調整列內相對連結。"
+          }
+        ],
+        "link_moves": [
+          {
+            "from": "rules/quality/rule-verification.md#acceptance-partial-operation",
+            "to": "rules/coding/error-handling.md#acceptance-partial-operation"
+          }
+        ]
       }
     ]
   }

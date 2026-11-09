@@ -55,8 +55,8 @@
 | CO-6-1 | 使用代表性資料量核對載入範圍與處理界限，確認來源、中間操作及結果收集沒有無限制累積； | [主要驗收](../rules/quality/performance.md#acceptance-bounded-accumulation) |
 | CO-6-2 | 依風險檢查排序、分組或去重的資源成本。 | [主要驗收](../rules/quality/performance.md#acceptance-bounded-accumulation) |
 | CO-7-1 | 對依賴外部資源的延遲讀取，分別驗證完成、提前停止及失敗後正確釋放，並確認讀取期間資源有效、擁有者與關閉責任明確。 | [主要驗收](../rules/coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime) |
-| CO-8-1 | 在批次處理中途製造契約適用的失敗，核對集合實際狀態符合全部成功或部分成功的保證； | [主要驗收](../rules/quality/rule-verification.md#acceptance-partial-operation) |
-| CO-8-2 | 部分成功結果須可對應已完成與未完成的項目。 | [主要驗收](../rules/quality/rule-verification.md#acceptance-partial-operation) |
+| CO-8-1 | 在批次處理中途製造契約適用的失敗，核對集合實際狀態符合全部成功或部分成功的保證； | [主要驗收](../rules/coding/error-handling.md#acceptance-partial-operation) |
+| CO-8-2 | 部分成功結果須可對應已完成與未完成的項目。 | [主要驗收](../rules/coding/error-handling.md#acceptance-partial-operation) |
 | CO-9-1 | 核對測試涵蓋變更影響的所有權與行為保證，不以元素內容相同取代參考隔離、生命週期或失敗狀態的驗證，也不強制測試不適用的情境。 | [主要驗收](../rules/coding/collections-and-ownership.md#acceptance-collection-coverage) |
 | EX-1、2、3-1 | 核對例外型別、宣告、轉換及捕捉範圍是否符合契約與處置責任。 | [主要驗收](../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-exception-contract) |
 | EX-1、2、3-2 | 以適用的不同故障來源驗證分類，確認業務失敗、技術故障與程式缺陷未混淆，包裝後仍保留原始原因。 | [主要驗收](../rules/stacks/java/common/exceptions-and-resources.md#acceptance-java-exception-contract) |
