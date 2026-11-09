@@ -1,79 +1,84 @@
 {
   "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
   "path": "rules/stacks/java/common/collections-and-ownership.md",
-  "status": "pending",
+  "status": "completed",
   "rules": [
     {
       "id": "CO-01",
-      "kind": "整條保留",
+      "kind": "拆分",
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#所有權與集合語意"
+        "rules/stacks/java/common/collections-and-ownership.md#java-collection-ownership",
+        "rules/coding/collections-and-ownership.md#co-01"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通明訂集合及元素契約，但未直接寫出 Java 集合介面本身不能取代所有權契約，保守保留整句操作提醒。"
     },
     {
       "id": "CO-02",
-      "kind": "整條保留",
+      "kind": "拆分",
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#所有權與集合語意"
+        "rules/stacks/java/common/collections-and-ownership.md#java-snapshots-and-views",
+        "rules/coding/collections-and-ownership.md#co-02"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通明訂快照隔離與唯讀檢視契約，但未直接寫出 Java 不可修改包裝仍可能是來源檢視，保守保留整句實際隔離提醒。"
     },
     {
       "id": "CO-03",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#所有權與集合語意"
+        "rules/coding/collections-and-ownership.md#co-03"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "順序與重複處理由共通選用轉換不得改變語意及重複鍵不得遺失資料的原句承接，未新增 List、Set、Map 特有操作限制。"
     },
     {
       "id": "CO-04",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#修改與併發"
+        "rules/coding/collections-and-ownership.md#co-04"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "支援操作與不得憑未拋例外判定安全、不得捕捉後直接重跑，均由共通遍歷修改的原句直接承接。"
     },
     {
       "id": "CO-05",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#修改與併發"
+        "rules/coding/concurrency-and-async.md#co-05"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通禁止從集合執行緒安全推定多步驟安全，且明列跨鍵協調，直接承接單一操作不能推導複合原子性的提醒。"
     },
     {
       "id": "CO-06",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#資料規模資源與批次結果"
+        "rules/quality/performance.md#co-06"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通明列迭代器與串流不能推定有界，以及排序、去重與分組保留資料成本，完整承接 Java 提醒。"
     },
     {
       "id": "CO-07",
-      "kind": "整條保留",
+      "kind": "拆分",
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#資料規模資源與批次結果"
+        "rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime",
+        "rules/coding/resource-lifecycle.md#co-07"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通涵蓋有效期、關閉及受控結果，但未直接指定關閉方式依例外與資源管理，故保留 Java 整句。"
     },
     {
       "id": "CO-08",
-      "kind": "整條保留",
+      "kind": "拆分",
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#資料規模資源與批次結果"
+        "rules/stacks/java/common/collections-and-ownership.md#java-batch-failure-state",
+        "rules/coding/error-handling.md#failure-state-guarantee"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依核准提升拆分共通引用；保留 Java 批次集合方法提醒及核對約定狀態，因共通正文明訂狀態未直接表述核對實際狀態。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "CO-09",
-      "kind": "整條保留",
+      "kind": "拆分",
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#資料規模資源與批次結果"
+        "rules/stacks/java/common/collections-and-ownership.md#java-collection-verification",
+        "rules/coding/collections-and-ownership.md#co-09"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通涵蓋所有權驗收與不重測標準函式庫，但未直接列出實際遍歷路徑及依下方驗收的定位，保守保留整句。"
     }
   ],
   "sentences": [
@@ -135,262 +140,334 @@
     },
     {
       "source": "依[明確定義修改權與參考關係的共通要求](../../../coding/collections-and-ownership.md#co-01)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "依[明確定義修改權與參考關係的共通要求](../../../coding/collections-and-ownership.md#co-01)執行。"
+          "uri": "rules/coding/collections-and-ownership.md#co-01"
         }
       ],
       "history_id": "CO-01",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[明確定義修改權與參考關係的共通要求](../../../coding/collections-and-ownership.md#co-01)執行。",
+          "source_uri": "rules/coding/collections-and-ownership.md#co-01",
+          "source_text": "集合的接收與回傳契約須明訂修改權、參考保留及快照或檢視語意，涵蓋集合本身與元素。"
+        }
+      ],
+      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通明訂集合及元素契約，但未直接寫出 Java 集合介面本身不能取代所有權契約，保守保留整句操作提醒。"
     },
     {
       "source": "Java 集合介面本身不能取代所有權契約；接收或回傳集合時須涵蓋可變元素及參考保留行為。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
+          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-collection-ownership",
           "text": "Java 集合介面本身不能取代所有權契約；接收或回傳集合時須涵蓋可變元素及參考保留行為。"
         }
       ],
       "history_id": "CO-01",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通明訂集合及元素契約，但未直接寫出 Java 集合介面本身不能取代所有權契約，保守保留整句操作提醒。"
     },
     {
       "source": "依[區分不可修改與不可變快照的共通要求](../../../coding/collections-and-ownership.md#co-02)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "依[區分不可修改與不可變快照的共通要求](../../../coding/collections-and-ownership.md#co-02)執行。"
+          "uri": "rules/coding/collections-and-ownership.md#co-02"
         }
       ],
       "history_id": "CO-02",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[區分不可修改與不可變快照的共通要求](../../../coding/collections-and-ownership.md#co-02)執行。",
+          "source_uri": "rules/coding/collections-and-ownership.md#co-02",
+          "source_text": "不得將不可修改的集合介面或包裝直接視為不可變快照。"
+        }
+      ],
+      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通明訂快照隔離與唯讀檢視契約，但未直接寫出 Java 不可修改包裝仍可能是來源檢視，保守保留整句實際隔離提醒。"
     },
     {
       "source": "Java 不可修改包裝可能仍是來源的檢視；外層複製可能保留相同可變元素，須驗證實際隔離。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
+          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-snapshots-and-views",
           "text": "Java 不可修改包裝可能仍是來源的檢視；外層複製可能保留相同可變元素，須驗證實際隔離。"
         }
       ],
       "history_id": "CO-02",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通明訂快照隔離與唯讀檢視契約，但未直接寫出 Java 不可修改包裝仍可能是來源檢視，保守保留整句實際隔離提醒。"
     },
     {
       "source": "依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#co-03)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#co-03)執行。"
+          "uri": "rules/coding/collections-and-ownership.md#co-03"
         }
       ],
       "history_id": "CO-03",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#co-03)執行。",
+          "source_uri": "rules/coding/collections-and-ownership.md#co-03",
+          "source_text": "集合契約須明訂所需的順序保證與重複資料處理方式，選用或轉換集合時不得意外改變這些語意。"
+        }
+      ],
+      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，順序與重複處理由共通選用轉換不得改變語意及重複鍵不得遺失資料的原句承接，未新增 List、Set、Map 特有操作限制。"
     },
     {
       "source": "Java 選用或轉換 List、Set、Map 時須維持約定順序、重複元素與重複鍵處理，不意外去重或覆蓋。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "Java 選用或轉換 List、Set、Map 時須維持約定順序、重複元素與重複鍵處理，不意外去重或覆蓋。"
+          "uri": "rules/coding/collections-and-ownership.md#co-03"
         }
       ],
       "history_id": "CO-03",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "Java 選用或轉換 List、Set、Map 時須維持約定順序、重複元素與重複鍵處理，",
+          "source_uri": "rules/coding/collections-and-ownership.md#co-03",
+          "source_text": "集合契約須明訂所需的順序保證與重複資料處理方式，選用或轉換集合時不得意外改變這些語意。"
+        },
+        {
+          "text": "不意外去重或覆蓋。",
+          "source_uri": "rules/coding/collections-and-ownership.md#co-03",
+          "source_text": "建立映射遇到重複鍵時，須依明確規則拒絕、合併或取代，不得默默遺失資料；不得僅為去重而移除契約允許的重複項目。"
+        }
+      ],
+      "reason": "順序與重複處理由共通選用轉換不得改變語意及重複鍵不得遺失資料的原句承接，未新增 List、Set、Map 特有操作限制。"
     },
     {
       "source": "依[遍歷期間的修改的共通要求](../../../coding/collections-and-ownership.md#co-04)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "依[遍歷期間的修改的共通要求](../../../coding/collections-and-ownership.md#co-04)執行。"
+          "uri": "rules/coding/collections-and-ownership.md#co-04"
         }
       ],
       "history_id": "CO-04",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[遍歷期間的修改的共通要求](../../../coding/collections-and-ownership.md#co-04)執行。",
+          "source_uri": "rules/coding/collections-and-ownership.md#co-04",
+          "source_text": "遍歷期間需要修改集合時，須使用符合集合契約的操作方式，並明確界定處理範圍。"
+        }
+      ],
+      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，支援操作與不得憑未拋例外判定安全、不得捕捉後直接重跑，均由共通遍歷修改的原句直接承接。"
     },
     {
       "source": "Java 遍歷修改須使用集合支援的操作；未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "Java 遍歷修改須使用集合支援的操作；未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑。"
+          "uri": "rules/coding/collections-and-ownership.md#co-04"
         }
       ],
       "history_id": "CO-04",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "Java 遍歷修改須使用集合支援的操作；",
+          "source_uri": "rules/coding/collections-and-ownership.md#co-04",
+          "source_text": "遍歷期間需要修改集合時，須使用符合集合契約的操作方式，並明確界定處理範圍。"
+        },
+        {
+          "text": "未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑。",
+          "source_uri": "rules/coding/collections-and-ownership.md#co-04",
+          "source_text": "不得依賴未拋例外來推定安全，也不得以捕捉遍歷修改例外後直接重跑來掩蓋問題。"
+        }
+      ],
+      "reason": "支援操作與不得憑未拋例外判定安全、不得捕捉後直接重跑，均由共通遍歷修改的原句直接承接。"
     },
     {
       "source": "依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#co-05)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#co-05)執行。"
+          "uri": "rules/coding/concurrency-and-async.md#co-05"
         }
       ],
       "history_id": "CO-05",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#co-05)執行。",
+          "source_uri": "rules/coding/concurrency-and-async.md#co-05",
+          "source_text": "共享集合上的複合操作須依業務條件明訂原子性範圍，使用適當的原子操作或同步機制維持保證。"
+        }
+      ],
+      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通禁止從集合執行緒安全推定多步驟安全，且明列跨鍵協調，直接承接單一操作不能推導複合原子性的提醒。"
     },
     {
       "source": "Java concurrent collection 的單一操作保證不能推導為多步驟或跨鍵操作原子性。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "Java concurrent collection 的單一操作保證不能推導為多步驟或跨鍵操作原子性。"
+          "uri": "rules/coding/concurrency-and-async.md#co-05"
         }
       ],
       "history_id": "CO-05",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "Java concurrent collection 的單一操作保證不能推導為多步驟或跨鍵操作原子性。",
+          "source_uri": "rules/coding/concurrency-and-async.md#co-05",
+          "source_text": "不得因集合本身具備執行緒安全性，就推定多步驟或跨資料結構的操作也安全；跨多個鍵、集合或物件的條件，由負責該條件的範圍協調。"
+        }
+      ],
+      "reason": "共通禁止從集合執行緒安全推定多步驟安全，且明列跨鍵協調，直接承接單一操作不能推導複合原子性的提醒。"
     },
     {
       "source": "依[限制資料累積的共通要求](../../../quality/performance.md#co-06)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "依[限制資料累積的共通要求](../../../quality/performance.md#co-06)執行。"
+          "uri": "rules/quality/performance.md#co-06"
         }
       ],
       "history_id": "CO-06",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[限制資料累積的共通要求](../../../quality/performance.md#co-06)執行。",
+          "source_uri": "rules/quality/performance.md#co-06",
+          "source_text": "可能大量或持續成長的資料，不得無限制地收集成記憶體集合。"
+        }
+      ],
+      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通明列迭代器與串流不能推定有界，以及排序、去重與分組保留資料成本，完整承接 Java 提醒。"
     },
     {
       "source": "Java Iterator 或 Stream 不保證實際有界；排序、去重及分組的保留資料成本仍須核對。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "Java Iterator 或 Stream 不保證實際有界；排序、去重及分組的保留資料成本仍須核對。"
+          "uri": "rules/quality/performance.md#co-06"
         }
       ],
       "history_id": "CO-06",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "Java Iterator 或 Stream 不保證實際有界；",
+          "source_uri": "rules/quality/performance.md#co-06",
+          "source_text": "使用迭代器或串流 時，仍須確認來源與操作的實際資料累積及資源成本，不因採用延遲處理語法就推定有界；排序、去重與分組也須評估保留資料的成本。"
+        },
+        {
+          "text": "排序、去重及分組的保留資料成本仍須核對。",
+          "source_uri": "rules/quality/performance.md#co-06",
+          "source_text": "使用迭代器或串流 時，仍須確認來源與操作的實際資料累積及資源成本，不因採用延遲處理語法就推定有界；排序、去重與分組也須評估保留資料的成本。"
+        }
+      ],
+      "reason": "共通明列迭代器與串流不能推定有界，以及排序、去重與分組保留資料成本，完整承接 Java 提醒。"
     },
     {
       "source": "依[延遲讀取的資源責任的共通要求](../../../coding/resource-lifecycle.md#co-07)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "依[延遲讀取的資源責任的共通要求](../../../coding/resource-lifecycle.md#co-07)執行。"
+          "uri": "rules/coding/resource-lifecycle.md#co-07"
         }
       ],
       "history_id": "CO-07",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[延遲讀取的資源責任的共通要求](../../../coding/resource-lifecycle.md#co-07)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#co-07",
+          "source_text": "依賴外部資源的延遲集合、迭代器或串流，須明訂資源擁有者、有效範圍與釋放責任，涵蓋完成、提前停止與失敗情境。"
+        }
+      ],
+      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通涵蓋有效期、關閉及受控結果，但未直接指定關閉方式依例外與資源管理，故保留 Java 整句。"
     },
     {
       "source": "Java 資源型 Iterator／Stream 須明確有效期及關閉責任；必要時在資源範圍內產生受控結果，關閉方式依例外與資源管理。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
+          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime",
           "text": "Java 資源型 Iterator／Stream 須明確有效期及關閉責任；必要時在資源範圍內產生受控結果，關閉方式依例外與資源管理。"
         }
       ],
       "history_id": "CO-07",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通涵蓋有效期、關閉及受控結果，但未直接指定關閉方式依例外與資源管理，故保留 Java 整句。"
     },
     {
       "source": "依[錯誤處理](../../../coding/error-handling.md)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "依[錯誤處理](../../../coding/error-handling.md)執行。"
+          "uri": "rules/coding/error-handling.md#failure-state-guarantee"
         }
       ],
       "history_id": "CO-08",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[錯誤處理](../../../coding/error-handling.md)執行。",
+          "source_uri": "rules/coding/error-handling.md#failure-state-guarantee",
+          "source_text": "批次修改須明訂失敗後狀態，不得假設拋例外即未修改；不要求所有集合操作具備交易能力。"
+        }
+      ],
+      "reason": "純引用句移由既有共通條文承接，錯誤處理整份連結原已保留於補充要求，依核准提升拆分共通引用；保留 Java 批次集合方法提醒及核對約定狀態，因共通正文明訂狀態未直接表述核對實際狀態。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "Java 批次集合方法拋出例外不代表未修改；不要求所有集合操作具有交易能力，須核對約定的失敗後狀態。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
+          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-batch-failure-state",
           "text": "Java 批次集合方法拋出例外不代表未修改；不要求所有集合操作具有交易能力，須核對約定的失敗後狀態。"
         }
       ],
       "history_id": "CO-08",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通正文要求明訂失敗後狀態，未直接表述 Java 批次集合方法須核對約定狀態，故保守保留完整原句；純加連結亦遭未申報刪除片段診斷，依作業說明回復原句，不調整工具。"
     },
     {
       "source": "依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#co-09)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
-          "text": "依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#co-09)執行。"
+          "uri": "rules/coding/collections-and-ownership.md#co-09"
         }
       ],
       "history_id": "CO-09",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#co-09)執行。",
+          "source_uri": "rules/coding/collections-and-ownership.md#co-09",
+          "source_text": "集合相關契約新增或變更時，須依影響驗證修改權、資料隔離、快照或檢視、順序與重複處理，以及適用的併發、批次失敗與資源生命週期，不僅比對成功結果中的元素內容。"
+        }
+      ],
+      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通涵蓋所有權驗收與不重測標準函式庫，但未直接列出實際遍歷路徑及依下方驗收的定位，保守保留整句。"
     },
     {
       "source": "Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
+          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-collection-verification",
           "text": "Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。"
         }
       ],
       "history_id": "CO-09",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通涵蓋所有權驗收與不重測標準函式庫，但未直接列出實際遍歷路徑及依下方驗收的定位，保守保留整句。"
     },
     {
       "source": "邊界間的參考隔離另依[邊界物件與資料映射](boundary-mapping.md)，共用元件的狀態與生命週期依[類別、介面與物件建立](classes-and-construction.md)。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
+          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-closing-requirements",
           "text": "邊界間的參考隔離另依[邊界物件與資料映射](boundary-mapping.md)，共用元件的狀態與生命週期依[類別、介面與物件建立](classes-and-construction.md)。"
         }
       ],
@@ -404,7 +481,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
+          "uri": "rules/stacks/java/common/collections-and-ownership.md#java-closing-requirements",
           "text": "資源範圍與容量依[效能與資源使用](../../../quality/performance.md)，失敗與部分成功依[錯誤處理](../../../coding/error-handling.md)。"
         }
       ],
@@ -415,7 +492,111 @@
     }
   ],
   "edits": [
+    {
+      "baseline_line": 7,
+      "remove": [
 
+      ],
+      "insert": [
+        "本文件另依[co-01](../../../coding/collections-and-ownership.md#co-01)、[co-02](../../../coding/collections-and-ownership.md#co-02)、[co-03](../../../coding/collections-and-ownership.md#co-03)、[co-09](../../../coding/collections-and-ownership.md#co-09)、[co-07](../../../coding/resource-lifecycle.md#co-07)、[co-06](../../../quality/performance.md#co-06)辦理。\n",
+        "\n"
+      ],
+      "reason": "集合條文逐句對照共通來源，保留涵蓋不直接的 Java 提醒；小節與尾段建立語意錨點並保留全部驗收。"
+    },
+    {
+      "baseline_line": 9,
+      "remove": [
+        "1. **明確定義修改權與參考關係**。依[明確定義修改權與參考關係的共通要求](../../../coding/collections-and-ownership.md#co-01)執行。Java 集合介面本身不能取代所有權契約；接收或回傳集合時須涵蓋可變元素及參考保留行為。\n",
+        "2. **區分不可修改與不可變快照**。依[區分不可修改與不可變快照的共通要求](../../../coding/collections-and-ownership.md#co-02)執行。Java 不可修改包裝可能仍是來源的檢視；外層複製可能保留相同可變元素，須驗證實際隔離。\n",
+        "3. **順序與重複資料**。依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#co-03)執行。Java 選用或轉換 List、Set、Map 時須維持約定順序、重複元素與重複鍵處理，不意外去重或覆蓋。\n"
+      ],
+      "insert": [
+        "<a id=\"java-collection-ownership\"></a>\n"
+      ],
+      "reason": "集合條文逐句對照共通來源，保留涵蓋不直接的 Java 提醒；小節與尾段建立語意錨點並保留全部驗收。"
+    },
+    {
+      "baseline_line": 13,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 明確定義修改權與參考關係\n",
+        "\n",
+        "Java 集合介面本身不能取代所有權契約；接收或回傳集合時須涵蓋可變元素及參考保留行為。\n",
+        "\n",
+        "<a id=\"java-snapshots-and-views\"></a>\n",
+        "\n",
+        "### 區分不可修改與不可變快照\n",
+        "\n",
+        "Java 不可修改包裝可能仍是來源的檢視；外層複製可能保留相同可變元素，須驗證實際隔離。\n",
+        "\n"
+      ],
+      "reason": "集合條文逐句對照共通來源，保留涵蓋不直接的 Java 提醒；小節與尾段建立語意錨點並保留全部驗收。"
+    },
+    {
+      "baseline_line": 15,
+      "remove": [
+        "4. **遍歷期間的修改**。依[遍歷期間的修改的共通要求](../../../coding/collections-and-ownership.md#co-04)執行。Java 遍歷修改須使用集合支援的操作；未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑。\n",
+        "5. **複合操作的原子性**。依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#co-05)執行。Java concurrent collection 的單一操作保證不能推導為多步驟或跨鍵操作原子性。\n"
+      ],
+      "insert": [
+        "本組要求依[co-04](../../../coding/collections-and-ownership.md#co-04)、[co-05](../../../coding/concurrency-and-async.md#co-05)辦理。\n"
+      ],
+      "reason": "集合條文逐句對照共通來源，保留涵蓋不直接的 Java 提醒；小節與尾段建立語意錨點並保留全部驗收。"
+    },
+    {
+      "baseline_line": 20,
+      "remove": [
+        "6. **限制資料累積**。依[限制資料累積的共通要求](../../../quality/performance.md#co-06)執行。Java Iterator 或 Stream 不保證實際有界；排序、去重及分組的保留資料成本仍須核對。\n",
+        "7. **延遲讀取的資源責任**。依[延遲讀取的資源責任的共通要求](../../../coding/resource-lifecycle.md#co-07)執行。Java 資源型 Iterator／Stream 須明確有效期及關閉責任；必要時在資源範圍內產生受控結果，關閉方式依例外與資源管理。\n",
+        "8. **批次修改的失敗保證**。依[錯誤處理](../../../coding/error-handling.md)執行。Java 批次集合方法拋出例外不代表未修改；不要求所有集合操作具有交易能力，須核對約定的失敗後狀態。\n",
+        "9. **所有權與行為驗收**。依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#co-09)執行。Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。\n"
+      ],
+      "insert": [
+        "<a id=\"java-lazy-resource-lifetime\"></a>\n"
+      ],
+      "reason": "集合條文逐句對照共通來源，保留涵蓋不直接的 Java 提醒；小節與尾段建立語意錨點並保留全部驗收。"
+    },
+    {
+      "baseline_line": 25,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 延遲讀取的資源責任\n",
+        "\n",
+        "Java 資源型 Iterator／Stream 須明確有效期及關閉責任；必要時在資源範圍內產生受控結果，關閉方式依例外與資源管理。\n",
+        "\n",
+        "<a id=\"java-batch-failure-state\"></a>\n",
+        "\n",
+        "### 批次修改的失敗保證\n",
+        "\n",
+        "Java 批次集合方法拋出例外不代表未修改；不要求所有集合操作具有交易能力，須核對約定的失敗後狀態。\n",
+        "\n",
+        "<a id=\"java-collection-verification\"></a>\n",
+        "\n",
+        "### 所有權與行為驗收\n",
+        "\n",
+        "Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。\n",
+        "\n",
+        "<a id=\"java-closing-requirements\"></a>\n",
+        "\n",
+        "## 補充要求\n",
+        "\n"
+      ],
+      "reason": "集合條文逐句對照共通來源，保留涵蓋不直接的 Java 提醒；小節與尾段建立語意錨點並保留全部驗收。"
+    },
+    {
+      "baseline_line": 41,
+      "remove": [
+
+      ],
+      "insert": [
+        "- [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。\n"
+      ],
+      "reason": "集合條文逐句對照共通來源，保留涵蓋不直接的 Java 提醒；小節與尾段建立語意錨點並保留全部驗收。"
+    }
   ],
   "acceptance_changes": [
 
@@ -427,6 +608,29 @@
 
   ],
   "acceptance_additions": [
-
+    "- [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。\n"
+  ],
+  "group_routes": [
+    {
+      "heading": "修改與併發",
+      "targets": [
+        "rules/coding/collections-and-ownership.md#co-04",
+        "rules/coding/concurrency-and-async.md#co-05"
+      ],
+      "text": "本組要求依[co-04](../../../coding/collections-and-ownership.md#co-04)、[co-05](../../../coding/concurrency-and-async.md#co-05)辦理。"
+    }
+  ],
+  "link_retention": [
+    {
+      "targets": [
+        "rules/coding/collections-and-ownership.md#co-01",
+        "rules/coding/collections-and-ownership.md#co-02",
+        "rules/coding/collections-and-ownership.md#co-03",
+        "rules/coding/collections-and-ownership.md#co-09",
+        "rules/coding/resource-lifecycle.md#co-07",
+        "rules/quality/performance.md#co-06"
+      ],
+      "text": "本文件另依[co-01](../../../coding/collections-and-ownership.md#co-01)、[co-02](../../../coding/collections-and-ownership.md#co-02)、[co-03](../../../coding/collections-and-ownership.md#co-03)、[co-09](../../../coding/collections-and-ownership.md#co-09)、[co-07](../../../coding/resource-lifecycle.md#co-07)、[co-06](../../../quality/performance.md#co-06)辦理。"
+    }
   ]
 }
