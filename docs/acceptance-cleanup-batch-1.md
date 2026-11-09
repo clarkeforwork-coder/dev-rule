@@ -99,3 +99,5 @@
 ## 獨立審閱後的重現方式
 
 上文保留當批執行紀錄；舊提交沒有逐句差異與已改寫清單，不能用修正後檢查器回報通過。現行追溯檢查：`ruby scripts/verify-acceptance.rb --batch 1 --trace-only`；基準自本文讀取。常駐檢查預設同時執行五批追溯與全檔保護；`--target` 的全部讀取及統計皆來自指定提交，不混入工作區。精確差異與改寫理由見 [檢查差異清單](acceptance-check-policy.json)、[已改寫片段清單](acceptance-rewritten-fragments.json)及[審閱修正紀錄](review-remediation.md)。
+
+RF-1、2-1 與 RF-3、4-3 第二輪修正：兩個原文片段均已逐字還原於原追溯目的列，動態能力包含反射與動態呼叫；私有欄位寫入及存取放寬僅作例子。表中的歷史原文與唯一目的地不變，兩筆已不需登錄為改寫。

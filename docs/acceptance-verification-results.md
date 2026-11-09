@@ -20,8 +20,8 @@
       "batch": 1,
       "baseline": "6f7ae5d5250b7573a96c85f551b58878eb02c7e4",
       "original_rows": 20,
-      "verbatim_fragments": 13,
-      "listed_rewritten_fragments": 31
+      "verbatim_fragments": 15,
+      "listed_rewritten_fragments": 29
     },
     {
       "batch": 2,
@@ -52,6 +52,7 @@
       "listed_rewritten_fragments": 3
     }
   ],
+  "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
@@ -75,10 +76,11 @@ exit=0
       "batch": 1,
       "baseline": "6f7ae5d5250b7573a96c85f551b58878eb02c7e4",
       "original_rows": 20,
-      "verbatim_fragments": 13,
-      "listed_rewritten_fragments": 31
+      "verbatim_fragments": 15,
+      "listed_rewritten_fragments": 29
     }
   ],
+  "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
@@ -106,6 +108,7 @@ exit=0
       "listed_rewritten_fragments": 16
     }
   ],
+  "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
@@ -133,6 +136,7 @@ exit=0
       "listed_rewritten_fragments": 3
     }
   ],
+  "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
@@ -160,6 +164,7 @@ exit=0
       "listed_rewritten_fragments": 3
     }
   ],
+  "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
@@ -187,6 +192,7 @@ exit=0
       "listed_rewritten_fragments": 3
     }
   ],
+  "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
@@ -218,7 +224,7 @@ exit=0
     "expected_exit": 0,
     "actual_exit": 0,
     "matched_expectation": true,
-    "diagnostic": "人工檢查：腳本不判斷換句話說的重複"
+    "diagnostic": "已在暫存清單登錄 T3；換句話說重複與理由內容仍為人工檢查項目"
   },
   {
     "test": "T4",
@@ -274,7 +280,7 @@ exit=0
     "expected_exit": 1,
     "actual_exit": 1,
     "matched_expectation": true,
-    "diagnostic": "Protected rule text changed rules/quality/rule-verification.md:44:"
+    "diagnostic": "Protected rule text changed rules/quality/rule-verification.md:43: | <a id=\"acceptance-partial-operation\"></a>[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，集合批次修改適用同一驗收。 |"
   },
   {
     "test": "T10",
@@ -283,6 +289,86 @@ exit=0
     "actual_exit": 1,
     "matched_expectation": true,
     "diagnostic": "Duplicate/colliding anchor rules/stacks/java/common/types-and-generics.md"
+  },
+  {
+    "test": "N1",
+    "description": "未登錄的共通新義務",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Protected rule text changed rules/coding/type-safety.md:48: | <a id=\"acceptance-negative\"></a>新義務 | 所有語言的公開方法一律須以靜態分析工具證明參數型別完整，否則不得合併。 |"
+  },
+  {
+    "test": "N1b",
+    "description": "未登錄且沒有錨點的 Java 放寬句",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Protected rule text changed rules/stacks/java/common/types-and-generics.md:49: | 放寬 | 上列 acceptance-java 各項可由團隊自行決定是否執行，不必留存證據。 |"
+  },
+  {
+    "test": "N7",
+    "description": "目的列刪大半並以子字串登錄改寫",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Trace fragment absent from destination CL-4-1: ../rules/stacks/java/common/classes-and-construction.md#acceptance-java-construction-safety"
+  },
+  {
+    "test": "N8",
+    "description": "刪政策並登錄過短理由 x",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Invalid approved edit rules/quality/rule-verification.md:22: reason too short or blank"
+  },
+  {
+    "test": "N8b",
+    "description": "驗收分類不得刪除政策段",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Acceptance edit outside acceptance section rules/quality/rule-verification.md:22"
+  },
+  {
+    "test": "N9",
+    "description": "移動基準並清空清單",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "固定正文基準為 6a16349，清單 baseline 不得移動"
+  },
+  {
+    "test": "N18",
+    "description": "改寫理由只含空白",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Trace fragment absent from destination CL-1、8-2: ../rules/coding/code-design.md#acceptance-interface-capabilities"
+  },
+  {
+    "test": "N19",
+    "description": "任意 kind 與空白理由",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Invalid approved edit rules/README.md:11: reason too short or blank"
+  },
+  {
+    "test": "N19b",
+    "description": "充分理由仍拒絕任意 kind",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Invalid edit kind rules/README.md:11"
+  },
+  {
+    "test": "N19c",
+    "description": "editorial 不得碰表格列",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Editorial edit touches table rules/architecture/boundary-objects.md:33"
   }
 ]
 exit=0

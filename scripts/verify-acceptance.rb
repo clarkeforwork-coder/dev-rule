@@ -5,6 +5,9 @@ require 'json'
 require 'optparse'
 require 'tmpdir'
 
+RULES_BASELINE = '6a16349'.freeze
+MIN_REASON_LENGTH = 20
+
 Dir.chdir(File.expand_path('..', __dir__))
 options = {}
 OptionParser.new do |p|
@@ -53,6 +56,36 @@ def visible_markdown(text)
     end
   end.join
 end
+def sufficient_reason?(reason)
+  reason.is_a?(String) && reason.gsub(/[[:space:]]/, '').length >= MIN_REASON_LENGTH
+end
+def destination_content(text)
+  text.to_s.gsub(/<a\s+id="[^"]+"><\/a>/, '').strip
+end
+# 明確的驗收章節涵蓋至下一個同級標題；混排政策的章節只承認驗收表、
+# 「驗收：」段及緊接該段的獨立錨點，不承認同節政策文字。
+def acceptance_mask(path, lines)
+  mask = Array.new(lines.size, false)
+  level = nil
+  section = nil
+  mixed = path == 'rules/quality/rule-verification.md'
+  lines.each_with_index do |line, i|
+    if (h = line.match(/^(\#{1,6}) (.+)$/))
+      level = nil if level && h[1].size <= level
+      section = h[2] if h[1].size == 2
+      level = h[1].size if ['驗收要求', '補充契約驗收', '契約驗收', '介面用途驗收', '多步驟失敗驗收'].include?(h[2])
+    end
+    mask[i] = true if level
+    if mixed && ['架構檢查與可測試性', '錯誤處理驗證與驗收', '檢查配置可重現', '實際執行範圍'].include?(section)
+      mask[i] = true if line.start_with?('|', '驗收：')
+      if line.match?(/^<a id="acceptance-/)
+        following = lines[(i+1)..].find { |l| !l.strip.empty? }
+        mask[i] = true if following && following.start_with?('驗收：')
+      end
+    end
+  end
+  mask
+end
 def row_content(line)
   m = line.match(/^\| (.+) \| (.+) \|\s*$/)
   m && !m[1].start_with?('---') ? m[2] : nil
@@ -85,36 +118,53 @@ errors=[]
 policy_path='docs/acceptance-check-policy.json'
 abort('此受驗版本沒有逐句差異清單；不可用新檢查器宣稱舊版本通過') unless File.file?(policy_path)
 policy=JSON.parse(File.read(policy_path))
-base=options[:rules_baseline] || policy.fetch('baseline')
+base=RULES_BASELINE
 git_args = ['git']
 git_args << "--git-dir=#{ENV['ACCEPTANCE_GIT_DIR']}" if ENV['ACCEPTANCE_GIT_DIR']
 resolve = ->(ref) { value, status = Open3.capture2e(*git_args, 'rev-parse', '--verify', "#{ref}^{commit}"); status.success? ? value.strip : nil }
-abort('正文基準與逐句差異清單不一致') unless resolve.call(base) && resolve.call(base) == resolve.call(policy.fetch('baseline'))
+abort('固定正文基準為 6a16349，清單 baseline 不得移動') unless resolve.call(policy.fetch('baseline')) == resolve.call(RULES_BASELINE)
+abort('--rules-baseline 只能指定固定正文基準 6a16349') if options[:rules_baseline] && resolve.call(options[:rules_baseline]) != resolve.call(RULES_BASELINE)
 manifest=JSON.parse(File.read('scripts/acceptance-batches.json'))
 paths=Dir.glob('rules/**/*').select { |p| File.file?(p) }.sort
 base_paths_args=['git'];base_paths_args<<"--git-dir=#{ENV['ACCEPTANCE_GIT_DIR']}" if ENV['ACCEPTANCE_GIT_DIR']
 base_paths,status=Open3.capture2(*base_paths_args,'ls-tree','-r','--name-only',base,'rules')
 expected_paths=base_paths.lines.map(&:strip).sort
 errors << 'Rules file inventory changed' unless paths==expected_paths
+policy.fetch('changes').each do |edit|
+  location = "#{edit['path']}:#{edit['baseline_line']}"
+  errors << "Invalid edit kind #{location}" unless %w[editorial acceptance].include?(edit['kind'])
+  errors << "Invalid approved edit #{location}: reason too short or blank" unless sufficient_reason?(edit['reason'])
+end
 preserved=0
 paths.each do |path|
   source=original(base,path).lines.map(&:chomp)
   edits=policy.fetch('changes').select{|c| c['path']==path}.sort_by{|c| c['baseline_line']}
-  expected=[];cursor=0
+  expected=[];cursor=0;spans=[]
   edits.each do |edit|
     pos=edit.fetch('baseline_line')-1; removed=edit.fetch('remove')
-    errors << "Invalid approved edit #{path}:#{pos+1}" unless pos>=cursor && source[pos,removed.size]==removed && !edit.fetch('reason').empty?
-    expected.concat(source[cursor...pos]);expected.concat(edit.fetch('insert'));cursor=pos+removed.size
+    errors << "Invalid approved edit #{path}:#{pos+1}" unless pos>=cursor && source[pos,removed.size]==removed && sufficient_reason?(edit['reason'])
+    expected.concat(source[cursor...pos]);spans << [edit,pos,expected.size];expected.concat(edit.fetch('insert'));cursor=pos+removed.size
   end
   expected.concat(source[cursor..]); actual=File.readlines(path).map(&:chomp)
-  i=0;active=false
+  old_mask=acceptance_mask(path,source);new_mask=acceptance_mask(path,expected)
+  spans.each do |edit,old_pos,new_pos|
+    case edit['kind']
+    when 'editorial'
+      errors << "Editorial edit touches table #{path}:#{old_pos+1}" if (edit['remove']+edit['insert']).any? { |l| l.lstrip.start_with?('|') }
+    when 'acceptance'
+      valid = [[edit['remove'],old_pos,old_mask],[edit['insert'],new_pos,new_mask]].all? do |lines,start,mask|
+        lines.each_with_index.all? { |line,offset| line.strip.empty? || mask[start+offset] }
+      end
+      errors << "Acceptance edit outside acceptance section #{path}:#{old_pos+1}" unless valid
+    else
+      errors << "Invalid edit kind #{path}:#{old_pos+1}"
+    end
+  end
+  i=0
+
   actual.each_with_index do |line,n|
     if line==expected[i]
       i+=1;preserved+=1
-      active=true if line.match?(/^\| (?:契約|對應決策|Java 條文) \| (?:驗收內容|語言增量驗收) \|/)
-      active=false unless line.start_with?('|')
-    elsif active && row_content(line) && row_content(line).size>8 && line.include?('acceptance-')
-      # 允許在既有驗收表增加完整列；不能刪除或改寫已核對列。
     else
       errors << "Protected rule text changed #{path}:#{n+1}: #{line}"
       break
@@ -129,6 +179,12 @@ common_tests=common.flat_map{|p| acceptance_rows(File.read(p)).map{|t|normalize(
 duplicates=scope.flat_map{|p| acceptance_rows(File.read(p)).select{|t|common_tests.include?(normalize(t))}.map{|t|[p,t]}}
 errors << "Scoped duplicate acceptance: #{duplicates}" unless duplicates.empty?
 rewrites=JSON.parse(File.read('docs/acceptance-rewritten-fragments.json'))
+rewrites.each do |entry|
+  content = destination(entry['target'])
+  unless content && destination_content(content) == destination_content(entry['replacement']) && sufficient_reason?(entry['reason'])
+    errors << "Invalid rewritten fragment #{entry['id']}: full destination and meaningful-length reason required"
+  end
+end
 batches=options[:batch] ? [options[:batch].to_s] : manifest.keys
 stats=[]
 batches.each do |n|
@@ -163,7 +219,7 @@ batches.each do |n|
     text=destination(m[3])
     if text && text.include?(m[2]);verbatim+=1;next;end
     entry=rewrites.find{|r|r['batch']==n && r['id']==m[1]}
-    if entry && entry['original']==m[2] && entry['target']==m[3] && text && text.include?(entry['replacement']) && !entry['replacement'].empty? && !entry['reason'].empty?
+    if entry && entry['original']==m[2] && entry['target']==m[3] && text && destination_content(text) == destination_content(entry['replacement']) && !destination_content(entry['replacement']).empty? && sufficient_reason?(entry['reason'])
       rewritten+=1
     else
       errors << "Trace fragment absent from destination #{m[1]}: #{m[3]}"
@@ -192,4 +248,4 @@ files.each do |p|
  end
 end
 abort(errors.uniq.join("\n")) unless errors.empty?
-puts JSON.pretty_generate({source:ENV.fetch('ACCEPTANCE_SOURCE','working-tree'),rules_baseline:base,protected_rule_files:paths.size,matched_approved_rule_lines:preserved,explicit_change_blocks:policy['changes'].size,completed_java_files:scope.size,completed_duplicate_rows:duplicates.size,remaining_global_duplicate_common_rows:common_tests.count{|t|scope.any?{|p|acceptance_rows(File.read(p)).any?{|v|normalize(v)==t}}},checked_local_links:links,trace_checks:stats,semantic_duplication_check:'人工檢查項目；換句話說的重複無法由本腳本判斷（T3）'})
+puts JSON.pretty_generate({source:ENV.fetch('ACCEPTANCE_SOURCE','working-tree'),rules_baseline:base,protected_rule_files:paths.size,matched_approved_rule_lines:preserved,explicit_change_blocks:policy['changes'].size,completed_java_files:scope.size,completed_duplicate_rows:duplicates.size,remaining_global_duplicate_common_rows:common_tests.count{|t|scope.any?{|p|acceptance_rows(File.read(p)).any?{|v|normalize(v)==t}}},checked_local_links:links,trace_checks:stats,reason_content_check:'理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元',semantic_duplication_check:'人工檢查項目；換句話說的重複無法由本腳本判斷（T3）'})
