@@ -1,87 +1,87 @@
 {
   "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
   "path": "rules/stacks/java/common/classes-and-construction.md",
-  "status": "pending",
+  "status": "completed",
   "rules": [
     {
       "id": "CL-01",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#介面繼承與建立條件"
+        "rules/stacks/java/common/classes-and-construction.md#java-interface-purpose"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通介面與抽象及模組公開入口未直接明列單一實作不構成省略必要架構隔離的理由，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "CL-02",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#介面繼承與建立條件"
+        "rules/coding/code-design.md#cl-02"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "父型別輸入結果行為與組合委派優先均由共通繼承可替代性兩句直接承接。"
     },
     {
       "id": "CL-03",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#介面繼承與建立條件"
+        "rules/coding/resource-lifecycle.md#cl-03"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "必要資料依賴、分階段生命週期與不要求建構子連線或啟動背景工作均有直接原文承接。"
     },
     {
       "id": "CL-04",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#介面繼承與建立條件"
+        "rules/stacks/java/common/classes-and-construction.md#java-construction-safety"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節「是」及必須整條保留清單，完整保留 this 外洩、可覆寫方法禁令及註冊回呼背景啟動時機。"
     },
     {
       "id": "CL-05",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#依賴建立方式與擴充"
+        "rules/stacks/java/common/classes-and-construction.md#java-explicit-dependencies"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通寫需要延後或按次建立時「可注入」工廠或提供者，未直接承接 Java 原句「使用」的要求強度，故連同明確依賴與禁止隱藏查找整條保留。"
     },
     {
       "id": "CL-06",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#依賴建立方式與擴充"
+        "rules/coding/code-design.md#cl-06"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "建構子具名工廠及 Builder 選擇與組裝暫存及不得產出無效目標均由共通建立方式原句承接。"
     },
     {
       "id": "CL-07",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#依賴建立方式與擴充"
+        "rules/stacks/java/common/classes-and-construction.md#java-override-scope"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節「可能」及必須整條保留清單，完整保留擴充範圍、super 必要檢查及 final 與框架代理相容要求。"
     },
     {
       "id": "CL-08",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#依賴建立方式與擴充"
+        "rules/coding/code-design.md#cl-08"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "不機械拆分單一方法、同責任共用契約與執行期授權不得被取代均由共通能力劃分原句承接。"
     },
     {
       "id": "CL-09",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#共用範圍與驗證"
+        "rules/coding/resource-lifecycle.md#cl-09"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共用服務實例欄位的使用者訂單隔離及框架注入不保證執行緒安全生命週期均有直接原文承接。"
     },
     {
       "id": "CL-10",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/classes-and-construction.md#共用範圍與驗證"
+        "rules/stacks/java/common/classes-and-construction.md#java-lifecycle-verification"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通明列建立條件、替代契約與框架實際配置，但未逐字明列 Java 繼承、覆寫均須驗證實際路徑，故連同單純值物件免啟完整框架整條保留。"
     }
   ],
   "sentences": [
@@ -132,83 +132,128 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-interface-purpose",
           "text": "依[框架與依賴組裝](../../../architecture/dependency-composition.md)、[模組責任與公開入口](../../../architecture/module-boundaries.md)執行。"
         }
       ],
       "history_id": "CL-01",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通介面與抽象及模組公開入口未直接明列單一實作不構成省略必要架構隔離的理由，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "Java 可依契約依賴介面或具體類別；單一實作不構成省略必要架構隔離的理由。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-interface-purpose",
           "text": "Java 可依契約依賴介面或具體類別；單一實作不構成省略必要架構隔離的理由。"
         }
       ],
       "history_id": "CL-01",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通介面與抽象及模組公開入口未直接明列單一實作不構成省略必要架構隔離的理由，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "依[繼承的可替代性的共通要求](../../../coding/code-design.md#cl-02)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "依[繼承的可替代性的共通要求](../../../coding/code-design.md#cl-02)執行。"
+          "uri": "rules/coding/code-design.md#cl-02"
         }
       ],
       "history_id": "CL-02",
       "removed_assertions": [
-
+        {
+          "text": "依[繼承的可替代性的共通要求](../../../coding/code-design.md#cl-02)執行。",
+          "source_uri": "rules/coding/code-design.md#cl-02",
+          "source_text": "繼承須具有明確的可替代關係，子型別不得破壞父型別承諾的輸入、結果與行為保證。"
+        }
+      ],
+      "reason": "本句僅為共通條文的執行引用，原連結已搬到檔頭固定引用入口；承接小節的完整政策原句登錄於被刪斷言，下一句另逐項核對。",
+      "common_sources": [
+        "rules/coding/code-design.md#cl-02"
       ]
     },
     {
       "source": "Java 子類別須維持父型別輸入、結果及行為保證；僅共用實作時優先組合或委派。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "Java 子類別須維持父型別輸入、結果及行為保證；僅共用實作時優先組合或委派。"
+          "uri": "rules/coding/code-design.md#cl-02"
         }
       ],
       "history_id": "CL-02",
       "removed_assertions": [
-
+        {
+          "text": "Java 子類別須維持父型別輸入、結果及行為保證",
+          "source_uri": "rules/coding/code-design.md#cl-02",
+          "source_text": "繼承須具有明確的可替代關係，子型別不得破壞父型別承諾的輸入、結果與行為保證。"
+        },
+        {
+          "text": "僅共用實作時優先組合或委派",
+          "source_uri": "rules/coding/code-design.md#cl-02",
+          "source_text": "僅為共用實作時，優先採用組合或委派，不以不成立的繼承關係換取程式碼重用；若子型別無法支援父型別承諾的操作，須重新檢視契約與能力劃分。"
+        }
+      ],
+      "reason": "父型別輸入結果行為與組合委派優先均由共通繼承可替代性兩句直接承接。",
+      "common_sources": [
+        "rules/coding/code-design.md#cl-02"
       ]
     },
     {
       "source": "依[必要資料與依賴齊備的共通要求](../../../coding/resource-lifecycle.md#cl-03)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "依[必要資料與依賴齊備的共通要求](../../../coding/resource-lifecycle.md#cl-03)執行。"
+          "uri": "rules/coding/resource-lifecycle.md#cl-03"
         }
       ],
       "history_id": "CL-03",
       "removed_assertions": [
-
+        {
+          "text": "依[必要資料與依賴齊備的共通要求](../../../coding/resource-lifecycle.md#cl-03)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#cl-03",
+          "source_text": "物件建立完成時，須具備維持自身有效性所需的資料與必要依賴，不依賴呼叫端事後補設才能正常使用。"
+        }
+      ],
+      "reason": "本句僅為共通條文的執行引用，原連結已搬到檔頭固定引用入口；承接小節的完整政策原句登錄於被刪斷言，下一句另逐項核對。",
+      "common_sources": [
+        "rules/coding/resource-lifecycle.md#cl-03"
       ]
     },
     {
       "source": "Java 建構完成須具備必要資料與依賴；外部連線或背景工作不必放在建構子，依明確生命週期啟動。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "Java 建構完成須具備必要資料與依賴；外部連線或背景工作不必放在建構子，依明確生命週期啟動。"
+          "uri": "rules/coding/resource-lifecycle.md#cl-03"
         }
       ],
       "history_id": "CL-03",
       "removed_assertions": [
-
+        {
+          "text": "Java 建構完成須具備必要資料與依賴",
+          "source_uri": "rules/coding/resource-lifecycle.md#cl-03",
+          "source_text": "物件建立完成時，須具備維持自身有效性所需的資料與必要依賴，不依賴呼叫端事後補設才能正常使用。"
+        },
+        {
+          "text": "外部連線或背景工作不必放在建構子",
+          "source_uri": "rules/coding/resource-lifecycle.md#cl-03",
+          "source_text": "不因此要求建構子完成外部連線或啟動背景工作。"
+        },
+        {
+          "text": "依明確生命週期啟動",
+          "source_uri": "rules/coding/resource-lifecycle.md#cl-03",
+          "source_text": "需要分階段啟動的元件，須明訂生命週期與可用條件，未就緒前不得接受不符合條件的操作。"
+        }
+      ],
+      "reason": "必要資料依賴、分階段生命週期與不要求建構子連線或啟動背景工作均有直接原文承接。",
+      "common_sources": [
+        "rules/coding/resource-lifecycle.md#cl-03"
       ]
     },
     {
@@ -216,83 +261,106 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-construction-safety",
           "text": "建構期間不得讓 `this` 外洩至可能使用該物件的外部元件，也不得呼叫可被覆寫的方法。"
         }
       ],
       "history_id": "CL-04",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "依第四節「是」及必須整條保留清單，完整保留 this 外洩、可覆寫方法禁令及註冊回呼背景啟動時機。"
     },
     {
       "source": "事件註冊、回呼發布與背景工作啟動等行為，須在物件建立完成且符合生命週期條件後執行，避免使用尚未完成初始化的物件。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-construction-safety",
           "text": "事件註冊、回呼發布與背景工作啟動等行為，須在物件建立完成且符合生命週期條件後執行，避免使用尚未完成初始化的物件。"
         }
       ],
       "history_id": "CL-04",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "依第四節「是」及必須整條保留清單，完整保留 this 外洩、可覆寫方法禁令及註冊回呼背景啟動時機。"
     },
     {
       "source": "依[明確取得依賴的共通要求](../../../architecture/dependency-composition.md#cl-05)執行。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-explicit-dependencies",
           "text": "依[明確取得依賴的共通要求](../../../architecture/dependency-composition.md#cl-05)執行。"
         }
       ],
       "history_id": "CL-05",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通寫需要延後或按次建立時「可注入」工廠或提供者，未直接承接 Java 原句「使用」的要求強度，故連同明確依賴與禁止隱藏查找整條保留。"
     },
     {
       "source": "Java 服務透過明確依賴取得；需要延後或按次建立時使用工廠或提供者，不隱藏查全域容器、靜態服務登錄或單例。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-explicit-dependencies",
           "text": "Java 服務透過明確依賴取得；需要延後或按次建立時使用工廠或提供者，不隱藏查全域容器、靜態服務登錄或單例。"
         }
       ],
       "history_id": "CL-05",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通寫需要延後或按次建立時「可注入」工廠或提供者，未直接承接 Java 原句「使用」的要求強度，故連同明確依賴與禁止隱藏查找整條保留。"
     },
     {
       "source": "依[依需求選擇建立方式的共通要求](../../../coding/code-design.md#cl-06)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "依[依需求選擇建立方式的共通要求](../../../coding/code-design.md#cl-06)執行。"
+          "uri": "rules/coding/code-design.md#cl-06"
         }
       ],
       "history_id": "CL-06",
       "removed_assertions": [
-
+        {
+          "text": "依[依需求選擇建立方式的共通要求](../../../coding/code-design.md#cl-06)執行。",
+          "source_uri": "rules/coding/code-design.md#cl-06",
+          "source_text": "建構子、具名工廠方法或 Builder 須依資料組合、建立語意與呼叫可讀性選擇，不強制每個類別使用工廠或 Builder。"
+        }
+      ],
+      "reason": "本句僅為共通條文的執行引用，原連結已搬到檔頭固定引用入口；承接小節的完整政策原句登錄於被刪斷言，下一句另逐項核對。",
+      "common_sources": [
+        "rules/coding/code-design.md#cl-06"
       ]
     },
     {
       "source": "Java 可選建構子、具名工廠或 Builder；Builder 可暫存組裝中資料，但 `build` 不得產出無效物件。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "Java 可選建構子、具名工廠或 Builder；Builder 可暫存組裝中資料，但 `build` 不得產出無效物件。"
+          "uri": "rules/coding/code-design.md#cl-06"
         }
       ],
       "history_id": "CL-06",
       "removed_assertions": [
-
+        {
+          "text": "Java 可選建構子、具名工廠或 Builder",
+          "source_uri": "rules/coding/code-design.md#cl-06",
+          "source_text": "建構子、具名工廠方法或 Builder 須依資料組合、建立語意與呼叫可讀性選擇，不強制每個類別使用工廠或 Builder。"
+        },
+        {
+          "text": "Builder 可暫存組裝中資料，但 `build` 不得產出無效物件",
+          "source_uri": "rules/coding/code-design.md#cl-06",
+          "source_text": "Builder 可暫存未完成的組裝資料，但不得產出無效的目標物件。"
+        }
+      ],
+      "reason": "建構子具名工廠及 Builder 選擇與組裝暫存及不得產出無效目標均由共通建立方式原句承接。",
+      "common_sources": [
+        "rules/coding/code-design.md#cl-06"
       ]
     },
     {
@@ -300,97 +368,143 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-override-scope",
           "text": "類別與方法的繼承、覆寫範圍須依明確的擴充需求設計，不供擴充的部分應適當限制。"
         }
       ],
       "history_id": "CL-07",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "依第四節「可能」及必須整條保留清單，完整保留擴充範圍、super 必要檢查及 final 與框架代理相容要求。"
     },
     {
       "source": "必要業務檢查不得依賴子類別自行遵守才能成立，例如不能只靠子類別記得呼叫 `super`。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-override-scope",
           "text": "必要業務檢查不得依賴子類別自行遵守才能成立，例如不能只靠子類別記得呼叫 `super`。"
         }
       ],
       "history_id": "CL-07",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "依第四節「可能」及必須整條保留清單，完整保留擴充範圍、super 必要檢查及 final 與框架代理相容要求。"
     },
     {
       "source": "框架需要的代理或繼承機制須與上述保證相容，不一律強制或禁止使用 `final`。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-override-scope",
           "text": "框架需要的代理或繼承機制須與上述保證相容，不一律強制或禁止使用 `final`。"
         }
       ],
       "history_id": "CL-07",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "依第四節「可能」及必須整條保留清單，完整保留擴充範圍、super 必要檢查及 final 與框架代理相容要求。"
     },
     {
       "source": "依[介面的能力劃分的共通要求](../../../coding/code-design.md#cl-08)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "依[介面的能力劃分的共通要求](../../../coding/code-design.md#cl-08)執行。"
+          "uri": "rules/coding/code-design.md#cl-08"
         }
       ],
       "history_id": "CL-08",
       "removed_assertions": [
-
+        {
+          "text": "依[介面的能力劃分的共通要求](../../../coding/code-design.md#cl-08)執行。",
+          "source_uri": "rules/coding/code-design.md#cl-08",
+          "source_text": "介面須依內聚的能力與使用端需求劃分，避免迫使使用端依賴無關操作，或迫使實作提供不支援的方法。"
+        }
+      ],
+      "reason": "本句僅為共通條文的執行引用，原連結已搬到檔頭固定引用入口；承接小節的完整政策原句登錄於被刪斷言，下一句另逐項核對。",
+      "common_sources": [
+        "rules/coding/code-design.md#cl-08"
       ]
     },
     {
       "source": "Java 介面不機械式拆成單一方法；同一責任的操作可共用契約，執行時授權仍須另外檢查。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "Java 介面不機械式拆成單一方法；同一責任的操作可共用契約，執行時授權仍須另外檢查。"
+          "uri": "rules/coding/code-design.md#cl-08"
         }
       ],
       "history_id": "CL-08",
       "removed_assertions": [
-
+        {
+          "text": "Java 介面不機械式拆成單一方法",
+          "source_uri": "rules/coding/code-design.md#cl-08",
+          "source_text": "不機械式拆成單一方法介面，共同服務同一責任的操作可保留於同一契約；不得以介面可見範圍取代執行期授權檢查。"
+        },
+        {
+          "text": "同一責任的操作可共用契約",
+          "source_uri": "rules/coding/code-design.md#cl-08",
+          "source_text": "不機械式拆成單一方法介面，共同服務同一責任的操作可保留於同一契約；不得以介面可見範圍取代執行期授權檢查。"
+        },
+        {
+          "text": "執行時授權仍須另外檢查",
+          "source_uri": "rules/coding/code-design.md#cl-08",
+          "source_text": "不機械式拆成單一方法介面，共同服務同一責任的操作可保留於同一契約；不得以介面可見範圍取代執行期授權檢查。"
+        }
+      ],
+      "reason": "不機械拆分單一方法、同責任共用契約與執行期授權不得被取代均由共通能力劃分原句承接。",
+      "common_sources": [
+        "rules/coding/code-design.md#cl-08"
       ]
     },
     {
       "source": "依[生命週期與可變狀態相容的共通要求](../../../coding/resource-lifecycle.md#cl-09)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "依[生命週期與可變狀態相容的共通要求](../../../coding/resource-lifecycle.md#cl-09)執行。"
+          "uri": "rules/coding/resource-lifecycle.md#cl-09"
         }
       ],
       "history_id": "CL-09",
       "removed_assertions": [
-
+        {
+          "text": "依[生命週期與可變狀態相容的共通要求](../../../coding/resource-lifecycle.md#cl-09)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#cl-09",
+          "source_text": "物件的共用範圍、可變狀態與依賴生命週期須相容，不得讓單次操作資料洩漏到其他操作。"
+        }
+      ],
+      "reason": "本句僅為共通條文的執行引用，原連結已搬到檔頭固定引用入口；承接小節的完整政策原句登錄於被刪斷言，下一句另逐項核對。",
+      "common_sources": [
+        "rules/coding/resource-lifecycle.md#cl-09"
       ]
     },
     {
       "source": "Java 共用服務的實例欄位不得存放會跨操作互相覆蓋的使用者或訂單；框架注入不代表執行緒安全或生命週期正確。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
-          "text": "Java 共用服務的實例欄位不得存放會跨操作互相覆蓋的使用者或訂單；框架注入不代表執行緒安全或生命週期正確。"
+          "uri": "rules/coding/resource-lifecycle.md#cl-09"
         }
       ],
       "history_id": "CL-09",
       "removed_assertions": [
-
+        {
+          "text": "Java 共用服務的實例欄位不得存放會跨操作互相覆蓋的使用者或訂單",
+          "source_uri": "rules/coding/resource-lifecycle.md#cl-09",
+          "source_text": "例如共用服務不得以實例欄位存放會互相覆蓋的目前使用者或訂單。"
+        },
+        {
+          "text": "框架注入不代表執行緒安全或生命週期正確",
+          "source_uri": "rules/coding/resource-lifecycle.md#cl-09",
+          "source_text": "由框架建立或注入，不代表自動具備執行緒安全與生命週期正確性。"
+        }
+      ],
+      "reason": "共用服務實例欄位的使用者訂單隔離及框架注入不保證執行緒安全生命週期均有直接原文承接。",
+      "common_sources": [
+        "rules/coding/resource-lifecycle.md#cl-09"
       ]
     },
     {
@@ -398,35 +512,37 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-lifecycle-verification",
           "text": "依[契約與生命週期驗收的共通要求](../../../coding/resource-lifecycle.md#cl-10)執行。"
         }
       ],
       "history_id": "CL-10",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通明列建立條件、替代契約與框架實際配置，但未逐字明列 Java 繼承、覆寫均須驗證實際路徑，故連同單純值物件免啟完整框架整條保留。"
     },
     {
       "source": "Java 建構、繼承、覆寫及框架代理須驗證實際路徑；單純值物件不必啟動完整框架。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-lifecycle-verification",
           "text": "Java 建構、繼承、覆寫及框架代理須驗證實際路徑；單純值物件不必啟動完整框架。"
         }
       ],
       "history_id": "CL-10",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通明列建立條件、替代契約與框架實際配置，但未逐字明列 Java 繼承、覆寫均須驗證實際路徑，故連同單純值物件免啟完整框架整條保留。"
     },
     {
       "source": "專屬型別的建立與不可變性另依[值物件規範](value-objects.md)，狀態轉換依[狀態與結果建模](states-and-results.md)，非空條件依[null 與 Optional](null-and-optional.md)。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-closing-requirements",
           "text": "專屬型別的建立與不可變性另依[值物件規範](value-objects.md)，狀態轉換依[狀態與結果建模](states-and-results.md)，非空條件依[null 與 Optional](null-and-optional.md)。"
         }
       ],
@@ -440,7 +556,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/classes-and-construction.md#java-類別介面與物件建立",
+          "uri": "rules/stacks/java/common/classes-and-construction.md#java-closing-requirements",
           "text": "授權限制仍依[安全規範](../../../quality/security.md)。"
         }
       ],
@@ -451,10 +567,148 @@
     }
   ],
   "edits": [
+    {
+      "baseline_line": 7,
+      "remove": [
 
+      ],
+      "insert": [
+        "本文件另依[cl-02](../../../coding/code-design.md#cl-02)、[cl-06](../../../coding/code-design.md#cl-06)、[cl-08](../../../coding/code-design.md#cl-08)、[cl-03](../../../coding/resource-lifecycle.md#cl-03)、[cl-09](../../../coding/resource-lifecycle.md#cl-09)辦理。\n",
+        "\n"
+      ],
+      "reason": "五條重述改由逐句登錄的共通原文承接，其餘條文保留原文並換語意小標題，驗收內容與所有既有引用保留。"
+    },
+    {
+      "baseline_line": 9,
+      "remove": [
+        "1. **介面的用途**。依[框架與依賴組裝](../../../architecture/dependency-composition.md)、[模組責任與公開入口](../../../architecture/module-boundaries.md)執行。Java 可依契約依賴介面或具體類別；單一實作不構成省略必要架構隔離的理由。\n",
+        "2. **繼承的可替代性**。依[繼承的可替代性的共通要求](../../../coding/code-design.md#cl-02)執行。Java 子類別須維持父型別輸入、結果及行為保證；僅共用實作時優先組合或委派。\n",
+        "3. **必要資料與依賴齊備**。依[必要資料與依賴齊備的共通要求](../../../coding/resource-lifecycle.md#cl-03)執行。Java 建構完成須具備必要資料與依賴；外部連線或背景工作不必放在建構子，依明確生命週期啟動。\n",
+        "4. **建構期間的安全性**。建構期間不得讓 `this` 外洩至可能使用該物件的外部元件，也不得呼叫可被覆寫的方法。事件註冊、回呼發布與背景工作啟動等行為，須在物件建立完成且符合生命週期條件後執行，避免使用尚未完成初始化的物件。\n"
+      ],
+      "insert": [
+        "<a id=\"java-interface-purpose\"></a>\n"
+      ],
+      "reason": "五條重述改由逐句登錄的共通原文承接，其餘條文保留原文並換語意小標題，驗收內容與所有既有引用保留。"
+    },
+    {
+      "baseline_line": 14,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 介面的用途\n",
+        "\n",
+        "依[框架與依賴組裝](../../../architecture/dependency-composition.md)、[模組責任與公開入口](../../../architecture/module-boundaries.md)執行。Java 可依契約依賴介面或具體類別；單一實作不構成省略必要架構隔離的理由。\n",
+        "\n",
+        "<a id=\"java-construction-safety\"></a>\n",
+        "\n",
+        "### 建構期間的安全性\n",
+        "\n",
+        "建構期間不得讓 `this` 外洩至可能使用該物件的外部元件，也不得呼叫可被覆寫的方法。事件註冊、回呼發布與背景工作啟動等行為，須在物件建立完成且符合生命週期條件後執行，避免使用尚未完成初始化的物件。\n",
+        "\n"
+      ],
+      "reason": "五條重述改由逐句登錄的共通原文承接，其餘條文保留原文並換語意小標題，驗收內容與所有既有引用保留。"
+    },
+    {
+      "baseline_line": 16,
+      "remove": [
+        "5. **明確取得依賴**。依[明確取得依賴的共通要求](../../../architecture/dependency-composition.md#cl-05)執行。Java 服務透過明確依賴取得；需要延後或按次建立時使用工廠或提供者，不隱藏查全域容器、靜態服務登錄或單例。\n",
+        "6. **依需求選擇建立方式**。依[依需求選擇建立方式的共通要求](../../../coding/code-design.md#cl-06)執行。Java 可選建構子、具名工廠或 Builder；Builder 可暫存組裝中資料，但 `build` 不得產出無效物件。\n",
+        "7. **控制繼承與覆寫範圍**。類別與方法的繼承、覆寫範圍須依明確的擴充需求設計，不供擴充的部分應適當限制。必要業務檢查不得依賴子類別自行遵守才能成立，例如不能只靠子類別記得呼叫 `super`。框架需要的代理或繼承機制須與上述保證相容，不一律強制或禁止使用 `final`。\n",
+        "8. **介面的能力劃分**。依[介面的能力劃分的共通要求](../../../coding/code-design.md#cl-08)執行。Java 介面不機械式拆成單一方法；同一責任的操作可共用契約，執行時授權仍須另外檢查。\n"
+      ],
+      "insert": [
+        "<a id=\"java-explicit-dependencies\"></a>\n"
+      ],
+      "reason": "五條重述改由逐句登錄的共通原文承接，其餘條文保留原文並換語意小標題，驗收內容與所有既有引用保留。"
+    },
+    {
+      "baseline_line": 21,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 明確取得依賴\n",
+        "\n",
+        "依[明確取得依賴的共通要求](../../../architecture/dependency-composition.md#cl-05)執行。Java 服務透過明確依賴取得；需要延後或按次建立時使用工廠或提供者，不隱藏查全域容器、靜態服務登錄或單例。\n",
+        "\n",
+        "<a id=\"java-override-scope\"></a>\n",
+        "\n",
+        "### 控制繼承與覆寫範圍\n",
+        "\n",
+        "類別與方法的繼承、覆寫範圍須依明確的擴充需求設計，不供擴充的部分應適當限制。必要業務檢查不得依賴子類別自行遵守才能成立，例如不能只靠子類別記得呼叫 `super`。框架需要的代理或繼承機制須與上述保證相容，不一律強制或禁止使用 `final`。\n",
+        "\n"
+      ],
+      "reason": "五條重述改由逐句登錄的共通原文承接，其餘條文保留原文並換語意小標題，驗收內容與所有既有引用保留。"
+    },
+    {
+      "baseline_line": 23,
+      "remove": [
+        "9. **生命週期與可變狀態相容**。依[生命週期與可變狀態相容的共通要求](../../../coding/resource-lifecycle.md#cl-09)執行。Java 共用服務的實例欄位不得存放會跨操作互相覆蓋的使用者或訂單；框架注入不代表執行緒安全或生命週期正確。\n",
+        "10. **契約與生命週期驗收**。依[契約與生命週期驗收的共通要求](../../../coding/resource-lifecycle.md#cl-10)執行。Java 建構、繼承、覆寫及框架代理須驗證實際路徑；單純值物件不必啟動完整框架。\n"
+      ],
+      "insert": [
+        "<a id=\"java-lifecycle-verification\"></a>\n"
+      ],
+      "reason": "五條重述改由逐句登錄的共通原文承接，其餘條文保留原文並換語意小標題，驗收內容與所有既有引用保留。"
+    },
+    {
+      "baseline_line": 26,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 契約與生命週期驗收\n",
+        "\n",
+        "依[契約與生命週期驗收的共通要求](../../../coding/resource-lifecycle.md#cl-10)執行。Java 建構、繼承、覆寫及框架代理須驗證實際路徑；單純值物件不必啟動完整框架。\n",
+        "\n",
+        "<a id=\"java-closing-requirements\"></a>\n",
+        "\n",
+        "## 補充要求\n",
+        "\n"
+      ],
+      "reason": "五條重述改由逐句登錄的共通原文承接，其餘條文保留原文並換語意小標題，驗收內容與所有既有引用保留。"
+    },
+    {
+      "baseline_line": 45,
+      "remove": [
+        "| Java 條文 | 語言增量驗收 |\n"
+      ],
+      "insert": [
+        "| 對應要求 | 語言增量驗收 |\n"
+      ],
+      "reason": "五條重述改由逐句登錄的共通原文承接，其餘條文保留原文並換語意小標題，驗收內容與所有既有引用保留。"
+    },
+    {
+      "baseline_line": 47,
+      "remove": [
+        "| <a id=\"acceptance-java-construction-safety\"></a>4 | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |\n",
+        "| <a id=\"acceptance-java-override-safety\"></a>7 | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |\n"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-construction-safety\"></a>[建構期間的安全性](#java-construction-safety) | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |\n",
+        "| <a id=\"acceptance-java-override-safety\"></a>[控制繼承與覆寫範圍](#java-override-scope) | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |\n"
+      ],
+      "reason": "五條重述改由逐句登錄的共通原文承接，其餘條文保留原文並換語意小標題，驗收內容與所有既有引用保留。"
+    }
   ],
   "acceptance_changes": [
-
+    {
+      "before": "| Java 條文 | 語言增量驗收 |\n",
+      "after": "| 對應要求 | 語言增量驗收 |\n",
+      "reason": "驗收第一欄改為對應要求及現行語意小節連結，第二欄驗收內容逐字保留，不減少任何驗收條件。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-construction-safety\"></a>4 | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |\n",
+      "after": "| <a id=\"acceptance-java-construction-safety\"></a>[建構期間的安全性](#java-construction-safety) | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行語意小節連結，第二欄驗收內容逐字保留，不減少任何驗收條件。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-override-safety\"></a>7 | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |\n",
+      "after": "| <a id=\"acceptance-java-override-safety\"></a>[控制繼承與覆寫範圍](#java-override-scope) | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行語意小節連結，第二欄驗收內容逐字保留，不減少任何驗收條件。"
+    }
   ],
   "imports": [
 
@@ -463,6 +717,21 @@
 
   ],
   "acceptance_additions": [
+
+  ],
+  "link_retention": [
+    {
+      "targets": [
+        "rules/coding/code-design.md#cl-02",
+        "rules/coding/code-design.md#cl-06",
+        "rules/coding/code-design.md#cl-08",
+        "rules/coding/resource-lifecycle.md#cl-03",
+        "rules/coding/resource-lifecycle.md#cl-09"
+      ],
+      "text": "本文件另依[cl-02](../../../coding/code-design.md#cl-02)、[cl-06](../../../coding/code-design.md#cl-06)、[cl-08](../../../coding/code-design.md#cl-08)、[cl-03](../../../coding/resource-lifecycle.md#cl-03)、[cl-09](../../../coding/resource-lifecycle.md#cl-09)辦理。"
+    }
+  ],
+  "group_routes": [
 
   ]
 }
