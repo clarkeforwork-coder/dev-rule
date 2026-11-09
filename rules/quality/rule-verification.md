@@ -39,7 +39,7 @@
 
 多步驟與部分成功的驗收見[多步驟與部分成功驗收](../coding/error-handling.md#acceptance-partial-operation)。
 
-測試程式碼同樣遵守下列型別安全要求。
+測試程式碼同樣遵守[型別安全要求](../coding/type-safety.md)。
 
 ## 補償流程驗收
 

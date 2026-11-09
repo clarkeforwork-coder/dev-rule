@@ -161,6 +161,29 @@
         "link_moves": [
 
         ]
+      },
+      {
+        "id": "references",
+        "blocks": [
+          {
+            "path": "rules/architecture/data-mapping.md",
+            "before": "## 既有共同保證的落實",
+            "after": "## 相關共通契約",
+            "reason": "七／L6：移除整理階段用語，摘要正文逐字保留。"
+          },
+          {
+            "path": "rules/quality/rule-verification.md",
+            "before": "測試程式碼同樣遵守下列型別安全要求。",
+            "after": "測試程式碼同樣遵守[型別安全要求](../coding/type-safety.md)。",
+            "reason": "七／L6：下列並非型別要求，改連實際型別安全來源。"
+          }
+        ],
+        "link_moves": [
+          {
+            "from": "rules/architecture/data-mapping.md#既有共同保證的落實",
+            "to": "rules/architecture/data-mapping.md#相關共通契約"
+          }
+        ]
       }
     ]
   }

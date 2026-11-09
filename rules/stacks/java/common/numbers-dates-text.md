@@ -74,7 +74,7 @@
 
 ### 邊界與環境差異驗收
 
-依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。
+依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依[本文件驗收要求](#驗收要求)驗收。
 
 <a id="java-closing-requirements"></a>
 

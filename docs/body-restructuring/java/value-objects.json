@@ -592,7 +592,7 @@
         "本文件另依[資料驗證](../../../coding/validation.md)辦理。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 9,
@@ -604,7 +604,7 @@
       "insert": [
         "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 13,
@@ -619,7 +619,7 @@
         "依[不可變性的共通要求](../../../coding/domain-modeling.md#value-immutability)執行。Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 15,
@@ -631,7 +631,7 @@
       "insert": [
         "<a id=\"java-value-equality\"></a>\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 19,
@@ -656,7 +656,7 @@
         "依[運算責任的共通要求](../../../coding/domain-modeling.md#value-operations)執行。跨幣別等依賴外部政策的操作由領域元件協調。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 21,
@@ -669,7 +669,7 @@
       "insert": [
         "<a id=\"java-value-restoration\"></a>\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 26,
@@ -697,14 +697,14 @@
         "\n",
         "### 業務保證的測試\n",
         "\n",
-        "依[領域建模](../../../coding/domain-modeling.md)、[共通測試策略](../../../quality/testing.md)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依下方驗收表驗證，不機械式測試每個產生的方法。\n",
+        "依[領域建模](../../../coding/domain-modeling.md)、[共通測試策略](../../../quality/testing.md)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[Java 業務保證驗收](#acceptance-java-value-method-coverage)與[共通資料還原驗收](../../../coding/domain-modeling.md#acceptance-value-restoration)驗證，不機械式測試每個產生的方法。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 41,
@@ -714,7 +714,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 43,
@@ -732,7 +732,7 @@
         "| <a id=\"acceptance-java-generated-representation\"></a>[一般類別與 record](#java-value-implementation)、[診斷字串與交換格式](#java-diagnostic-representation) | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |\n",
         "| <a id=\"acceptance-java-value-method-coverage\"></a>[業務保證的測試](#java-value-test-coverage) | 核對測試涵蓋受影響的業務保證與失效邊界，不以只有建立成功的案例代替驗收，也不要求無業務邏輯的存取方法逐一測試。Java 的 equals()、hashCode()、record 產生方法與還原路徑均納入適用案例。 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     }
   ],
   "acceptance_changes": [
@@ -798,5 +798,13 @@
   "group_endings": [
 
   ],
-  "presentation_version": 1
+  "presentation_version": 1,
+  "final_reference_changes": [
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "before": "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依下方驗收表驗證，不機械式測試每個產生的方法。",
+      "after": "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[Java 業務保證驗收](#acceptance-java-value-method-coverage)與[共通資料還原驗收](../../../coding/domain-modeling.md#acceptance-value-restoration)驗證，不機械式測試每個產生的方法。",
+      "reason": "七／L2 VO-10：保留全部受驗對象，指向覆蓋列與詳細還原列。"
+    }
+  ]
 }

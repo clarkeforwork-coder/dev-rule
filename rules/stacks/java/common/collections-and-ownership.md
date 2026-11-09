@@ -2,7 +2,7 @@
 
 本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
 
-本文件承接[程式碼設計與公開介面](../../../coding/code-design.md)，定義集合及其元素的所有權、修改與處理契約。集合宣告依[型別宣告與泛型](types-and-generics.md)，空值依[null 與 Optional](null-and-optional.md)，鍵與元素的比較依[相等性、雜湊與排序](equality-hashing-ordering.md)。具體併發 API 與資源管理方式由後續 Java 主題展開。
+本文件承接[程式碼設計與公開介面](../../../coding/code-design.md)，定義集合及其元素的所有權、修改與處理契約。集合宣告依[型別宣告與泛型](types-and-generics.md)，空值依[null 與 Optional](null-and-optional.md)，鍵與元素的比較依[相等性、雜湊與排序](equality-hashing-ordering.md)。具體併發 API 與資源管理方式分別見[併發與非同步處理](concurrency-and-async.md)與[例外與資源管理](exceptions-and-resources.md)。
 
 ## 所有權與集合語意
 
@@ -70,6 +70,6 @@
 
 ### Java 語言增量驗收
 
-上述驗收須經實際採用的 Java 集合、迭代與資源路徑執行，各條 Java 使用限制仍適用。
+上述驗收須經實際採用的 Java 集合、迭代與資源路徑執行，本文件的 Java 使用限制仍適用。
 
 既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低要求。

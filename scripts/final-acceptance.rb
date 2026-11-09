@@ -7,7 +7,7 @@ module FinalAcceptance
   START='53c26dcbecbdd31c6082ffd91f608660a2d38b0d'.freeze
   CONFIG='docs/final-acceptance.json'.freeze
   PLAN=File.expand_path('final-acceptance-plan.json',__dir__).freeze
-  PLAN_SHA='bd8ba4bd4e77fcea70a682cdc48224f26eabfffa0a6d4cbcb0a23ed3afa8c2de'.freeze
+  PLAN_SHA="b7646f168a5b139906725063c4dc27bcb10ea62c1e7e7b6e6a29514ab88e024c".freeze
   def self.active?;File.file?(CONFIG);end
   def self.plan
     raw=File.read(PLAN);raise '最後驗收核准清單內容變動' unless Digest::SHA256.hexdigest(raw)==PLAN_SHA

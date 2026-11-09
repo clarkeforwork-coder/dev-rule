@@ -54,7 +54,7 @@
 
 ### 模型驗收
 
-依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。
+依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依[本文件驗收要求](#驗收要求)與[處理完整性、封閉或允許擴充驗收](../../../coding/domain-modeling.md#acceptance-model-extensibility)驗收，並核對實際副作用。
 
 <a id="java-closing-requirements"></a>
 

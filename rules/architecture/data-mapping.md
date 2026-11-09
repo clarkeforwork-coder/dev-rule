@@ -53,6 +53,6 @@
 | <a id="acceptance-mapping-fields"></a>[轉換要求](#轉換要求)、[最小必要欄位](boundary-objects.md#明確列出最小必要) | 核對允許欄位及來源，以含管理欄位的外部輸入驗證其無法覆寫可信資料，並確認內部敏感欄位未輸出。映射設定或契約變更時，確認新增來源或目標欄位不會自動擴大允許範圍。 |
 | <a id="acceptance-mapping-owner"></a>[責任配置](#責任配置) | 核對映射所有權、位置與依賴方向，相同契約沒有散落的不一致轉換，不同責任也未被不當集中。 |
 
-## 既有共同保證的落實
+## 相關共通契約
 
 映射失敗依[錯誤處理](../coding/error-handling.md)及[資料驗證](../coding/validation.md)區分外部不合法資料與內部缺陷。部分成功依[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功)。更新意圖依[空值語意](../coding/nullability.md)。隔離與共用值依[邊界隔離](boundary-objects.md)、[共用值契約](boundary-objects.md#隔離與拆分)、[值物件不可變性](../coding/domain-modeling.md#value-immutability)及[集合所有權](../coding/collections-and-ownership.md)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#責任配置)、[介面用途](dependency-composition.md#介面與抽象)及[共用能力](shared-capabilities.md)。

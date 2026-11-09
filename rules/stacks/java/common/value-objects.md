@@ -60,7 +60,7 @@
 
 ### 業務保證的測試
 
-依[領域建模](../../../coding/domain-modeling.md)、[共通測試策略](../../../quality/testing.md)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依下方驗收表驗證，不機械式測試每個產生的方法。
+依[領域建模](../../../coding/domain-modeling.md)、[共通測試策略](../../../quality/testing.md)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[Java 業務保證驗收](#acceptance-java-value-method-coverage)與[共通資料還原驗收](../../../coding/domain-modeling.md#acceptance-value-restoration)驗證，不機械式測試每個產生的方法。
 
 <a id="java-closing-requirements"></a>
 

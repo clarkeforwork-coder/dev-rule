@@ -3,6 +3,7 @@
   "steps": [
     "interface",
     "partial",
-    "division"
+    "division",
+    "references"
   ]
 }

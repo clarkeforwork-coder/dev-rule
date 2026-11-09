@@ -20,7 +20,7 @@
 
 ### 失敗明確回報
 
-依[錯誤處理](../../../coding/error-handling.md)、[資料驗證](../../../coding/validation.md)、[資料映射](../../../architecture/data-mapping.md)執行。依下方 Java 實際映射路徑驗收拒絕、缺陷與部分成功，不以建立了目標型別就視為有效。不得略過欄位或產生不完整物件掩蓋失敗。
+依[錯誤處理](../../../coding/error-handling.md)、[資料驗證](../../../coding/validation.md)、[資料映射](../../../architecture/data-mapping.md)執行。依[Java 實際映射路徑驗收](#acceptance-java-mapping-failure)與[多步驟及部分成功驗收](../../../coding/error-handling.md#acceptance-partial-operation)驗收拒絕、缺陷與部分成功，不以建立了目標型別就視為有效。不得略過欄位或產生不完整物件掩蓋失敗。
 
 <a id="java-update-intent"></a>
 
@@ -79,7 +79,7 @@
 
 | 對應要求 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-mapping-failure"></a>[失敗明確回報](#java-mapping-integrity) | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。 |
+| <a id="acceptance-java-mapping-failure"></a>[失敗明確回報](#java-mapping-integrity) | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題，且未略過欄位或產生不完整物件掩蓋失敗。 |
 | <a id="acceptance-java-update-intent"></a>[保留更新意圖](#java-update-intent) | 核對 Java 欄位、預設值與反序列化路徑未合併省略、明確清空及設定值的不同意圖。 |
 
 既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低型別安全與邊界要求。

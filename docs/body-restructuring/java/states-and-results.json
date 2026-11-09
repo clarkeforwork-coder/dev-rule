@@ -547,7 +547,7 @@
       "insert": [
         "<a id=\"java-explicit-state-types\"></a>\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 13,
@@ -572,7 +572,7 @@
         "依[領域建模](../../../coding/domain-modeling.md)執行。Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 15,
@@ -584,7 +584,7 @@
       "insert": [
         "本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 19,
@@ -599,7 +599,7 @@
         "依[錯誤處理](../../../coding/error-handling.md)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 21,
@@ -612,7 +612,7 @@
       "insert": [
         "本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 26,
@@ -636,14 +636,14 @@
         "\n",
         "### 模型驗收\n",
         "\n",
-        "依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。\n",
+        "依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依[本文件驗收要求](#驗收要求)與[處理完整性、封閉或允許擴充驗收](../../../coding/domain-modeling.md#acceptance-model-extensibility)驗收，並核對實際副作用。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 41,
@@ -653,7 +653,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 43,
@@ -667,7 +667,7 @@
         "| <a id=\"acceptance-java-state-transition\"></a>[業務操作控制轉換](#java-business-state-transitions) | 驗證允許與不允許的來源狀態、前置條件及轉換後資料。確認公開介面沒有可繞過規則的任意設定路徑，拒絕時未產生不應發生的副作用。 |\n",
         "| <a id=\"acceptance-java-enum-codes\"></a>[穩定的外部代碼](#java-stable-external-codes) | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     }
   ],
   "acceptance_changes": [
@@ -724,5 +724,13 @@
   "group_endings": [
 
   ],
-  "presentation_version": 1
+  "presentation_version": 1,
+  "final_reference_changes": [
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "before": "Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。",
+      "after": "Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依[本文件驗收要求](#驗收要求)與[處理完整性、封閉或允許擴充驗收](../../../coding/domain-modeling.md#acceptance-model-extensibility)驗收，並核對實際副作用。",
+      "reason": "L12／七 L2 ST-10：共同與 Java 驗收並列，使用端分支及封閉模型精確指向共通。"
+    }
+  ]
 }

@@ -103,7 +103,7 @@
         {
           "path": "rules/stacks/java/common/collections-and-ownership.md",
           "before": "各條 Java 使用限制仍適用。",
-          "after": "本文件保留的 Java 使用限制仍適用。",
+          "after": "本文件的 Java 使用限制仍適用。",
           "reason": "L12：明確指向現存 Java 條文，共通要求仍由原引用承接。"
         },
         {
