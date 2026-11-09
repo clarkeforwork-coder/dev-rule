@@ -1127,8 +1127,7 @@
   "body_sentences": 437,
   "preserved_acceptance_rows": 86,
   "common_change_blocks": 13,
-  "local_links": 2587,
-  "manual_review_count": 337,
+  "manual_review_count": 349,
   "manual_review_sentences": [
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -1207,7 +1206,7 @@
         "rules/coding/validation.md#責任分工",
         "rules/coding/error-handling.md#程式缺陷與不變條件",
         "rules/coding/domain-modeling.md#專屬型別",
-        "rules/coding/code-design.md#cl-06",
+        "rules/coding/code-design.md#construction-entrypoints",
         "rules/coding/domain-modeling.md#狀態建模"
       ],
       "reason": "JN-06：本句的三個整份規範引用移到檔頭，沒有縮小為單一小節；承接證據分別列接收驗證、缺陷處置及建立有效的既有原文。整理前原文未提交，無法證明完整覆蓋。；本句的接收、一般建立、專屬型別建立與狀態變更逐項登錄來源；可信內部免重查由資料驗證原句承接，未用專屬型別代替全部建立入口。整理前原文未提交，無法證明完整覆蓋。"
@@ -1366,7 +1365,7 @@
       "path": "rules/stacks/java/common/null-and-optional.md",
       "type": "刪除完整性",
       "history_id": "JN-08",
-      "source": "依[第三方空值行為的共通要求](../../../coding/nullability.md#jn-08)執行。",
+      "source": "依[第三方空值行為的共通要求](../../../coding/nullability.md#third-party-null-contract)執行。",
       "unreported_fragments": [
 
       ]
@@ -1384,7 +1383,7 @@
       "path": "rules/stacks/java/common/null-and-optional.md",
       "type": "刪除完整性",
       "history_id": "JN-09",
-      "source": "依[空值契約變更的共通要求](../../../coding/nullability.md#jn-09)執行。",
+      "source": "依[空值契約變更的共通要求](../../../coding/nullability.md#null-contract-evolution)執行。",
       "unreported_fragments": [
 
       ]
@@ -1420,7 +1419,7 @@
       "path": "rules/stacks/java/common/null-and-optional.md",
       "type": "刪除完整性",
       "history_id": "JN-12",
-      "source": "依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#jn-12)執行。",
+      "source": "依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#api-absence-representation)執行。",
       "unreported_fragments": [
 
       ]
@@ -1673,7 +1672,7 @@
           "uri": "rules/coding/validation.md#責任分工"
         },
         {
-          "uri": "rules/coding/code-design.md#cl-06"
+          "uri": "rules/coding/code-design.md#construction-entrypoints"
         },
         {
           "uri": "rules/coding/domain-modeling.md#狀態建模"
@@ -1690,7 +1689,7 @@
         },
         {
           "text": "Java 接收、建立及狀態變更位置依上述非空保證驗證",
-          "source_uri": "rules/coding/code-design.md#cl-06",
+          "source_uri": "rules/coding/code-design.md#construction-entrypoints",
           "source_text": "所有建立入口須一致保護必要條件，避免各自維護不一致的驗證。"
         },
         {
@@ -1724,13 +1723,13 @@
         },
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-tools",
-          "text": "可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#au-01)納入檢查、驗證與審查。"
+          "text": "可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#verification-coverage)納入檢查、驗證與審查。"
         }
       ],
       "removed_assertions": [
         {
           "text": "，將可自動判斷的違規納入檢查",
-          "source_uri": "rules/quality/rule-verification.md#au-01",
+          "source_uri": "rules/quality/rule-verification.md#verification-coverage",
           "source_text": "可由工具判斷的要求，必須使用適用的編譯器、靜態分析、Lint 或架構檢查執行，例如明確型別宣告、不安全轉型與依賴限制。"
         }
       ],
@@ -1745,7 +1744,7 @@
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-tools",
-          "text": "可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#au-01)納入檢查、驗證與審查。"
+          "text": "可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#verification-coverage)納入檢查、驗證與審查。"
         },
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-tools",
@@ -1755,12 +1754,12 @@
       "removed_assertions": [
         {
           "text": "工具無法涵蓋的部分仍須驗證與審查，",
-          "source_uri": "rules/quality/rule-verification.md#au-01",
+          "source_uri": "rules/quality/rule-verification.md#verification-coverage",
           "source_text": "工具尚未涵蓋的要求必須列入審查清單，不能因 CI 通過就視為全部符合。"
         },
         {
           "text": "工具無法涵蓋的部分仍須驗證與審查，",
-          "source_uri": "rules/quality/rule-verification.md#au-01",
+          "source_uri": "rules/quality/rule-verification.md#verification-coverage",
           "source_text": "行為測試驗證錯誤輸入拒絕、資料轉換、空值語意、業務條件，以及 Response 不含敏感欄位等實際行為。"
         }
       ],
@@ -1771,11 +1770,11 @@
       "sentence": 21,
       "history_id": "JN-08",
       "action": "改寫",
-      "source": "依[第三方空值行為的共通要求](../../../coding/nullability.md#jn-08)執行。",
+      "source": "依[第三方空值行為的共通要求](../../../coding/nullability.md#third-party-null-contract)執行。",
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-third-party-optional",
-          "text": "依[第三方空值行為](../../../coding/nullability.md#jn-08)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。"
+          "text": "依[第三方空值行為](../../../coding/nullability.md#third-party-null-contract)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。"
         }
       ],
       "removed_assertions": [
@@ -1792,13 +1791,13 @@
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-third-party-optional",
-          "text": "依[第三方空值行為](../../../coding/nullability.md#jn-08)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。"
+          "text": "依[第三方空值行為](../../../coding/nullability.md#third-party-null-contract)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。"
         }
       ],
       "removed_assertions": [
         {
           "text": "契約不明或違約的 `null` 不得擅自視為正常缺值",
-          "source_uri": "rules/coding/nullability.md#jn-08",
+          "source_uri": "rules/coding/nullability.md#third-party-null-contract",
           "source_text": "對方明訂 `null` 表示正常查無資料時，才轉成內部正常缺值；保證不明或違反契約的 `null`，不得直接當成非空使用，也不得擅自解讀為正常缺值。"
         }
       ],
@@ -1809,11 +1808,11 @@
       "sentence": 23,
       "history_id": "JN-09",
       "action": "改寫",
-      "source": "依[空值契約變更的共通要求](../../../coding/nullability.md#jn-09)執行。",
+      "source": "依[空值契約變更的共通要求](../../../coding/nullability.md#null-contract-evolution)執行。",
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-evolution",
-          "text": "依[空值契約變更](../../../coding/nullability.md#jn-09)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。"
+          "text": "依[空值契約變更](../../../coding/nullability.md#null-contract-evolution)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。"
         }
       ],
       "removed_assertions": [
@@ -1830,13 +1829,13 @@
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-evolution",
-          "text": "依[空值契約變更](../../../coding/nullability.md#jn-09)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。"
+          "text": "依[空值契約變更](../../../coding/nullability.md#null-contract-evolution)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。"
         }
       ],
       "removed_assertions": [
         {
           "text": "不因 Java 方法簽章未變就視為相容",
-          "source_uri": "rules/coding/nullability.md#jn-09",
+          "source_uri": "rules/coding/nullability.md#null-contract-evolution",
           "source_text": "空值契約變更須評估參數、回傳值及欄位對使用端的影響，涵蓋是否允許缺值、缺值語意、標註及實際處置；即使型別或方法簽章未變，也不得直接視為相容。"
         }
       ],
@@ -1889,11 +1888,11 @@
       "sentence": 29,
       "history_id": "JN-12",
       "action": "改寫",
-      "source": "依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#jn-12)執行。",
+      "source": "依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#api-absence-representation)執行。",
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-api-absence",
-          "text": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#jn-12)落實對外契約。"
+          "text": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#api-absence-representation)落實對外契約。"
         }
       ],
       "removed_assertions": [
@@ -1910,13 +1909,13 @@
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-api-absence",
-          "text": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#jn-12)落實對外契約。"
+          "text": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#api-absence-representation)落實對外契約。"
         }
       ],
       "removed_assertions": [
         {
           "text": "不要求對外暴露 `Optional`",
-          "source_uri": "rules/interfaces/api-contracts.md#jn-12",
+          "source_uri": "rules/interfaces/api-contracts.md#api-absence-representation",
           "source_text": "內部缺值型別須在 API 邊界依公開契約轉換，不直接暴露語言的缺值包裝型別，也不得由框架預設序列化行為決定對外語意。"
         }
       ],
@@ -1937,7 +1936,7 @@
       "removed_assertions": [
         {
           "text": "不能用預設輸出代替契約",
-          "source_uri": "rules/interfaces/api-contracts.md#jn-12",
+          "source_uri": "rules/interfaces/api-contracts.md#api-absence-representation",
           "source_text": "內部缺值型別須在 API 邊界依公開契約轉換，不直接暴露語言的缺值包裝型別，也不得由框架預設序列化行為決定對外語意。"
         }
       ],
@@ -2395,7 +2394,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/code-design.md#cl-02"
+        "rules/coding/code-design.md#substitutability"
       ],
       "reason": "父型別輸入結果行為與組合委派優先均由共通繼承可替代性兩句直接承接。"
     },
@@ -2408,7 +2407,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/resource-lifecycle.md#cl-03"
+        "rules/coding/resource-lifecycle.md#initialization-readiness"
       ],
       "reason": "必要資料依賴、分階段生命週期與不要求建構子連線或啟動背景工作均有直接原文承接。"
     },
@@ -2447,7 +2446,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/code-design.md#cl-06"
+        "rules/coding/code-design.md#construction-entrypoints"
       ],
       "reason": "建構子具名工廠及 Builder 選擇與組裝暫存及不得產出無效目標均由共通建立方式原句承接。"
     },
@@ -2473,7 +2472,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/code-design.md#cl-08"
+        "rules/coding/code-design.md#interface-capabilities"
       ],
       "reason": "不機械拆分單一方法、同責任共用契約與執行期授權不得被取代均由共通能力劃分原句承接。"
     },
@@ -2486,7 +2485,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/resource-lifecycle.md#cl-09"
+        "rules/coding/resource-lifecycle.md#shared-lifecycle"
       ],
       "reason": "共用服務實例欄位的使用者訂單隔離及框架注入不保證執行緒安全生命週期均有直接原文承接。"
     },
@@ -2502,20 +2501,6 @@
         "rules/stacks/java/common/classes-and-construction.md#java-lifecycle-verification"
       ],
       "reason": "共通明列建立條件、替代契約與框架實際配置，但未逐字明列 Java 繼承、覆寫均須驗證實際路徑，故連同單純值物件免啟完整框架整條保留。"
-    },
-    {
-      "path": "rules/stacks/java/common/classes-and-construction.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/coding/code-design.md#cl-02",
-          "rules/coding/code-design.md#cl-06",
-          "rules/coding/code-design.md#cl-08",
-          "rules/coding/resource-lifecycle.md#cl-03",
-          "rules/coding/resource-lifecycle.md#cl-09"
-        ],
-        "text": "本文件另依[cl-02](../../../coding/code-design.md#cl-02)、[cl-06](../../../coding/code-design.md#cl-06)、[cl-08](../../../coding/code-design.md#cl-08)、[cl-03](../../../coding/resource-lifecycle.md#cl-03)、[cl-09](../../../coding/resource-lifecycle.md#cl-09)辦理。"
-      }
     },
     {
       "path": "rules/stacks/java/common/classes-and-construction.md",
@@ -2549,16 +2534,16 @@
       "sentence": 5,
       "history_id": "CL-02",
       "action": "移除",
-      "source": "依[繼承的可替代性的共通要求](../../../coding/code-design.md#cl-02)執行。",
+      "source": "依[繼承的可替代性的共通要求](../../../coding/code-design.md#substitutability)執行。",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#cl-02"
+          "uri": "rules/coding/code-design.md#substitutability"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[繼承的可替代性的共通要求](../../../coding/code-design.md#cl-02)執行。",
-          "source_uri": "rules/coding/code-design.md#cl-02",
+          "text": "依[繼承的可替代性的共通要求](../../../coding/code-design.md#substitutability)執行。",
+          "source_uri": "rules/coding/code-design.md#substitutability",
           "source_text": "繼承須具有明確的可替代關係，子型別不得破壞父型別承諾的輸入、結果與行為保證。"
         }
       ],
@@ -2572,18 +2557,18 @@
       "source": "Java 子類別須維持父型別輸入、結果及行為保證；僅共用實作時優先組合或委派。",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#cl-02"
+          "uri": "rules/coding/code-design.md#substitutability"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 子類別須維持父型別輸入、結果及行為保證",
-          "source_uri": "rules/coding/code-design.md#cl-02",
+          "source_uri": "rules/coding/code-design.md#substitutability",
           "source_text": "繼承須具有明確的可替代關係，子型別不得破壞父型別承諾的輸入、結果與行為保證。"
         },
         {
           "text": "僅共用實作時優先組合或委派",
-          "source_uri": "rules/coding/code-design.md#cl-02",
+          "source_uri": "rules/coding/code-design.md#substitutability",
           "source_text": "僅為共用實作時，優先採用組合或委派，不以不成立的繼承關係換取程式碼重用；若子型別無法支援父型別承諾的操作，須重新檢視契約與能力劃分。"
         }
       ],
@@ -2594,16 +2579,16 @@
       "sentence": 7,
       "history_id": "CL-03",
       "action": "移除",
-      "source": "依[必要資料與依賴齊備的共通要求](../../../coding/resource-lifecycle.md#cl-03)執行。",
+      "source": "依[必要資料與依賴齊備的共通要求](../../../coding/resource-lifecycle.md#initialization-readiness)執行。",
       "targets": [
         {
-          "uri": "rules/coding/resource-lifecycle.md#cl-03"
+          "uri": "rules/coding/resource-lifecycle.md#initialization-readiness"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[必要資料與依賴齊備的共通要求](../../../coding/resource-lifecycle.md#cl-03)執行。",
-          "source_uri": "rules/coding/resource-lifecycle.md#cl-03",
+          "text": "依[必要資料與依賴齊備的共通要求](../../../coding/resource-lifecycle.md#initialization-readiness)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#initialization-readiness",
           "source_text": "物件建立完成時，須具備維持自身有效性所需的資料與必要依賴，不依賴呼叫端事後補設才能正常使用。"
         }
       ],
@@ -2617,23 +2602,23 @@
       "source": "Java 建構完成須具備必要資料與依賴；外部連線或背景工作不必放在建構子，依明確生命週期啟動。",
       "targets": [
         {
-          "uri": "rules/coding/resource-lifecycle.md#cl-03"
+          "uri": "rules/coding/resource-lifecycle.md#initialization-readiness"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 建構完成須具備必要資料與依賴",
-          "source_uri": "rules/coding/resource-lifecycle.md#cl-03",
+          "source_uri": "rules/coding/resource-lifecycle.md#initialization-readiness",
           "source_text": "物件建立完成時，須具備維持自身有效性所需的資料與必要依賴，不依賴呼叫端事後補設才能正常使用。"
         },
         {
           "text": "外部連線或背景工作不必放在建構子",
-          "source_uri": "rules/coding/resource-lifecycle.md#cl-03",
+          "source_uri": "rules/coding/resource-lifecycle.md#initialization-readiness",
           "source_text": "不因此要求建構子完成外部連線或啟動背景工作。"
         },
         {
           "text": "依明確生命週期啟動",
-          "source_uri": "rules/coding/resource-lifecycle.md#cl-03",
+          "source_uri": "rules/coding/resource-lifecycle.md#initialization-readiness",
           "source_text": "需要分階段啟動的元件，須明訂生命週期與可用條件，未就緒前不得接受不符合條件的操作。"
         }
       ],
@@ -2644,16 +2629,16 @@
       "sentence": 13,
       "history_id": "CL-06",
       "action": "移除",
-      "source": "依[依需求選擇建立方式的共通要求](../../../coding/code-design.md#cl-06)執行。",
+      "source": "依[依需求選擇建立方式的共通要求](../../../coding/code-design.md#construction-entrypoints)執行。",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#cl-06"
+          "uri": "rules/coding/code-design.md#construction-entrypoints"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[依需求選擇建立方式的共通要求](../../../coding/code-design.md#cl-06)執行。",
-          "source_uri": "rules/coding/code-design.md#cl-06",
+          "text": "依[依需求選擇建立方式的共通要求](../../../coding/code-design.md#construction-entrypoints)執行。",
+          "source_uri": "rules/coding/code-design.md#construction-entrypoints",
           "source_text": "建構子、具名工廠方法或 Builder 須依資料組合、建立語意與呼叫可讀性選擇，不強制每個類別使用工廠或 Builder。"
         }
       ],
@@ -2667,18 +2652,18 @@
       "source": "Java 可選建構子、具名工廠或 Builder；Builder 可暫存組裝中資料，但 `build` 不得產出無效物件。",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#cl-06"
+          "uri": "rules/coding/code-design.md#construction-entrypoints"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 可選建構子、具名工廠或 Builder",
-          "source_uri": "rules/coding/code-design.md#cl-06",
+          "source_uri": "rules/coding/code-design.md#construction-entrypoints",
           "source_text": "建構子、具名工廠方法或 Builder 須依資料組合、建立語意與呼叫可讀性選擇，不強制每個類別使用工廠或 Builder。"
         },
         {
           "text": "Builder 可暫存組裝中資料，但 `build` 不得產出無效物件",
-          "source_uri": "rules/coding/code-design.md#cl-06",
+          "source_uri": "rules/coding/code-design.md#construction-entrypoints",
           "source_text": "Builder 可暫存未完成的組裝資料，但不得產出無效的目標物件。"
         }
       ],
@@ -2689,16 +2674,16 @@
       "sentence": 18,
       "history_id": "CL-08",
       "action": "移除",
-      "source": "依[介面的能力劃分的共通要求](../../../coding/code-design.md#cl-08)執行。",
+      "source": "依[介面的能力劃分的共通要求](../../../coding/code-design.md#interface-capabilities)執行。",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#cl-08"
+          "uri": "rules/coding/code-design.md#interface-capabilities"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[介面的能力劃分的共通要求](../../../coding/code-design.md#cl-08)執行。",
-          "source_uri": "rules/coding/code-design.md#cl-08",
+          "text": "依[介面的能力劃分的共通要求](../../../coding/code-design.md#interface-capabilities)執行。",
+          "source_uri": "rules/coding/code-design.md#interface-capabilities",
           "source_text": "介面須依內聚的能力與使用端需求劃分，避免迫使使用端依賴無關操作，或迫使實作提供不支援的方法。"
         }
       ],
@@ -2712,23 +2697,23 @@
       "source": "Java 介面不機械式拆成單一方法；同一責任的操作可共用契約，執行時授權仍須另外檢查。",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#cl-08"
+          "uri": "rules/coding/code-design.md#interface-capabilities"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 介面不機械式拆成單一方法",
-          "source_uri": "rules/coding/code-design.md#cl-08",
+          "source_uri": "rules/coding/code-design.md#interface-capabilities",
           "source_text": "不機械式拆成單一方法介面，共同服務同一責任的操作可保留於同一契約；不得以介面可見範圍取代執行期授權檢查。"
         },
         {
           "text": "同一責任的操作可共用契約",
-          "source_uri": "rules/coding/code-design.md#cl-08",
+          "source_uri": "rules/coding/code-design.md#interface-capabilities",
           "source_text": "不機械式拆成單一方法介面，共同服務同一責任的操作可保留於同一契約；不得以介面可見範圍取代執行期授權檢查。"
         },
         {
           "text": "執行時授權仍須另外檢查",
-          "source_uri": "rules/coding/code-design.md#cl-08",
+          "source_uri": "rules/coding/code-design.md#interface-capabilities",
           "source_text": "不機械式拆成單一方法介面，共同服務同一責任的操作可保留於同一契約；不得以介面可見範圍取代執行期授權檢查。"
         }
       ],
@@ -2739,16 +2724,16 @@
       "sentence": 20,
       "history_id": "CL-09",
       "action": "移除",
-      "source": "依[生命週期與可變狀態相容的共通要求](../../../coding/resource-lifecycle.md#cl-09)執行。",
+      "source": "依[生命週期與可變狀態相容的共通要求](../../../coding/resource-lifecycle.md#shared-lifecycle)執行。",
       "targets": [
         {
-          "uri": "rules/coding/resource-lifecycle.md#cl-09"
+          "uri": "rules/coding/resource-lifecycle.md#shared-lifecycle"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[生命週期與可變狀態相容的共通要求](../../../coding/resource-lifecycle.md#cl-09)執行。",
-          "source_uri": "rules/coding/resource-lifecycle.md#cl-09",
+          "text": "依[生命週期與可變狀態相容的共通要求](../../../coding/resource-lifecycle.md#shared-lifecycle)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#shared-lifecycle",
           "source_text": "物件的共用範圍、可變狀態與依賴生命週期須相容，不得讓單次操作資料洩漏到其他操作。"
         }
       ],
@@ -2762,18 +2747,18 @@
       "source": "Java 共用服務的實例欄位不得存放會跨操作互相覆蓋的使用者或訂單；框架注入不代表執行緒安全或生命週期正確。",
       "targets": [
         {
-          "uri": "rules/coding/resource-lifecycle.md#cl-09"
+          "uri": "rules/coding/resource-lifecycle.md#shared-lifecycle"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 共用服務的實例欄位不得存放會跨操作互相覆蓋的使用者或訂單",
-          "source_uri": "rules/coding/resource-lifecycle.md#cl-09",
+          "source_uri": "rules/coding/resource-lifecycle.md#shared-lifecycle",
           "source_text": "例如共用服務不得以實例欄位存放會互相覆蓋的目前使用者或訂單。"
         },
         {
           "text": "框架注入不代表執行緒安全或生命週期正確",
-          "source_uri": "rules/coding/resource-lifecycle.md#cl-09",
+          "source_uri": "rules/coding/resource-lifecycle.md#shared-lifecycle",
           "source_text": "由框架建立或注入，不代表自動具備執行緒安全與生命週期正確性。"
         }
       ],
@@ -2827,7 +2812,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/numbers-dates-text.md#nt-04"
+        "rules/coding/numbers-dates-text.md#numeric-range-checks"
       ],
       "reason": "縮窄轉型、溢位回繞、小數捨棄的明確檢查及強制轉型不得掩蓋超限，由共通 nt-04 前兩句直接承接。"
     },
@@ -2866,7 +2851,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/numbers-dates-text.md#nt-07"
+        "rules/coding/numbers-dates-text.md#timezone-conversion"
       ],
       "reason": "契約時區或偏移及不存在或重複當地時間不得交由函式庫預設決策，由共通 nt-07 兩句直接承接。"
     },
@@ -2918,7 +2903,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/numbers-dates-text.md#nt-11"
+        "rules/coding/numbers-dates-text.md#character-encoding"
       ],
       "reason": "明確字元編碼、不得依賴系統預設與不得未授權替換掩蓋損失，由共通 nt-11 前兩句直接承接。"
     },
@@ -2944,7 +2929,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/numbers-dates-text.md#nt-13"
+        "rules/coding/numbers-dates-text.md#text-transformations"
       ],
       "reason": "比較、大小寫、正規化的地區與用途及不得無意依賴預設，由共通 nt-13 第一與第三句直接承接。"
     },
@@ -2960,19 +2945,6 @@
         "rules/stacks/java/common/numbers-dates-text.md#java-boundary-verification"
       ],
       "reason": "依作業說明驗收入口整條保留，保留共同引用與 BigDecimal、java.time、Clock、字串實際路徑的表格驗收要求，交協調者決定。"
-    },
-    {
-      "path": "rules/stacks/java/common/numbers-dates-text.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/coding/numbers-dates-text.md#nt-04",
-          "rules/coding/numbers-dates-text.md#nt-07",
-          "rules/coding/numbers-dates-text.md#nt-11",
-          "rules/coding/numbers-dates-text.md#nt-13"
-        ],
-        "text": "本文件另依[nt-04](../../../coding/numbers-dates-text.md#nt-04)、[nt-07](../../../coding/numbers-dates-text.md#nt-07)、[nt-11](../../../coding/numbers-dates-text.md#nt-11)、[nt-13](../../../coding/numbers-dates-text.md#nt-13)辦理。"
-      }
     },
     {
       "path": "rules/stacks/java/common/numbers-dates-text.md",
@@ -3006,16 +2978,16 @@
       "sentence": 9,
       "history_id": "NT-04",
       "action": "移除",
-      "source": "依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#nt-04)執行。",
+      "source": "依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#numeric-range-checks)執行。",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-04"
+          "uri": "rules/coding/numbers-dates-text.md#numeric-range-checks"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#nt-04)執行。",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-04",
+          "text": "依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#numeric-range-checks)執行。",
+          "source_uri": "rules/coding/numbers-dates-text.md#numeric-range-checks",
           "source_text": "數值運算與轉換須維持目標型別及業務範圍限制，對可能溢位、縮小範圍或捨棄小數的操作採取明確檢查。"
         }
       ],
@@ -3029,18 +3001,18 @@
       "source": "Java 縮窄轉型、整數溢位回繞與小數捨棄須明確檢查，不能用強制轉型掩蓋超限。",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-04"
+          "uri": "rules/coding/numbers-dates-text.md#numeric-range-checks"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 縮窄轉型、整數溢位回繞與小數捨棄須明確檢查",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-04",
+          "source_uri": "rules/coding/numbers-dates-text.md#numeric-range-checks",
           "source_text": "數值運算與轉換須維持目標型別及業務範圍限制，對可能溢位、縮小範圍或捨棄小數的操作採取明確檢查。"
         },
         {
           "text": "不能用強制轉型掩蓋超限",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-04",
+          "source_uri": "rules/coding/numbers-dates-text.md#numeric-range-checks",
           "source_text": "不得以強制轉型、溢位回繞或未授權截斷掩蓋超限與精度損失。"
         }
       ],
@@ -3051,16 +3023,16 @@
       "sentence": 16,
       "history_id": "NT-07",
       "action": "移除",
-      "source": "依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#nt-07)執行。",
+      "source": "依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#timezone-conversion)執行。",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-07"
+          "uri": "rules/coding/numbers-dates-text.md#timezone-conversion"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#nt-07)執行。",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-07",
+          "text": "依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#timezone-conversion)執行。",
+          "source_uri": "rules/coding/numbers-dates-text.md#timezone-conversion",
           "source_text": "日期時間轉換須明確指定契約要求的時區或偏移，不得無意依賴系統預設時區。"
         }
       ],
@@ -3074,18 +3046,18 @@
       "source": "Java 時區轉換須明確指定契約時區或偏移，不讓函式庫預設決定不存在或重複當地時間的業務處置。",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-07"
+          "uri": "rules/coding/numbers-dates-text.md#timezone-conversion"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 時區轉換須明確指定契約時區或偏移",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-07",
+          "source_uri": "rules/coding/numbers-dates-text.md#timezone-conversion",
           "source_text": "日期時間轉換須明確指定契約要求的時區或偏移，不得無意依賴系統預設時區。"
         },
         {
           "text": "不讓函式庫預設決定不存在或重複當地時間的業務處置",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-07",
+          "source_uri": "rules/coding/numbers-dates-text.md#timezone-conversion",
           "source_text": "當地時間可能不存在或對應多個時點時，須明訂拒絕、調整或補充資訊等判定與處理規則，不以函式庫預設行為取代業務決策。"
         }
       ],
@@ -3096,16 +3068,16 @@
       "sentence": 24,
       "history_id": "NT-11",
       "action": "移除",
-      "source": "依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#nt-11)執行。",
+      "source": "依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#character-encoding)執行。",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-11"
+          "uri": "rules/coding/numbers-dates-text.md#character-encoding"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#nt-11)執行。",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-11",
+          "text": "依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#character-encoding)執行。",
+          "source_uri": "rules/coding/numbers-dates-text.md#character-encoding",
           "source_text": "文字與位元組轉換須明確使用契約指定的字元編碼，不依賴系統預設。"
         }
       ],
@@ -3119,23 +3091,23 @@
       "source": "Java 文字與位元組轉換明確指定字元編碼；不得靠系統預設或未授權替換掩蓋資料損失。",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-11"
+          "uri": "rules/coding/numbers-dates-text.md#character-encoding"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 文字與位元組轉換明確指定字元編碼",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-11",
+          "source_uri": "rules/coding/numbers-dates-text.md#character-encoding",
           "source_text": "文字與位元組轉換須明確使用契約指定的字元編碼，不依賴系統預設。"
         },
         {
           "text": "不得靠系統預設",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-11",
+          "source_uri": "rules/coding/numbers-dates-text.md#character-encoding",
           "source_text": "文字與位元組轉換須明確使用契約指定的字元編碼，不依賴系統預設。"
         },
         {
           "text": "或未授權替換掩蓋資料損失",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-11",
+          "source_uri": "rules/coding/numbers-dates-text.md#character-encoding",
           "source_text": "無效編碼或無法表示的字元須依契約拒絕或處理，不得未經允許替換而掩蓋資料損失。"
         }
       ],
@@ -3146,16 +3118,16 @@
       "sentence": 28,
       "history_id": "NT-13",
       "action": "移除",
-      "source": "依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#nt-13)執行。",
+      "source": "依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#text-transformations)執行。",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-13"
+          "uri": "rules/coding/numbers-dates-text.md#text-transformations"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#nt-13)執行。",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-13",
+          "text": "依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#text-transformations)執行。",
+          "source_uri": "rules/coding/numbers-dates-text.md#text-transformations",
           "source_text": "文字比較、大小寫轉換及正規化須明訂適用範圍、地區設定與等價規則，不無意依賴系統預設。"
         }
       ],
@@ -3169,23 +3141,23 @@
       "source": "Java 字串比較、大小寫與正規化須使用明確地區及用途，不無意依賴環境預設。",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-13"
+          "uri": "rules/coding/numbers-dates-text.md#text-transformations"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 字串比較、大小寫與正規化須使用明確地區及用途",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-13",
+          "source_uri": "rules/coding/numbers-dates-text.md#text-transformations",
           "source_text": "文字比較、大小寫轉換及正規化須明訂適用範圍、地區設定與等價規則，不無意依賴系統預設。"
         },
         {
           "text": "Java 字串比較、大小寫與正規化須使用明確地區及用途",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-13",
+          "source_uri": "rules/coding/numbers-dates-text.md#text-transformations",
           "source_text": "去除空白、Unicode 正規化及全形半形轉換均依用途決定，不將協定代碼規則直接套用到自然語言資料。"
         },
         {
           "text": "不無意依賴環境預設",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-13",
+          "source_uri": "rules/coding/numbers-dates-text.md#text-transformations",
           "source_text": "文字比較、大小寫轉換及正規化須明訂適用範圍、地區設定與等價規則，不無意依賴系統預設。"
         }
       ],
@@ -3278,7 +3250,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/resource-lifecycle.md#ex-07"
+        "rules/coding/resource-lifecycle.md#partial-acquisition"
       ],
       "reason": "依第三節「重述」整條移除；共通 ex-07 逐句承接多資源或初始化失敗清理、正式移交前責任與依賴釋放順序。"
     },
@@ -3291,7 +3263,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/resource-lifecycle.md#ex-08"
+        "rules/coding/resource-lifecycle.md#resource-close-contract"
       ],
       "reason": "依第三節「重述」整條移除；共通 ex-08 直接涵蓋非同步實際使用期間、不得提前關閉及不得假設重複關閉安全。"
     },
@@ -3307,17 +3279,6 @@
         "rules/stacks/java/common/exceptions-and-resources.md#java-failure-coverage"
       ],
       "reason": "依第四節「否」保留增量，完整保留故障、中斷、部分初始化與清理失敗覆蓋、實際框架配置及不要求每方法涵蓋全部情境。"
-    },
-    {
-      "path": "rules/stacks/java/common/exceptions-and-resources.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/coding/resource-lifecycle.md#ex-07",
-          "rules/coding/resource-lifecycle.md#ex-08"
-        ],
-        "text": "本文件另依[ex-07](../../../coding/resource-lifecycle.md#ex-07)、[ex-08](../../../coding/resource-lifecycle.md#ex-08)辦理。"
-      }
     },
     {
       "path": "rules/stacks/java/common/exceptions-and-resources.md",
@@ -3384,26 +3345,26 @@
       "sentence": 20,
       "history_id": "EX-07",
       "action": "移除",
-      "source": "依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#ex-07)執行。",
+      "source": "依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#partial-acquisition)執行。",
       "targets": [
         {
-          "uri": "rules/coding/resource-lifecycle.md#ex-07"
+          "uri": "rules/coding/resource-lifecycle.md#partial-acquisition"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#ex-07)執行。",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-07",
+          "text": "依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#partial-acquisition)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#partial-acquisition",
           "source_text": "多資源取得或元件初始化須涵蓋部分成功後的失敗清理。"
         },
         {
-          "text": "依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#ex-07)執行。",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-07",
+          "text": "依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#partial-acquisition)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#partial-acquisition",
           "source_text": "所有權正式移交前，由取得方負責釋放已取得資源；移交後由新的擁有者依契約管理。"
         },
         {
-          "text": "依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#ex-07)執行。",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-07",
+          "text": "依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#partial-acquisition)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#partial-acquisition",
           "source_text": "釋放順序須符合資源依賴，避免先關閉仍被其他資源使用的底層資源，不得因建立未完成或責任移交不明造成洩漏。"
         }
       ],
@@ -3417,23 +3378,23 @@
       "source": "Java 多資源取得及建構失敗亦須清理；資源移交前仍由取得方負責，釋放順序遵循依賴。",
       "targets": [
         {
-          "uri": "rules/coding/resource-lifecycle.md#ex-07"
+          "uri": "rules/coding/resource-lifecycle.md#partial-acquisition"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 多資源取得及建構失敗亦須清理",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-07",
+          "source_uri": "rules/coding/resource-lifecycle.md#partial-acquisition",
           "source_text": "多資源取得或元件初始化須涵蓋部分成功後的失敗清理。"
         },
         {
           "text": "資源移交前仍由取得方負責",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-07",
+          "source_uri": "rules/coding/resource-lifecycle.md#partial-acquisition",
           "source_text": "所有權正式移交前，由取得方負責釋放已取得資源；移交後由新的擁有者依契約管理。"
         },
         {
           "text": "釋放順序遵循依賴",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-07",
+          "source_uri": "rules/coding/resource-lifecycle.md#partial-acquisition",
           "source_text": "釋放順序須符合資源依賴，避免先關閉仍被其他資源使用的底層資源，不得因建立未完成或責任移交不明造成洩漏。"
         }
       ],
@@ -3444,26 +3405,26 @@
       "sentence": 22,
       "history_id": "EX-08",
       "action": "移除",
-      "source": "依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#ex-08)執行。",
+      "source": "依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#resource-close-contract)執行。",
       "targets": [
         {
-          "uri": "rules/coding/resource-lifecycle.md#ex-08"
+          "uri": "rules/coding/resource-lifecycle.md#resource-close-contract"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#ex-08)執行。",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-08",
+          "text": "依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#resource-close-contract)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#resource-close-contract",
           "source_text": "資源有效期須涵蓋實際使用期間，包含委派或非同步工作；關閉後不得再使用。"
         },
         {
-          "text": "依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#ex-08)執行。",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-08",
+          "text": "依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#resource-close-contract)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#resource-close-contract",
           "source_text": "可關閉元件須明訂關閉後操作與重複關閉的處理方式，不得提前關閉仍在使用的資源，也不得無依據地假設關閉操作可重複執行。"
         },
         {
-          "text": "依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#ex-08)執行。",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-08",
+          "text": "依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#resource-close-contract)執行。",
+          "source_uri": "rules/coding/resource-lifecycle.md#resource-close-contract",
           "source_text": "將資源交給背景工作時，須調整擁有者與使用範圍，而非讓原方法結束就提前釋放。"
         }
       ],
@@ -3477,23 +3438,23 @@
       "source": "Java `AutoCloseable` 資源不可在非同步工作仍使用時提前關閉，不無依據假設所有 `close()` 都可重複呼叫。",
       "targets": [
         {
-          "uri": "rules/coding/resource-lifecycle.md#ex-08"
+          "uri": "rules/coding/resource-lifecycle.md#resource-close-contract"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java `AutoCloseable` 資源不可在非同步工作仍使用時提前關閉",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-08",
+          "source_uri": "rules/coding/resource-lifecycle.md#resource-close-contract",
           "source_text": "資源有效期須涵蓋實際使用期間，包含委派或非同步工作；關閉後不得再使用。"
         },
         {
           "text": "Java `AutoCloseable` 資源不可在非同步工作仍使用時提前關閉",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-08",
+          "source_uri": "rules/coding/resource-lifecycle.md#resource-close-contract",
           "source_text": "可關閉元件須明訂關閉後操作與重複關閉的處理方式，不得提前關閉仍在使用的資源，也不得無依據地假設關閉操作可重複執行。"
         },
         {
           "text": "不無依據假設所有 `close()` 都可重複呼叫",
-          "source_uri": "rules/coding/resource-lifecycle.md#ex-08",
+          "source_uri": "rules/coding/resource-lifecycle.md#resource-close-contract",
           "source_text": "可關閉元件須明訂關閉後操作與重複關閉的處理方式，不得提前關閉仍在使用的資源，也不得無依據地假設關閉操作可重複執行。"
         }
       ],
@@ -3547,7 +3508,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/domain-modeling.md#st-04"
+        "rules/coding/domain-modeling.md#operation-results"
       ],
       "reason": "使用端所需區別與資料及不要求複雜結果物件由共通 st-04 完整原句直接承接，移除重述並在引言保留原引用。"
     },
@@ -3573,7 +3534,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/domain-modeling.md#st-06"
+        "rules/coding/domain-modeling.md#exhaustive-result-handling"
       ],
       "reason": "編譯檢查優先、測試審查補足及不得以 default 將未知狀態當成功由共通 st-06 的編譯檢查及預設分支兩句直接承接。"
     },
@@ -3612,7 +3573,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/domain-modeling.md#st-09"
+        "rules/coding/domain-modeling.md#result-facts"
       ],
       "reason": "可變業務參考不得改變當時事實及只隔離必要資料、不要求完整複製，由共通 st-09 兩句直接承接。"
     },
@@ -3628,18 +3589,6 @@
         "rules/stacks/java/common/states-and-results.md#java-model-acceptance"
       ],
       "reason": "依作業說明將驗收入口整條保留，Java 狀態型別、分支、enum 外部代碼、封閉模型與實際副作用均不刪，交協調者決定。"
-    },
-    {
-      "path": "rules/stacks/java/common/states-and-results.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/coding/domain-modeling.md#st-04",
-          "rules/coding/domain-modeling.md#st-06",
-          "rules/coding/domain-modeling.md#st-09"
-        ],
-        "text": "本文件另依[st-04](../../../coding/domain-modeling.md#st-04)、[st-06](../../../coding/domain-modeling.md#st-06)、[st-09](../../../coding/domain-modeling.md#st-09)辦理。"
-      }
     },
     {
       "path": "rules/stacks/java/common/states-and-results.md",
@@ -3682,16 +3631,16 @@
       "sentence": 10,
       "history_id": "ST-04",
       "action": "移除",
-      "source": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。",
+      "source": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#operation-results)執行。",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-04"
+          "uri": "rules/coding/domain-modeling.md#operation-results"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。",
-          "source_uri": "rules/coding/domain-modeling.md#st-04",
+          "text": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#operation-results)執行。",
+          "source_uri": "rules/coding/domain-modeling.md#operation-results",
           "source_text": "結果型別只包含使用端所需的區別與資料，不要求每次操作都建立複雜結果物件。"
         }
       ],
@@ -3705,13 +3654,13 @@
       "source": "Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-04"
+          "uri": "rules/coding/domain-modeling.md#operation-results"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。",
-          "source_uri": "rules/coding/domain-modeling.md#st-04",
+          "source_uri": "rules/coding/domain-modeling.md#operation-results",
           "source_text": "結果型別只包含使用端所需的區別與資料，不要求每次操作都建立複雜結果物件。"
         }
       ],
@@ -3722,16 +3671,16 @@
       "sentence": 14,
       "history_id": "ST-06",
       "action": "移除",
-      "source": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。",
+      "source": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#exhaustive-result-handling)執行。",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-06"
+          "uri": "rules/coding/domain-modeling.md#exhaustive-result-handling"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。",
-          "source_uri": "rules/coding/domain-modeling.md#st-06",
+          "text": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#exhaustive-result-handling)執行。",
+          "source_uri": "rules/coding/domain-modeling.md#exhaustive-result-handling",
           "source_text": "優先利用適用版本的編譯檢查，並由測試與審查補足工具無法涵蓋的部分。"
         }
       ],
@@ -3745,18 +3694,18 @@
       "source": "Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-06"
+          "uri": "rules/coding/domain-modeling.md#exhaustive-result-handling"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足",
-          "source_uri": "rules/coding/domain-modeling.md#st-06",
+          "source_uri": "rules/coding/domain-modeling.md#exhaustive-result-handling",
           "source_text": "優先利用適用版本的編譯檢查，並由測試與審查補足工具無法涵蓋的部分。"
         },
         {
           "text": "不以 `default` 將未知狀態當成功",
-          "source_uri": "rules/coding/domain-modeling.md#st-06",
+          "source_uri": "rules/coding/domain-modeling.md#exhaustive-result-handling",
           "source_text": "狀態與結果的使用端須明確處理契約要求的情況，不得以預設分支將新增、未知或未處理的情況當成成功或默默忽略。"
         }
       ],
@@ -3767,16 +3716,16 @@
       "sentence": 22,
       "history_id": "ST-09",
       "action": "移除",
-      "source": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。",
+      "source": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#result-facts)執行。",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-09"
+          "uri": "rules/coding/domain-modeling.md#result-facts"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。",
-          "source_uri": "rules/coding/domain-modeling.md#st-09",
+          "text": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#result-facts)執行。",
+          "source_uri": "rules/coding/domain-modeling.md#result-facts",
           "source_text": "操作結果須穩定表達產生當時可確認的事實，必要資料不得因外部可變參考而改變。"
         }
       ],
@@ -3790,18 +3739,18 @@
       "source": "Java 結果不可持有會改變已確認事實的可變業務參考；只隔離必要資料，不要求複製完整物件。",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-09"
+          "uri": "rules/coding/domain-modeling.md#result-facts"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 結果不可持有會改變已確認事實的可變業務參考",
-          "source_uri": "rules/coding/domain-modeling.md#st-09",
+          "source_uri": "rules/coding/domain-modeling.md#result-facts",
           "source_text": "操作結果須穩定表達產生當時可確認的事實，必要資料不得因外部可變參考而改變。"
         },
         {
           "text": "只隔離必要資料，不要求複製完整物件",
-          "source_uri": "rules/coding/domain-modeling.md#st-09",
+          "source_uri": "rules/coding/domain-modeling.md#result-facts",
           "source_text": "只保留契約所需資訊，不要求複製完整物件；最新狀態另行查詢，不以持有可變業務物件代替結果資料。"
         }
       ],
@@ -3816,7 +3765,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/concurrency-and-async.md#ca-01",
+        "rules/coding/concurrency-and-async.md#task-ownership",
         "rules/coding/concurrency-and-async.md#async-result-reception"
       ],
       "reason": "工作脫離呼叫流程的接手元件與結果處置，由 ca-01 的擁有者、責任移交及背景元件接手三句完整承接。"
@@ -3856,7 +3805,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/concurrency-and-async.md#ca-04"
+        "rules/coding/concurrency-and-async.md#deadline-budget"
       ],
       "reason": "逾時不等於底層停止及等待 API 承接整體時間預算，由 ca-04 的等待期限與不得視為工作停止兩句直接承接。"
     },
@@ -3966,17 +3915,6 @@
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/coding/concurrency-and-async.md#ca-01",
-          "rules/coding/concurrency-and-async.md#ca-04"
-        ],
-        "text": "本文件另依[ca-01](../../../coding/concurrency-and-async.md#ca-01)、[ca-04](../../../coding/concurrency-and-async.md#ca-04)辦理。"
-      }
-    },
-    {
-      "path": "rules/stacks/java/common/concurrency-and-async.md",
       "type": "acceptance_changes",
       "record": {
         "before": "| Java 條文 | 語言增量驗收 |\n",
@@ -4012,16 +3950,16 @@
       "sentence": 3,
       "history_id": "CA-01",
       "action": "移除",
-      "source": "依[明確的工作擁有者的共通要求](../../../coding/concurrency-and-async.md#ca-01)執行。",
+      "source": "依[明確的工作擁有者的共通要求](../../../coding/concurrency-and-async.md#task-ownership)執行。",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#ca-01"
+          "uri": "rules/coding/concurrency-and-async.md#task-ownership"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[明確的工作擁有者的共通要求](../../../coding/concurrency-and-async.md#ca-01)執行。",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-01",
+          "text": "依[明確的工作擁有者的共通要求](../../../coding/concurrency-and-async.md#task-ownership)執行。",
+          "source_uri": "rules/coding/concurrency-and-async.md#task-ownership",
           "source_text": "併發與非同步工作須有明確的生命週期擁有者，依[結果接收與故障處置](#async-result-reception)追蹤結果及處理失敗，並管理取消與資源。"
         }
       ],
@@ -4035,7 +3973,7 @@
       "source": "Java 任務脫離呼叫流程時仍須有明確接手元件及結果處置路徑。",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#ca-01"
+          "uri": "rules/coding/concurrency-and-async.md#task-ownership"
         },
         {
           "uri": "rules/coding/concurrency-and-async.md#async-result-reception"
@@ -4049,12 +3987,12 @@
         },
         {
           "text": "Java 任務脫離呼叫流程時仍須有明確接手元件",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-01",
+          "source_uri": "rules/coding/concurrency-and-async.md#task-ownership",
           "source_text": "工作脫離原呼叫流程時，須明確移交責任，不得產生無人追蹤的背景工作，也不得將提交成功視為業務完成。"
         },
         {
           "text": "明確接手元件",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-01",
+          "source_uri": "rules/coding/concurrency-and-async.md#task-ownership",
           "source_text": "不要求原請求等待所有工作完成，但獨立工作須由負責的背景元件接手。"
         }
       ],
@@ -4065,16 +4003,16 @@
       "sentence": 9,
       "history_id": "CA-04",
       "action": "移除",
-      "source": "依[等待期限與逾時處置的共通要求](../../../coding/concurrency-and-async.md#ca-04)執行。",
+      "source": "依[等待期限與逾時處置的共通要求](../../../coding/concurrency-and-async.md#deadline-budget)執行。",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#ca-04"
+          "uri": "rules/coding/concurrency-and-async.md#deadline-budget"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[等待期限與逾時處置的共通要求](../../../coding/concurrency-and-async.md#ca-04)執行。",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-04",
+          "text": "依[等待期限與逾時處置的共通要求](../../../coding/concurrency-and-async.md#deadline-budget)執行。",
+          "source_uri": "rules/coding/concurrency-and-async.md#deadline-budget",
           "source_text": "等待非同步結果須有明確期限，包含程序內背景任務的結果等待，並納入整體操作時間預算，不讓每一步重新取得完整期限。"
         }
       ],
@@ -4088,18 +4026,18 @@
       "source": "Java 非同步等待的逾時不代表底層工作已停止；等待 API 須承接整體時間預算。",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#ca-04"
+          "uri": "rules/coding/concurrency-and-async.md#deadline-budget"
         }
       ],
       "removed_assertions": [
         {
           "text": "等待 API 須承接整體時間預算",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-04",
+          "source_uri": "rules/coding/concurrency-and-async.md#deadline-budget",
           "source_text": "等待非同步結果須有明確期限，包含程序內背景任務的結果等待，並納入整體操作時間預算，不讓每一步重新取得完整期限。"
         },
         {
           "text": "Java 非同步等待的逾時不代表底層工作已停止",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-04",
+          "source_uri": "rules/coding/concurrency-and-async.md#deadline-budget",
           "source_text": "逾時後依契約取消、持續執行或移交結果追蹤責任，不得將等待結束視為工作已停止；未確認資源釋放前不得回收執行名額。"
         }
       ],
@@ -4140,7 +4078,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/collections-and-ownership.md#co-03"
+        "rules/coding/collections-and-ownership.md#order-and-duplicates"
       ],
       "reason": "順序與重複處理由共通選用轉換不得改變語意及重複鍵不得遺失資料的原句承接，未新增 List、Set、Map 特有操作限制。"
     },
@@ -4153,7 +4091,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/collections-and-ownership.md#co-04"
+        "rules/coding/collections-and-ownership.md#traversal-mutation"
       ],
       "reason": "支援操作與不得憑未拋例外判定安全、不得捕捉後直接重跑，均由共通遍歷修改的原句直接承接。"
     },
@@ -4166,7 +4104,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/concurrency-and-async.md#co-05"
+        "rules/coding/concurrency-and-async.md#compound-atomicity"
       ],
       "reason": "共通禁止從集合執行緒安全推定多步驟安全，且明列跨鍵協調，直接承接單一操作不能推導複合原子性的提醒。"
     },
@@ -4179,7 +4117,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/quality/performance.md#co-06"
+        "rules/quality/performance.md#bounded-accumulation"
       ],
       "reason": "共通明列迭代器與串流不能推定有界，以及排序、去重與分組保留資料成本，完整承接 Java 提醒。"
     },
@@ -4224,29 +4162,6 @@
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
-      "type": "group_routes",
-      "record": {
-        "heading": "修改與併發",
-        "targets": [
-          "rules/coding/collections-and-ownership.md#co-04",
-          "rules/coding/concurrency-and-async.md#co-05"
-        ],
-        "text": "本組要求依[co-04](../../../coding/collections-and-ownership.md#co-04)、[co-05](../../../coding/concurrency-and-async.md#co-05)辦理。"
-      }
-    },
-    {
-      "path": "rules/stacks/java/common/collections-and-ownership.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/coding/collections-and-ownership.md#co-03",
-          "rules/quality/performance.md#co-06"
-        ],
-        "text": "本文件另依[co-03](../../../coding/collections-and-ownership.md#co-03)、[co-06](../../../quality/performance.md#co-06)辦理。"
-      }
-    },
-    {
-      "path": "rules/stacks/java/common/collections-and-ownership.md",
       "type": "acceptance_additions",
       "record": "- [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。\n"
     },
@@ -4255,16 +4170,16 @@
       "sentence": 8,
       "history_id": "CO-03",
       "action": "移除",
-      "source": "依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#co-03)執行。",
+      "source": "依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#order-and-duplicates)執行。",
       "targets": [
         {
-          "uri": "rules/coding/collections-and-ownership.md#co-03"
+          "uri": "rules/coding/collections-and-ownership.md#order-and-duplicates"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#co-03)執行。",
-          "source_uri": "rules/coding/collections-and-ownership.md#co-03",
+          "text": "依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#order-and-duplicates)執行。",
+          "source_uri": "rules/coding/collections-and-ownership.md#order-and-duplicates",
           "source_text": "集合契約須明訂所需的順序保證與重複資料處理方式，選用或轉換集合時不得意外改變這些語意。"
         }
       ],
@@ -4278,18 +4193,18 @@
       "source": "Java 選用或轉換 List、Set、Map 時須維持約定順序、重複元素與重複鍵處理，不意外去重或覆蓋。",
       "targets": [
         {
-          "uri": "rules/coding/collections-and-ownership.md#co-03"
+          "uri": "rules/coding/collections-and-ownership.md#order-and-duplicates"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 選用或轉換 List、Set、Map 時須維持約定順序、重複元素與重複鍵處理，",
-          "source_uri": "rules/coding/collections-and-ownership.md#co-03",
+          "source_uri": "rules/coding/collections-and-ownership.md#order-and-duplicates",
           "source_text": "集合契約須明訂所需的順序保證與重複資料處理方式，選用或轉換集合時不得意外改變這些語意。"
         },
         {
           "text": "不意外去重或覆蓋。",
-          "source_uri": "rules/coding/collections-and-ownership.md#co-03",
+          "source_uri": "rules/coding/collections-and-ownership.md#order-and-duplicates",
           "source_text": "建立映射遇到重複鍵時，須依明確規則拒絕、合併或取代，不得默默遺失資料；不得僅為去重而移除契約允許的重複項目。"
         }
       ],
@@ -4300,16 +4215,16 @@
       "sentence": 10,
       "history_id": "CO-04",
       "action": "移除",
-      "source": "依[遍歷期間的修改的共通要求](../../../coding/collections-and-ownership.md#co-04)執行。",
+      "source": "依[遍歷期間的修改的共通要求](../../../coding/collections-and-ownership.md#traversal-mutation)執行。",
       "targets": [
         {
-          "uri": "rules/coding/collections-and-ownership.md#co-04"
+          "uri": "rules/coding/collections-and-ownership.md#traversal-mutation"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[遍歷期間的修改的共通要求](../../../coding/collections-and-ownership.md#co-04)執行。",
-          "source_uri": "rules/coding/collections-and-ownership.md#co-04",
+          "text": "依[遍歷期間的修改的共通要求](../../../coding/collections-and-ownership.md#traversal-mutation)執行。",
+          "source_uri": "rules/coding/collections-and-ownership.md#traversal-mutation",
           "source_text": "遍歷期間需要修改集合時，須使用符合集合契約的操作方式，並明確界定處理範圍。"
         }
       ],
@@ -4323,18 +4238,18 @@
       "source": "Java 遍歷修改須使用集合支援的操作；未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑。",
       "targets": [
         {
-          "uri": "rules/coding/collections-and-ownership.md#co-04"
+          "uri": "rules/coding/collections-and-ownership.md#traversal-mutation"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 遍歷修改須使用集合支援的操作；",
-          "source_uri": "rules/coding/collections-and-ownership.md#co-04",
+          "source_uri": "rules/coding/collections-and-ownership.md#traversal-mutation",
           "source_text": "遍歷期間需要修改集合時，須使用符合集合契約的操作方式，並明確界定處理範圍。"
         },
         {
           "text": "未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑。",
-          "source_uri": "rules/coding/collections-and-ownership.md#co-04",
+          "source_uri": "rules/coding/collections-and-ownership.md#traversal-mutation",
           "source_text": "不得依賴未拋例外來推定安全，也不得以捕捉遍歷修改例外後直接重跑來掩蓋問題。"
         }
       ],
@@ -4345,16 +4260,16 @@
       "sentence": 12,
       "history_id": "CO-05",
       "action": "移除",
-      "source": "依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#co-05)執行。",
+      "source": "依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#compound-atomicity)執行。",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#co-05"
+          "uri": "rules/coding/concurrency-and-async.md#compound-atomicity"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#co-05)執行。",
-          "source_uri": "rules/coding/concurrency-and-async.md#co-05",
+          "text": "依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#compound-atomicity)執行。",
+          "source_uri": "rules/coding/concurrency-and-async.md#compound-atomicity",
           "source_text": "共享集合上的複合操作須依業務條件明訂原子性範圍，使用適當的原子操作或同步機制維持保證。"
         }
       ],
@@ -4368,13 +4283,13 @@
       "source": "Java concurrent collection 的單一操作保證不能推導為多步驟或跨鍵操作原子性。",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#co-05"
+          "uri": "rules/coding/concurrency-and-async.md#compound-atomicity"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java concurrent collection 的單一操作保證不能推導為多步驟或跨鍵操作原子性。",
-          "source_uri": "rules/coding/concurrency-and-async.md#co-05",
+          "source_uri": "rules/coding/concurrency-and-async.md#compound-atomicity",
           "source_text": "不得因集合本身具備執行緒安全性，就推定多步驟或跨資料結構的操作也安全；跨多個鍵、集合或物件的條件，由負責該條件的範圍協調。"
         }
       ],
@@ -4385,16 +4300,16 @@
       "sentence": 14,
       "history_id": "CO-06",
       "action": "移除",
-      "source": "依[限制資料累積的共通要求](../../../quality/performance.md#co-06)執行。",
+      "source": "依[限制資料累積的共通要求](../../../quality/performance.md#bounded-accumulation)執行。",
       "targets": [
         {
-          "uri": "rules/quality/performance.md#co-06"
+          "uri": "rules/quality/performance.md#bounded-accumulation"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[限制資料累積的共通要求](../../../quality/performance.md#co-06)執行。",
-          "source_uri": "rules/quality/performance.md#co-06",
+          "text": "依[限制資料累積的共通要求](../../../quality/performance.md#bounded-accumulation)執行。",
+          "source_uri": "rules/quality/performance.md#bounded-accumulation",
           "source_text": "可能大量或持續成長的資料，不得無限制地收集成記憶體集合。"
         }
       ],
@@ -4408,18 +4323,18 @@
       "source": "Java Iterator 或 Stream 不保證實際有界；排序、去重及分組的保留資料成本仍須核對。",
       "targets": [
         {
-          "uri": "rules/quality/performance.md#co-06"
+          "uri": "rules/quality/performance.md#bounded-accumulation"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java Iterator 或 Stream 不保證實際有界；",
-          "source_uri": "rules/quality/performance.md#co-06",
+          "source_uri": "rules/quality/performance.md#bounded-accumulation",
           "source_text": "使用迭代器或串流 時，仍須確認來源與操作的實際資料累積及資源成本，不因採用延遲處理語法就推定有界；排序、去重與分組也須評估保留資料的成本。"
         },
         {
           "text": "排序、去重及分組的保留資料成本仍須核對。",
-          "source_uri": "rules/quality/performance.md#co-06",
+          "source_uri": "rules/quality/performance.md#bounded-accumulation",
           "source_text": "使用迭代器或串流 時，仍須確認來源與操作的實際資料累積及資源成本，不因採用延遲處理語法就推定有界；排序、去重與分組也須評估保留資料的成本。"
         }
       ],
@@ -4460,7 +4375,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/architecture/data-mapping.md#bm-03"
+        "rules/architecture/data-mapping.md#mapping-responsibility"
       ],
       "reason": "格式解析、專屬型別建立與補查資料先協調均由共通 bm-03 原句直接承接，移除純引用與後附重述。"
     },
@@ -4555,16 +4470,6 @@
     },
     {
       "path": "rules/stacks/java/common/boundary-mapping.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/architecture/data-mapping.md#bm-03"
-        ],
-        "text": "本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)辦理。"
-      }
-    },
-    {
-      "path": "rules/stacks/java/common/boundary-mapping.md",
       "type": "acceptance_changes",
       "record": {
         "before": "| Java 條文 | 語言增量驗收 |\n",
@@ -4645,21 +4550,21 @@
       "sentence": 7,
       "history_id": "BM-03",
       "action": "移除",
-      "source": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#bm-03)執行。",
+      "source": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#mapping-responsibility)執行。",
       "targets": [
         {
-          "uri": "rules/architecture/data-mapping.md#bm-03"
+          "uri": "rules/architecture/data-mapping.md#mapping-responsibility"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#bm-03)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-03",
+          "text": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#mapping-responsibility)執行。",
+          "source_uri": "rules/architecture/data-mapping.md#mapping-responsibility",
           "source_text": "映射須聚焦契約定義的資料轉換與必要驗證，不得隱藏外部存取、業務決策或業務副作用。"
         },
         {
-          "text": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#bm-03)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-03",
+          "text": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#mapping-responsibility)執行。",
+          "source_uri": "rules/architecture/data-mapping.md#mapping-responsibility",
           "source_text": "可依契約解析格式及建立專屬型別；查詢補充資料、決定折扣、寫入資料庫或發送事件等行為，由負責元件明確協調，再進行映射。"
         }
       ],
@@ -4673,18 +4578,18 @@
       "source": "Java 映射可解析格式及建立專屬型別；需要補查資料時，由負責流程的元件先協調。",
       "targets": [
         {
-          "uri": "rules/architecture/data-mapping.md#bm-03"
+          "uri": "rules/architecture/data-mapping.md#mapping-responsibility"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 映射可解析格式及建立專屬型別",
-          "source_uri": "rules/architecture/data-mapping.md#bm-03",
+          "source_uri": "rules/architecture/data-mapping.md#mapping-responsibility",
           "source_text": "可依契約解析格式及建立專屬型別；查詢補充資料、決定折扣、寫入資料庫或發送事件等行為，由負責元件明確協調，再進行映射。"
         },
         {
           "text": "需要補查資料時，由負責流程的元件先協調",
-          "source_uri": "rules/architecture/data-mapping.md#bm-03",
+          "source_uri": "rules/architecture/data-mapping.md#mapping-responsibility",
           "source_text": "可依契約解析格式及建立專屬型別；查詢補充資料、決定折扣、寫入資料庫或發送事件等行為，由負責元件明確協調，再進行映射。"
         }
       ],
@@ -4714,7 +4619,7 @@
       "targets": [
         "rules/coding/domain-modeling.md#專屬型別",
         "rules/coding/validation.md#責任分工",
-        "rules/coding/code-design.md#cl-06"
+        "rules/coding/code-design.md#construction-entrypoints"
       ],
       "reason": "建立驗證由領域建模及資料驗證承接，建構子或工廠一致性另列 cl-06，型別有效不代表存在性或授權由專屬型別承接；整份引用保留。整理前原文未提交，無法證明完整覆蓋。"
     },
@@ -4780,7 +4685,7 @@
       "conservative": false,
       "targets": [
         "rules/stacks/java/common/value-objects.md#java-value-restoration",
-        "rules/coding/domain-modeling.md#vo-07"
+        "rules/coding/domain-modeling.md#value-restoration"
       ],
       "reason": "框架配置另訂由 vo-07 的 Framework 規範與專案落實承接；共通未直接點名 Java 建構及一般類別／record 實作選擇，保留該完整失效提醒。"
     },
@@ -4834,16 +4739,6 @@
     },
     {
       "path": "rules/stacks/java/common/value-objects.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/coding/validation.md"
-        ],
-        "text": "本文件另依[validation](../../../coding/validation.md)辦理。"
-      }
-    },
-    {
-      "path": "rules/stacks/java/common/value-objects.md",
       "type": "acceptance_changes",
       "record": {
         "before": "| Java 條文 | 語言增量驗收 |\n",
@@ -4856,7 +4751,7 @@
       "type": "acceptance_changes",
       "record": {
         "before": "| <a id=\"acceptance-java-value-validity\"></a>1、2 | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |\n",
-        "after": "| <a id=\"acceptance-java-value-validity\"></a>[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[建立入口](../../../coding/code-design.md#cl-06)、[驗證責任](../../../coding/validation.md#責任分工) | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |\n",
+        "after": "| <a id=\"acceptance-java-value-validity\"></a>[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[建立入口](../../../coding/code-design.md#construction-entrypoints)、[驗證責任](../../../coding/validation.md#責任分工) | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |\n",
         "reason": "只更新驗收表頭及第一欄條號定位，改連實際 Java 語意小節或承接共通要求；第二欄全部驗收內容逐字保留。"
       }
     },
@@ -4982,7 +4877,7 @@
       "source": "Java 建構子或工廠維持一致驗證；合法 `OrderId` 不代表訂單存在或已取得存取權。",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#cl-06"
+          "uri": "rules/coding/code-design.md#construction-entrypoints"
         },
         {
           "uri": "rules/coding/domain-modeling.md#專屬型別"
@@ -4991,7 +4886,7 @@
       "removed_assertions": [
         {
           "text": "Java 建構子或工廠維持一致驗證",
-          "source_uri": "rules/coding/code-design.md#cl-06",
+          "source_uri": "rules/coding/code-design.md#construction-entrypoints",
           "source_text": "所有建立入口須一致保護必要條件，避免各自維護不一致的驗證。"
         },
         {
@@ -5017,7 +4912,7 @@
       "removed_assertions": [
         {
           "text": "Java 值物件操作保留專屬型別",
-          "source_uri": "rules/coding/domain-modeling.md#vo-06",
+          "source_uri": "rules/coding/domain-modeling.md#value-operations",
           "source_text": "涉及值本身語意的運算，須集中於值物件或責任明確的領域元件，保留必要的型別、單位與有效性約束。"
         },
         {
@@ -5027,7 +4922,7 @@
         },
         {
           "text": "必要邊界呈現可讀底層值",
-          "source_uri": "rules/coding/domain-modeling.md#vo-06",
+          "source_uri": "rules/coding/domain-modeling.md#value-operations",
           "source_text": "邊界映射、呈現等必要用途仍可讀取底層值；跨幣別換算等依賴外部資料或政策的操作，由負責元件協調，不要求值物件自行查詢外部資料。"
         }
       ],
@@ -5041,13 +4936,13 @@
       "source": "具體框架配置另訂。",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#vo-07"
+          "uri": "rules/coding/domain-modeling.md#value-restoration"
         }
       ],
       "removed_assertions": [
         {
           "text": "具體框架配置另訂。",
-          "source_uri": "rules/coding/domain-modeling.md#vo-07",
+          "source_uri": "rules/coding/domain-modeling.md#value-restoration",
           "source_text": "具體框架配置由 Framework 規範與專案落實。"
         }
       ],
@@ -5331,7 +5226,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/code-design.md#nd-05"
+        "rules/coding/code-design.md#implementation-notes"
       ],
       "reason": "依第三節重述判斷整條移除；註解維護、TODO 待處理內容與追蹤方式及禁止模糊標記由共通 nd-05 直接承接。"
     },
@@ -5360,16 +5255,6 @@
         "rules/stacks/java/common/naming-packages-docs.md#java-document-verification"
       ],
       "reason": "依第三節增量判斷保留 Java 命名形式、Javadoc 參照、可執行範例與支援版本的實際驗證，以及既有共通政策引用。"
-    },
-    {
-      "path": "rules/stacks/java/common/naming-packages-docs.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/coding/code-design.md#nd-05"
-        ],
-        "text": "本文件另依[nd-05](../../../coding/code-design.md#nd-05)辦理。"
-      }
     },
     {
       "path": "rules/stacks/java/common/naming-packages-docs.md",
@@ -5430,26 +5315,26 @@
       "sentence": 14,
       "history_id": "ND-05",
       "action": "移除",
-      "source": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
+      "source": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#implementation-notes)執行。",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#nd-05"
+          "uri": "rules/coding/code-design.md#implementation-notes"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#implementation-notes)執行。",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "實作註解依本文件的[註解與公開文件](#註解與公開文件)說明理由、限制與依據，變更時同步更新或移除。"
         },
         {
-          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#implementation-notes)執行。",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "可由設計與命名改善的問題應優先修正。"
         },
         {
-          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#implementation-notes)執行。",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
         }
       ],
@@ -5463,23 +5348,23 @@
       "source": "Java 註解及 TODO 依共同追蹤要求維護，不以模糊標記代替負責事項。",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#nd-05"
+          "uri": "rules/coding/code-design.md#implementation-notes"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 註解及 TODO 依共同追蹤要求維護",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
         },
         {
           "text": "不以模糊標記代替負責事項",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
         },
         {
           "text": "Java 註解及 TODO 依共同追蹤要求維護",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "實作註解依本文件的[註解與公開文件](#註解與公開文件)說明理由、限制與依據，變更時同步更新或移除。"
         }
       ],
@@ -5704,7 +5589,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/quality/security.md#rf-02"
+        "rules/quality/security.md#dynamic-target-authorization"
       ],
       "reason": "第三節判斷為重述，受控類別、方法與建構子及型別符合不能取代授權均由安全共通原句直接承接。"
     },
@@ -5730,7 +5615,7 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/type-safety.md#rf-04"
+        "rules/coding/type-safety.md#dynamic-contract-validation"
       ],
       "reason": "第三節判斷為重述，能力、版本及型別驗證與不得只憑名稱或未驗證轉型由型別安全共通原句直接承接。"
     },
@@ -5797,17 +5682,6 @@
     },
     {
       "path": "rules/stacks/java/common/reflection-and-suppression.md",
-      "type": "link_retention",
-      "record": {
-        "targets": [
-          "rules/coding/type-safety.md#rf-04",
-          "rules/quality/security.md#rf-02"
-        ],
-        "text": "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)辦理。"
-      }
-    },
-    {
-      "path": "rules/stacks/java/common/reflection-and-suppression.md",
       "type": "acceptance_changes",
       "record": {
         "before": "| Java 條文 | 語言增量驗收 |\n",
@@ -5838,16 +5712,16 @@
       "sentence": 7,
       "history_id": "RF-02",
       "action": "移除",
-      "source": "依[受控目標與授權的共通要求](../../../quality/security.md#rf-02)執行。",
+      "source": "依[受控目標與授權的共通要求](../../../quality/security.md#dynamic-target-authorization)執行。",
       "targets": [
         {
-          "uri": "rules/quality/security.md#rf-02"
+          "uri": "rules/quality/security.md#dynamic-target-authorization"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[受控目標與授權的共通要求](../../../quality/security.md#rf-02)執行。",
-          "source_uri": "rules/quality/security.md#rf-02",
+          "text": "依[受控目標與授權的共通要求](../../../quality/security.md#dynamic-target-authorization)執行。",
+          "source_uri": "rules/quality/security.md#dynamic-target-authorization",
           "source_text": "動態載入、建立或呼叫的目標須由受控登錄或允許清單限定，不得直接依未受信任輸入解析並執行任意類別、方法或建構子。"
         }
       ],
@@ -5861,18 +5735,18 @@
       "source": "Java 類別、方法及建構子的動態目標須受控，不因型別符合就略過授權。",
       "targets": [
         {
-          "uri": "rules/quality/security.md#rf-02"
+          "uri": "rules/quality/security.md#dynamic-target-authorization"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 類別、方法及建構子的動態目標須受控",
-          "source_uri": "rules/quality/security.md#rf-02",
+          "source_uri": "rules/quality/security.md#dynamic-target-authorization",
           "source_text": "動態載入、建立或呼叫的目標須由受控登錄或允許清單限定，不得直接依未受信任輸入解析並執行任意類別、方法或建構子。"
         },
         {
           "text": "不因型別符合就略過授權",
-          "source_uri": "rules/quality/security.md#rf-02",
+          "source_uri": "rules/quality/security.md#dynamic-target-authorization",
           "source_text": "未知目標須明確拒絕，目標符合型別也不能取代授權檢查。"
         }
       ],
@@ -5883,16 +5757,16 @@
       "sentence": 12,
       "history_id": "RF-04",
       "action": "移除",
-      "source": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#rf-04)執行。",
+      "source": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#dynamic-contract-validation)執行。",
       "targets": [
         {
-          "uri": "rules/coding/type-safety.md#rf-04"
+          "uri": "rules/coding/type-safety.md#dynamic-contract-validation"
         }
       ],
       "removed_assertions": [
         {
-          "text": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#rf-04)執行。",
-          "source_uri": "rules/coding/type-safety.md#rf-04",
+          "text": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#dynamic-contract-validation)執行。",
+          "source_uri": "rules/coding/type-safety.md#dynamic-contract-validation",
           "source_text": "動態元件須在適當的啟動、註冊或呼叫階段驗證能力、版本與型別契約。"
         }
       ],
@@ -5906,18 +5780,18 @@
       "source": "Java 動態元件須驗證能力、版本及型別，不只確認名稱存在，也不靠未驗證轉型掩蓋不相容。",
       "targets": [
         {
-          "uri": "rules/coding/type-safety.md#rf-04"
+          "uri": "rules/coding/type-safety.md#dynamic-contract-validation"
         }
       ],
       "removed_assertions": [
         {
           "text": "Java 動態元件須驗證能力、版本及型別",
-          "source_uri": "rules/coding/type-safety.md#rf-04",
+          "source_uri": "rules/coding/type-safety.md#dynamic-contract-validation",
           "source_text": "動態元件須在適當的啟動、註冊或呼叫階段驗證能力、版本與型別契約。"
         },
         {
           "text": "不只確認名稱存在，也不靠未驗證轉型掩蓋不相容",
-          "source_uri": "rules/coding/type-safety.md#rf-04",
+          "source_uri": "rules/coding/type-safety.md#dynamic-contract-validation",
           "source_text": "不符合時明確拒絕，不得僅憑名稱存在就執行，也不得靠未經驗證的轉型或任意替代掩蓋不相容。"
         }
       ],
@@ -5938,17 +5812,422 @@
       "removed_assertions": [
         {
           "text": "不能據此推定目標未執行而替換或重跑",
-          "source_uri": "rules/coding/error-handling.md#rf-05",
+          "source_uri": "rules/coding/error-handling.md#dynamic-failure-classification",
           "source_text": "不得將所有失敗統一視為目標不存在，也不得未確認執行結果與重試安全性就改用其他目標或重新執行；外層收到例外不代表目標未執行或未產生副作用。"
         }
       ],
       "reason": "第三節判斷為混合，保留 Java 反射外層例外及原始原因；不得推定未執行而替換或重跑由共通外層例外與重試安全性原句承接。"
+    },
+    {
+      "path": "rules/stacks/java/common/boundary-mapping.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "契約與映射責任",
+        "targets": [
+          "rules/architecture/boundary-objects.md#隔離與拆分",
+          "rules/architecture/data-mapping.md#mapping-responsibility"
+        ],
+        "text": "本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "介面、繼承與建立條件",
+        "targets": [
+          "rules/coding/code-design.md#substitutability",
+          "rules/coding/resource-lifecycle.md#initialization-readiness"
+        ],
+        "text": "本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "依賴、建立方式與擴充",
+        "targets": [
+          "rules/coding/code-design.md#construction-entrypoints",
+          "rules/coding/code-design.md#interface-capabilities"
+        ],
+        "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "共用範圍與驗證",
+        "targets": [
+          "rules/coding/resource-lifecycle.md#shared-lifecycle"
+        ],
+        "text": "本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "所有權與集合語意",
+        "targets": [
+          "rules/coding/collections-and-ownership.md#order-and-duplicates"
+        ],
+        "text": "本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "修改與併發",
+        "targets": [
+          "rules/coding/collections-and-ownership.md#traversal-mutation",
+          "rules/coding/concurrency-and-async.md#compound-atomicity"
+        ],
+        "text": "本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "資料規模、資源與批次結果",
+        "targets": [
+          "rules/quality/performance.md#bounded-accumulation"
+        ],
+        "text": "本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/concurrency-and-async.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "工作所有權與執行資源",
+        "targets": [
+          "rules/coding/concurrency-and-async.md#async-result-reception",
+          "rules/coding/concurrency-and-async.md#task-ownership"
+        ],
+        "text": "本組下列要求由共通規範承接：[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)、[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/concurrency-and-async.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "期限、取消與結果",
+        "targets": [
+          "rules/coding/concurrency-and-async.md#deadline-budget"
+        ],
+        "text": "本組下列要求由共通規範承接：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/exceptions-and-resources.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "資源所有權與失敗清理",
+        "targets": [
+          "rules/coding/resource-lifecycle.md#partial-acquisition",
+          "rules/coding/resource-lifecycle.md#resource-close-contract"
+        ],
+        "text": "本組下列要求由共通規範承接：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/naming-packages-docs.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "契約文件與維護",
+        "targets": [
+          "rules/coding/code-design.md#implementation-notes"
+        ],
+        "text": "本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "空值限制與整合責任",
+        "targets": [
+          "rules/coding/code-design.md#construction-entrypoints",
+          "rules/coding/domain-modeling.md#專屬型別",
+          "rules/coding/domain-modeling.md#狀態建模",
+          "rules/coding/error-handling.md#程式缺陷與不變條件",
+          "rules/coding/validation.md#責任分工"
+        ],
+        "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[狀態建模](../../../coding/domain-modeling.md#狀態建模)、[程式缺陷與不變條件](../../../coding/error-handling.md#程式缺陷與不變條件)、[責任分工](../../../coding/validation.md#責任分工)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "數值表示與運算",
+        "targets": [
+          "rules/coding/numbers-dates-text.md#numeric-range-checks"
+        ],
+        "text": "本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "日期時間語意與來源",
+        "targets": [
+          "rules/coding/numbers-dates-text.md#timezone-conversion"
+        ],
+        "text": "本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "文字編碼、長度與比較",
+        "targets": [
+          "rules/coding/numbers-dates-text.md#character-encoding",
+          "rules/coding/numbers-dates-text.md#text-transformations"
+        ],
+        "text": "本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/reflection-and-suppression.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "動態能力與存取邊界",
+        "targets": [
+          "rules/coding/type-safety.md#dynamic-contract-validation",
+          "rules/quality/security.md#dynamic-target-authorization"
+        ],
+        "text": "本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "操作結果與使用端處理",
+        "targets": [
+          "rules/coding/domain-modeling.md#exhaustive-result-handling",
+          "rules/coding/domain-modeling.md#operation-results"
+        ],
+        "text": "本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "外部代碼、擴充與結果資料",
+        "targets": [
+          "rules/coding/domain-modeling.md#result-facts"
+        ],
+        "text": "本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/types-and-generics.md",
+      "type": "group_endings",
+      "record": {
+        "heading": "明確宣告與型別關係",
+        "anchor": "java-group-notes-explicit-types",
+        "text": "既有程式碼的漸進導入、工具產生碼與個別例外依[規範治理](../../../workflow/rule-governance.md)辦理。測試不得透過不安全轉型偽造有效物件，另見[測試程式碼要求](../../../quality/rule-verification.md#測試程式碼)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "type": "group_routes",
+      "record": {
+        "heading": "型別責任與有效性",
+        "targets": [
+          "rules/coding/code-design.md#construction-entrypoints",
+          "rules/coding/domain-modeling.md#專屬型別",
+          "rules/coding/validation.md#責任分工"
+        ],
+        "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "type": "link_retention",
+      "record": {
+        "targets": [
+          "rules/coding/validation.md"
+        ],
+        "text": "本文件另依[資料驗證](../../../coding/validation.md)辦理。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/version-policy.md",
+      "type": "group_endings",
+      "record": {
+        "heading": "版本宣告與相容性",
+        "anchor": "java-group-notes-version-declarations",
+        "text": "例如，建置 JDK 與部署環境使用 Java 21，而產物承諾相容 Java 17 時，編譯須維持 Java 17 的語言、API 及位元碼限制，並有 Java 17 與實際部署環境的驗證依據。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/version-policy.md",
+      "type": "group_endings",
+      "record": {
+        "heading": "依賴、升級與特殊功能",
+        "anchor": "java-group-notes-dependency-versions",
+        "text": "Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rule-governance.md#例外核准)管理。既有程式碼依相同文件的漸進導入要求處理。"
+      }
     }
   ],
   "manual_limitations": [
     "即使承接原文逐字存在，是否與被刪斷言相關仍須逐項人工複核",
     "語意等價、理由充分性與語意重複無法機械證明"
-  ]
+  ],
+  "legacy_snapshot_local_links": 2587,
+  "current_local_links": 2677,
+  "presentation": {
+    "start": "3f68be483882d8dbfb6611bd58c40ec7446414af",
+    "aliases": 74,
+    "layout": true,
+    "index": true,
+    "semantic_snapshot": "3f68be483882d8dbfb6611bd58c40ec7446414af",
+    "guarantee": "現行全文與紀錄逐字等於起點的核准連結及版面轉換；逐句語意／驗收仍由起點檢查承接"
+  }
+}
+exit=0
+```
+
+## `ruby scripts/verify-body-sentences.rb`
+
+```text
+{
+  "start": "3f68be483882d8dbfb6611bd58c40ec7446414af",
+  "files": 54,
+  "nonblank_units": 1999,
+  "sentence_multisets_equal": true,
+  "method": "正規化連結別名，排除空白、錨點行、固定指路句與固定補充標題；保留重複數及程式碼行",
+  "excluded": "rules/stacks/java/README.md"
+}
+exit=0
+```
+
+## `ruby scripts/test-body-presentation.rb`
+
+```text
+[
+  {
+    "test": "第五節不能改成其他名稱",
+    "matched": true,
+    "diagnostic": "第五節實際名稱不符"
+  },
+  {
+    "test": "不能新增未列管 Java 紀錄",
+    "matched": true,
+    "diagnostic": "階段 C Java 紀錄檔案清冊不符"
+  },
+  {
+    "test": "不能新增未列管共通紀錄",
+    "matched": true,
+    "diagnostic": "階段 C 共通紀錄檔案清冊不符"
+  },
+  {
+    "test": "全部合法轉換及新舊錨點同一正文",
+    "matched": true,
+    "diagnostic": "現行別名、版面、句子與追溯通過"
+  },
+  {
+    "test": "起點不得後移",
+    "matched": true,
+    "diagnostic": "階段 C 設定或起點不符"
+  },
+  {
+    "test": "別名漏列",
+    "matched": true,
+    "diagnostic": "別名清冊與核准第五節不符"
+  },
+  {
+    "test": "舊錨點不可刪",
+    "matched": true,
+    "diagnostic": "階段 C 非核准連結／版面改動 rules/architecture/data-mapping.md"
+  },
+  {
+    "test": "共通正文不可改",
+    "matched": true,
+    "diagnostic": "階段 C 非核准連結／版面改動 rules/architecture/data-mapping.md"
+  },
+  {
+    "test": "舊連結不能回流",
+    "matched": true,
+    "diagnostic": "指路句不符 rules/stacks/java/common/boundary-mapping.md；期待值：本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。"
+  },
+  {
+    "test": "非空分組缺指路",
+    "matched": true,
+    "diagnostic": "指路句不符 rules/stacks/java/common/classes-and-construction.md；期待值：本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。"
+  },
+  {
+    "test": "指路標籤不得使用代碼",
+    "matched": true,
+    "diagnostic": "指路句不符 rules/stacks/java/common/classes-and-construction.md；期待值：本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。"
+  },
+  {
+    "test": "指路不得夾帶義務",
+    "matched": true,
+    "diagnostic": "階段 C 非核准連結／版面改動 rules/stacks/java/common/classes-and-construction.md"
+  },
+  {
+    "test": "指路紀錄來源不符",
+    "matched": true,
+    "diagnostic": "階段 C 去向／版面紀錄不符 docs/body-restructuring/java/classes-and-construction.json；期待值：{\"baseline\":\"350668eb14ede247af22c782323beebf940c2a5f\",\"path\":\"rules/stacks/java/common/classes-and-construction.md\",\"status\":\"completed\",\"rules\":[{\"id\":\"CL-01\",\"kind\":\"整條保"
+  },
+  {
+    "test": "分組尾段不可改字",
+    "matched": true,
+    "diagnostic": "階段 C 非核准連結／版面改動 rules/stacks/java/common/version-policy.md"
+  },
+  {
+    "test": "補充標題不可任意改名",
+    "matched": true,
+    "diagnostic": "階段 C 非核准連結／版面改動 rules/stacks/java/common/version-policy.md"
+  },
+  {
+    "test": "Java 原句不可刪",
+    "matched": true,
+    "diagnostic": "階段 C 非核准連結／版面改動 rules/stacks/java/common/concurrency-and-async.md"
+  },
+  {
+    "test": "驗收不能改寫",
+    "matched": true,
+    "diagnostic": "階段 C 非核准連結／版面改動 rules/stacks/java/common/concurrency-and-async.md"
+  },
+  {
+    "test": "第五節不能少列",
+    "matched": true,
+    "diagnostic": "第五節別名清冊不完整"
+  },
+  {
+    "test": "前階段追溯不可改",
+    "matched": true,
+    "diagnostic": "前階段共通追溯紀錄改動"
+  },
+  {
+    "test": "新句即使重複也拒絕",
+    "matched": true,
+    "diagnostic": "階段 C 非核准連結／版面改動 rules/stacks/java/common/concurrency-and-async.md"
+  }
+]
+exit=0
+```
+
+## `ruby scripts/test-verify-acceptance.rb`
+
+```text
+{
+  "archived_at": "350668eb14ede247af22c782323beebf940c2a5f",
+  "scope": "封存驗收階段；現行內容另由正文及版面檢查驗證",
+  "exit": 0,
+  "output": "Note: switching to '350668eb14ede247af22c782323beebf940c2a5f'.\n\nYou are in 'detached HEAD' state. You can look around, make experimental\nchanges and commit them, and you can discard any commits you make in this\nstate without impacting any branches by switching back to a branch.\n\nIf you want to create a new branch to retain commits you create, you may\ndo so (now or later) by using -c with the switch command. Example:\n\n  git switch -c <new-branch-name>\n\nOr undo this operation with:\n\n  git switch -\n\nTurn off this advice by setting config variable advice.detachedHead to false\n\n[\n  {\n    \"test\": \"T1\",\n    \"description\": \"失效錨點\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Missing fragment rules/stacks/java/common/types-and-generics.md: ../../../coding/type-safety.md#acceptance-missing\"\n  },\n  {\n    \"test\": \"T2\",\n    \"description\": \"逐字重複\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Scoped duplicate acceptance: [[\\\"rules/stacks/java/common/types-and-generics.md\\\", \\\"核對固定結構資料是否使用明確物件；動態資料的型別、結構與驗證是否有契約，並以受影響的合法及非法輸入確認驗證有效。\\\"]]\"\n  },\n  {\n    \"test\": \"T3\",\n    \"description\": \"換句話說重複：僅人工可判斷\",\n    \"expected_exit\": 0,\n    \"actual_exit\": 0,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"已在暫存清單登錄 T3；換句話說重複與理由內容仍為人工檢查項目\"\n  },\n  {\n    \"test\": \"T4\",\n    \"description\": \"追溯指錯現存列\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Trace fragment absent from destination NT-9-2: ../rules/coding/domain-modeling.md#acceptance-identity-lifecycle\"\n  },\n  {\n    \"test\": \"T5\",\n    \"description\": \"刪除核心業務政策\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Protected rule text changed rules/quality/rule-verification.md:22: - 純計算、狀態判斷與業務限制可直接建立物件測試；外部能力透過明確依賴提供測試替身，不因此強制每個類別建立介面。\"\n  },\n  {\n    \"test\": \"T6a\",\n    \"description\": \"刪除驗收尾段治理句\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Protected rule text missing rules/stacks/java/common/null-and-optional.md: 既有程式碼、工具限制與個別例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。\"\n  },\n  {\n    \"test\": \"T6b\",\n    \"description\": \"掏空 Java 驗收列\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Protected rule text changed rules/stacks/java/common/types-and-generics.md:47: | <a id=\\\"acceptance-java-explicit-types\\\"></a>1、9 | 略。 |\"\n  },\n  {\n    \"test\": \"T7\",\n    \"description\": \"README 政策改寫\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Protected rule text changed rules/README.md:8: - 通用規範定義共同底線，語言規範負責語法與型別使用，Framework 規範負責框架機制的落實方式。各專案自行管理實際架構、技術組合、配置與核准例外。各層可以具體化或加嚴要求，得自行降低標準。\"\n  },\n  {\n    \"test\": \"T8\",\n    \"description\": \"刪除受保護章節文字\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Protected rule text changed rules/quality/rule-verification.md:45:\"\n  },\n  {\n    \"test\": \"T9\",\n    \"description\": \"共通驗收列刪除後半斷言\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Protected rule text changed rules/quality/rule-verification.md:43: | <a id=\\\"acceptance-partial-operation\\\"></a>[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，集合批次修改適用同一驗收。 |\"\n  },\n  {\n    \"test\": \"T10\",\n    \"description\": \"重複錨點\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Duplicate/colliding anchor rules/stacks/java/common/types-and-generics.md\"\n  },\n  {\n    \"test\": \"N1\",\n    \"description\": \"未登錄的共通新義務\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Protected rule text changed rules/coding/type-safety.md:48: | <a id=\\\"acceptance-negative\\\"></a>新義務 | 所有語言的公開方法一律須以靜態分析工具證明參數型別完整，否則不得合併。 |\"\n  },\n  {\n    \"test\": \"N1b\",\n    \"description\": \"未登錄且沒有錨點的 Java 放寬句\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Protected rule text changed rules/stacks/java/common/types-and-generics.md:47: | 放寬 | 上列 acceptance-java 各項可由團隊自行決定是否執行，不必留存證據。 |\"\n  },\n  {\n    \"test\": \"N7\",\n    \"description\": \"目的列刪大半並以子字串登錄改寫\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Trace fragment absent from destination CL-4-1: ../rules/stacks/java/common/classes-and-construction.md#acceptance-java-construction-safety\"\n  },\n  {\n    \"test\": \"N8\",\n    \"description\": \"刪政策並登錄過短理由 x\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Invalid approved edit rules/quality/rule-verification.md:22: reason too short or blank\"\n  },\n  {\n    \"test\": \"N8b\",\n    \"description\": \"驗收分類不得刪除政策段\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Acceptance edit outside acceptance section rules/quality/rule-verification.md:22\"\n  },\n  {\n    \"test\": \"N9\",\n    \"description\": \"移動基準並清空清單\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"固定正文基準為 6a16349，清單 baseline 不得移動\"\n  },\n  {\n    \"test\": \"N18\",\n    \"description\": \"改寫理由只含空白\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Trace fragment absent from destination CL-1、8-2: ../rules/coding/code-design.md#acceptance-interface-capabilities\"\n  },\n  {\n    \"test\": \"N19\",\n    \"description\": \"任意 kind 與空白理由\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Invalid approved edit rules/README.md:11: reason too short or blank\"\n  },\n  {\n    \"test\": \"N19b\",\n    \"description\": \"充分理由仍拒絕任意 kind\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Invalid edit kind rules/README.md:11\"\n  },\n  {\n    \"test\": \"N19c\",\n    \"description\": \"editorial 不得碰表格列\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Editorial edit touches table rules/architecture/boundary-objects.md:33\"\n  },\n  {\n    \"test\": \"R3-reason19\",\n    \"description\": \"差異理由只有 19 個非空白字元\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Invalid approved edit rules/README.md:11: reason too short or blank\"\n  },\n  {\n    \"test\": \"R3-reason-spaces\",\n    \"description\": \"改寫理由 19 字加大量空白\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Invalid rewritten fragment CL-1、8-2: full destination and meaningful-length reason required\"\n  },\n  {\n    \"test\": \"R3-body-rewrite\",\n    \"description\": \"非混排 Java 正文登錄為 acceptance\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Acceptance edit outside acceptance section rules/stacks/java/common/types-and-generics.md:9\"\n  },\n  {\n    \"test\": \"R3-body-insert\",\n    \"description\": \"正文純插入登錄為 acceptance\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Acceptance edit outside acceptance section rules/stacks/java/common/types-and-generics.md:9\"\n  },\n  {\n    \"test\": \"R3-self-heading\",\n    \"description\": \"增文自帶驗收標題不得取得資格\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Acceptance edit outside acceptance section rules/stacks/java/common/types-and-generics.md:9\"\n  },\n  {\n    \"test\": \"R3-self-subheading\",\n    \"description\": \"增文自帶小標題不得取得資格\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Acceptance edit outside acceptance section rules/stacks/java/common/types-and-generics.md:9\"\n  },\n  {\n    \"test\": \"R3-table-no-leading-pipe\",\n    \"description\": \"editorial 插入無前導直線的表格列\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Editorial edit touches table rules/stacks/java/common/types-and-generics.md:43\"\n  },\n  {\n    \"test\": \"R3-hidden-file\",\n    \"description\": \"隱藏規範檔須納入檔案清單\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Rules file inventory changed: added=rules/.extra.md; removed=\"\n  },\n  {\n    \"test\": \"R3-new-file\",\n    \"description\": \"新增規範檔應明確回報清單差異\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Rules file inventory changed: added=rules/coding/extra.md; removed=\"\n  },\n  {\n    \"test\": \"R3-crlf\",\n    \"description\": \"CRLF 不得被逐行 chomp 忽略\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Rule line endings changed rules/stacks/java/common/types-and-generics.md\"\n  },\n  {\n    \"test\": \"R3-final-newline\",\n    \"description\": \"檔尾換行不可被忽略\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Rule final newline changed rules/stacks/java/common/types-and-generics.md\"\n  },\n  {\n    \"test\": \"R3-pending-ids\",\n    \"description\": \"待決評估不得少 NT-04\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Pending decision ID inventory changed\"\n  },\n  {\n    \"test\": \"R3-trace-rows\",\n    \"description\": \"追溯表不得少原片段\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"Missing/changed original fragments VO-1、2\"\n  },\n  {\n    \"test\": \"R3-removed-scope\",\n    \"description\": \"移除無法使用的範圍模式\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/acceptance-negative-20261109-11266-1fxml0t/scripts/verify-acceptance.rb:18:in `<main>': invalid option: --check-scope (OptionParser::InvalidOption)\"\n  },\n  {\n    \"test\": \"R3-removed-trace-only\",\n    \"description\": \"移除名實不符的 trace-only\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/acceptance-negative-20261109-11266-1fxml0t/scripts/verify-acceptance.rb:18:in `<main>': invalid option: --trace-only (OptionParser::InvalidOption)\"\n  },\n  {\n    \"test\": \"R3-missing-baseline-file\",\n    \"description\": \"git show 失敗須明確報錯\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"無法讀取基準檔 nonexistent-test-ref:rules/stacks/java/common/classes-and-construction.md：fatal: invalid object name 'nonexistent-test-ref'.\"\n  },\n  {\n    \"test\": \"R3-ambiguous-ref\",\n    \"description\": \"短參照遮蔽不得移動完整基準\",\n    \"expected_exit\": 1,\n    \"actual_exit\": 1,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"固定正文基準為 6a16349，清單 baseline 不得移動\"\n  },\n  {\n    \"test\": \"R3-record-diff\",\n    \"description\": \"紀錄器的提交範圍檢查須拒絕已提交空白錯誤\",\n    \"expected_exit\": 2,\n    \"actual_exit\": 2,\n    \"matched_expectation\": true,\n    \"diagnostic\": \"negative-whitespace.txt:1: trailing whitespace.\"\n  }\n]\n"
 }
 exit=0
 ```
@@ -6027,7 +6306,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "未核准的共通紀錄檔名",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 未核准的共通紀錄檔名 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 未核准的共通紀錄檔名 (RuntimeError)"
   },
   {
     "test": "N16 假完成",
@@ -6035,7 +6314,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "已完成紀錄仍有尚未整理去向",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 已完成紀錄仍有尚未整理去向 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 已完成紀錄仍有尚未整理去向 (RuntimeError)"
   },
   {
     "test": "N17 改寫僅貼兩字",
@@ -6059,7 +6338,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "未整理文件改動",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 未整理文件改動 rules/stacks/java/common/version-policy.md (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 未整理文件改動 rules/stacks/java/common/version-policy.md (RuntimeError)"
   },
   {
     "test": "行尾變更（動態基準夾具）",
@@ -6067,7 +6346,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "未整理文件改動",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 未整理文件改動 rules/stacks/java/common/version-policy.md (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 未整理文件改動 rules/stacks/java/common/version-policy.md (RuntimeError)"
   },
   {
     "test": "未登錄共通改動",
@@ -6075,7 +6354,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "未登錄改動 rules/coding/nullability.md",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 未登錄改動 rules/coding/nullability.md (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 未登錄改動 rules/coding/nullability.md (RuntimeError)"
   },
   {
     "test": "歷史 ID 遺漏",
@@ -6083,7 +6362,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "歷史 ID 集合不完整或重複",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 歷史 ID 集合不完整或重複 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 歷史 ID 集合不完整或重複 (RuntimeError)"
   },
   {
     "test": "去向種類無效",
@@ -6091,7 +6370,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "去向種類無效",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 去向種類無效 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 去向種類無效 (RuntimeError)"
   },
   {
     "test": "Java 基準移動",
@@ -6099,7 +6378,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "Java 基準不符",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': Java 基準不符 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': Java 基準不符 (RuntimeError)"
   },
   {
     "test": "句子遺漏",
@@ -6107,7 +6386,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "基準逐句去向不完整",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 基準逐句去向不完整 rules/stacks/java/common/null-and-optional.md (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 基準逐句去向不完整 rules/stacks/java/common/null-and-optional.md (RuntimeError)"
   },
   {
     "test": "去向文字不存在",
@@ -6115,7 +6394,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "去向文字不存在",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 去向文字不存在 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 去向文字不存在 (RuntimeError)"
   },
   {
     "test": "去向錨點不存在",
@@ -6123,7 +6402,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "去向錨點無效",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 去向錨點無效 rules/stacks/java/common/null-and-optional.md#java-query-absence-不存在 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 去向錨點無效 rules/stacks/java/common/null-and-optional.md#java-query-absence-不存在 (RuntimeError)"
   },
   {
     "test": "改寫理由不足",
@@ -6131,7 +6410,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "句子改寫／移除理由不足",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 句子改寫／移除理由不足 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 句子改寫／移除理由不足 (RuntimeError)"
   },
   {
     "test": "共通來源指向 Java",
@@ -6139,7 +6418,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "共通來源指向 Java",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 共通來源指向 Java (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 共通來源指向 Java (RuntimeError)"
   },
   {
     "test": "共通基準不符",
@@ -6147,7 +6426,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "共通基準不符",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 共通基準不符 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 共通基準不符 (RuntimeError)"
   },
   {
     "test": "共通修改 Java",
@@ -6155,7 +6434,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "共通清單不得修改 Java 文件",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 共通清單不得修改 Java 文件 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 共通清單不得修改 Java 文件 (RuntimeError)"
   },
   {
     "test": "共通決策缺漏",
@@ -6163,7 +6442,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "共通差異缺決策列",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 共通差異缺決策列 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 共通差異缺決策列 (RuntimeError)"
   },
   {
     "test": "共通來源刪文不符",
@@ -6187,7 +6466,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "整理狀態無效",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 整理狀態無效 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 整理狀態無效 (RuntimeError)"
   },
   {
     "test": "隱藏檔",
@@ -6195,7 +6474,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "rules 檔案清單變更未登錄",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': rules 檔案清單變更未登錄為整份併入 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': rules 檔案清單變更未登錄為整份併入 (RuntimeError)"
   },
   {
     "test": "連結檔案不存在",
@@ -6203,7 +6482,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "連結檔案不存在",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 連結檔案不存在 docs/negative-link.md: 不存在.md (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 連結檔案不存在 docs/negative-link.md: 不存在.md (RuntimeError)"
   },
   {
     "test": "連結錨點不存在",
@@ -6211,7 +6490,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "連結錨點不存在",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 連結錨點不存在 docs/negative-link.md: ../rules/coding/nullability.md#不存在 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 連結錨點不存在 docs/negative-link.md: ../rules/coding/nullability.md#不存在 (RuntimeError)"
   },
   {
     "test": "重複錨點",
@@ -6219,7 +6498,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "錨點重複",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 錨點重複 docs/negative-anchor.md (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 錨點重複 docs/negative-anchor.md (RuntimeError)"
   },
   {
     "test": "移除目的地是 Java",
@@ -6227,7 +6506,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "移除須指向共通條文",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 移除須指向共通條文 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 移除須指向共通條文 (RuntimeError)"
   },
   {
     "test": "驗收變更理由不足",
@@ -6235,7 +6514,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "驗收變更來源／理由無效",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 驗收變更來源／理由無效 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 驗收變更來源／理由無效 (RuntimeError)"
   },
   {
     "test": "驗收重複登錄",
@@ -6243,7 +6522,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "驗收變更重複",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 驗收變更重複 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 驗收變更重複 (RuntimeError)"
   },
   {
     "test": "驗收第二欄改動",
@@ -6251,7 +6530,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "驗收內容不得以條號調整之名改寫",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 驗收內容不得以條號調整之名改寫 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 驗收內容不得以條號調整之名改寫 (RuntimeError)"
   },
   {
     "test": "L13 任意表頭名稱",
@@ -6259,7 +6538,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "驗收表頭不允許任意改名",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 驗收表頭不允許任意改名 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 驗收表頭不允許任意改名 (RuntimeError)"
   },
   {
     "test": "待決 153 ID 清冊缺列",
@@ -6363,7 +6642,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "整份併入種類不一致",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 整份併入種類不一致 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 整份併入種類不一致 (RuntimeError)"
   },
   {
     "test": "整份併入沒有接收檔",
@@ -6371,7 +6650,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "整份併入檔案狀態不符",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 整份併入檔案狀態不符 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 整份併入檔案狀態不符 (RuntimeError)"
   },
   {
     "test": "整份併入漏完整刪文",
@@ -6379,7 +6658,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "整份併入未登錄完整刪文",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 整份併入未登錄完整刪文 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 整份併入未登錄完整刪文 (RuntimeError)"
   },
   {
     "test": "未核准樣板移入遭拒",
@@ -6435,7 +6714,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "歷史去向理由不足",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 歷史去向理由不足 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 歷史去向理由不足 (RuntimeError)"
   },
   {
     "test": "歷史去向清空",
@@ -6443,7 +6722,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "歷史 ID 沒有現行去向",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 歷史 ID 沒有現行去向 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 歷史 ID 沒有現行去向 (RuntimeError)"
   },
   {
     "test": "句子處置無效",
@@ -6451,7 +6730,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "句子處置無效",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 句子處置無效 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 句子處置無效 (RuntimeError)"
   },
   {
     "test": "句子去向清空",
@@ -6459,7 +6738,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "句子沒有去向",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 句子沒有去向 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 句子沒有去向 (RuntimeError)"
   },
   {
     "test": "去向不在同一小節",
@@ -6467,7 +6746,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "去向文字不存在",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 去向文字不存在 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 去向文字不存在 (RuntimeError)"
   },
   {
     "test": "非分類 Java 檔案",
@@ -6475,7 +6754,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "Java 文件不在原分類範圍",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': Java 文件不在原分類範圍 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': Java 文件不在原分類範圍 (RuntimeError)"
   },
   {
     "test": "隱藏共通清單",
@@ -6483,7 +6762,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "未核准的共通紀錄檔名",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 未核准的共通紀錄檔名 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 未核准的共通紀錄檔名 (RuntimeError)"
   },
   {
     "test": "非 JSON 共通檔",
@@ -6491,7 +6770,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "未核准的共通紀錄檔名",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 未核准的共通紀錄檔名 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 未核准的共通紀錄檔名 (RuntimeError)"
   },
   {
     "test": "追溯格式破損",
@@ -6539,7 +6818,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "驗收追溯失敗",
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 驗收追溯失敗： (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 驗收追溯失敗： (RuntimeError)"
   },
   {
     "test": "共通 Java 驗收重複",
@@ -6613,7 +6892,7 @@ exit=0
     "expected": "條文小標題不符基準",
     "exit": 1,
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 條文小標題不符基準：不接受一級標題去向 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 條文小標題不符基準：不接受一級標題去向 (RuntimeError)"
   },
   {
     "test": "X11 保留清單改種類",
@@ -6760,42 +7039,42 @@ exit=0
     "expected": "重複文件紀錄",
     "exit": 1,
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 重複文件紀錄 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 重複文件紀錄 (RuntimeError)"
   },
   {
     "test": "文件 ID 順序錯誤",
     "expected": "文件歷史 ID 不符合基準條文",
     "exit": 1,
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 文件歷史 ID 不符合基準條文 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 文件歷史 ID 不符合基準條文 (RuntimeError)"
   },
   {
     "test": "差異清單未知檔案",
     "expected": "差異清單包含未知檔案",
     "exit": 1,
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 差異清單包含未知檔案 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 差異清單包含未知檔案 (RuntimeError)"
   },
   {
     "test": "新增一般規則檔",
     "expected": "rules 檔案清單變更未登錄",
     "exit": 1,
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': rules 檔案清單變更未登錄為整份併入 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': rules 檔案清單變更未登錄為整份併入 (RuntimeError)"
   },
   {
     "test": "保留句文字改寫",
     "expected": "保留句子不是逐字保留",
     "exit": 1,
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 保留句子不是逐字保留 (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 保留句子不是逐字保留 (RuntimeError)"
   },
   {
     "test": "驗收列遺失且同步刪列紀錄",
     "expected": "去向錨點無效",
     "exit": 1,
     "matched": true,
-    "diagnostic": "scripts/verify-body-restructuring.rb:8:in `require_check': 去向錨點無效 rules/stacks/java/common/null-and-optional.md#acceptance-java-optional-coverage (RuntimeError)"
+    "diagnostic": "scripts/verify-body-restructuring.rb:13:in `require_check': 去向錨點無效 rules/stacks/java/common/null-and-optional.md#acceptance-java-optional-coverage (RuntimeError)"
   },
   {
     "test": "核准移入理由不足",

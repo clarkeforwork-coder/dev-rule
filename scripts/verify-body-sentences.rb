@@ -14,4 +14,4 @@ P.paths.each do |path|
  failures<<path unless before==after;count+=before.size
 end
 abort('句子集合變動：'+failures.join('、')) unless failures.empty?
-puts JSON.pretty_generate({start:P::START,files:P.paths.size-1,nonblank_units:count,sentence_multisets_equal:true,method:'正規化連結別名，排除空白、錨點行、固定指路句與新增補充標題；保留重複數及程式碼行',excluded:skip})
+puts JSON.pretty_generate({start:P::START,files:P.paths.size-1,nonblank_units:count,sentence_multisets_equal:true,method:'正規化連結別名，排除空白、錨點行、固定指路句與固定補充標題；保留重複數及程式碼行',excluded:skip})

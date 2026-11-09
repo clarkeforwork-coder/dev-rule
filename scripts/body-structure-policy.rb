@@ -16,7 +16,7 @@ module BodyStructure
     return '' unless index
     return lines[index] if lines[index].start_with?('|')
     unless level
-      index+=1 while index+1<lines.size && lines[index+1].strip.empty?
+      index+=1 while index+1<lines.size && (lines[index+1].strip.empty? || lines[index+1].match?(/\A<a id="[^"]+"><\/a>\s*\z/))
       if h=lines[index+1].to_s.match(/^(\#{1,6})\s/);index+=1;level=h[1].size
       else
         return lines[(index+1)..].take_while{|l|!l.strip.empty?&&!l.start_with?('#','<a ')}.join

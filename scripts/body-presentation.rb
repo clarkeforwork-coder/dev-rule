@@ -155,6 +155,10 @@ module BodyPresentation
     check(config=={'start'=>START,'aliases'=>true,'layout'=>config['layout'],'index'=>config['index']}&&[true,false].include?(config['layout'])&&[true,false].include?(config['index']),'階段 C 設定或起點不符')
     check(JSON.parse(File.read(ALIASES))==aliases,'別名清冊與核准第五節不符')
     expected,records=render(config)
+    java_records=Dir.glob('docs/body-restructuring/java/**/*',File::FNM_DOTMATCH).select{|p|File.file?(p)}
+    check(java_records.sort==records.keys.sort,'階段 C Java 紀錄檔案清冊不符')
+    common_records=Dir.glob('docs/body-restructuring/common/**/*',File::FNM_DOTMATCH).select{|p|File.file?(p)}
+    check(common_records.sort==%w[ca-06 co-08 existing-sources].map{|n|"docs/body-restructuring/common/#{n}.json"}.sort,'階段 C 共通紀錄檔案清冊不符')
     actual=Dir.glob('rules/**/*',File::FNM_DOTMATCH).select{|p|File.file?(p)}
     check(actual.sort==expected.keys.sort,'階段 C rules 檔案清冊不符')
     expected.each do |p,text|
@@ -172,6 +176,9 @@ module BodyPresentation
     section=File.read('docs/pending-decisions.md').split(/^## 五、/,2).last.split(/^## 六、/,2).first
     listed=section.scan(/^\| \[([^\]]+)\]/).flatten
     check(listed.sort==aliases.map{|e|e['path'].delete_prefix('rules/')+'#'+e['old']}.sort,'第五節別名清冊不完整')
+    pairs=section.scan(/^\| \[([^\]]+)\]\(([^)]+)\) \| `([^`]+)` \|/)
+    expected_pairs=aliases.map{|e|[e['path'].delete_prefix('rules/')+'#'+e['old'],'../'+e['path']+'#'+e['new'],e['new']]}
+    check(pairs.map{|a,u,n|[a,n]}.sort==expected_pairs.map{|a,u,n|[a,n]}.sort,'第五節實際名稱不符')
     %w[三 四 六].each do |part|
       extract=lambda{|t|t.split(/^## #{part}、/,2).last.to_s.split(/^## /,2).first.scan(/^\| \[([A-Z]{2}-\d{2}) 第/).flatten.sort}
       check(extract.call(File.read('docs/pending-decisions.md'))==extract.call(old('docs/pending-decisions.md')),'待決清冊 ID 不符')
@@ -191,7 +198,7 @@ module BodyPresentation
     fence=false;text.lines.map{|l|if l.match?(/^\s*(`{3,}|~{3,})/);fence=!fence;"\n";else;fence ? "\n" : l;end}.join
   end
   def self.verify_links
-    paths=(Dir.glob('{rules,docs}/**/*.md')+['README.md']).select{|p|File.file?(p)};ids={};count=0
+    paths=(Dir.glob('{rules,docs}/**/*.md',File::FNM_DOTMATCH)+['README.md']).select{|p|File.file?(p)};ids={};count=0
     paths.each do |p|
       t=visible(File.read(p));counts=Hash.new(0)
       ids[p]=t.scan(/<a id="([^"]+)"/).flatten+t.scan(/^#+ (.+)$/).flatten.map{|h|a=slug(h);n=counts[a];counts[a]+=1;n==0 ? a : "#{a}-#{n}"}

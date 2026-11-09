@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 require_relative 'body-presentation'
+require_relative 'body-structure-checks'
 ROOT=File.expand_path('..',__dir__)
 ENV['BODY_GIT_DIR']=File.expand_path(Open3.capture2('git','rev-parse','--git-common-dir',chdir:ROOT).first.strip,ROOT)
 P=BodyPresentation
 CONFIG={'start'=>P::START,'aliases'=>true,'layout'=>true,'index'=>true}.freeze
 cases=[
- ['全部合法轉換',nil,lambda{}],
+ ['第五節不能改成其他名稱','第五節實際名稱',lambda{p='docs/pending-decisions.md';File.write(p,File.read(p).sub('`mapping-responsibility`','`wrong-mapping-name`'))}],
+ ['不能新增未列管 Java 紀錄','Java 紀錄檔案清冊',lambda{File.write('docs/body-restructuring/java/.extra.json','{}')}],
+ ['不能新增未列管共通紀錄','共通紀錄檔案清冊',lambda{File.write('docs/body-restructuring/common/.extra.json','{}')}],
+ ['全部合法轉換及新舊錨點同一正文',nil,lambda{P.aliases.each{|e|a=BodyStructure.excerpt(e['path']+'#'+e['old']);b=BodyStructure.excerpt(e['path']+'#'+e['new']);raise '新舊別名內容不一致' unless !a.empty?&&a==b}}],
  ['起點不得後移','設定或起點不符',lambda{r=JSON.parse(File.read(P::CONFIG));r['start']='HEAD';File.write(P::CONFIG,JSON.generate(r))}],
  ['別名漏列','別名清冊',lambda{r=JSON.parse(File.read(P::ALIASES));r.pop;File.write(P::ALIASES,JSON.generate(r))}],
  ['舊錨點不可刪','非核准連結／版面',lambda{p=P.aliases.first['path'];File.write(p,File.read(p).sub('<a id="bm-03"></a>',''))}],

@@ -1,5 +1,7 @@
 # Java 正文整理作業說明
 
+階段 C 呈現格式已更新，現行工具、別名正規化及固定格式以[版面檢查說明](body-presentation-checks.md)為準；下列逐句判斷與工作者流程保留作階段 A／B 歷史作業依據，不能直接用舊夾具覆寫現行文件。
+
 固定基準：`350668eb14ede247af22c782323beebf940c2a5f`，不得改工具或紀錄的基準值。決策依[待決清單](pending-decisions.md)及本文件列出的核准例外；共通側現況見[共通決策](body-restructuring-common-decisions.md)。Ruby 最低版本為 **2.6**，本輪以 Ruby 2.6.10 執行；不需要額外 gem。
 
 ## 唯一可修改範圍
@@ -46,11 +48,11 @@ ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 工作者
 宣告使用 `Optional` 的位置，`Optional` 本身不得為 `null`。
 ```
 
-錨點用 `java-` 加小寫英文語意，以 `-` 分隔；不得含數字、歷史 ID、歷史代號（如 bm、jn）或條號，也不得把代號換成字母序號。工具只強制英文與連字號，歷史代號須自行避免。同檔唯一，避免和隱含標題錨點相撞。共通來源先用現行 `#jn-08` 等錨點，74 個歷史規則錨點由後續協調者統一改名及保留別名。
+錨點用 `java-` 加小寫英文語意，以 `-` 分隔；不得含數字、歷史 ID、歷史代號（如 bm、jn）或條號，也不得把代號換成字母序號。工具只強制英文與連字號，歷史代號須自行避免。同檔唯一，避免和隱含標題錨點相撞。共通來源使用語意錨點，例如 `#third-party-null-contract`；74 個歷史錨點已保留為同位置別名，現行連結不得使用舊代號。
 
 **原句引用整份文件，整理後仍須保留整份連結；精確錨點只能額外補充，不能取代。** 移除純引用條文時，原整份引用須在引言或相應驗收入口繼續存在；去向證據另列最直接的條文錨點。JN-06 的整份資料驗證／錯誤處理／領域建模引用移至檔頭，接收、建立、狀態變更的證據分別列在 JSON，兩者責任不同。
 
-分組尾段一律集中在正文結尾的獨立小節，原句順序保持不變，不放在最後條文內；即使最後一條移除，也使用同一格式：
+基準非最後分組的尾段放回該組結尾的「本組補充說明」小節（`java-group-notes-` 加該組第一條原 Java 語意錨點尾碼）；最後分組之後的尾段才使用下列獨立小節，沒有尾段就不保留空標題：
 
 ```markdown
 <a id="java-closing-requirements"></a>
@@ -62,15 +64,15 @@ ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 工作者
 
 每個尾段句的 `history_id` 為 `null`，`targets[].uri` 一律填本文件完整路徑加 `#java-closing-requirements`。檔頭句才可指向本文件一級標題；已編號條文不得用一級標題當去向。共通來源的一級標題只涵蓋引言，到第一個二級標題即止；例如空值語意的狀態要求本來位於引言，仍可作來源，不得用它涵蓋下方契約演進。
 
-分組被清空仍保留原二級標題，緊接固定指路句 `本組要求依〈來源連結〉、……辦理。`。JSON 增加 `group_routes`，每筆必填 `heading`（原標題）、`targets`（該分組全部被移除條文的去向聯集，排序去重）與 `text`（完整指路句）。連結文字用錨點本身，按 targets 的完整路徑／URI 字元順序排序（Ruby 字串 sort），不是按條文順序；不得夾帶其他政策。沒有清空時填空陣列。例如集合第一組 CO-01 至 CO-03 全移除後：
+每個有「整條移除」條文的分組都保留原二級標題，緊接固定指路句；不要求整組清空。`group_routes` 每筆包含原 `heading`、該組被整條移除條文的共通 `targets` 聯集（排序去重）、工具重算的 `text`。不列拆分條文；連結文字取共通條文標題，順序依完整目標路徑。例如現行集合第一組只移除 CO-03：
 
 ```markdown
 ## 所有權與集合語意
 
-本組要求依[co-01](../../../coding/collections-and-ownership.md#co-01)、[co-02](../../../coding/collections-and-ownership.md#co-02)、[co-03](../../../coding/collections-and-ownership.md#co-03)辦理。
+本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。
 ```
 
-上述連結不是另立規則。**基準出現過的每個共通連結目標（整份或錨點）都必須留在現行文件**；分組清空時優先放指路句，其他遺失目標放引言。引言固定格式為 `本文件另依〈錨點或檔名連結〉、……辦理。`；使用 `link_retention` 每筆 `targets` 與 `text` 登錄，targets 須來自基準，無片段時標籤用不含 `.md` 的檔名。若共通來源指路已涵蓋錨點但原條文還有整份連結，整份連結仍另保留，不能以更精確連結取代。不得自行創建共通錨點。
+上述連結只是指路。基準的共通連結目標須保留，別名按清冊正規化比較；分組指路已涵蓋的目標不重複列於引言。剩餘無法歸組、且其他既有段落也沒有的目標才用 `link_retention` 登錄。引言固定「本文件另依〈標題連結〉、……辦理。」，標籤取條文或整份文件的標題，不用代碼或檔名；沒有剩餘連結即移除整句。整份文件入口不能以較窄錨點替代。
 
 例：BM-03 移除純引用句後保留「Java 映射可解析格式及建立專屬型別；需要補查資料時，由負責流程的元件先協調。」一句，種類填「拆分」。假設小節錨點是 `java-mapping-responsibility`，`rules[].targets` 必須同時列出下面兩個目標；第一句的 sentences[].targets 指向共通，第二句仍指向 Java 小節，理由寫明 Java 句子涵蓋不直接而保留。若兩句均保留則填「整條保留」。
 
@@ -80,7 +82,7 @@ ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 工作者
   "kind": "拆分",
   "targets": [
     "rules/stacks/java/common/boundary-mapping.md#java-mapping-responsibility",
-    "rules/architecture/data-mapping.md#bm-03"
+    "rules/architecture/data-mapping.md#mapping-responsibility"
   ]
 }
 ```
@@ -130,7 +132,7 @@ CO-09 若整條移除，最後的「邊界間的參考隔離另依……」尾�
   "history_id": "JN-09",
   "removed_assertions": [{
     "text": "不因 Java 方法簽章未變就視為相容",
-    "source_uri": "rules/coding/nullability.md#jn-09",
+    "source_uri": "rules/coding/nullability.md#null-contract-evolution",
     "source_text": "空值契約變更須評估參數、回傳值及欄位對使用端的影響，涵蓋是否允許缺值、缺值語意、標註及實際處置；即使型別或方法簽章未變，也不得直接視為相容。"
   }]
 }
@@ -241,7 +243,7 @@ git diff --check 350668eb14ede247af22c782323beebf940c2a5f..HEAD
 5. 全部合併後才決定集合是否併入例外；同步全部正文、驗收列、索引、入站連結、追溯目的地及改寫清單，不由單檔工作者做。
 6. 演練在固定分派起點 `7b2667c72d2163a5be9e782dec13946ed7590e90` 的 rules／docs 暫存快照搭配目前 scripts 執行，共用檔也使用該快照，不會覆寫已完成的真實文件；整合結果另由常駐檢查與負向測試驗證。執行常駐、負向與 diff 檢查，使用 `ruby scripts/record-body-verification.rb` 重生共用驗證紀錄；重算完成數及人工待複核清單。
 7. 併發或集合標為 completed／merged 後，對應提升提交的「單獨撤回後仍檢查通過」測試不再適用；產生器會明列 applicable=false 與理由。要實際撤回時須連同 Java 來源、連結及紀錄規劃，不得把略過當作可獨立撤回的證據。
-8. 74 個錨點改名、M4 驗收整合、CA-06／CO-08 重疊分工仍為後續獨立批次，不能夾在平行合併中。
+8. 74 個錨點改名已在階段 C 第一部分完成；M4 驗收整合、CA-06／CO-08 重疊分工仍留第二部分，不夾帶規範句子改寫。
 
 ## 必須整條保留與人工複核
 
@@ -257,7 +259,7 @@ git diff --check 350668eb14ede247af22c782323beebf940c2a5f..HEAD
 - common_sources 選填（預設空），只作補充來源索引；不代替 removed_assertions。建議填該句 removed_assertions 的 source_uri 去重集合，不能填 Java 來源。
 - group_routes、link_retention、link_exceptions 選填（預設空）；有對應調整時必填其項目。imports 所有五欄必填，整句貼在 BM-04 小節原正文末尾，補句號即可，不拆成片段。
 - acceptance_text_changes 每筆必填 before、after、reason、references；references 每筆 before／after。acceptance_additions 為固定完整字串陣列。edits 由輔助工具產生，reason 仍須人工確認。
-- 15 份基準掃描結果見[結構掃描](body-structure-survey.md)：全部條文都有粗體標題，正文沒有巢狀標題或表格；types-and-generics 與 lambda-and-stream 各有一個程式碼區塊；types-and-generics 有一段分組中間尾段，version-policy 有兩段。圍欄與每一程式碼行仍依原切句逐字保留，與相鄰說明一起放補充要求；多個分組尾段按基準順序集中，不借用條號。原分組標題不刪。
+- 15 份基準掃描結果見[結構掃描](body-structure-survey.md)：全部條文都有粗體標題，正文沒有巢狀標題或表格；types-and-generics 與 lambda-and-stream 各有一個程式碼區塊；types-and-generics 有一段分組中間尾段，version-policy 有兩段。圍欄與每一程式碼行仍依原切句逐字保留；非最後分組尾段回該組的本組補充說明，最後分組尾段與程式碼示例維持補充要求，不借用條號。原分組標題不刪。
 - classes-and-construction、states-and-results 亦可能清空分組，使用同一指路格式。types-and-generics 的 JT-03／06、states-and-results 的 ST-02／03 含同樣引用句，按各條小節核對，不為另一條仍在而修改來源證據。
 - 沒有遇過的結構不自行重切 source；保留原文並回報協調者。本輪未授權工作者改工具或共通檔。
 
@@ -286,3 +288,5 @@ Ruby 診斷的第一行通常是「腳本路徑:行號:in check: 中文訊息 (R
 | 指路文字不符固定格式 | group_routes.text 的連結依完整路徑／URI 的字元順序排列，不能按原條文順序；逐字核對固定前後文。 |
 
 指路格式、顯示名稱及 version-policy 範例段的位置仍沿用本版通則，後續由協調者另行處理；本輪不改 R7-M4 收尾順序與演練夾具，也不改 R7-M5 可讀性決策。
+
+階段 C 的 `source`、目的文字與差異區塊以同一別名表正規化連結目標；除此之外保留原文。新增 `group_endings` 登錄 heading、anchor、text，三欄皆必填，工具依基準重算，不得手填新增政策。新版指路與引言的錯誤診斷列出期待整句，請先核對被整條移除的歷史 ID 去向與共通標題，不得靠加字略過。

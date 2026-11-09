@@ -5,6 +5,19 @@ require 'tmpdir'
 require 'fileutils'
 require 'open3'
 require 'json'
+# 階段 C 起明確在封存提交執行這組舊測試，不把封存測試當現行規範驗證。
+if File.exist?(File.expand_path('../docs/body-presentation.json',__dir__))
+  require_relative 'body-restructuring-lib'
+  root=File.expand_path('..',__dir__)
+  result=nil;passed=false
+  Dir.mktmpdir('body-archived-acceptance-') do |dir|
+    _,err,status=Open3.capture3('git','clone','--quiet','--shared',root,dir+'/repo');raise err unless status.success?
+    _,err,status=Open3.capture3('git','checkout','--quiet','--detach',BodyRestructuring::BASELINE,chdir:dir+'/repo');raise err unless status.success?
+    out,status=Open3.capture2e('ruby','scripts/test-verify-acceptance.rb',chdir:dir+'/repo')
+    passed=status.success?;result={'archived_at'=>BodyRestructuring::BASELINE,'scope'=>'封存驗收階段；現行內容另由正文及版面檢查驗證','exit'=>status.exitstatus,'output'=>out}
+  end
+  puts JSON.pretty_generate(result);exit(passed ? 0 : 1)
+end
 ROOT=File.expand_path('..',__dir__)
 GIT_DIR=File.expand_path(Open3.capture2('git','-C',ROOT,'rev-parse','--git-common-dir').first.strip,ROOT)
 def change(path)

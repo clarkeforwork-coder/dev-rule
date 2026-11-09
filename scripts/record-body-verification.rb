@@ -4,6 +4,9 @@ require_relative 'body-restructuring-lib'
 Dir.chdir(File.expand_path('..',__dir__))
 commands=[
  ['ruby','scripts/verify-body-restructuring.rb'],
+ ['ruby','scripts/verify-body-sentences.rb'],
+ ['ruby','scripts/test-body-presentation.rb'],
+ ['ruby','scripts/test-verify-acceptance.rb'],
  ['ruby','scripts/test-body-restructuring.rb'],
  ['ruby','scripts/test-body-policy.rb'],
  ['ruby','scripts/test-body-worker-scope.rb'],
