@@ -49,4 +49,4 @@
 
 ## 跨主題契約
 
-共享集合複合操作的原子性依[併發與非同步](concurrency-and-async.md#co-05)；大量資料累積依[效能與資源使用](../quality/performance.md#co-06)；延遲讀取的所有權及關閉依[資源生命週期](resource-lifecycle.md#co-07)。批次修改須依[錯誤處理](error-handling.md#多步驟與部分成功)明訂全部成功或部分成功、失敗後狀態及各筆對應，不得假設拋例外即未修改；不要求所有集合操作具備交易能力。
+共享集合複合操作的原子性依[併發與非同步](concurrency-and-async.md#co-05)；大量資料累積依[效能與資源使用](../quality/performance.md#co-06)；延遲讀取的所有權及關閉依[資源生命週期](resource-lifecycle.md#co-07)。批次修改依[多步驟與部分成功](error-handling.md#多步驟與部分成功)及[失敗後狀態](error-handling.md#failure-state-guarantee)。

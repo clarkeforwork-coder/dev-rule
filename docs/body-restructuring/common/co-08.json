@@ -1,0 +1,46 @@
+{
+  "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
+  "changes": [
+    {
+      "baseline_line": 52,
+      "remove": [
+        "共享集合複合操作的原子性依[併發與非同步](concurrency-and-async.md#co-05)；大量資料累積依[效能與資源使用](../quality/performance.md#co-06)；延遲讀取的所有權及關閉依[資源生命週期](resource-lifecycle.md#co-07)。批次修改須依[錯誤處理](error-handling.md#多步驟與部分成功)明訂全部成功或部分成功、失敗後狀態及各筆對應，不得假設拋例外即未修改；不要求所有集合操作具備交易能力。\n"
+      ],
+      "insert": [
+        "共享集合複合操作的原子性依[併發與非同步](concurrency-and-async.md#co-05)；大量資料累積依[效能與資源使用](../quality/performance.md#co-06)；延遲讀取的所有權及關閉依[資源生命週期](resource-lifecycle.md#co-07)。批次修改依[多步驟與部分成功](error-handling.md#多步驟與部分成功)及[失敗後狀態](error-handling.md#failure-state-guarantee)。\n"
+      ],
+      "path": "rules/coding/collections-and-ownership.md",
+      "decision": "一／CO-08",
+      "reason": "使用者核准原集合摘要的失敗後狀態義務，原文的不得假設拋例外即未修改及不要求全部集合交易能力同時移至錯誤處理；全部／部分成功仍引用既有來源，補充驗收只核對失敗後實際狀態。"
+    },
+    {
+      "baseline_line": 66,
+      "remove": [
+
+      ],
+      "insert": [
+        "<a id=\"failure-state-guarantee\"></a>\n",
+        "\n",
+        "## 失敗後狀態\n",
+        "\n",
+        "批次修改須明訂失敗後狀態，不得假設拋例外即未修改；不要求所有集合操作具備交易能力。全部成功或部分成功及各筆對應依[多步驟與部分成功](#多步驟與部分成功)。\n",
+        "\n"
+      ],
+      "path": "rules/coding/error-handling.md",
+      "decision": "一／CO-08",
+      "reason": "使用者核准原集合摘要的失敗後狀態義務，原文的不得假設拋例外即未修改及不要求全部集合交易能力同時移至錯誤處理；全部／部分成功仍引用既有來源，補充驗收只核對失敗後實際狀態。"
+    },
+    {
+      "baseline_line": 106,
+      "remove": [
+
+      ],
+      "insert": [
+        "| <a id=\"acceptance-failure-state\"></a>[失敗後狀態](#failure-state-guarantee) | 觸發批次修改的適用失敗路徑，核對例外後實際狀態符合約定，不以拋例外推定未修改，也不要求所有集合操作具備交易能力。 |\n"
+      ],
+      "path": "rules/coding/error-handling.md",
+      "decision": "一／CO-08",
+      "reason": "使用者核准原集合摘要的失敗後狀態義務，原文的不得假設拋例外即未修改及不要求全部集合交易能力同時移至錯誤處理；全部／部分成功仍引用既有來源，補充驗收只核對失敗後實際狀態。"
+    }
+  ]
+}
