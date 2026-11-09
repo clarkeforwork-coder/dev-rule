@@ -30,7 +30,14 @@ def destination(uri)
   path, anchor = uri.split('#',2)
   path = Pathname.new(File.join('docs',path)).cleanpath.to_s
   return nil unless anchor && File.file?(path)
-  lines = File.readlines(path)
+  text = File.read(path)
+  record_path = "docs/body-restructuring/java/#{File.basename(path,'.md')}.json"
+  if File.file?(record_path)
+    JSON.parse(File.read(record_path)).fetch('acceptance_text_changes',[]).each do |change|
+      text = text.sub(change.fetch('after'), change.fetch('before'))
+    end
+  end
+  lines = text.lines
   idx = lines.index { |l| l.include?(%(<a id="#{anchor}"></a>)) }
   return nil unless idx
   return row_content(lines[idx]) if lines[idx].start_with?('|')

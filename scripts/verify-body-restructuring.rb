@@ -21,26 +21,10 @@ check_uri=lambda do |uri|
  p,a=uri.split('#',2);require_check(File.file?(p)&&a&&anchors.fetch(p,[]).include?(a),"去向錨點無效 #{uri}")
 end
 # 驗證目的內容落在指定錨點所在小節／表列，不能只在同檔任意位置找到。
-excerpt=lambda do |uri|
- path,id=uri.split('#',2);lines=File.readlines(path);counts=Hash.new(0);index=nil;level=1
- lines.each_with_index do |line,i|
-  if line.include?(%(<a id="#{id}">));index=i;break;end
-  if h=line.match(/^(\#{1,6})\s+(.+)$/)
-   slug=h[2].downcase.gsub(/[\p{P}\p{S}&&[^_-]]/,'').gsub(/\s/,'-');n=counts[slug];counts[slug]+=1;slug="#{slug}-#{n}" unless n.zero?
-   if slug==id;index=i;level=h[1].size;break;end
-  end
- end
- return '' unless index
- return lines[index] if lines[index].start_with?('|')
- if lines[index].start_with?('<a ')
-  next_heading=((index+1)...lines.size).find{|i|!lines[i].strip.empty?}
-  if next_heading && (h=lines[next_heading].match(/^(\#{1,6}) /));level=h[1].size;index=next_heading;end
- end
- tail=lines[(index+1)..].take_while{|l|!(h=l.match(/^(\#{1,6}) /)) || h[1].size>level}
- ([lines[index]]+tail).join
-end
+excerpt=lambda{|uri| BodyStructure.excerpt(uri)}
 manifest=JSON.parse(File.read('scripts/acceptance-batches.json')).values.flat_map{|b|b['files'].to_a}.to_h
 records=Dir.glob('docs/body-restructuring/java/*.json').map{|p|JSON.parse(File.read(p))}
+require_check(records.map{|r|r['path']}.uniq.size==records.size,'重複文件紀錄')
 expected_ids=File.read('docs/java-rule-classification.md').scan(/^\| ([A-Z]{2}-\d{2})[： ]/).flatten.reject{|id|id.start_with?('AU-')}.uniq.sort
 require_check(records.flat_map{|r|r['rules'].map{|e|e['id']}}.sort==expected_ids && expected_ids.size==153,'歷史 ID 集合不完整或重複')
 common_paths=Dir.glob('docs/body-restructuring/common/**/*',File::FNM_DOTMATCH).select{|p|File.file?(p)}
@@ -58,6 +42,7 @@ records.each do |r|
 require_check(!registered.key?(path),'重複文件紀錄');registered[path]=r.fetch('edits')
  require_check(%w[pending completed merged].include?(r['status']),'整理狀態無效')
  require_check(File.binread(path)==base.b && r['edits'].empty?,"未整理文件改動 #{path}") if r['status']=='pending'
+ require_check(r['rules'].none?{|e|e['reason'].include?('尚未整理')},'已完成紀錄仍有尚未整理去向') if r['status']=='completed'
  prefix=manifest.find{|_,slug|path=="rules/stacks/java/common/#{slug}.md"}.to_a.first
  require_check(prefix,'Java 文件不在原分類範圍')
  require_check(r['rules'].map{|e|e['id']}==B.rules(base).map{|n,_,_|format('%s-%02d',prefix,n)},'文件歷史 ID 不符合基準條文')
@@ -65,6 +50,9 @@ require_check(!registered.key?(path),'重複文件紀錄');registered[path]=r.fe
   require_check(B::KINDS.include?(e['kind']),'去向種類無效');require_check(e['targets'].is_a?(Array)&&!e['targets'].empty?,'歷史 ID 沒有現行去向')
   e['targets'].each{|u|check_uri.call(u)}
   require_check(e['reason'].to_s.gsub(/\s/,'').size>=10,'歷史去向理由不足')
+ end
+ if r['status']=='completed'
+  r['rules'].each{|e|e['targets'].each{|u|require_check(!excerpt.call(u).start_with?('# '),'條文小標題不符基準：不接受一級標題去向') if u.start_with?(path+'#')}}
  end
  require_check(r['sentences'].map{|s|s['source']}==B.sentences(base),"基準逐句去向不完整 #{path}")
  r['sentences'].each do |s|
@@ -77,7 +65,7 @@ require_check(!registered.key?(path),'重複文件紀錄');registered[path]=r.fe
    check_uri.call(t.fetch('uri'));p=t['uri'].split('#').first
    if s['action']=='移除';require_check(!p.include?('/stacks/'),'移除須指向共通條文')
    else
-    require_check(t['text'].is_a?(String)&&!t['text'].strip.empty?&&excerpt.call(t['uri']).include?(t['text']),'去向文字不存在')
+    require_check(t['text'].is_a?(String)&&!t['text'].strip.empty?&&(r['status']=='pending' ? File.read(p) : excerpt.call(t['uri'])).include?(t['text']),'去向文字不存在')
     require_check(t['text']==s['source'],'保留句子不是逐字保留') if s['action']=='保留'
    end
   end
@@ -137,4 +125,5 @@ abort(errors.join("\n")) unless errors.empty?
 trace_output,trace_status=Open3.capture2e('ruby',File.expand_path('verify-body-acceptance.rb',__dir__))
 require_check(trace_status.success?,"驗收追溯失敗：\n#{trace_output}")
 trace_result=JSON.parse(trace_output)
-puts JSON.pretty_generate({baseline:B::BASELINE,acceptance:trace_result,historical_ids:expected_ids.size,java_files:records.size,completed:records.count{|r|r['status']=='completed'},pending:records.count{|r|r['status']=='pending'},body_sentences:sentence_count,preserved_acceptance_rows:acceptance_count,common_change_blocks:common.sum{|r|r['changes'].size},local_links:links,manual_review_count:manual.size,manual_review_sentences:manual,manual_limitations:['即使承接原文逐字存在，是否與被刪斷言相關仍須逐項人工複核','語意等價、理由充分性與語意重複無法機械證明']})
+dispositions=records.flat_map{|r|r['rules'].map{|e|{path:r['path'],status:r['status'],id:e['id'],decision:BodyStructure.decisions[e['id']],kind:e['kind']}}}
+puts JSON.pretty_generate({rule_dispositions:dispositions,baseline:B::BASELINE,acceptance:trace_result,historical_ids:expected_ids.size,java_files:records.size,completed:records.count{|r|r['status']=='completed'},pending:records.count{|r|r['status']=='pending'},body_sentences:sentence_count,preserved_acceptance_rows:acceptance_count,common_change_blocks:common.sum{|r|r['changes'].size},local_links:links,manual_review_count:manual.size,manual_review_sentences:manual,manual_limitations:['即使承接原文逐字存在，是否與被刪斷言相關仍須逐項人工複核','語意等價、理由充分性與語意重複無法機械證明']})

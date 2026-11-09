@@ -26,8 +26,8 @@ end
 cases=[]
 def add(cases,name,diagnostic,command=nil,&block);cases<<[name,diagnostic,command,block];end
 add(cases,'乾淨複本',nil){}
-add(cases,'N02c 刪共同驗收連結','驗收非表格內容未依基準保留'){|r|patch_jn(r,"- [測試程式碼](../../../quality/rule-verification.md#測試程式碼)。\n",'')}
-add(cases,'N02d 刪例外治理尾句','驗收非表格內容未依基準保留'){|r|patch_jn(r,File.read(J).lines.last,'')}
+add(cases,'N02c 刪共同驗收連結','基準共通連結遺漏'){|r|patch_jn(r,"- [測試程式碼](../../../quality/rule-verification.md#測試程式碼)。\n",'')}
+add(cases,'N02d 刪例外治理尾句','基準共通連結遺漏'){|r|patch_jn(r,File.read(J).lines.last,'')}
 add(cases,'N02f 改引言並同步目的文字','驗收非表格內容未依基準保留'){|r|patch_jn(r,'，不因引用共通驗收而略過','');r['sentences'].each{|s|s['targets'].each{|t|t['text']=t['text'].to_s.sub('，不因引用共通驗收而略過','') if t['text']}}}
 add(cases,'N08c 整條保留改寫','整條保留必須逐句保留'){|r|patch_jn(r,'預設不允許 `null`','預設不建議 `null`');e=r['sentences'].find{|s|s['history_id']=='JN-11'};e['action']='改寫';e['reason']='測試將整條保留偷偷改寫，確認種類與句子處置必須一致。';e['targets'][0]['text']=e['source'].sub('不允許','不建議')}
 add(cases,'N13 假整條移除','整條移除必須逐句移除'){|r|r['rules'].find{|e|e['id']=='JN-05'}['kind']='整條移除'}
@@ -83,12 +83,12 @@ def add_import(r,write=true)
  r['imports']=[{'source_path'=>'rules/architecture/data-mapping.md','source_text'=>text,'target_uri'=>J+'#java-api-absence','history_id'=>'JN-12','reason'=>'暫存複本只用樣板測試移入格式，來源逐字取固定共通基準，不寫入實際分支。'}]
  patch_jn(r,'具體序列化配置由 Framework 規範落實。','具體序列化配置由 Framework 規範落實。'+text+'。') if write
 end
-add(cases,'移入格式合法（暫存樣板承載）',nil){|r|add_import(r)}
+add(cases,'未核准樣板移入遭拒','移入句不在核准清單'){|r|add_import(r)}
 add(cases,'移入來源非共通','移入來源必須為共通檔'){|r|add_import(r);r['imports'][0]['source_path']=J}
 add(cases,'移入原文不在基準','移入原文不在固定基準'){|r|add_import(r);r['imports'][0]['source_text']='這是未核准而且不存在的共通新義務。'}
 add(cases,'移入原文未寫入','移入原文不在 Java 目的小節'){|r|add_import(r,false)}
 add(cases,'移入 ID 不符','移入句所屬 ID 或小節不符'){|r|add_import(r);r['imports'][0]['history_id']='JN-05'}
-add(cases,'移入理由不足','移入句理由不足'){|r|add_import(r);r['imports'][0]['reason']='x'}
+add(cases,'未核准移入且理由不足','移入句不在核准清單'){|r|add_import(r);r['imports'][0]['reason']='x'}
 add(cases,'歷史去向理由不足','歷史去向理由不足'){|r|r['rules'][0]['reason']='x'}
 add(cases,'歷史去向清空','歷史 ID 沒有現行去向'){|r|r['rules'][0]['targets']=[]}
 add(cases,'句子處置無效','句子處置無效'){|r|r['sentences'][0]['action']='任意'}
@@ -97,6 +97,13 @@ add(cases,'去向不在同一小節','去向文字不存在'){|r|r['sentences'][
 add(cases,'非分類 Java 檔案','Java 文件不在原分類範圍'){|r|r['path']='rules/coding/nullability.md';r['status']='completed'}
 add(cases,'隱藏共通清單','未核准的共通紀錄檔名'){File.write('docs/body-restructuring/common/.zz.json','{}')}
 add(cases,'非 JSON 共通檔','未核准的共通紀錄檔名'){File.write('docs/body-restructuring/common/zz.txt','未核准')}
+add(cases,'追溯格式破損','Malformed trace rows',['ruby','scripts/verify-body-acceptance.rb']){p='docs/acceptance-cleanup-batch-1.md';File.write(p,File.read(p).sub('[主要驗收]','[失準標籤]'))}
+add(cases,'追溯 ID 重複','Duplicate trace IDs',['ruby','scripts/verify-body-acceptance.rb']){p='docs/acceptance-cleanup-batch-1.md';s=File.read(p);File.write(p,s+s.lines.find{|l|l.start_with?('| CL-')})}
+add(cases,'追溯多餘片段','Unexpected trace fragments',['ruby','scripts/verify-body-acceptance.rb']){p='docs/acceptance-cleanup-batch-1.md';s=File.read(p);File.write(p,s+s.lines.find{|l|l.start_with?('| CL-')}.sub(/CL-[\d、]+-\d+/,'ZZ-99-1'))}
+add(cases,'追溯目的地改寫不符','Invalid rewritten fragment',['ruby','scripts/verify-body-acceptance.rb']){p='docs/acceptance-rewritten-fragments.json';r=JSON.parse(File.read(p));r[0]['replacement']='假的目的列';File.write(p,JSON.generate(r))}
+add(cases,'追溯缺承接文字','Trace fragment absent from destination',['ruby','scripts/verify-body-acceptance.rb']){p='docs/acceptance-cleanup-batch-1.md';s=File.read(p);l=s.lines.find{|x|x.start_with?('| CL-')};File.write(p,s.sub(l,l.sub(/\]\([^)]+\)/,'](../rules/coding/nullability.md#acceptance-third-party-null)')))}
+add(cases,'主入口拒絕追溯改寫','驗收追溯失敗'){p='docs/acceptance-rewritten-fragments.json';r=JSON.parse(File.read(p));r[0]['replacement']='假的目的列';File.write(p,JSON.generate(r))}
+add(cases,'共通 Java 驗收重複','Scoped duplicate acceptance',['ruby','scripts/verify-body-acceptance.rb']){text=File.read(J).lines.find{|l|l.include?('acceptance-java-optional-results')}.split(' | ',3)[1];File.open('rules/coding/nullability.md','a'){|f|f.puts "\n| 契約 | 驗收內容 |\n| --- | --- |\n| 測試 | #{text} |"}}
 results=[]
 
 

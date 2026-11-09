@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require_relative 'body-restructuring-lib'
+require_relative 'body-structure-policy'
 module BodyStructure
   COMMON_FILES = %w[ca-06.json co-08.json existing-sources.json].freeze
   JN = 'rules/stacks/java/common/null-and-optional.md'.freeze
@@ -13,7 +14,7 @@ module BodyStructure
   def self.units(text)
     text.lines.reject{|l|l.strip.empty? || l.start_with?('#','<a ')}.flat_map do |l|
       l=l.split(' | ',3)[1].to_s.sub(/ \|\s*$/,'') if l.start_with?('|')
-      l.strip.scan(/[^。]+。|[^。]+\z/)
+      l.strip.sub(/\A- /,'').scan(/[^。]+。|[^。]+\z/)
     end
   end
   def self.owners(base,prefix)
@@ -28,6 +29,7 @@ module BodyStructure
       check(i['source_text'].is_a?(String)&&i['source_text'].strip.size>=8&&BodyRestructuring.original(i['source_path']).include?(i['source_text']),'移入原文不在固定基準')
       check(i['target_uri'].to_s.start_with?(r['path']+'#')&&excerpt.call(i['target_uri']).include?(i['source_text']),'移入原文不在 Java 目的小節')
       check(r['rules'].any?{|e|e['id']==i['history_id']&&e['targets'].include?(i['target_uri'])},'移入句所屬 ID 或小節不符')
+      check(APPROVED_IMPORTS.any?{|a|a.all?{|k,v|i[k]==v}} && i['target_uri'].start_with?(BM+'#'),'移入句不在核准清單或並非完整原句')
       check(i.fetch('reason','').gsub(/\s/,'').size>=20,'移入句理由不足')
     end
   end
@@ -51,16 +53,19 @@ module BodyStructure
       end
       check(sentences.all?{|s|(s['targets'].map{|t|t['uri']}&e['targets']).any?},'歷史 ID 去向與句子小節不一致')
     end
-    manual=[]
+    r['sentences'].select{|s|s['action']=='改寫'}.each{|s|s['targets'].each{|t|check(units(excerpt.call(t['uri'])).include?(t['text']),'改寫 text 必須為目的地完整一句')}}
+    manual=policy(r,base,prefix,excerpt,check_uri)
     r['sentences'].each_with_index do |s,index|
       assertions=s.fetch('removed_assertions')
       check(!assertions.empty?,'移除句缺少子句承接證據') if s['action']=='移除'
       assertions.each do |a|
         check(a['text'].is_a?(String)&&!a['text'].empty?&&s['source'].include?(a['text']),'被刪子句不在基準原句')
-        check(!current.include?(a['text']),'被刪子句仍在現行文件')
+        owned=r['rules'].find{|e|e['id']==s['history_id']}
+        scope=owned ? owned['targets'].select{|u|u.start_with?(path+'#')}.map{|u|excerpt.call(u)}.join : current
+        check(!scope.include?(a['text']),'被刪子句仍在現行文件')
         check_uri.call(a['source_uri'])
         check(!a['source_uri'].split('#').first.include?('/stacks/'),'承接子句必須指向共通')
-        check(a['source_text'].is_a?(String)&&a['source_text'].strip.size>=8&&excerpt.call(a['source_uri']).include?(a['source_text']),'承接原文不在共通小節')
+        check(a['source_text'].is_a?(String)&&a['source_text'].strip.size>=8&&units(excerpt.call(a['source_uri'])).include?(a['source_text']),'承接原文不在共通小節')
       end
       if s['action']=='移除'
         check(s['targets'].map{|t|t['uri']}.uniq.sort==assertions.map{|a|a['source_uri']}.uniq.sort,'移除去向與承接證據不一致')
@@ -73,6 +78,8 @@ module BodyStructure
     end
     # 現行正文每個句子必須由一筆保留／改寫或移入紀錄承接。
     covered=r['sentences'].reject{|s|s['action']=='移除'}.flat_map{|s|s['targets'].select{|t|t['uri'].split('#').first==path}.map{|t|t['text']}}
+    covered += r.fetch('group_routes',[]).map{|g|g['text']}
+    covered += r.fetch('link_retention',[]).map{|g|g['text']}
     added=r['imports'].map{|i|i['source_text'].sub(/。\z/,'')}
     units(BodyRestructuring.body(current)).each do |u|
       check(covered.include?(u)||added.include?(u.sub(/。\z/,'')),"現行正文句子未登錄 #{path}: #{u}")
@@ -93,8 +100,10 @@ module BodyStructure
     r.fetch('acceptance_additions').each do |add|
       check(ACCEPTANCE_ADDITIONS.fetch(path,[]).include?(add),'驗收增文未列白名單')
       marker=path==JN ? '### 共同驗收' : '### Java 語言增量驗收'
-      expected=expected.sub(marker,add+marker)
+      expected=path==JN ? expected.sub(marker,add+marker) : expected.sub("\n\n"+marker,"\n"+add+"\n"+marker)
     end
+    required=path==JN ? [] : ACCEPTANCE_ADDITIONS.fetch(path,[])
+    check((required-r['acceptance_additions']).empty?,'缺少必要共同驗收增文')
     check(current.split('## 驗收要求',2).last==expected,'驗收非表格內容未依基準保留')
     manual
   end
