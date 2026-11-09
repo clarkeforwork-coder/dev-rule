@@ -67,7 +67,11 @@ module BodyRehearsal
     p=r['path'];e=r['rules'].find{|x|x['id']==id};old=e['targets'].first;ss=r['sentences'].select{|s|s['history_id']==id};chosen=partial ? ss.take(1) : ss
     chosen.each_with_index do |s,i|
       s['action']='移除';s['targets']=source_uris.map{|u|{'uri'=>u}};s['common_sources']=source_uris
-      s['removed_assertions']=source_uris.map{|u|{'text'=>s['source'],'source_uri'=>u,'source_text'=>BodyStructure.units(BodyStructure.excerpt(u)).first}}
+      s['removed_assertions']=source_uris.flat_map do |u|
+        units=BodyStructure.units(BodyStructure.excerpt(u))
+        indexes=i==0 ? [0] : {'CO-01'=>[0,1],'CO-02'=>[0,1,2],'CO-03'=>[0,1],'CO-09'=>[0,1],'JT-03'=>[2,3,4],'ND-05'=>[0,2]}.fetch(id,[0])
+        indexes.map{|n|{'text'=>s['source'],'source_uri'=>u,'source_text'=>units.fetch(n)}}
+      end
       s['reason']="#{id} 第 #{i+1} 句移除：承接來源列於本句證據；演練核對共通涵蓋，正式整理仍須人工複核語意。"
     end
     e['kind']=partial ? '拆分' : '整條移除';e['targets']=partial ? [old]+source_uris : source_uris

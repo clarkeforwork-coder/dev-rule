@@ -20,7 +20,7 @@ results=[]
   %w[rules docs scripts].each{|p|FileUtils.cp_r(File.join(root,p),repo)}
   out,err,status=Open3.capture3('git','-c','user.name=Verification','-c','user.email=verification@example.invalid','revert','--no-edit',commit,chdir:repo)
   check_out,check_status=Open3.capture2e({'BODY_ROOT'=>nil,'BODY_GIT_DIR'=>nil},'ruby','scripts/verify-body-restructuring.rb',chdir:repo)
-  results<<{commit:commit,revert_exit:status.exitstatus,revert_output:(out+err).gsub(/\[[^\]]+\]/,'[暫存撤回提交]'),verification_exit:check_status.exitstatus,verification_summary:check_status.success? ? JSON.parse(check_out).slice('historical_ids','completed','pending') : check_out,matched:status.success?&&check_status.success?}
+  results<<{commit:commit,revert_exit:status.exitstatus,revert_output:(out+err).gsub(/\[[^\]]+\]/,'[暫存撤回提交]').gsub(/^ Date:.*$/,' Date: <暫存提交時間>'),verification_exit:check_status.exitstatus,verification_summary:check_status.success? ? JSON.parse(check_out).slice('historical_ids','completed','pending') : check_out,matched:status.success?&&check_status.success?}
  end
 end
 puts JSON.pretty_generate(results)

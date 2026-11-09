@@ -18,7 +18,7 @@ text="# 正文整理階段 A：實際驗證紀錄\n\n由 `ruby scripts/record-bo
 failed=[]
 commands.each do |command|
  out,status=Open3.capture2e(*command)
- out=out.gsub(%r{/private/var/folders/[^\s"\]+/body-[^/\s"\]+},'<暫存複本>').gsub(%r{/tmp/body-[^/\s"\]+},'<暫存複本>')
+ out=out.gsub(%r{/private/var/folders/[^\s"]+/body-[^/\s"]+},'<暫存複本>').gsub(%r{/tmp/body-[^/\s"]+},'<暫存複本>')
  text+="\n## `#{command.join(' ')}`\n\n```text\n#{out}exit=#{status.exitstatus}\n```\n"
  failed<<command.join(' ') unless status.success?
 end

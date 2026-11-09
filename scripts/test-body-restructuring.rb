@@ -129,7 +129,7 @@ Dir.mktmpdir('body-worker-scope-') do |dir|
    File.write('docs/java-rule-migration.md','changed') if outside
    out,status=Open3.capture2e('ruby',File.join(ROOT,'scripts/verify-body-worker-scope.rb'),'--topic','null-and-optional','--start',start)
    diagnostic=outside ? '工作者超出允許範圍：docs/java-rule-migration.md' : '工作者範圍通過'
-   results<<{test:outside ? '工作者越界' : '工作者只改兩檔',expected_exit:outside ? 1 : 0,actual_exit:status.exitstatus,expected_diagnostic:diagnostic,matched:status.exitstatus==(outside ? 1 : 0)&&out.include?(diagnostic),diagnostic:out.strip}
+   results<<{test:outside ? '工作者越界' : '工作者只改兩檔',expected_exit:outside ? 1 : 0,actual_exit:status.exitstatus,expected_diagnostic:diagnostic,matched:status.exitstatus==(outside ? 1 : 0)&&out.include?(diagnostic),diagnostic:out.strip.gsub(/\b[0-9a-f]{40}\b/,'<暫存起點>')}
   end
  end
 end

@@ -17,3 +17,5 @@
 新工具亦承接待決清單第三／四節 153 ID 與第六節 19 ID 清冊、空驗收列檢查。已完成文件的驗收章節整體逐字保護，僅允許登錄的第一欄、條號引用及工具明列增文；整條保留不得改字，現行新增句必須有去向。共通紀錄只准 ca-06.json、co-08.json、existing-sources.json。
 
 `ruby scripts/record-body-verification.rb` 為現行驗證紀錄產生器；`ruby scripts/test-body-reverts.rb` 在暫存複本實際撤回兩個獨立提交。工作者另用 `verify-body-worker-scope.rb --topic 主題 --start 起點提交` 驗證只改兩個獲分派檔案。
+
+第六次修正補充：條號去除後，小標題由固定基準逐條核對，不只依 edits 全文差異保護；所有共通連結目標、分組標題與獨立結尾小節另有結構檢查。正文改寫的未申報殘留片段必須為空，樣板既有呈現改寫在 SAMPLE_WORDING 逐筆明列，不供工作者擴增。
