@@ -64,4 +64,4 @@
 
 ## 共用元件的責任
 
-所有權與關閉須涵蓋委派及非同步工作。工作提交、取消與整體結果依[併發與非同步](concurrency-and-async.md)；操作及清理同時失敗仍須依[錯誤處理](error-handling.md#清理與補償失敗)保留兩者關係並嘗試其他安全清理。
+委派及非同步的有效期依[有效期與關閉契約](#ex-08)及其[驗收](#acceptance-close-contract)。工作提交、取消與整體結果依[併發與非同步](concurrency-and-async.md)；操作與清理失敗依[清理與補償失敗](error-handling.md#清理與補償失敗)。
