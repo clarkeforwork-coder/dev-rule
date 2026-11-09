@@ -5,6 +5,16 @@ require_relative 'body-rehearsal-fixtures'
 ROOT=File.expand_path('..',__dir__)
 GIT=File.expand_path(Open3.capture2('git','rev-parse','--git-common-dir',chdir:ROOT).first.strip,ROOT)
 ENV['BODY_GIT_DIR']=GIT
+# 演練有自己的分派前資料快照；目前工具仍照常執行，不改真實已完成文件。
+REHEARSAL_START='7b2667c72d2163a5be9e782dec13946ed7590e90'.freeze
+def prepare_rehearsal(dir)
+ raise '演練不得覆寫真實工作區' if File.realpath(dir)==File.realpath(ROOT)
+ %w[rules docs].each{|p|FileUtils.rm_rf(File.join(dir,p))}
+ archive,status=Open3.capture2('git',"--git-dir=#{GIT}",'archive',REHEARSAL_START,'rules','docs',binmode:true)
+ raise '無法取得固定演練快照' unless status.success?
+ _,err,status=Open3.capture3('tar','-xf','-','-C',dir,stdin_data:archive,binmode:true)
+ raise err unless status.success?
+end
 cases={
  '分組清空與最後條文移除'=>lambda{
   r=BodyRehearsal.convert('collections-and-ownership')
@@ -44,6 +54,7 @@ results=[]
 cases.each do |name,work|
  Dir.mktmpdir('body-rehearsal-') do |dir|
   %w[rules docs scripts].each{|p|FileUtils.cp_r(File.join(ROOT,p),dir)}
+  prepare_rehearsal(dir)
   Dir.chdir(dir) do
    begin
     work.call
@@ -57,9 +68,10 @@ end
 Dir.mktmpdir('body-merge-') do |dir|
  repo=File.join(dir,'repo');_,err,status=Open3.capture3('git','clone','--quiet','--shared',ROOT,repo);raise err unless status.success?
  %w[rules docs scripts].each{|p|FileUtils.cp_r(File.join(ROOT,p),repo)}
+ prepare_rehearsal(repo)
  Dir.chdir(repo) do
   system('git','config','user.name','Rehearsal');system('git','config','user.email','rehearsal@example.invalid')
-  system('git','add','rules','docs','scripts');system('git','commit','-qm','演練工具起點')
+  system('git','add','rules','docs','scripts');system('git','commit','--allow-empty','-qm','演練工具起點')
   start=Open3.capture2('git','rev-parse','HEAD').first.strip
   topics=%w[boundary-mapping exceptions-and-resources collections-and-ownership]
   topics.each_with_index do |topic,i|

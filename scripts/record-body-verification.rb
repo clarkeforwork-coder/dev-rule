@@ -14,7 +14,7 @@ commands=[
  ['git','diff','--cached','--check'],
  ['git','diff','--check',BodyRestructuring::BASELINE+'..HEAD']
 ]
-text="# 正文整理階段 A：實際驗證紀錄\n\n由 `ruby scripts/record-body-verification.rb` 擷取實際命令輸出與結束狀態，未手寫結果。負向、移入格式、工作者範圍及撤回測試皆在暫存複本執行；撤回複本會納入目前 rules／docs／scripts，提交後內容即為 HEAD。常駐輸出的人工清單列出本次每個改寫或移除句子及種類、移入、指路、引用與驗收變更，機器不能證明語意相關或完整等價。\n"
+text="# 正文整理：實際驗證紀錄\n\n由 `ruby scripts/record-body-verification.rb` 擷取實際命令輸出與結束狀態，未手寫結果。負向、移入格式、工作者範圍及撤回測試皆在暫存複本執行；撤回複本會納入目前 rules／docs／scripts，提交後內容即為 HEAD。常駐輸出的人工清單列出本次每個改寫或移除句子及種類、移入、指路、引用與驗收變更，機器不能證明語意相關或完整等價。\n"
 failed=[]
 commands.each do |command|
  out,status=Open3.capture2e(*command)
