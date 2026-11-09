@@ -2,6 +2,7 @@
 require 'tmpdir'
 require 'fileutils'
 require_relative 'body-structure-checks'
+require_relative 'body-presentation'
 ROOT=File.expand_path('..',__dir__)
 GIT_DIR=File.expand_path(Open3.capture2('git','rev-parse','--git-common-dir',chdir:ROOT).first.strip,ROOT)
 ENV['BODY_GIT_DIR']=GIT_DIR
@@ -110,6 +111,7 @@ results=[]
 cases.each do |name,diagnostic,command,mutation|
  Dir.mktmpdir('body-negative-') do |dir|
   %w[rules docs scripts].each{|p|FileUtils.cp_r(File.join(ROOT,p),dir)}
+  BodyPresentation.prepare_legacy(dir) if File.exist?(File.join(ROOT,BodyPresentation::CONFIG))
   Dir.chdir(dir) do
    r=JSON.parse(File.read(RECORD));mutation.call(r);File.write(RECORD,JSON.pretty_generate(r)+"\n")
    out,status=Open3.capture2e({'BODY_ROOT'=>dir,'BODY_GIT_DIR'=>GIT_DIR},*(command||['ruby','scripts/verify-body-restructuring.rb']))

@@ -4,6 +4,11 @@ require_relative 'body-structure-checks'
 include BodyRestructuring
 Dir.chdir(ENV.fetch('BODY_ROOT',File.expand_path('..',__dir__)))
 B=BodyRestructuring
+if File.exist?('docs/body-presentation.json')
+ require_relative 'body-presentation'
+ BodyPresentation.run
+ exit
+end
 errors=[]
 def require_check(ok,message); raise message unless ok; end
 def visible(text)
