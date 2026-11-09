@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require_relative 'body-restructuring-lib'
+require_relative 'body-structure-checks'
 include BodyRestructuring
 Dir.chdir(ENV.fetch('BODY_ROOT',File.expand_path('..',__dir__)))
 B=BodyRestructuring
@@ -42,8 +43,10 @@ manifest=JSON.parse(File.read('scripts/acceptance-batches.json')).values.flat_ma
 records=Dir.glob('docs/body-restructuring/java/*.json').map{|p|JSON.parse(File.read(p))}
 expected_ids=File.read('docs/java-rule-classification.md').scan(/^\| ([A-Z]{2}-\d{2})[： ]/).flatten.reject{|id|id.start_with?('AU-')}.uniq.sort
 require_check(records.flat_map{|r|r['rules'].map{|e|e['id']}}.sort==expected_ids && expected_ids.size==153,'歷史 ID 集合不完整或重複')
-common=Dir.glob('docs/body-restructuring/common/*.json').map{|p|JSON.parse(File.read(p))}
-registered={};sentence_count=0;acceptance_count=0
+common_paths=Dir.glob('docs/body-restructuring/common/*.json')
+require_check((common_paths.map{|p|File.basename(p)}-BodyStructure::COMMON_FILES).empty?,'未核准的共通紀錄檔名')
+common=common_paths.map{|p|JSON.parse(File.read(p))}
+registered={};sentence_count=0;acceptance_count=0;manual=[]
 records.each do |r|
  require_check(r['baseline']==B::BASELINE,'Java 基準不符')
  path=r.fetch('path');base=B.original(path);
@@ -79,6 +82,7 @@ require_check(!registered.key?(path),'重複文件紀錄');registered[path]=r.fe
    end
   end
  end
+ manual.concat(BodyStructure.verify(r,base,prefix,excerpt,check_uri))
  # 基準每一驗收表列（含表頭）都必須保留；調整標籤須逐筆登錄。
  rows=base.split('## 驗收要求',2).last.lines.select{|l|l.start_with?('|')}
  current=r['status']=='merged' ? r.fetch('merged_target') : path
@@ -87,6 +91,7 @@ require_check(!registered.key?(path),'重複文件紀錄');registered[path]=r.fe
  rows.each do |row|
   acceptance_count+=1;replacement=r['acceptance_changes'].select{|e|e['before']==row};require_check(replacement.size<=1,'驗收變更重複')
   expected=replacement.empty? ? row : replacement.first.fetch('after')
+  require_check(row.include?('<a id=') || expected==row || (row=="| Java 條文 | 語言增量驗收 |\n" && expected=="| 對應要求 | 語言增量驗收 |\n"),'驗收表頭不允許任意改名')
   require_check(expected.split(' | ',3)[1..]==row.split(' | ',3)[1..],'驗收內容不得以條號調整之名改寫')
   require_check(!expected.strip.empty?&&actual.lines.include?(expected),"驗收列消失 #{path}")
  end
@@ -119,7 +124,17 @@ files.each do |p|
   links+=1
  end
 end
+classification=File.read('docs/java-rule-classification.md')
+classified=classification.lines.map{|l|l[/^\| ([A-Z]{2}-\d{2})[： ]/,1]}.compact.reject{|id|id.start_with?('AU-')}.uniq.sort
+pending=File.read('docs/pending-decisions.md')
+assessment=pending.split(/^## 三、/,2).last.to_s.split(/^## 五、/,2).first.to_s
+assessed=assessment.scan(/^\| \[([A-Z]{2}-\d{2}) 第/).flatten
+errors << 'Pending decision ID inventory changed' unless assessed.sort==classified
+reference_ids=classification.lines.select{|l|l.include?('**改引用**')}.map{|l|l[/^\| ([A-Z]{2}-\d{2})[： ]/,1]}.compact.reject{|id|id.start_with?('AU-')}.uniq.sort
+reference_section=pending.split(/^## 六、/,2).last.to_s.split(/^## 七、/,2).first.to_s
+errors << 'Pending reference ID inventory changed' unless reference_section.scan(/^\| \[([A-Z]{2}-\d{2}) 第/).flatten.sort==reference_ids
+abort(errors.join("\n")) unless errors.empty?
 trace_output,trace_status=Open3.capture2e('ruby',File.expand_path('verify-body-acceptance.rb',__dir__))
 require_check(trace_status.success?,"驗收追溯失敗：\n#{trace_output}")
 trace_result=JSON.parse(trace_output)
-puts JSON.pretty_generate({baseline:B::BASELINE,acceptance:trace_result,historical_ids:expected_ids.size,java_files:records.size,completed:records.count{|r|r['status']=='completed'},pending:records.count{|r|r['status']=='pending'},body_sentences:sentence_count,preserved_acceptance_rows:acceptance_count,common_change_blocks:common.sum{|r|r['changes'].size},local_links:links,manual_checks:['移除／改寫是否完整承接每個斷言','共通來源是否足以涵蓋原要求','理由與決策列是否相符','語意重複與不降低要求']})
+puts JSON.pretty_generate({baseline:B::BASELINE,acceptance:trace_result,historical_ids:expected_ids.size,java_files:records.size,completed:records.count{|r|r['status']=='completed'},pending:records.count{|r|r['status']=='pending'},body_sentences:sentence_count,preserved_acceptance_rows:acceptance_count,common_change_blocks:common.sum{|r|r['changes'].size},local_links:links,manual_review_count:manual.size,manual_review_sentences:manual,manual_limitations:['即使承接原文逐字存在，是否與被刪斷言相關仍須逐項人工複核','語意等價、理由充分性與語意重複無法機械證明']})

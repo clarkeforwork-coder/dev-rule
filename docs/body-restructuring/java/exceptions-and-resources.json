@@ -85,6 +85,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -95,6 +99,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "本文件承接[錯誤處理](../../../coding/error-handling.md)，定義 Java 例外傳遞、中斷及資源生命週期的共同要求。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -105,6 +113,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "預期業務失敗依[狀態與結果建模](states-and-results.md)使用明確結果型別；元件建立及延遲讀取的所有權另依[類別、介面與物件建立](classes-and-construction.md)與[集合與資料所有權](collections-and-ownership.md)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -115,6 +127,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "例外型別須能表達契約所需的故障分類，避免無必要的籠統宣告或拋出，例如一律使用 `throws Exception` 或沒有明確語意的 `RuntimeException`。"
         }
+      ],
+      "history_id": "EX-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -125,6 +141,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "既有標準或第三方例外足以表達且符合架構隔離時，不強制自訂例外。"
         }
+      ],
+      "history_id": "EX-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -135,6 +155,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "需要邊界轉換時，須保留原始原因，不改變故障語意，也不將預期業務失敗改用例外表示。"
         }
+      ],
+      "history_id": "EX-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -145,6 +169,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "須依故障語意及呼叫端的處理責任選擇，同類契約維持一致慣例。"
         }
+      ],
+      "history_id": "EX-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -155,6 +183,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "需要呼叫端明確處置或向上宣告的技術故障可使用 Checked Exception；由統一入口處理的故障或程式缺陷，可使用適當的 Unchecked Exception。"
         }
+      ],
+      "history_id": "EX-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -165,6 +197,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "不得只為省略宣告或捕捉而任意轉換，也不得僅依例外是否受編譯器檢查，就判定能否恢復或重試。"
         }
+      ],
+      "history_id": "EX-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -175,6 +211,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "優先捕捉具體例外並縮小 `try` 範圍，不得將不同來源的故障一律轉成同一業務結果。"
         }
+      ],
+      "history_id": "EX-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -185,6 +225,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "最外層入口可依責任統一處理尚未處理的例外，但仍須保留分類，不得假裝恢復成功。"
         }
+      ],
+      "history_id": "EX-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -195,6 +239,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "不得以廣泛捕捉 `Throwable` 或 `Error` 掩蓋嚴重故障並繼續操作。"
         }
+      ],
+      "history_id": "EX-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -205,6 +253,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "`InterruptedException` 須依呼叫契約向上傳遞；無法傳遞而在本層捕捉時，須恢復中斷旗標並停止或依明確取消契約處理。"
         }
+      ],
+      "history_id": "EX-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -215,6 +267,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "不得吞掉中斷後照常執行或自動重試，必要清理不得掩蓋中斷意圖。"
         }
+      ],
+      "history_id": "EX-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -225,6 +281,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "由目前操作負責關閉且支援 `AutoCloseable` 的資源，優先使用 `try-with-resources`，讓使用範圍與關閉時機對應，涵蓋正常完成及例外退出。"
         }
+      ],
+      "history_id": "EX-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -235,6 +295,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "借用或框架管理的資源依所有權契約處理，不得擅自關閉。"
         }
+      ],
+      "history_id": "EX-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -245,6 +309,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "其他生命週期須明訂可靠的釋放方式，不以垃圾回收代替必要的資源管理。"
         }
+      ],
+      "history_id": "EX-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -255,6 +323,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "操作與清理同時失敗時，須保留原始例外及清理例外的關係，不得覆蓋或遺失 suppressed exceptions。"
         }
+      ],
+      "history_id": "EX-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -265,6 +337,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "使用 `try-with-resources` 時須保留其記錄的清理例外，自行清理時也須維持故障關係。"
         }
+      ],
+      "history_id": "EX-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -275,6 +351,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "不得以 `finally` 中的 `return` 或其他控制流程掩蓋原結果；單獨發生的清理失敗也須依資源契約判斷完成保證與回報方式，不得默默忽略。"
         }
+      ],
+      "history_id": "EX-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -285,6 +365,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#ex-07)執行。"
         }
+      ],
+      "history_id": "EX-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -295,6 +379,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "Java 多資源取得及建構失敗亦須清理；資源移交前仍由取得方負責，釋放順序遵循依賴。"
         }
+      ],
+      "history_id": "EX-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -305,6 +393,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#ex-08)執行。"
         }
+      ],
+      "history_id": "EX-08",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -315,6 +407,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "Java `AutoCloseable` 資源不可在非同步工作仍使用時提前關閉，不無依據假設所有 `close()` 都可重複呼叫。"
         }
+      ],
+      "history_id": "EX-08",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -325,6 +421,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "例外處理或資源生命週期新增及變更時，須依影響驗證故障分類、原因保留、中斷傳遞與適用的資源釋放路徑，涵蓋部分初始化及清理失敗，並確認所有權與實際使用期間一致，不僅驗證成功流程。"
         }
+      ],
+      "history_id": "EX-09",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -335,6 +435,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "涉及框架管理的生命週期時須驗證實際配置，不能只靠替身推定正確；不要求每個方法套用全部情境。"
         }
+      ],
+      "history_id": "EX-09",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -345,6 +449,10 @@
           "uri": "rules/stacks/java/common/exceptions-and-resources.md#java-例外與資源管理",
           "text": "故障日誌與對外回應仍須遵守[日誌、稽核與可觀測性](../../../quality/observability.md)及[資料契約](../../../interfaces/data-contracts.md)，不因保留例外原因而直接對外揭露內部資訊。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     }
   ],
@@ -352,6 +460,15 @@
 
   ],
   "acceptance_changes": [
+
+  ],
+  "imports": [
+
+  ],
+  "acceptance_text_changes": [
+
+  ],
+  "acceptance_additions": [
 
   ]
 }

@@ -93,6 +93,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -103,6 +107,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "本文件承接[程式碼設計與公開介面](../../../coding/code-design.md)，定義 Java Lambda 與 Stream 的表達、執行及驗收要求。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -113,6 +121,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "型別標註依[型別宣告與泛型](types-and-generics.md)，集合語意與資料規模依[集合與資料所有權](collections-and-ownership.md)，失敗與資源管理依[例外與資源管理](exceptions-and-resources.md)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -123,6 +135,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "依[程式碼設計與公開介面](../../../coding/code-design.md)、[命名與可讀性](../../../coding/naming.md)執行。"
         }
+      ],
+      "history_id": "LS-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -133,6 +149,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "Java Lambda／Stream 不強制取代迴圈；複雜或獨立責任採具名方法或清楚流程，不要求每個 Lambda 都抽方法。"
         }
+      ],
+      "history_id": "LS-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -143,6 +163,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "自行宣告的 Lambda 參數須明確標示型別，不使用省略型別或 `var` 取代。"
         }
+      ],
+      "history_id": "LS-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -153,6 +177,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "方法參考可在型別契約完整且意圖清楚時使用，不要求機械式改寫成 Lambda；來源集合與相關契約仍須保留泛型資訊。"
         }
+      ],
+      "history_id": "LS-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -163,6 +191,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "呼叫目標或業務意義不清楚時，使用明確的 Lambda 或具名方法。"
         }
+      ],
+      "history_id": "LS-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -173,6 +205,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "Stream 的篩選、轉換及其他中間操作須避免隱藏業務副作用，`peek` 不得承擔必要業務操作。"
         }
+      ],
+      "history_id": "LS-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -183,6 +219,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "需要寫入或外部呼叫時，須以責任明確的執行步驟表達，並維持順序、失敗與部分成功保證；使用 `forEach` 也不免除上述責任。"
         }
+      ],
+      "history_id": "LS-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -193,6 +233,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "Lambda 與 Stream 的結果累積須使用明確的收集、歸約或流程設計，不得隱藏修改外部集合、計數器或旗標來影響元素處理。"
         }
+      ],
+      "history_id": "LS-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -203,6 +247,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "需要跨元素狀態時，須明確表達順序與管理責任，可使用清楚的迴圈或適當彙整，不為使用 Stream 而隱藏狀態。"
         }
+      ],
+      "history_id": "LS-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -213,6 +261,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "使用 Stream 時須確認實際執行時機、終端操作與短路範圍，不得把流程建立視為工作完成，也不得假設所有元素都會被處理。"
         }
+      ],
+      "history_id": "LS-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -223,6 +275,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "契約要求完整驗證或逐項處理時，須選用能維持該保證的明確流程，不把必要工作藏在可能提前停止的操作中。"
         }
+      ],
+      "history_id": "LS-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -233,6 +289,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "採用平行 Stream 須有明確需求，先驗證資料隔離、順序、歸約與失敗語意，評估執行資源及阻塞影響，並以代表性負載量測確認收益。"
         }
+      ],
+      "history_id": "LS-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -243,6 +303,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "不得僅因資料量大或改寫方便就啟用平行處理，也不得忽略對其他工作及副作用保證的影響。"
         }
+      ],
+      "history_id": "LS-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -253,6 +317,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "須明訂初始值、累積及合併規則，維持所需的結合性與結果語意。"
         }
+      ],
+      "history_id": "LS-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -263,6 +331,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "允許平行處理時，分段計算再合併也須符合契約。"
         }
+      ],
+      "history_id": "LS-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -273,6 +345,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "順序敏感的運算須採用能保留該順序的流程，例如逐步捨入不能任意改變分組。"
         }
+      ],
+      "history_id": "LS-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -283,6 +359,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "可變容器使用適當的收集機制，不以共用可變初始值造成資料互相污染。"
         }
+      ],
+      "history_id": "LS-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -293,6 +373,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "Lambda 與 Stream 中的失敗須遵循既有錯誤分類，不得為配合函式介面而吞錯、回傳替代值或默默移除失敗項目。"
         }
+      ],
+      "history_id": "LS-08",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -303,6 +387,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "例外傳遞受介面限制時，須明確調整流程或依邊界契約轉換，保留原始原因，不以隱藏拋出或任意轉換規避要求。"
         }
+      ],
+      "history_id": "LS-08",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -313,6 +401,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "允許部分成功時，保留各筆結果與對應關係；技術故障仍依既有例外契約處理。"
         }
+      ],
+      "history_id": "LS-08",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -323,6 +415,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "Stream 須有明確的消費範圍，不得在消費後重用，也不得讓多個流程共用同一實例各自消費。"
         }
+      ],
+      "history_id": "LS-09",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -333,6 +429,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "需要重複處理時，須明確選擇範圍受控的快照或重新取得資料，並定義一致性與資源生命週期。"
         }
+      ],
+      "history_id": "LS-09",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -343,6 +443,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "提供者能重新取得 Stream 不代表結果必定相同；涉及外部資源時，仍須明訂有效期與關閉責任。"
         }
+      ],
+      "history_id": "LS-09",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -353,6 +457,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "Lambda 或 Stream 流程新增及變更時，須依影響驗證資料邊界、執行與短路範圍、順序、歸約、失敗及適用的資源保證。"
         }
+      ],
+      "history_id": "LS-10",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -363,6 +471,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "平行處理另須驗證隔離與實際效能，不僅確認一般案例的最終結果相同。"
         }
+      ],
+      "history_id": "LS-10",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -373,6 +485,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "不重測 Stream 函式庫本身，也不要求每段簡單轉換測試全部情境。"
         }
+      ],
+      "history_id": "LS-10",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -383,6 +499,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "例如參數明確的 Lambda 與意圖清楚的方法參考，均可用於已具完整泛型資訊的來源："
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -393,6 +513,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "```java"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -403,6 +527,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "orders.stream().filter((Order order) -> order.isCancellable());"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -413,6 +541,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "orders.stream().filter(Order::isCancellable);"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -423,6 +555,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "```"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -433,6 +569,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "上述片段僅示範篩選條件的表達，尚未消費結果，不代表已完成驗證或執行取消操作。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -443,6 +583,10 @@
           "uri": "rules/stacks/java/common/lambda-and-stream.md#java-lambda-與-stream",
           "text": "數值歸約涉及精度與捨入時依[數值、日期時間與文字處理](numbers-dates-text.md)；平行處理的量測依[效能與資源使用](../../../quality/performance.md)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     }
   ],
@@ -450,6 +594,15 @@
 
   ],
   "acceptance_changes": [
+
+  ],
+  "imports": [
+
+  ],
+  "acceptance_text_changes": [
+
+  ],
+  "acceptance_additions": [
 
   ]
 }

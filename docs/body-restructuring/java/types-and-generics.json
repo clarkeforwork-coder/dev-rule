@@ -101,6 +101,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -111,6 +115,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "本文件承接[共通型別安全](../../../coding/type-safety.md)，適用於自行撰寫的 Java 程式碼，包含測試與整合元件。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -121,6 +129,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "語法及 API 須符合[適用範圍與版本判定](version-policy.md)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -131,6 +143,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "參數、回傳值、欄位與區域變數須明確宣告型別，保留必要的泛型資訊，不使用 `var` 取代型別標註。"
         }
+      ],
+      "history_id": "JT-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -141,6 +157,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "使用泛型型別時須宣告型別參數，禁止 raw type。"
         }
+      ],
+      "history_id": "JT-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -151,6 +171,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "承載業務語意的參數、回傳值與欄位須保留業務所需的型別資訊，不得以 `Object`、萬用字元或無必要的泛型隱藏已知型別。"
         }
+      ],
+      "history_id": "JT-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -161,6 +185,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "泛型與萬用字元僅在確有型別抽象需求，且能維持必要約束與關聯時使用；不僅依所在層級或是否出現 `?` 判定合理性。"
         }
+      ],
+      "history_id": "JT-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -171,6 +199,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "依[型別安全](../../../coding/type-safety.md)執行。"
         }
+      ],
+      "history_id": "JT-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -181,6 +213,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "Java 泛型簽章須實際連結輸入與輸出的型別；特定業務操作直接使用其型別，不要求呼叫端轉型補回。"
         }
+      ],
+      "history_id": "JT-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -191,6 +227,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "自行撰寫的程式碼不得以強制向下轉型補回遺失的業務型別資訊，應透過資料契約、泛型或多型設計保留型別。"
         }
+      ],
+      "history_id": "JT-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -201,6 +241,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "外部資料須在邊界完成驗證與明確型別轉換，不能讓型別不明的資料流入業務流程。"
         }
+      ],
+      "history_id": "JT-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -211,6 +255,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "工具或第三方 API 限制須依例外流程個別處理，不預先開放整合處例外。"
         }
+      ],
+      "history_id": "JT-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -221,6 +269,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "本項針對參考型別的向下轉型，數值轉換另依適用規範處理。"
         }
+      ],
+      "history_id": "JT-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -231,6 +283,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "新增或修改程式碼不得留下 raw type 或 unchecked 警告，須修正造成警告的契約與實作，不得以 `@SuppressWarnings` 或關閉檢查規避要求。"
         }
+      ],
+      "history_id": "JT-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -241,6 +297,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "工具限制須依例外流程個別核准，記錄影響範圍、型別安全依據與驗證方式。"
         }
+      ],
+      "history_id": "JT-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -251,6 +311,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "既有程式碼的漸進導入、工具產生碼與個別例外依[規範治理](../../../workflow/rule-governance.md)辦理。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -261,6 +325,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "測試不得透過不安全轉型偽造有效物件，另見[測試程式碼要求](../../../quality/rule-verification.md#測試程式碼)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -271,6 +339,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "依[型別安全](../../../coding/type-safety.md)執行。"
         }
+      ],
+      "history_id": "JT-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -281,6 +353,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "例如固定欄位資料不得改以 `Map<String, Object>` 或 `Object[]` 承載；真正動態的映射仍須保留明確鍵值型別。"
         }
+      ],
+      "history_id": "JT-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -291,6 +367,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "泛型操作所需的型別能力與關聯，須透過型別參數、上界或明確的參數契約表達，不得依賴未宣告的型別假設、執行期猜測或強制轉型。"
         }
+      ],
+      "history_id": "JT-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -301,6 +381,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "無實際通用需求時，直接使用明確型別，不為使用泛型而額外建立介面。"
         }
+      ],
+      "history_id": "JT-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -311,6 +395,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "宣告型別須表達使用端所需的操作與語意，優先使用能完整表達契約的介面；不得過度泛化而迫使使用端轉型，也不應無必要地暴露具體實作類別。"
         }
+      ],
+      "history_id": "JT-08",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -321,6 +409,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "可修改性、排序方式等保證須依契約另行明訂，不僅憑集合介面推定。"
         }
+      ],
+      "history_id": "JT-08",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -331,6 +423,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "變數已明確宣告完整型別時，允許使用 `<>` 省略建構時重複的泛型參數；不得因此省略宣告端所需的型別資訊或改用 raw type。"
         }
+      ],
+      "history_id": "JT-09",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -341,6 +437,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "回傳值須提供明確、可直接使用的型別；只有契約確實需要表達未知型別或其上下界時，才使用萬用字元，不得為預留彈性而增加使用端負擔，也不得以萬用字元取代不可變性設計。"
         }
+      ],
+      "history_id": "JT-10",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -351,6 +451,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "名稱須能辨識用途與關聯。"
         }
+      ],
+      "history_id": "JT-11",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -361,6 +465,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "簡單情境可使用 `T`、`K`、`V` 等通行慣例名稱；具有不同責任或較複雜關聯時，應使用能表達角色的名稱，例如 `Source` 與 `Target`，並在必要時補充契約說明，不強制所有泛型參數使用長名稱。"
         }
+      ],
+      "history_id": "JT-11",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -371,6 +479,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "例如，下列宣告保留元素與鍵值型別，並允許建構端省略重複資訊；其中 `ordersById` 表達依識別碼查找訂單的關係，不是用任意欄位名稱拼湊單一訂單："
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -381,6 +493,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "```java"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -391,6 +507,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "List<Order> orders = new ArrayList<>();"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -401,6 +521,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "Map<OrderId, Order> ordersById = new HashMap<>();"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -411,6 +535,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "```"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -421,6 +549,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "固定結構的訂單輸入則應使用明確物件，例如 `CreateOrderRequest`。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -431,6 +563,10 @@
           "uri": "rules/stacks/java/common/types-and-generics.md#java-型別宣告與泛型",
           "text": "邊界物件的拆分與映射責任另依[邊界物件](../../../architecture/boundary-objects.md)與[資料映射](../../../architecture/data-mapping.md)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     }
   ],
@@ -438,6 +574,15 @@
 
   ],
   "acceptance_changes": [
+
+  ],
+  "imports": [
+
+  ],
+  "acceptance_text_changes": [
+
+  ],
+  "acceptance_additions": [
 
   ]
 }

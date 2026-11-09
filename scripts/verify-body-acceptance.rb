@@ -6,86 +6,20 @@ MIN_REASON_LENGTH=20
 def normalize(text)
   text.gsub(/<[^>]*>/, '').gsub(/\[([^\]]+)\]\([^)]+\)/, '\1').delete('`*_').gsub(/\s+/, '')
 end
-def visible_markdown(text)
-  fence = nil
-  text.lines.map do |line|
-    if (m = line.match(/^\s*(`{3,}|~{3,})/))
-      fence = fence ? nil : m[1]
-      "\n"
-    else
-      fence ? "\n" : line
-    end
-  end.join
-end
 def sufficient_reason?(reason)
   reason.is_a?(String) && reason.gsub(/[[:space:]]/, '').length >= MIN_REASON_LENGTH
 end
 def destination_content(text)
   text.to_s.gsub(/<a\s+id="[^"]+"><\/a>/, '').strip
 end
-# 明確的驗收章節涵蓋至下一個同級標題；混排政策的章節只承認驗收表、
-# 「驗收：」段及緊接該段的獨立錨點，不承認同節政策文字。
-def acceptance_mask(path, lines)
-  mask = Array.new(lines.size, false)
-  level = nil
-  section = nil
-  mixed = path == 'rules/quality/rule-verification.md'
-  lines.each_with_index do |line, i|
-    if (h = line.match(/^(\#{1,6}) (.+)$/))
-      level = nil if level && h[1].size <= level
-      section = h[2] if h[1].size == 2
-      level = h[1].size if ['驗收要求', '補充契約驗收', '契約驗收', '介面用途驗收', '多步驟失敗驗收'].include?(h[2])
-    end
-    mask[i] = true if level
-    if mixed && ['架構檢查與可測試性', '錯誤處理驗證與驗收', '檢查配置可重現', '實際執行範圍'].include?(section)
-      mask[i] = true if line.start_with?('|', '驗收：')
-      if line.match?(/^<a id="acceptance-/)
-        following = lines[(i+1)..].find { |l| !l.strip.empty? }
-        mask[i] = true if following && following.start_with?('驗收：')
-      end
-    end
-  end
-  mask
-end
-def table_mask(lines)
-  mask=Array.new(lines.size,false)
-  start=0
-  (0..lines.size).each do |i|
-    next if i<lines.size && !lines[i].strip.empty?
-    block=lines[start...i]
-    table=block.any? do |line|
-      cells=line.strip.sub(/^\|/,'').sub(/\|$/,'').split('|')
-      cells.size>=2 && cells.all?{|cell|cell.strip.match?(/\A:?-{3,}:?\z/)}
-    end
-    (start...i).each{|j|mask[j]=true} if table
-    start=i+1
-  end
-  mask
-end
-# 基準行號（1 起算）：只列既有修正實際新增的三個驗收位置。
-NEW_ACCEPTANCE_LOCATIONS = {
-  ['rules/architecture/boundary-objects.md',33] => '## 契約驗收',
-  ['rules/quality/rule-verification.md',27] => 'acceptance-interface-purpose',
-  ['rules/quality/rule-verification.md',37] => 'acceptance-partial-operation'
-}.freeze
-def approved_acceptance_insertion?(path,pos,lines,source)
-  marker=NEW_ACCEPTANCE_LOCATIONS[[path,pos+1]]
-  if marker
-    content=lines.reject{|l|l.strip.empty?}
-    return content.all?{|l|l.start_with?('|') || l==marker} && content.any?{|l|l.include?(marker)}
-  end
-  # 獨立錨點可加在基準已存在的「驗收：」段之前，不能藉新增標題放行正文。
-  following=source[pos..].to_a.find{|l|!l.strip.empty?}
-  following && following.start_with?('驗收：') && lines.all?{|l|l.strip.empty? || l.match?(/\A<a id="acceptance-[^"]+"><\/a>\z/)}
-end
 def row_content(line)
-  m = line.match(/^\| (.+) \| (.+) \|\s*$/)
+  m = line.match(/^\| (.+) \| (.*) \|\s*$/)
   m && !m[1].start_with?('---') ? m[2] : nil
 end
 def acceptance_rows(body)
   active = false
   body.lines.map do |line|
-    if line.match?(/^\| (?:契約|對應決策|Java 條文) \| (?:驗收內容|語言增量驗收) \|/)
+    if line.match?(/^\| (?:契約|對應決策|Java 條文|對應要求) \| (?:驗收內容|語言增量驗收) \|/)
       active = true; next
     end
     active = false unless line.start_with?('|')
@@ -107,7 +41,6 @@ def destination(uri)
   rest.take_while { |l| !l.strip.empty? }.join.strip
 end
 errors=[]
-options={}
 manifest=JSON.parse(File.read('scripts/acceptance-batches.json'))
 paths=Dir.glob('rules/**/*.md')
 common=paths.reject{|p| p.include?('/stacks/')}
@@ -115,6 +48,7 @@ scope=manifest.values.flat_map{|b|b.fetch('files').values}.uniq.map{|s|"rules/st
 # 整份併入時，以接收檔承接原文件驗收；歷史來源仍從原提交讀取。
 merges=Dir.glob('docs/body-restructuring/java/*.json').map{|p|JSON.parse(File.read(p))}.select{|r|r['status']=='merged'}.map{|r|[r['path'],r.fetch('merged_target')]}.to_h
 scope=scope.map{|p|merges.fetch(p,p)}.uniq
+paths.each{|p|acceptance_rows(File.read(p)).each{|t|errors << "Empty acceptance #{p}" if t.strip.size<9}}
 common_tests=common.flat_map{|p| acceptance_rows(File.read(p)).map{|t|normalize(t)}}
 duplicates=scope.flat_map{|p| acceptance_rows(File.read(p)).select{|t|common_tests.include?(normalize(t))}.map{|t|[p,t]}}
 errors << "Scoped duplicate acceptance: #{duplicates}" unless duplicates.empty?
@@ -125,12 +59,12 @@ rewrites.each do |entry|
     errors << "Invalid rewritten fragment #{entry['id']}: full destination and meaningful-length reason required"
   end
 end
-batches=options[:batch] ? [options[:batch].to_s] : manifest.keys
+batches=manifest.keys
 stats=[]
 batches.each do |n|
   report="docs/acceptance-cleanup-batch-#{n}.md"
   body=File.read(report)
-  baseline=options[:baseline] || body[/基準提交：`([^`]+)`/,1]
+  baseline=body[/基準提交：`([^`]+)`/,1]
   traces=body.lines.map{|l| l.match(/^\| ([A-Z]+-[\d、]+-\d+) \| (.+) \| \[主要驗收\]\(([^)]+)\) \|\s*$/)}.compact
   malformed=body.lines.select{|l|l.match?(/^\| [A-Z]+-/) && !traces.any?{|m|m[0]==l}}
   errors << "Malformed trace rows batch #{n}" unless malformed.empty?

@@ -69,6 +69,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -79,6 +83,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "本文件承接[命名與可讀性](../../../coding/naming.md)、[程式碼設計與公開介面](../../../coding/code-design.md)及[模組責任與公開入口](../../../architecture/module-boundaries.md)，定義 Java 命名形式、套件組織與契約文件要求。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -89,6 +97,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "Java 識別字須遵循一致的命名形式，並以業務概念與責任表達含義。"
         }
+      ],
+      "history_id": "ND-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -99,6 +111,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "類別、介面、列舉與 `record` 使用 `UpperCamelCase`；方法、欄位、參數與區域變數使用 `lowerCamelCase`；常數與列舉常數使用 `UPPER_SNAKE_CASE`；套件名稱使用小寫。"
         }
+      ],
+      "history_id": "ND-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -109,6 +125,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "團隊須統一縮寫慣例，避免同一概念大小寫不一致。"
         }
+      ],
+      "history_id": "ND-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -119,6 +139,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "不以 `final` 等修飾詞機械式判定常數，也不強制以 `I` 等名稱前綴標示介面。"
         }
+      ],
+      "history_id": "ND-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -129,6 +153,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "依[命名與可讀性](../../../coding/naming.md)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。"
         }
+      ],
+      "history_id": "ND-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -139,6 +167,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。"
         }
+      ],
+      "history_id": "ND-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -149,6 +181,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。"
         }
+      ],
+      "history_id": "ND-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -159,6 +195,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "共用套件須有明確責任與依賴方向，不作為雜項收容處，也不得反向依賴使用它的業務模組。"
         }
+      ],
+      "history_id": "ND-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -169,6 +209,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "邊界須以可見性及適用檢查落實，不能只靠套件名稱。"
         }
+      ],
+      "history_id": "ND-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -179,6 +223,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "供使用端依賴的類別與方法須記錄型別及名稱無法充分表達的契約，依責任補充前置條件、結果、失敗、副作用與適用的生命週期保證。"
         }
+      ],
+      "history_id": "ND-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -189,6 +237,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "可包含非空、資源所有權、執行緒安全或資料時效等必要資訊，不要求每個方法套用全部項目。"
         }
+      ],
+      "history_id": "ND-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -199,6 +251,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "優先以 Javadoc 就近維護，或明確引用既有權威契約，避免重複定義；不以重述名稱代替說明。"
         }
+      ],
+      "history_id": "ND-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -209,6 +265,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。"
         }
+      ],
+      "history_id": "ND-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -219,6 +279,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "Java 註解及 TODO 依共同追蹤要求維護，不以模糊標記代替負責事項。"
         }
+      ],
+      "history_id": "ND-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -229,6 +293,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "類別、方法與套件重新命名或搬移時，須核對直接引用、設定、動態機制及外部使用端的影響。"
         }
+      ],
+      "history_id": "ND-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -239,6 +307,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "已構成公開或持久化契約的名稱，須依相容性要求處理，必要時安排遷移，並同步更新文件、範例與驗證。"
         }
+      ],
+      "history_id": "ND-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -249,6 +321,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "不僅依賴 IDE 重構結果，也不得因直接引用已更新就推定所有影響已處理。"
         }
+      ],
+      "history_id": "ND-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -259,6 +335,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#nd-07)執行。"
         }
+      ],
+      "history_id": "ND-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -269,6 +349,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。"
         }
+      ],
+      "history_id": "ND-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -279,6 +363,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "共用責任與依賴另依[共通機制與程式碼共用](../../../architecture/shared-capabilities.md)，泛型參數命名依[型別宣告與泛型](types-and-generics.md)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -289,6 +377,10 @@
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
           "text": "動態引用的核對依[反射、動態能力與檢查抑制](reflection-and-suppression.md)，名稱成為外部值時另依[相等性、雜湊與排序](equality-hashing-ordering.md)及[狀態與結果建模](states-and-results.md)的契約要求。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     }
   ],
@@ -296,6 +388,15 @@
 
   ],
   "acceptance_changes": [
+
+  ],
+  "imports": [
+
+  ],
+  "acceptance_text_changes": [
+
+  ],
+  "acceptance_additions": [
 
   ]
 }

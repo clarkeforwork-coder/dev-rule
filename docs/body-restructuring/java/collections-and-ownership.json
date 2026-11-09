@@ -85,6 +85,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -95,6 +99,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "本文件承接[程式碼設計與公開介面](../../../coding/code-design.md)，定義集合及其元素的所有權、修改與處理契約。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -105,6 +113,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "集合宣告依[型別宣告與泛型](types-and-generics.md)，空值依[null 與 Optional](null-and-optional.md)，鍵與元素的比較依[相等性、雜湊與排序](equality-hashing-ordering.md)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -115,6 +127,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "具體併發 API 與資源管理方式由後續 Java 主題展開。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -125,6 +141,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "依[明確定義修改權與參考關係的共通要求](../../../coding/collections-and-ownership.md#co-01)執行。"
         }
+      ],
+      "history_id": "CO-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -135,6 +155,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "Java 集合介面本身不能取代所有權契約；接收或回傳集合時須涵蓋可變元素及參考保留行為。"
         }
+      ],
+      "history_id": "CO-01",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -145,6 +169,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "依[區分不可修改與不可變快照的共通要求](../../../coding/collections-and-ownership.md#co-02)執行。"
         }
+      ],
+      "history_id": "CO-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -155,6 +183,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "Java 不可修改包裝可能仍是來源的檢視；外層複製可能保留相同可變元素，須驗證實際隔離。"
         }
+      ],
+      "history_id": "CO-02",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -165,6 +197,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#co-03)執行。"
         }
+      ],
+      "history_id": "CO-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -175,6 +211,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "Java 選用或轉換 List、Set、Map 時須維持約定順序、重複元素與重複鍵處理，不意外去重或覆蓋。"
         }
+      ],
+      "history_id": "CO-03",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -185,6 +225,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "依[遍歷期間的修改的共通要求](../../../coding/collections-and-ownership.md#co-04)執行。"
         }
+      ],
+      "history_id": "CO-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -195,6 +239,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "Java 遍歷修改須使用集合支援的操作；未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑。"
         }
+      ],
+      "history_id": "CO-04",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -205,6 +253,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#co-05)執行。"
         }
+      ],
+      "history_id": "CO-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -215,6 +267,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "Java concurrent collection 的單一操作保證不能推導為多步驟或跨鍵操作原子性。"
         }
+      ],
+      "history_id": "CO-05",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -225,6 +281,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "依[限制資料累積的共通要求](../../../quality/performance.md#co-06)執行。"
         }
+      ],
+      "history_id": "CO-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -235,6 +295,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "Java Iterator 或 Stream 不保證實際有界；排序、去重及分組的保留資料成本仍須核對。"
         }
+      ],
+      "history_id": "CO-06",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -245,6 +309,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "依[延遲讀取的資源責任的共通要求](../../../coding/resource-lifecycle.md#co-07)執行。"
         }
+      ],
+      "history_id": "CO-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -255,6 +323,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "Java 資源型 Iterator／Stream 須明確有效期及關閉責任；必要時在資源範圍內產生受控結果，關閉方式依例外與資源管理。"
         }
+      ],
+      "history_id": "CO-07",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -265,6 +337,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "依[錯誤處理](../../../coding/error-handling.md)執行。"
         }
+      ],
+      "history_id": "CO-08",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -275,6 +351,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "Java 批次集合方法拋出例外不代表未修改；不要求所有集合操作具有交易能力，須核對約定的失敗後狀態。"
         }
+      ],
+      "history_id": "CO-08",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -285,6 +365,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#co-09)執行。"
         }
+      ],
+      "history_id": "CO-09",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -295,6 +379,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。"
         }
+      ],
+      "history_id": "CO-09",
+      "removed_assertions": [
+
       ]
     },
     {
@@ -305,6 +393,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "邊界間的參考隔離另依[邊界物件與資料映射](boundary-mapping.md)，共用元件的狀態與生命週期依[類別、介面與物件建立](classes-and-construction.md)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     },
     {
@@ -315,6 +407,10 @@
           "uri": "rules/stacks/java/common/collections-and-ownership.md#java-集合與資料所有權",
           "text": "資源範圍與容量依[效能與資源使用](../../../quality/performance.md)，失敗與部分成功依[錯誤處理](../../../coding/error-handling.md)。"
         }
+      ],
+      "history_id": null,
+      "removed_assertions": [
+
       ]
     }
   ],
@@ -322,6 +418,15 @@
 
   ],
   "acceptance_changes": [
+
+  ],
+  "imports": [
+
+  ],
+  "acceptance_text_changes": [
+
+  ],
+  "acceptance_additions": [
 
   ]
 }
