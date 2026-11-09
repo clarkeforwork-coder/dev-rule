@@ -1,63 +1,63 @@
 {
   "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
   "path": "rules/stacks/java/common/naming-packages-docs.md",
-  "status": "pending",
+  "status": "completed",
   "rules": [
     {
       "id": "ND-01",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/naming-packages-docs.md#命名與套件責任"
+        "rules/stacks/java/common/naming-packages-docs.md#java-naming-form"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節「否」保留 Java 命名形式、縮寫慣例及 final 與介面前綴限制，正文逐字不變。"
     },
     {
       "id": "ND-02",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/naming-packages-docs.md#命名與套件責任"
+        "rules/stacks/java/common/naming-packages-docs.md#java-specific-responsibility"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "整理前原文未提交，無法證明完整覆蓋；共通沒有直接涵蓋類別後綴名稱與責任一致的條文，依待補證決策整條逐字保留。"
     },
     {
       "id": "ND-03",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/naming-packages-docs.md#命名與套件責任"
+        "rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節「否」保留套件組織、公開與內部界線、共用依賴方向及可見性檢查，正文逐字不變。"
     },
     {
       "id": "ND-04",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/naming-packages-docs.md#契約文件與維護"
+        "rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節「否」保留使用端所需契約資訊與適用範圍、Javadoc 就近維護及權威契約引用要求，正文逐字不變。"
     },
     {
       "id": "ND-05",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/naming-packages-docs.md#契約文件與維護"
+        "rules/coding/code-design.md#nd-05"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第三節重述判斷整條移除；註解維護、TODO 待處理內容與追蹤方式及禁止模糊標記由共通 nd-05 直接承接。"
     },
     {
       "id": "ND-06",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/naming-packages-docs.md#契約文件與維護"
+        "rules/stacks/java/common/naming-packages-docs.md#java-rename-impact"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節「否」保留類別、方法與套件改名搬移的直接及動態影響、相容遷移和 IDE 重構限制，正文逐字不變。"
     },
     {
       "id": "ND-07",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/naming-packages-docs.md#契約文件與維護"
+        "rules/stacks/java/common/naming-packages-docs.md#java-document-verification"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第三節增量判斷保留 Java 命名形式、Javadoc 參照、可執行範例與支援版本的實際驗證，以及既有共通政策引用。"
     }
   ],
   "sentences": [
@@ -94,7 +94,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-naming-form",
           "text": "Java 識別字須遵循一致的命名形式，並以業務概念與責任表達含義。"
         }
       ],
@@ -108,7 +108,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-naming-form",
           "text": "類別、介面、列舉與 `record` 使用 `UpperCamelCase`；方法、欄位、參數與區域變數使用 `lowerCamelCase`；常數與列舉常數使用 `UPPER_SNAKE_CASE`；套件名稱使用小寫。"
         }
       ],
@@ -122,7 +122,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-naming-form",
           "text": "團隊須統一縮寫慣例，避免同一概念大小寫不一致。"
         }
       ],
@@ -136,7 +136,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-naming-form",
           "text": "不以 `final` 等修飾詞機械式判定常數，也不強制以 `I` 等名稱前綴標示介面。"
         }
       ],
@@ -150,35 +150,37 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-specific-responsibility",
           "text": "依[命名與可讀性](../../../coding/naming.md)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。"
         }
       ],
       "history_id": "ND-02",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "整理前原文未提交，無法證明完整覆蓋；共通沒有直接涵蓋類別後綴名稱與責任一致的條文，依待補證決策整條逐字保留。"
     },
     {
       "source": "Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-specific-responsibility",
           "text": "Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。"
         }
       ],
       "history_id": "ND-02",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "整理前原文未提交，無法證明完整覆蓋；共通沒有直接涵蓋類別後綴名稱與責任一致的條文，依待補證決策整條逐字保留。"
     },
     {
       "source": "套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries",
           "text": "套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。"
         }
       ],
@@ -192,7 +194,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries",
           "text": "共用套件須有明確責任與依賴方向，不作為雜項收容處，也不得反向依賴使用它的業務模組。"
         }
       ],
@@ -206,7 +208,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries",
           "text": "邊界須以可見性及適用檢查落實，不能只靠套件名稱。"
         }
       ],
@@ -220,7 +222,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract",
           "text": "供使用端依賴的類別與方法須記錄型別及名稱無法充分表達的契約，依責任補充前置條件、結果、失敗、副作用與適用的生命週期保證。"
         }
       ],
@@ -234,7 +236,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract",
           "text": "可包含非空、資源所有權、執行緒安全或資料時效等必要資訊，不要求每個方法套用全部項目。"
         }
       ],
@@ -248,7 +250,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract",
           "text": "優先以 Javadoc 就近維護，或明確引用既有權威契約，避免重複定義；不以重述名稱代替說明。"
         }
       ],
@@ -259,38 +261,61 @@
     },
     {
       "source": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
-          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。"
+          "uri": "rules/coding/code-design.md#nd-05"
         }
       ],
       "history_id": "ND-05",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
+          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_text": "實作註解依本文件的[註解與公開文件](#註解與公開文件)說明理由、限制與依據，變更時同步更新或移除。"
+        },
+        {
+          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
+          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_text": "可由設計與命名改善的問題應優先修正。"
+        },
+        {
+          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
+          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
+        }
+      ],
+      "reason": "移除純引用句並在引言保留同一共通錨點；該共通小節完整列明註解維護、設計修正及暫時處理追蹤要求。"
     },
     {
       "source": "Java 註解及 TODO 依共同追蹤要求維護，不以模糊標記代替負責事項。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
-          "text": "Java 註解及 TODO 依共同追蹤要求維護，不以模糊標記代替負責事項。"
+          "uri": "rules/coding/code-design.md#nd-05"
         }
       ],
       "history_id": "ND-05",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "Java 註解及 TODO 依共同追蹤要求維護",
+          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
+        },
+        {
+          "text": "不以模糊標記代替負責事項",
+          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
+        }
+      ],
+      "reason": "Java 註解及 TODO 的共同追蹤與禁止模糊標記要求，由共通原文明訂待處理內容、追蹤方式及責任管理直接承接。"
     },
     {
       "source": "類別、方法與套件重新命名或搬移時，須核對直接引用、設定、動態機制及外部使用端的影響。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-rename-impact",
           "text": "類別、方法與套件重新命名或搬移時，須核對直接引用、設定、動態機制及外部使用端的影響。"
         }
       ],
@@ -304,7 +329,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-rename-impact",
           "text": "已構成公開或持久化契約的名稱，須依相容性要求處理，必要時安排遷移，並同步更新文件、範例與驗證。"
         }
       ],
@@ -318,7 +343,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-rename-impact",
           "text": "不僅依賴 IDE 重構結果，也不得因直接引用已更新就推定所有影響已處理。"
         }
       ],
@@ -332,7 +357,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-document-verification",
           "text": "依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#nd-07)執行。"
         }
       ],
@@ -346,7 +371,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-document-verification",
           "text": "Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。"
         }
       ],
@@ -360,7 +385,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-closing-requirements",
           "text": "共用責任與依賴另依[共通機制與程式碼共用](../../../architecture/shared-capabilities.md)，泛型參數命名依[型別宣告與泛型](types-and-generics.md)。"
         }
       ],
@@ -374,7 +399,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-命名套件與文件",
+          "uri": "rules/stacks/java/common/naming-packages-docs.md#java-closing-requirements",
           "text": "動態引用的核對依[反射、動態能力與檢查抑制](reflection-and-suppression.md)，名稱成為外部值時另依[相等性、雜湊與排序](equality-hashing-ordering.md)及[狀態與結果建模](states-and-results.md)的契約要求。"
         }
       ],
@@ -385,10 +410,156 @@
     }
   ],
   "edits": [
+    {
+      "baseline_line": 7,
+      "remove": [
 
+      ],
+      "insert": [
+        "本文件另依[nd-05](../../../coding/code-design.md#nd-05)辦理。\n",
+        "\n"
+      ],
+      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+    },
+    {
+      "baseline_line": 9,
+      "remove": [
+        "1. **一致的命名形式**。Java 識別字須遵循一致的命名形式，並以業務概念與責任表達含義。類別、介面、列舉與 `record` 使用 `UpperCamelCase`；方法、欄位、參數與區域變數使用 `lowerCamelCase`；常數與列舉常數使用 `UPPER_SNAKE_CASE`；套件名稱使用小寫。團隊須統一縮寫慣例，避免同一概念大小寫不一致。不以 `final` 等修飾詞機械式判定常數，也不強制以 `I` 等名稱前綴標示介面。\n",
+        "2. **名稱表達具體責任**。依[命名與可讀性](../../../coding/naming.md)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。\n",
+        "3. **套件與架構邊界**。套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。共用套件須有明確責任與依賴方向，不作為雜項收容處，也不得反向依賴使用它的業務模組。邊界須以可見性及適用檢查落實，不能只靠套件名稱。\n"
+      ],
+      "insert": [
+        "<a id=\"java-naming-form\"></a>\n"
+      ],
+      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+    },
+    {
+      "baseline_line": 13,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 一致的命名形式\n",
+        "\n",
+        "Java 識別字須遵循一致的命名形式，並以業務概念與責任表達含義。類別、介面、列舉與 `record` 使用 `UpperCamelCase`；方法、欄位、參數與區域變數使用 `lowerCamelCase`；常數與列舉常數使用 `UPPER_SNAKE_CASE`；套件名稱使用小寫。團隊須統一縮寫慣例，避免同一概念大小寫不一致。不以 `final` 等修飾詞機械式判定常數，也不強制以 `I` 等名稱前綴標示介面。\n",
+        "\n",
+        "<a id=\"java-specific-responsibility\"></a>\n",
+        "\n",
+        "### 名稱表達具體責任\n",
+        "\n",
+        "依[命名與可讀性](../../../coding/naming.md)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。\n",
+        "\n",
+        "<a id=\"java-package-boundaries\"></a>\n",
+        "\n",
+        "### 套件與架構邊界\n",
+        "\n",
+        "套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。共用套件須有明確責任與依賴方向，不作為雜項收容處，也不得反向依賴使用它的業務模組。邊界須以可見性及適用檢查落實，不能只靠套件名稱。\n",
+        "\n"
+      ],
+      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+    },
+    {
+      "baseline_line": 15,
+      "remove": [
+        "4. **補足契約資訊**。供使用端依賴的類別與方法須記錄型別及名稱無法充分表達的契約，依責任補充前置條件、結果、失敗、副作用與適用的生命週期保證。可包含非空、資源所有權、執行緒安全或資料時效等必要資訊，不要求每個方法套用全部項目。優先以 Javadoc 就近維護，或明確引用既有權威契約，避免重複定義；不以重述名稱代替說明。\n",
+        "5. **實作註解與暫時處理**。依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。Java 註解及 TODO 依共同追蹤要求維護，不以模糊標記代替負責事項。\n",
+        "6. **重新命名與搬移的影響**。類別、方法與套件重新命名或搬移時，須核對直接引用、設定、動態機制及外部使用端的影響。已構成公開或持久化契約的名稱，須依相容性要求處理，必要時安排遷移，並同步更新文件、範例與驗證。不僅依賴 IDE 重構結果，也不得因直接引用已更新就推定所有影響已處理。\n",
+        "7. **形式與語意分別驗收**。依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#nd-07)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。\n"
+      ],
+      "insert": [
+        "<a id=\"java-javadoc-contract\"></a>\n"
+      ],
+      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+    },
+    {
+      "baseline_line": 20,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 補足契約資訊\n",
+        "\n",
+        "供使用端依賴的類別與方法須記錄型別及名稱無法充分表達的契約，依責任補充前置條件、結果、失敗、副作用與適用的生命週期保證。可包含非空、資源所有權、執行緒安全或資料時效等必要資訊，不要求每個方法套用全部項目。優先以 Javadoc 就近維護，或明確引用既有權威契約，避免重複定義；不以重述名稱代替說明。\n",
+        "\n",
+        "<a id=\"java-rename-impact\"></a>\n",
+        "\n",
+        "### 重新命名與搬移的影響\n",
+        "\n",
+        "類別、方法與套件重新命名或搬移時，須核對直接引用、設定、動態機制及外部使用端的影響。已構成公開或持久化契約的名稱，須依相容性要求處理，必要時安排遷移，並同步更新文件、範例與驗證。不僅依賴 IDE 重構結果，也不得因直接引用已更新就推定所有影響已處理。\n",
+        "\n",
+        "<a id=\"java-document-verification\"></a>\n",
+        "\n",
+        "### 形式與語意分別驗收\n",
+        "\n",
+        "依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#nd-07)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。\n",
+        "\n",
+        "<a id=\"java-closing-requirements\"></a>\n",
+        "\n",
+        "## 補充要求\n",
+        "\n"
+      ],
+      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+    },
+    {
+      "baseline_line": 34,
+      "remove": [
+        "| Java 條文 | 語言增量驗收 |\n"
+      ],
+      "insert": [
+        "| 對應要求 | 語言增量驗收 |\n"
+      ],
+      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+    },
+    {
+      "baseline_line": 36,
+      "remove": [
+        "| <a id=\"acceptance-java-naming-form\"></a>1、2 | 自動檢查適用的命名形式與團隊縮寫慣例，人工從使用處核對名稱與實際責任一致。確認未將所有 `final` 欄位機械式視為常數，也未用籠統後綴掩蓋不同用途。 |\n",
+        "| <a id=\"acceptance-java-package-boundaries\"></a>3 | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 |\n",
+        "| <a id=\"acceptance-java-javadoc-contract\"></a>4 | 核對供使用端依賴的類別與方法優先以 Javadoc 就近維護必要契約，或明確引用既有權威契約；確認 Javadoc 與實際前置條件、結果、失敗、副作用及適用生命週期一致。 |\n",
+        "| <a id=\"acceptance-java-rename-paths\"></a>6 | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |\n",
+        "| <a id=\"acceptance-java-javadoc-examples\"></a>7 | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |\n"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-naming-form\"></a>[一致的命名形式](#java-naming-form)、[名稱表達具體責任](#java-specific-responsibility) | 自動檢查適用的命名形式與團隊縮寫慣例，人工從使用處核對名稱與實際責任一致。確認未將所有 `final` 欄位機械式視為常數，也未用籠統後綴掩蓋不同用途。 |\n",
+        "| <a id=\"acceptance-java-package-boundaries\"></a>[套件與架構邊界](#java-package-boundaries) | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 |\n",
+        "| <a id=\"acceptance-java-javadoc-contract\"></a>[補足契約資訊](#java-javadoc-contract) | 核對供使用端依賴的類別與方法優先以 Javadoc 就近維護必要契約，或明確引用既有權威契約；確認 Javadoc 與實際前置條件、結果、失敗、副作用及適用生命週期一致。 |\n",
+        "| <a id=\"acceptance-java-rename-paths\"></a>[重新命名與搬移的影響](#java-rename-impact) | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |\n",
+        "| <a id=\"acceptance-java-javadoc-examples\"></a>[形式與語意分別驗收](#java-document-verification) | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |\n"
+      ],
+      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+    }
   ],
   "acceptance_changes": [
-
+    {
+      "before": "| Java 條文 | 語言增量驗收 |\n",
+      "after": "| 對應要求 | 語言增量驗收 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，第二欄所有驗收內容與原有驗收錨點逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-naming-form\"></a>1、2 | 自動檢查適用的命名形式與團隊縮寫慣例，人工從使用處核對名稱與實際責任一致。確認未將所有 `final` 欄位機械式視為常數，也未用籠統後綴掩蓋不同用途。 |\n",
+      "after": "| <a id=\"acceptance-java-naming-form\"></a>[一致的命名形式](#java-naming-form)、[名稱表達具體責任](#java-specific-responsibility) | 自動檢查適用的命名形式與團隊縮寫慣例，人工從使用處核對名稱與實際責任一致。確認未將所有 `final` 欄位機械式視為常數，也未用籠統後綴掩蓋不同用途。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，第二欄所有驗收內容與原有驗收錨點逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-package-boundaries\"></a>3 | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 |\n",
+      "after": "| <a id=\"acceptance-java-package-boundaries\"></a>[套件與架構邊界](#java-package-boundaries) | 審查套件責任、公開與內部界線，以及共用套件依賴方向；以適用的可見性與依賴檢查確認邊界有效，不僅核對目錄名稱。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，第二欄所有驗收內容與原有驗收錨點逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-javadoc-contract\"></a>4 | 核對供使用端依賴的類別與方法優先以 Javadoc 就近維護必要契約，或明確引用既有權威契約；確認 Javadoc 與實際前置條件、結果、失敗、副作用及適用生命週期一致。 |\n",
+      "after": "| <a id=\"acceptance-java-javadoc-contract\"></a>[補足契約資訊](#java-javadoc-contract) | 核對供使用端依賴的類別與方法優先以 Javadoc 就近維護必要契約，或明確引用既有權威契約；確認 Javadoc 與實際前置條件、結果、失敗、副作用及適用生命週期一致。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，第二欄所有驗收內容與原有驗收錨點逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-rename-paths\"></a>6 | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |\n",
+      "after": "| <a id=\"acceptance-java-rename-paths\"></a>[重新命名與搬移的影響](#java-rename-impact) | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，第二欄所有驗收內容與原有驗收錨點逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-javadoc-examples\"></a>7 | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |\n",
+      "after": "| <a id=\"acceptance-java-javadoc-examples\"></a>[形式與語意分別驗收](#java-document-verification) | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，第二欄所有驗收內容與原有驗收錨點逐字保留。"
+    }
   ],
   "imports": [
 
@@ -397,6 +568,17 @@
 
   ],
   "acceptance_additions": [
+
+  ],
+  "link_retention": [
+    {
+      "targets": [
+        "rules/coding/code-design.md#nd-05"
+      ],
+      "text": "本文件另依[nd-05](../../../coding/code-design.md#nd-05)辦理。"
+    }
+  ],
+  "group_routes": [
 
   ]
 }
