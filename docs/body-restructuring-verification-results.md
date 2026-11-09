@@ -558,7 +558,7 @@
       "status": "completed",
       "id": "CA-02",
       "decision": "混合",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
@@ -600,7 +600,7 @@
       "status": "completed",
       "id": "CA-08",
       "decision": "重述",
-      "kind": "整條移除"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
@@ -614,7 +614,7 @@
       "status": "completed",
       "id": "CA-10",
       "decision": "重述",
-      "kind": "整條移除"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
@@ -635,14 +635,14 @@
       "status": "completed",
       "id": "CO-01",
       "decision": "重述",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
       "status": "completed",
       "id": "CO-02",
       "decision": "重述",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
@@ -677,21 +677,21 @@
       "status": "completed",
       "id": "CO-07",
       "decision": "重述",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
       "status": "completed",
       "id": "CO-08",
       "decision": "待確認",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
       "status": "completed",
       "id": "CO-09",
       "decision": "重述",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/boundary-mapping.md",
@@ -754,7 +754,7 @@
       "status": "completed",
       "id": "BM-09",
       "decision": "重述",
-      "kind": "整條移除"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/value-objects.md",
@@ -789,7 +789,7 @@
       "status": "completed",
       "id": "VO-05",
       "decision": "混合",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/value-objects.md",
@@ -852,7 +852,7 @@
       "status": "completed",
       "id": "EQ-04",
       "decision": "混合",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/equality-hashing-ordering.md",
@@ -1062,7 +1062,7 @@
       "status": "completed",
       "id": "RF-06",
       "decision": "混合",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/reflection-and-suppression.md",
@@ -1127,8 +1127,8 @@
   "body_sentences": 437,
   "preserved_acceptance_rows": 86,
   "common_change_blocks": 13,
-  "local_links": 2598,
-  "manual_review_count": 355,
+  "local_links": 2587,
+  "manual_review_count": 337,
   "manual_review_sentences": [
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -3816,7 +3816,8 @@
       "actual": "整條移除",
       "conservative": false,
       "targets": [
-        "rules/coding/concurrency-and-async.md#ca-01"
+        "rules/coding/concurrency-and-async.md#ca-01",
+        "rules/coding/concurrency-and-async.md#async-result-reception"
       ],
       "reason": "工作脫離呼叫流程的接手元件與結果處置，由 ca-01 的擁有者、責任移交及背景元件接手三句完整承接。"
     },
@@ -3826,12 +3827,12 @@
       "history_id": "CA-02",
       "decision": "混合",
       "expected": "拆分",
-      "actual": "拆分",
-      "conservative": false,
+      "actual": "整條保留",
+      "conservative": true,
       "targets": [
         "rules/stacks/java/common/concurrency-and-async.md#java-execution-resources"
       ],
-      "reason": "保留明確提供 Executor、ExecutorService 或框架提交工作的 Java API；虛擬執行緒的下游容量要求由 ca-02 不論排程或執行緒機制均須遵守下游限制承接。"
+      "reason": "第八次審閱 CA-02：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
@@ -3904,12 +3905,12 @@
       "history_id": "CA-08",
       "decision": "重述",
       "expected": "整條移除",
-      "actual": "整條移除",
-      "conservative": false,
+      "actual": "整條保留",
+      "conservative": true,
       "targets": [
-        "rules/coding/concurrency-and-async.md#ca-08"
+        "rules/stacks/java/common/concurrency-and-async.md#java-execution-location"
       ],
-      "reason": "Java 任務及回呼的執行安排、阻塞及同一受限 executor 等待，由 ca-08 各階段執行資源與阻塞特性、執行安排等待關係的原句直接承接。"
+      "reason": "第八次審閱 CA-08：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
@@ -3930,12 +3931,12 @@
       "history_id": "CA-10",
       "decision": "重述",
       "expected": "整條移除",
-      "actual": "整條移除",
-      "conservative": false,
+      "actual": "整條保留",
+      "conservative": true,
       "targets": [
-        "rules/coding/concurrency-and-async.md#ca-10"
+        "rules/stacks/java/common/concurrency-and-async.md#java-lock-scope"
       ],
-      "reason": "全部退出路徑及必要檢查不得移出原子範圍，由 ca-10 的完整保護必要條件、所有退出路徑釋放與不得移出保護範圍逐句承接。"
+      "reason": "第八次審閱 CA-10：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
@@ -3965,24 +3966,13 @@
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
-      "type": "刪除完整性",
-      "history_id": "CA-02",
-      "source": "Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作；虛擬執行緒也須遵守下游容量。",
-      "unreported_fragments": [
-
-      ]
-    },
-    {
-      "path": "rules/stacks/java/common/concurrency-and-async.md",
       "type": "link_retention",
       "record": {
         "targets": [
           "rules/coding/concurrency-and-async.md#ca-01",
-          "rules/coding/concurrency-and-async.md#ca-04",
-          "rules/coding/concurrency-and-async.md#ca-08",
-          "rules/coding/concurrency-and-async.md#ca-10"
+          "rules/coding/concurrency-and-async.md#ca-04"
         ],
-        "text": "本文件另依[ca-01](../../../coding/concurrency-and-async.md#ca-01)、[ca-04](../../../coding/concurrency-and-async.md#ca-04)、[ca-08](../../../coding/concurrency-and-async.md#ca-08)、[ca-10](../../../coding/concurrency-and-async.md#ca-10)辦理。"
+        "text": "本文件另依[ca-01](../../../coding/concurrency-and-async.md#ca-01)、[ca-04](../../../coding/concurrency-and-async.md#ca-04)辦理。"
       }
     },
     {
@@ -4046,13 +4036,16 @@
       "targets": [
         {
           "uri": "rules/coding/concurrency-and-async.md#ca-01"
+        },
+        {
+          "uri": "rules/coding/concurrency-and-async.md#async-result-reception"
         }
       ],
       "removed_assertions": [
         {
           "text": "結果處置路徑",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-01",
-          "source_text": "併發與非同步工作須有明確的生命週期擁有者，依[結果接收與故障處置](#async-result-reception)追蹤結果及處理失敗，並管理取消與資源。"
+          "source_uri": "rules/coding/concurrency-and-async.md#async-result-reception",
+          "source_text": "非同步結果依[錯誤處理](error-handling.md#失敗分類與表達)區分成功、業務失敗、技術故障及取消，明訂接收路徑，不得丟棄故障。"
         },
         {
           "text": "Java 任務脫離呼叫流程時仍須有明確接手元件",
@@ -4065,28 +4058,7 @@
           "source_text": "不要求原請求等待所有工作完成，但獨立工作須由負責的背景元件接手。"
         }
       ],
-      "reason": "工作脫離呼叫流程的接手元件與結果處置，由 ca-01 的擁有者、責任移交及背景元件接手三句完整承接。"
-    },
-    {
-      "path": "rules/stacks/java/common/concurrency-and-async.md",
-      "sentence": 6,
-      "history_id": "CA-02",
-      "action": "改寫",
-      "source": "Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作；虛擬執行緒也須遵守下游容量。",
-      "targets": [
-        {
-          "uri": "rules/stacks/java/common/concurrency-and-async.md#java-execution-resources",
-          "text": "Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作。"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "虛擬執行緒也須遵守下游容量",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-02",
-          "source_text": "不強制全部共用同一執行資源；不論採用何種排程或執行緒機制，均須遵守資料庫連線及外部呼叫等下游限制。"
-        }
-      ],
-      "reason": "保留明確提供 Executor、ExecutorService 或框架提交工作的 Java API；虛擬執行緒的下游容量要求由 ca-02 不論排程或執行緒機制均須遵守下游限制承接。"
+      "reason": "接手元件由 ca-01 的責任移交與背景元件接手承接；結果處置路徑另登 async-result-reception 的明訂接收路徑及不得丟棄故障原句。"
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
@@ -4134,113 +4106,17 @@
       "reason": "逾時不等於底層停止及等待 API 承接整體時間預算，由 ca-04 的等待期限與不得視為工作停止兩句直接承接。"
     },
     {
-      "path": "rules/stacks/java/common/concurrency-and-async.md",
-      "sentence": 17,
-      "history_id": "CA-08",
-      "action": "移除",
-      "source": "依[執行位置與阻塞行為的共通要求](../../../coding/concurrency-and-async.md#ca-08)執行。",
-      "targets": [
-        {
-          "uri": "rules/coding/concurrency-and-async.md#ca-08"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[執行位置與阻塞行為的共通要求](../../../coding/concurrency-and-async.md#ca-08)執行。",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-08",
-          "source_text": "非同步流程須確認各階段的執行資源與阻塞特性，避免占用受限資源等待同一資源上的工作完成。"
-        }
-      ],
-      "reason": "此句只引用既有共通規則，要求仍由同一共通錨點承接；原連結另外保留於檔頭固定指路句，沒有改變引用範圍或增加例外。"
-    },
-    {
-      "path": "rules/stacks/java/common/concurrency-and-async.md",
-      "sentence": 18,
-      "history_id": "CA-08",
-      "action": "移除",
-      "source": "Java 任務及回呼須明確安排 executor 與阻塞行為，避免占用同一受限 executor 等待其排隊工作。",
-      "targets": [
-        {
-          "uri": "rules/coding/concurrency-and-async.md#ca-08"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "避免占用同一受限 executor 等待其排隊工作",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-08",
-          "source_text": "非同步流程須確認各階段的執行資源與阻塞特性，避免占用受限資源等待同一資源上的工作完成。"
-        },
-        {
-          "text": "Java 任務及回呼須明確安排 executor 與阻塞行為",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-08",
-          "source_text": "不強制每個階段使用不同執行緒池，但執行安排、等待關係與容量須支撐流程完成。"
-        }
-      ],
-      "reason": "Java 任務及回呼的執行安排、阻塞及同一受限 executor 等待，由 ca-08 各階段執行資源與阻塞特性、執行安排等待關係的原句直接承接。"
-    },
-    {
-      "path": "rules/stacks/java/common/concurrency-and-async.md",
-      "sentence": 21,
-      "history_id": "CA-10",
-      "action": "移除",
-      "source": "依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#ca-10)執行。",
-      "targets": [
-        {
-          "uri": "rules/coding/concurrency-and-async.md#ca-10"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#ca-10)執行。",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-10",
-          "source_text": "鎖定範圍須完整保護必要條件，避免持鎖執行不受控的阻塞、等待或回呼。"
-        }
-      ],
-      "reason": "此句只引用既有共通規則，要求仍由同一共通錨點承接；原連結另外保留於檔頭固定指路句，沒有改變引用範圍或增加例外。"
-    },
-    {
-      "path": "rules/stacks/java/common/concurrency-and-async.md",
-      "sentence": 22,
-      "history_id": "CA-10",
-      "action": "移除",
-      "source": "Java 同步與鎖的實作須涵蓋全部退出路徑，必要檢查不能為縮短持鎖而移出原子範圍。",
-      "targets": [
-        {
-          "uri": "rules/coding/concurrency-and-async.md#ca-10"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "Java 同步與鎖的實作須涵蓋全部退出路徑",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-10",
-          "source_text": "鎖定範圍須完整保護必要條件，避免持鎖執行不受控的阻塞、等待或回呼。"
-        },
-        {
-          "text": "Java 同步與鎖的實作須涵蓋全部退出路徑",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-10",
-          "source_text": "多鎖操作須明訂取得順序或避死鎖策略，所有退出路徑須正確釋放。"
-        },
-        {
-          "text": "必要檢查不能為縮短持鎖而移出原子範圍",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-10",
-          "source_text": "不得為縮短持鎖時間將必要檢查移出保護範圍，破壞原子性。"
-        }
-      ],
-      "reason": "全部退出路徑及必要檢查不得移出原子範圍，由 ca-10 的完整保護必要條件、所有退出路徑釋放與不得移出保護範圍逐句承接。"
-    },
-    {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
       "type": "去向種類",
       "history_id": "CO-01",
       "decision": "重述",
       "expected": "整條移除",
-      "actual": "拆分",
+      "actual": "整條保留",
       "conservative": true,
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#java-collection-ownership",
-        "rules/coding/collections-and-ownership.md#co-01"
+        "rules/stacks/java/common/collections-and-ownership.md#java-collection-ownership"
       ],
-      "reason": "共通明訂集合及元素契約，但未直接寫出 Java 集合介面本身不能取代所有權契約，保守保留整句操作提醒。"
+      "reason": "第八次審閱 CO-01：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
@@ -4248,13 +4124,12 @@
       "history_id": "CO-02",
       "decision": "重述",
       "expected": "整條移除",
-      "actual": "拆分",
+      "actual": "整條保留",
       "conservative": true,
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#java-snapshots-and-views",
-        "rules/coding/collections-and-ownership.md#co-02"
+        "rules/stacks/java/common/collections-and-ownership.md#java-snapshots-and-views"
       ],
-      "reason": "共通明訂快照隔離與唯讀檢視契約，但未直接寫出 Java 不可修改包裝仍可能是來源檢視，保守保留整句實際隔離提醒。"
+      "reason": "第八次審閱 CO-02：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
@@ -4314,13 +4189,12 @@
       "history_id": "CO-07",
       "decision": "重述",
       "expected": "整條移除",
-      "actual": "拆分",
+      "actual": "整條保留",
       "conservative": true,
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime",
-        "rules/coding/resource-lifecycle.md#co-07"
+        "rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime"
       ],
-      "reason": "共通涵蓋有效期、關閉及受控結果，但未直接指定關閉方式依例外與資源管理，故保留 Java 整句。"
+      "reason": "第八次審閱 CO-07：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
@@ -4328,13 +4202,12 @@
       "history_id": "CO-08",
       "decision": "待確認",
       "expected": "拆分",
-      "actual": "拆分",
-      "conservative": false,
+      "actual": "整條保留",
+      "conservative": true,
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#java-batch-failure-state",
-        "rules/coding/error-handling.md#failure-state-guarantee"
+        "rules/stacks/java/common/collections-and-ownership.md#java-batch-failure-state"
       ],
-      "reason": "依核准提升拆分共通引用；保留 Java 批次集合方法提醒及核對約定狀態，因共通正文明訂狀態未直接表述核對實際狀態。整理前原文未提交，無法證明完整覆蓋。"
+      "reason": "第八次審閱 CO-08：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
@@ -4342,13 +4215,12 @@
       "history_id": "CO-09",
       "decision": "重述",
       "expected": "整條移除",
-      "actual": "拆分",
+      "actual": "整條保留",
       "conservative": true,
       "targets": [
-        "rules/stacks/java/common/collections-and-ownership.md#java-collection-verification",
-        "rules/coding/collections-and-ownership.md#co-09"
+        "rules/stacks/java/common/collections-and-ownership.md#java-collection-verification"
       ],
-      "reason": "共通涵蓋所有權驗收與不重測標準函式庫，但未直接列出實際遍歷路徑及依下方驗收的定位，保守保留整句。"
+      "reason": "第八次審閱 CO-09：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
@@ -4367,60 +4239,16 @@
       "type": "link_retention",
       "record": {
         "targets": [
-          "rules/coding/collections-and-ownership.md#co-01",
-          "rules/coding/collections-and-ownership.md#co-02",
           "rules/coding/collections-and-ownership.md#co-03",
-          "rules/coding/collections-and-ownership.md#co-09",
-          "rules/coding/resource-lifecycle.md#co-07",
           "rules/quality/performance.md#co-06"
         ],
-        "text": "本文件另依[co-01](../../../coding/collections-and-ownership.md#co-01)、[co-02](../../../coding/collections-and-ownership.md#co-02)、[co-03](../../../coding/collections-and-ownership.md#co-03)、[co-09](../../../coding/collections-and-ownership.md#co-09)、[co-07](../../../coding/resource-lifecycle.md#co-07)、[co-06](../../../quality/performance.md#co-06)辦理。"
+        "text": "本文件另依[co-03](../../../coding/collections-and-ownership.md#co-03)、[co-06](../../../quality/performance.md#co-06)辦理。"
       }
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
       "type": "acceptance_additions",
       "record": "- [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。\n"
-    },
-    {
-      "path": "rules/stacks/java/common/collections-and-ownership.md",
-      "sentence": 4,
-      "history_id": "CO-01",
-      "action": "移除",
-      "source": "依[明確定義修改權與參考關係的共通要求](../../../coding/collections-and-ownership.md#co-01)執行。",
-      "targets": [
-        {
-          "uri": "rules/coding/collections-and-ownership.md#co-01"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[明確定義修改權與參考關係的共通要求](../../../coding/collections-and-ownership.md#co-01)執行。",
-          "source_uri": "rules/coding/collections-and-ownership.md#co-01",
-          "source_text": "集合的接收與回傳契約須明訂修改權、參考保留及快照或檢視語意，涵蓋集合本身與元素。"
-        }
-      ],
-      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通明訂集合及元素契約，但未直接寫出 Java 集合介面本身不能取代所有權契約，保守保留整句操作提醒。"
-    },
-    {
-      "path": "rules/stacks/java/common/collections-and-ownership.md",
-      "sentence": 6,
-      "history_id": "CO-02",
-      "action": "移除",
-      "source": "依[區分不可修改與不可變快照的共通要求](../../../coding/collections-and-ownership.md#co-02)執行。",
-      "targets": [
-        {
-          "uri": "rules/coding/collections-and-ownership.md#co-02"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[區分不可修改與不可變快照的共通要求](../../../coding/collections-and-ownership.md#co-02)執行。",
-          "source_uri": "rules/coding/collections-and-ownership.md#co-02",
-          "source_text": "不得將不可修改的集合介面或包裝直接視為不可變快照。"
-        }
-      ],
-      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通明訂快照隔離與唯讀檢視契約，但未直接寫出 Java 不可修改包裝仍可能是來源檢視，保守保留整句實際隔離提醒。"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
@@ -4598,66 +4426,6 @@
       "reason": "共通明列迭代器與串流不能推定有界，以及排序、去重與分組保留資料成本，完整承接 Java 提醒。"
     },
     {
-      "path": "rules/stacks/java/common/collections-and-ownership.md",
-      "sentence": 16,
-      "history_id": "CO-07",
-      "action": "移除",
-      "source": "依[延遲讀取的資源責任的共通要求](../../../coding/resource-lifecycle.md#co-07)執行。",
-      "targets": [
-        {
-          "uri": "rules/coding/resource-lifecycle.md#co-07"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[延遲讀取的資源責任的共通要求](../../../coding/resource-lifecycle.md#co-07)執行。",
-          "source_uri": "rules/coding/resource-lifecycle.md#co-07",
-          "source_text": "依賴外部資源的延遲集合、迭代器或串流，須明訂資源擁有者、有效範圍與釋放責任，涵蓋完成、提前停止與失敗情境。"
-        }
-      ],
-      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通涵蓋有效期、關閉及受控結果，但未直接指定關閉方式依例外與資源管理，故保留 Java 整句。"
-    },
-    {
-      "path": "rules/stacks/java/common/collections-and-ownership.md",
-      "sentence": 18,
-      "history_id": "CO-08",
-      "action": "移除",
-      "source": "依[錯誤處理](../../../coding/error-handling.md)執行。",
-      "targets": [
-        {
-          "uri": "rules/coding/error-handling.md#failure-state-guarantee"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[錯誤處理](../../../coding/error-handling.md)執行。",
-          "source_uri": "rules/coding/error-handling.md#failure-state-guarantee",
-          "source_text": "批次修改須明訂失敗後狀態，不得假設拋例外即未修改；不要求所有集合操作具備交易能力。"
-        }
-      ],
-      "reason": "純引用句移由既有共通條文承接，錯誤處理整份連結原已保留於補充要求，依核准提升拆分共通引用；保留 Java 批次集合方法提醒及核對約定狀態，因共通正文明訂狀態未直接表述核對實際狀態。整理前原文未提交，無法證明完整覆蓋。"
-    },
-    {
-      "path": "rules/stacks/java/common/collections-and-ownership.md",
-      "sentence": 20,
-      "history_id": "CO-09",
-      "action": "移除",
-      "source": "依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#co-09)執行。",
-      "targets": [
-        {
-          "uri": "rules/coding/collections-and-ownership.md#co-09"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#co-09)執行。",
-          "source_uri": "rules/coding/collections-and-ownership.md#co-09",
-          "source_text": "集合相關契約新增或變更時，須依影響驗證修改權、資料隔離、快照或檢視、順序與重複處理，以及適用的併發、批次失敗與資源生命週期，不僅比對成功結果中的元素內容。"
-        }
-      ],
-      "reason": "純引用句移由既有共通條文承接，原連結另保留於引言或分組指路，共通涵蓋所有權驗收與不重測標準函式庫，但未直接列出實際遍歷路徑及依下方驗收的定位，保守保留整句。"
-    },
-    {
       "path": "rules/stacks/java/common/boundary-mapping.md",
       "type": "去向種類",
       "history_id": "BM-01",
@@ -4767,12 +4535,12 @@
       "history_id": "BM-09",
       "decision": "重述",
       "expected": "整條移除",
-      "actual": "整條移除",
-      "conservative": false,
+      "actual": "整條保留",
+      "conservative": true,
       "targets": [
-        "rules/architecture/data-mapping.md#bm-09"
+        "rules/stacks/java/common/boundary-mapping.md#java-mapping-verification"
       ],
-      "reason": "共通 bm-09 明訂驗證實際映射、不得只測手寫替代版本及實際序列化邊界，完整承接兩句後移除重述。"
+      "reason": "第八次審閱 BM-09：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/boundary-mapping.md",
@@ -4790,10 +4558,9 @@
       "type": "link_retention",
       "record": {
         "targets": [
-          "rules/architecture/data-mapping.md#bm-03",
-          "rules/architecture/data-mapping.md#bm-09"
+          "rules/architecture/data-mapping.md#bm-03"
         ],
-        "text": "本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)、[bm-09](../../../architecture/data-mapping.md#bm-09)辦理。"
+        "text": "本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)辦理。"
       }
     },
     {
@@ -4924,66 +4691,6 @@
       "reason": "格式解析、專屬型別建立與補查資料先協調均由共通 bm-03 原句直接承接，移除純引用與後附重述。"
     },
     {
-      "path": "rules/stacks/java/common/boundary-mapping.md",
-      "sentence": 19,
-      "history_id": "BM-09",
-      "action": "移除",
-      "source": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。",
-      "targets": [
-        {
-          "uri": "rules/architecture/data-mapping.md#bm-09"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "映射新增或變更時，須依影響驗證欄位來源、轉換語意、失敗處理、更新意圖與可變資料隔離，以及禁止流出的資料。"
-        },
-        {
-          "text": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "使用工具或框架時須驗證實際映射路徑，不能只測試手寫替代版本，也不能僅確認轉換成功或物件型別正確。"
-        },
-        {
-          "text": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "涉及反序列化或序列化設定時，須透過實際邊界路徑驗證。"
-        }
-      ],
-      "reason": "本句為實際映射路徑的共通引用，原 bm-09 連結移至檔頭固定引用文字，實際路徑與驗證義務仍由來源約束。"
-    },
-    {
-      "path": "rules/stacks/java/common/boundary-mapping.md",
-      "sentence": 20,
-      "history_id": "BM-09",
-      "action": "移除",
-      "source": "Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。",
-      "targets": [
-        {
-          "uri": "rules/architecture/data-mapping.md#bm-09"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "Java 測試須經實際映射及適用的序列化／反序列化路徑",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "使用工具或框架時須驗證實際映射路徑，不能只測試手寫替代版本，也不能僅確認轉換成功或物件型別正確。"
-        },
-        {
-          "text": "Java 測試須經實際映射及適用的序列化／反序列化路徑",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "涉及反序列化或序列化設定時，須透過實際邊界路徑驗證。"
-        },
-        {
-          "text": "不能只測手寫替代版本",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "使用工具或框架時須驗證實際映射路徑，不能只測試手寫替代版本，也不能僅確認轉換成功或物件型別正確。"
-        }
-      ],
-      "reason": "共通 bm-09 明訂驗證實際映射、不得只測手寫替代版本及實際序列化邊界，完整承接兩句後移除重述。"
-    },
-    {
       "path": "rules/stacks/java/common/value-objects.md",
       "type": "去向種類",
       "history_id": "VO-01",
@@ -5043,12 +4750,12 @@
       "history_id": "VO-05",
       "decision": "混合",
       "expected": "拆分",
-      "actual": "拆分",
-      "conservative": false,
+      "actual": "整條保留",
+      "conservative": true,
       "targets": [
         "rules/stacks/java/common/value-objects.md#java-value-normalization"
       ],
-      "reason": "所有建立入口一致正規化交由 vo-05 原文承接，保留 Java 建構子、工廠與其他入口須讓 equals／hashCode 反映值語意。"
+      "reason": "第八次審閱 VO-05：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/value-objects.md",
@@ -5115,15 +4822,6 @@
         "rules/stacks/java/common/value-objects.md#java-value-test-coverage"
       ],
       "reason": "驗收入口依作業說明整條保留，Java 產生方法與還原路徑及不機械式逐一測試全部保留交協調者決定，不以未列管摘要刪除覆蓋要求。整理前原文未提交，無法證明完整覆蓋。"
-    },
-    {
-      "path": "rules/stacks/java/common/value-objects.md",
-      "type": "刪除完整性",
-      "history_id": "VO-05",
-      "source": "Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。",
-      "unreported_fragments": [
-
-      ]
     },
     {
       "path": "rules/stacks/java/common/value-objects.md",
@@ -5306,27 +5004,6 @@
     },
     {
       "path": "rules/stacks/java/common/value-objects.md",
-      "sentence": 14,
-      "history_id": "VO-05",
-      "action": "改寫",
-      "source": "Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。",
-      "targets": [
-        {
-          "uri": "rules/stacks/java/common/value-objects.md#java-value-normalization",
-          "text": "Java 建構子、工廠及其他建立入口須讓 `equals()` 與 `hashCode()` 反映已定義的值語意。"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "一致執行正規化，並",
-          "source_uri": "rules/coding/domain-modeling.md#vo-05",
-          "source_text": "需要正規化時，須明訂轉換規則及其與驗證、相等性的關係，並由所有建立入口一致執行。"
-        }
-      ],
-      "reason": "所有建立入口一致正規化已有共通原句承接，只刪此共同子句；Java 建構子、工廠及其他入口的 equals／hashCode 值語意義務與須字均保留。"
-    },
-    {
-      "path": "rules/stacks/java/common/value-objects.md",
       "sentence": 16,
       "history_id": "VO-06",
       "action": "改寫",
@@ -5421,12 +5098,12 @@
       "history_id": "EQ-04",
       "decision": "混合",
       "expected": "拆分",
-      "actual": "拆分",
-      "conservative": false,
+      "actual": "整條保留",
+      "conservative": true,
       "targets": [
         "rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle"
       ],
-      "reason": "依第三節混合判斷保留共通引用及 Java 不強制覆寫 equals 的條件；識別碼變化不得破壞雜湊或排序集合契約，由共通 eq-04 的集合契約禁令承接。"
+      "reason": "第八次審閱 EQ-04：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/equality-hashing-ordering.md",
@@ -5505,15 +5182,6 @@
         "rules/stacks/java/common/equality-hashing-ordering.md#java-relationship-coverage"
       ],
       "reason": "依第四節否預設保留增量，逐字保留關係契約與集合行為驗收、適用範圍及工具產生方法不得省略驗證。"
-    },
-    {
-      "path": "rules/stacks/java/common/equality-hashing-ordering.md",
-      "type": "刪除完整性",
-      "history_id": "EQ-04",
-      "source": "Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。",
-      "unreported_fragments": [
-
-      ]
     },
     {
       "path": "rules/stacks/java/common/equality-hashing-ordering.md",
@@ -5601,27 +5269,6 @@
           }
         ]
       }
-    },
-    {
-      "path": "rules/stacks/java/common/equality-hashing-ordering.md",
-      "sentence": 12,
-      "history_id": "EQ-04",
-      "action": "改寫",
-      "source": "Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。",
-      "targets": [
-        {
-          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle",
-          "text": "Java 沒有跨實例相等需求時不強制覆寫 `equals()`。"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "識別碼變化不得破壞雜湊或排序集合契約",
-          "source_uri": "rules/coding/domain-modeling.md#eq-04",
-          "source_text": "建立時即具備穩定識別碼，或持久化後才取得識別碼，須各自明訂適用規則與使用限制；識別碼變化不得破壞集合契約。"
-        }
-      ],
-      "reason": "保留沒有跨實例相等需求時不強制覆寫 equals 的 Java 操作條件；只移除識別碼變化不得破壞雜湊或排序集合契約的子句，共通原文明訂識別碼變化不得破壞集合契約，涵蓋此處兩種集合。"
     },
     {
       "path": "rules/stacks/java/common/naming-packages-docs.md",
@@ -5829,9 +5476,14 @@
           "text": "不以模糊標記代替負責事項",
           "source_uri": "rules/coding/code-design.md#nd-05",
           "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
+        },
+        {
+          "text": "Java 註解及 TODO 依共同追蹤要求維護",
+          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_text": "實作註解依本文件的[註解與公開文件](#註解與公開文件)說明理由、限制與依據，變更時同步更新或移除。"
         }
       ],
-      "reason": "Java 註解及 TODO 的共同追蹤與禁止模糊標記要求，由共通原文明訂待處理內容、追蹤方式及責任管理直接承接。"
+      "reason": "註解維護補登 nd-05 首句的變更時同步更新或移除；TODO 追蹤與禁止模糊標記維持第三句的承接證據，兩句分別支持原斷言。"
     },
     {
       "path": "rules/stacks/java/common/types-and-generics.md",
@@ -6101,13 +5753,12 @@
       "history_id": "RF-06",
       "decision": "混合",
       "expected": "拆分",
-      "actual": "拆分",
-      "conservative": false,
+      "actual": "整條保留",
+      "conservative": true,
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression",
-        "rules/workflow/rule-governance.md#rf-06"
+        "rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression"
       ],
-      "reason": "第三節判斷為混合，純共通引用句移至引言連結；共通未直接點明 SuppressWarnings 及 raw type／unchecked 禁令，且抽掉最小範圍子句會使 Java 主詞失去謂語，故整個 Java 操作句保守原樣保留。"
+      "reason": "第八次審閱 RF-06：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "path": "rules/stacks/java/common/reflection-and-suppression.md",
@@ -6150,10 +5801,9 @@
       "record": {
         "targets": [
           "rules/coding/type-safety.md#rf-04",
-          "rules/quality/security.md#rf-02",
-          "rules/workflow/rule-governance.md#rf-06"
+          "rules/quality/security.md#rf-02"
         ],
-        "text": "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)、[rf-06](../../../workflow/rule-governance.md#rf-06)辦理。"
+        "text": "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)辦理。"
       }
     },
     {
@@ -6293,26 +5943,6 @@
         }
       ],
       "reason": "第三節判斷為混合，保留 Java 反射外層例外及原始原因；不得推定未執行而替換或重跑由共通外層例外與重試安全性原句承接。"
-    },
-    {
-      "path": "rules/stacks/java/common/reflection-and-suppression.md",
-      "sentence": 16,
-      "history_id": "RF-06",
-      "action": "移除",
-      "source": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。",
-      "targets": [
-        {
-          "uri": "rules/workflow/rule-governance.md#rf-06"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。",
-          "source_uri": "rules/workflow/rule-governance.md#rf-06",
-          "source_text": "檢查抑制須有可核對的原因，限定具體規則與最小必要範圍，不得廣泛關閉檢查掩蓋違規。"
-        }
-      ],
-      "reason": "第三節判斷為混合，移除純共通引用句並在引言保留連結；具體 SuppressWarnings 與 raw type／unchecked 的禁止及核准要求未由共通直接點明，保守保留整個 Java 操作句。"
     }
   ],
   "manual_limitations": [

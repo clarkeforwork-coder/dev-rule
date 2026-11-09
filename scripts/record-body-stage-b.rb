@@ -23,9 +23,9 @@ text+="\n## 153 條最終去向\n\n原判斷保持原文，CA-06 與 CO-08 的�
 raise '去向清冊不是 153 條' unless check['rule_dispositions'].size==153
 text+=rows.call(['歷史 ID','待決清單判斷','實際去向種類','現行 Java 或共通錨點'],check['rule_dispositions'].sort_by{|e|e['id']}.map{|e|[e['id'],e['decision'],e['kind'],map.fetch(e['id'])['targets'].join('、')]})
 manual=check['manual_review_sentences'];conservative=manual.select{|e|e['conservative']};retained=conservative.reject{|e|e['decision']=='驗收入口'}
-text+="\n## 與原判斷不同的保守處置\n\n工具列 #{conservative.size} 條保守去向，其中五條是已核准整條保留的驗收入口；其餘 #{retained.size} 條如下，理由直接取工作者 JSON。全部依本輪決策維持，不重新刪改。\n\n"
+text+="\n## 與原判斷不同的保守處置\n\n工具列 #{conservative.size} 條保守去向，其中五條是已核准整條保留的驗收入口；其餘 #{retained.size} 條如下，理由直接取目前去向 JSON（含第八次審閱還原理由）。全部依本輪決策維持，不重新刪改。\n\n"
 text+=rows.call(['歷史 ID','原判斷','實際去向','工作者理由'],retained.sort_by{|e|e['history_id']}.map{|e|e.values_at('history_id','decision','actual','reason')})
-text+="\nCO-08、RF-06、VO-07 的實際種類符合核准混合處理，但工作者另指出核對狀態、Java 警告抑制主詞與還原入口的承接不直接，故相關整句保留；詳見原始回報與逐句 JSON，未把種類相同誤作沒有語意複核需求。\n"
+text+="\n原階段 B 的 CO-08、RF-06、VO-07 皆採混合處理並保守保留 Java 句；第八次審閱後 CO-08、RF-06 的引用句亦還原，改整條保留。VO-07 未改。原始工作者理由保留於回報，最新種類以本表及 JSON 為準。\n"
 text+="\n## 人工複核數量\n\n常駐輸出共 #{check['manual_review_count']} 項（不同類別可能涉及同一句，不是獨立義務數）。\n\n"
 text+=rows.call(%w[類別 項數],manual.group_by{|e|e['type']||e['action']}.sort.map{|type,items|[type,items.size]})
 text+="\n機器核對原文、清冊、位置及結構；共通承接是否充分、增減限定是否改變要求、保守理由是否成立仍須人工逐句複核。已核准保留不代表已證明與共通完全等價。\n"
@@ -49,13 +49,20 @@ BM-04 的 `java-mapping-integrity` 小節已逐字包含「不得略過欄位或
 後：映射失敗依[錯誤處理](../coding/error-handling.md)及[資料驗證](../coding/validation.md)區分外部不合法資料與內部缺陷。
 ```
 
-登錄於 `docs/body-restructuring/common/existing-sources.json` 的一／BM-04 決策，摘要後續各句未動；15 份 Java 文件及其 JSON 全未改。
+登錄於 `docs/body-restructuring/common/existing-sources.json` 的一／BM-04 決策，摘要後續各句未動；原 b0f13eb 收尾時 15 份 Java 文件及其 JSON 全未改，後續第八次審閱的還原另列下節。
+
+## 第八次審閱還原
+
+在 `1623990` 逐字還原 CA-08、CA-10、BM-09 整條；CA-02 恢復虛擬執行緒與下游容量、VO-05 恢復完整正規化句、EQ-04 恢復雜湊或排序集合契約。CO-01、CO-02、CO-07、CO-08、CO-09、RF-06 引用句移回各小節句首，這十二條均改整條保留。原因分別為共通涵蓋不夠直接、保留 Java 具名提示、恢復完整語意及就近引用。CA-01 的結果處置補登 async-result-reception；ND-05 註解維護補登 nd-05 首句。已還原句的移除斷言全部清空，引言只刪除已回到小節的多餘入口。
+
+檢查規則與固定格式未調整；僅同步本紀錄產生器的歷史敘述。逐處位置、基準原文與前後差異見[修正紀錄](body-restructuring-review-8.md)。任務逐條點名實際涵蓋六份 Java 文件（不是驗收標準概稱的五份）；另只修改 naming-packages-docs 的 JSON 證據，該規範檔不動。L5 維持現狀，L7、L14 僅記錄，L9 至 L13、L15 留待後續。
 
 ## 工具收尾與未執行事項
 
+
 R7-M4：演練使用固定分派前提交的完整 rules／docs 暫存快照與目前 scripts，自身連結與夾具一致；HEAD 的完成文件另由主檢查與負向測試驗證。R7-L12：演練起點提交使用 `--allow-empty`，乾淨 checkout 不會輸出 nothing to commit 污染 JSON。R7-L13：收尾指南要求先 checkout 工作者分支最新提交，再用協調者固定起點執行範圍檢查，不在整合分支或起點冒充工作者最終結果。
 
-五條驗收入口 VO-10、ST-10、RF-07、RF-08、NT-14 全部已核准整條保留，不轉換。集合併檔、74 個共通歷史錨點改名、指路文字可讀性、驗收整合、CA-06／CO-08 驗收重疊與分工，全留下一階段。本輪不修改 Java 文件。
+五條驗收入口 VO-10、ST-10、RF-07、RF-08、NT-14 全部已核准整條保留，不轉換。集合併檔、74 個共通歷史錨點改名、指路文字可讀性、驗收整合、CA-06／CO-08 驗收重疊與分工，全留下一階段。原合併收尾不修改 Java 文件；第八次審閱只作下節明列的還原。
 
 併發與集合皆已完成，原提升提交的獨立撤回驗證不再適用，工具明列 applicable=false；不能據此宣稱日後可單獨撤回，必須同步處理 Java 來源與引用。原始回報的「交協調者決定」保留為歷史，五條入口與保守處置現已依本輪決策確認。
 

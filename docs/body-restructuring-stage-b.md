@@ -35,17 +35,17 @@
 | BM-06 | 重述 | 整條保留 | rules/stacks/java/common/boundary-mapping.md#java-mutable-isolation |
 | BM-07 | 重述 | 整條保留 | rules/stacks/java/common/boundary-mapping.md#java-directional-mapping |
 | BM-08 | 重述 | 整條保留 | rules/stacks/java/common/boundary-mapping.md#java-mapping-ownership |
-| BM-09 | 重述 | 整條移除 | rules/architecture/data-mapping.md#bm-09 |
-| CA-01 | 重述 | 整條移除 | rules/coding/concurrency-and-async.md#ca-01 |
-| CA-02 | 混合 | 拆分 | rules/stacks/java/common/concurrency-and-async.md#java-execution-resources |
+| BM-09 | 重述 | 整條保留 | rules/stacks/java/common/boundary-mapping.md#java-mapping-verification |
+| CA-01 | 重述 | 整條移除 | rules/coding/concurrency-and-async.md#ca-01、rules/coding/concurrency-and-async.md#async-result-reception |
+| CA-02 | 混合 | 整條保留 | rules/stacks/java/common/concurrency-and-async.md#java-execution-resources |
 | CA-03 | 保留條文／是 | 整條保留 | rules/stacks/java/common/concurrency-and-async.md#java-visibility-sharing |
 | CA-04 | 重述 | 整條移除 | rules/coding/concurrency-and-async.md#ca-04 |
 | CA-05 | 增量 | 保留增量 | rules/stacks/java/common/concurrency-and-async.md#java-cancellation-propagation |
 | CA-06 | 保留條文／是 | 整條保留 | rules/stacks/java/common/concurrency-and-async.md#java-result-reception |
 | CA-07 | 重述 | 整條保留 | rules/stacks/java/common/concurrency-and-async.md#java-task-completion |
-| CA-08 | 重述 | 整條移除 | rules/coding/concurrency-and-async.md#ca-08 |
+| CA-08 | 重述 | 整條保留 | rules/stacks/java/common/concurrency-and-async.md#java-execution-location |
 | CA-09 | 增量 | 保留增量 | rules/stacks/java/common/concurrency-and-async.md#java-context-propagation |
-| CA-10 | 重述 | 整條移除 | rules/coding/concurrency-and-async.md#ca-10 |
+| CA-10 | 重述 | 整條保留 | rules/stacks/java/common/concurrency-and-async.md#java-lock-scope |
 | CA-11 | 重述 | 整條保留 | rules/stacks/java/common/concurrency-and-async.md#java-controlled-shutdown |
 | CA-12 | 重述 | 整條保留 | rules/stacks/java/common/concurrency-and-async.md#java-controlled-verification |
 | CL-01 | 重述 | 整條保留 | rules/stacks/java/common/classes-and-construction.md#java-interface-purpose |
@@ -58,19 +58,19 @@
 | CL-08 | 重述 | 整條移除 | rules/coding/code-design.md#cl-08 |
 | CL-09 | 重述 | 整條移除 | rules/coding/resource-lifecycle.md#cl-09 |
 | CL-10 | 重述 | 整條保留 | rules/stacks/java/common/classes-and-construction.md#java-lifecycle-verification |
-| CO-01 | 重述 | 拆分 | rules/stacks/java/common/collections-and-ownership.md#java-collection-ownership、rules/coding/collections-and-ownership.md#co-01 |
-| CO-02 | 重述 | 拆分 | rules/stacks/java/common/collections-and-ownership.md#java-snapshots-and-views、rules/coding/collections-and-ownership.md#co-02 |
+| CO-01 | 重述 | 整條保留 | rules/stacks/java/common/collections-and-ownership.md#java-collection-ownership |
+| CO-02 | 重述 | 整條保留 | rules/stacks/java/common/collections-and-ownership.md#java-snapshots-and-views |
 | CO-03 | 重述 | 整條移除 | rules/coding/collections-and-ownership.md#co-03 |
 | CO-04 | 重述 | 整條移除 | rules/coding/collections-and-ownership.md#co-04 |
 | CO-05 | 重述 | 整條移除 | rules/coding/concurrency-and-async.md#co-05 |
 | CO-06 | 重述 | 整條移除 | rules/quality/performance.md#co-06 |
-| CO-07 | 重述 | 拆分 | rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime、rules/coding/resource-lifecycle.md#co-07 |
-| CO-08 | 待確認 | 拆分 | rules/stacks/java/common/collections-and-ownership.md#java-batch-failure-state、rules/coding/error-handling.md#failure-state-guarantee |
-| CO-09 | 重述 | 拆分 | rules/stacks/java/common/collections-and-ownership.md#java-collection-verification、rules/coding/collections-and-ownership.md#co-09 |
+| CO-07 | 重述 | 整條保留 | rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime |
+| CO-08 | 待確認 | 整條保留 | rules/stacks/java/common/collections-and-ownership.md#java-batch-failure-state |
+| CO-09 | 重述 | 整條保留 | rules/stacks/java/common/collections-and-ownership.md#java-collection-verification |
 | EQ-01 | 增量 | 保留增量 | rules/stacks/java/common/equality-hashing-ordering.md#java-comparison-semantics |
 | EQ-02 | 保留條文／是 | 整條保留 | rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract |
 | EQ-03 | 保留條文／是 | 整條保留 | rules/stacks/java/common/equality-hashing-ordering.md#java-hash-collection-stability |
-| EQ-04 | 混合 | 拆分 | rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle |
+| EQ-04 | 混合 | 整條保留 | rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle |
 | EQ-05 | 保留條文／是 | 整條保留 | rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality |
 | EQ-06 | 保留條文／可能 | 整條保留 | rules/stacks/java/common/equality-hashing-ordering.md#java-ordering-choice |
 | EQ-07 | 保留條文／是 | 整條保留 | rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations |
@@ -157,7 +157,7 @@
 | RF-03 | 保留條文／否 | 保留增量 | rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation |
 | RF-04 | 重述 | 整條移除 | rules/coding/type-safety.md#rf-04 |
 | RF-05 | 混合 | 拆分 | rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure |
-| RF-06 | 混合 | 拆分 | rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression、rules/workflow/rule-governance.md#rf-06 |
+| RF-06 | 混合 | 整條保留 | rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression |
 | RF-07 | 驗收入口 | 整條保留 | rules/stacks/java/common/reflection-and-suppression.md#java-generated-code |
 | RF-08 | 驗收入口 | 整條保留 | rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-verification |
 | ST-01 | 保留條文／是 | 整條保留 | rules/stacks/java/common/states-and-results.md#java-explicit-state-types |
@@ -174,7 +174,7 @@
 | VO-02 | 重述 | 整條移除 | rules/coding/domain-modeling.md#專屬型別、rules/coding/validation.md#責任分工、rules/coding/code-design.md#cl-06 |
 | VO-03 | 增量 | 保留增量 | rules/stacks/java/common/value-objects.md#java-value-immutability |
 | VO-04 | 保留條文／否 | 保留增量 | rules/stacks/java/common/value-objects.md#java-value-equality |
-| VO-05 | 混合 | 拆分 | rules/stacks/java/common/value-objects.md#java-value-normalization |
+| VO-05 | 混合 | 整條保留 | rules/stacks/java/common/value-objects.md#java-value-normalization |
 | VO-06 | 重述 | 拆分 | rules/stacks/java/common/value-objects.md#java-value-operations |
 | VO-07 | 混合 | 拆分 | rules/stacks/java/common/value-objects.md#java-value-restoration、rules/coding/domain-modeling.md#vo-07 |
 | VO-08 | 保留條文／否 | 保留增量 | rules/stacks/java/common/value-objects.md#java-value-implementation |
@@ -183,7 +183,7 @@
 
 ## 與原判斷不同的保守處置
 
-工具列 29 條保守去向，其中五條是已核准整條保留的驗收入口；其餘 24 條如下，理由直接取工作者 JSON。全部依本輪決策維持，不重新刪改。
+工具列 37 條保守去向，其中五條是已核准整條保留的驗收入口；其餘 32 條如下，理由直接取目前去向 JSON（含第八次審閱還原理由）。全部依本輪決策維持，不重新刪改。
 
 | 歷史 ID | 原判斷 | 實際去向 | 工作者理由 |
 | --- | --- | --- | --- |
@@ -191,32 +191,40 @@
 | BM-06 | 重述 | 整條保留 | 保守保留複製集合外層、符合契約的不可變值共用與不要求全面深層複製；現有邊界及程式碼設計正文未直接完整承接後兩項適用範圍，不以未列管摘要代替證據。整理前原文未提交，無法證明完整覆蓋。 |
 | BM-07 | 重述 | 整條保留 | 共通 bm-07 承接反向產生判斷，但未直接規定具體工具配置另由 Framework 規範落實，故連同引用整句保留，避免遺失配置責任。 |
 | BM-08 | 重述 | 整條保留 | 共通責任配置與介面原則涵蓋部分內容，但簡單映射可使用方法及不強制 Mapper 包裝層沒有同樣直接的完整原句，保守整條保留。整理前原文未提交，無法證明完整覆蓋。 |
+| BM-09 | 重述 | 整條保留 | 第八次審閱 BM-09：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
+| CA-02 | 混合 | 整條保留 | 第八次審閱 CA-02：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
 | CA-06 | 保留條文／是 | 整條保留 | 共通 async-result-reception 未直接明訂忽略回傳工作控制物件的失效情境；Future、CompletableFuture 與結果鏈亦屬 Java 增量，故保守整條保留；補連結被工具判為未申報刪字，已還原原句而不改工具。 |
 | CA-07 | 重述 | 整條保留 | 共通 ca-07 正文明訂完成條件與剩餘工作處置，但未直接要求驗證完成順序；不以驗收反推正文覆蓋，保守整條保留 Java 驗證要求。 |
+| CA-08 | 重述 | 整條保留 | 第八次審閱 CA-08：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
+| CA-10 | 重述 | 整條保留 | 第八次審閱 CA-10：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
 | CA-11 | 重述 | 整條保留 | 共通 ca-11 明訂關閉處置及不得將開始關閉視為工作結束，但正文未直接寫出實際關閉與資源釋放依契約驗證；為保留驗證動作整條原樣留下。 |
 | CA-12 | 重述 | 整條保留 | 共通 ca-12 要求同步設計審查，但未直接列出可見性設計審查；不能以同步概念推定可見性交付已涵蓋，故整條逐字保留。 |
 | CL-01 | 重述 | 整條保留 | 共通介面與抽象及模組公開入口未直接明列單一實作不構成省略必要架構隔離的理由，故整條保留。整理前原文未提交，無法證明完整覆蓋。 |
 | CL-05 | 重述 | 整條保留 | 共通寫需要延後或按次建立時「可注入」工廠或提供者，未直接承接 Java 原句「使用」的要求強度，故連同明確依賴與禁止隱藏查找整條保留。 |
 | CL-10 | 重述 | 整條保留 | 共通明列建立條件、替代契約與框架實際配置，但未逐字明列 Java 繼承、覆寫均須驗證實際路徑，故連同單純值物件免啟完整框架整條保留。 |
-| CO-01 | 重述 | 拆分 | 共通明訂集合及元素契約，但未直接寫出 Java 集合介面本身不能取代所有權契約，保守保留整句操作提醒。 |
-| CO-02 | 重述 | 拆分 | 共通明訂快照隔離與唯讀檢視契約，但未直接寫出 Java 不可修改包裝仍可能是來源檢視，保守保留整句實際隔離提醒。 |
-| CO-07 | 重述 | 拆分 | 共通涵蓋有效期、關閉及受控結果，但未直接指定關閉方式依例外與資源管理，故保留 Java 整句。 |
-| CO-09 | 重述 | 拆分 | 共通涵蓋所有權驗收與不重測標準函式庫，但未直接列出實際遍歷路徑及依下方驗收的定位，保守保留整句。 |
+| CO-01 | 重述 | 整條保留 | 第八次審閱 CO-01：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
+| CO-02 | 重述 | 整條保留 | 第八次審閱 CO-02：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
+| CO-07 | 重述 | 整條保留 | 第八次審閱 CO-07：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
+| CO-08 | 待確認 | 整條保留 | 第八次審閱 CO-08：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
+| CO-09 | 重述 | 整條保留 | 第八次審閱 CO-09：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
+| EQ-04 | 混合 | 整條保留 | 第八次審閱 EQ-04：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
 | JT-03 | 重述 | 整條保留 | 共通容器與泛型允許真實關係或解析驗證機制，未直接要求 Java 泛型簽章實際連結輸入輸出及特定業務操作不要求呼叫端轉型補回，故整條保留。整理前原文未提交，無法證明完整覆蓋。 |
 | JT-06 | 重述 | 整條保留 | 共通容器與泛型禁止以任意鍵值容器替代固定結構，未直接列出 Object[] 陣列承載的禁止事項，無法確認直接涵蓋，故連同 Map 反例及動態映射明確鍵值要求整條保留。整理前原文未提交，無法證明完整覆蓋。 |
 | LS-01 | 重述 | 整條保留 | 第三節判斷重述，但共通函式責任與命名原文未直接明訂 Stream 不強制取代迴圈、複雜邏輯採具名方法或清楚流程及不要求每個 Lambda 抽方法，故整條保守保留含原引用。整理前原文未提交，無法證明完整覆蓋。 |
 | NT-03 | 重述 | 整條保留 | 共通 nt-03 以可能損失精度的運算為條件，Java 原句涵蓋數值運算且明禁 API 預設決定；適用範圍與禁止條件未獲同一小節直接完整承接，整條保留原文。 |
 | NT-10 | 重述 | 整條保留 | 共通 nt-10 明訂必要的地區設定，Java 原句未加必要限定；無法直接證明地區設定義務的適用範圍完全一致，連同完整解析限制整條保留原文。 |
+| RF-06 | 混合 | 整條保留 | 第八次審閱 RF-06：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
 | ST-02 | 重述 | 整條保留 | 共通狀態建模以不同狀態需要不同資料為條件，未直接寫出不得只用狀態碼搭配多個可空欄位讓使用端推測，故整條保留。整理前原文未提交，無法證明完整覆蓋。 |
 | ST-03 | 重述 | 整條保留 | 共通禁止任意修改狀態欄位可涵蓋 setter 限制，但未直接明訂修改既有物件或產生新狀態物件由模型決定，故整條保留。整理前原文未提交，無法證明完整覆蓋。 |
 | ST-05 | 重述 | 整條保留 | 共通要求明確結果型別及可辨識原因，未直接列不同失敗型別或具型別原因代碼選擇，且例外句限定非預期技術故障，故整條保留。整理前原文未提交，無法證明完整覆蓋。 |
+| VO-05 | 混合 | 整條保留 | 第八次審閱 VO-05：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
 | VO-06 | 重述 | 拆分 | 專屬型別操作與邊界讀值由專屬型別及 vo-06 承接；外部政策操作原句指定領域元件，共通僅稱負責元件，責任限定未直接涵蓋故保守留下。 |
 
-CO-08、RF-06、VO-07 的實際種類符合核准混合處理，但工作者另指出核對狀態、Java 警告抑制主詞與還原入口的承接不直接，故相關整句保留；詳見原始回報與逐句 JSON，未把種類相同誤作沒有語意複核需求。
+原階段 B 的 CO-08、RF-06、VO-07 皆採混合處理並保守保留 Java 句；第八次審閱後 CO-08、RF-06 的引用句亦還原，改整條保留。VO-07 未改。原始工作者理由保留於回報，最新種類以本表及 JSON 為準。
 
 ## 人工複核數量
 
-常駐輸出共 355 項（不同類別可能涉及同一句，不是獨立義務數）。
+常駐輸出共 337 項（不同類別可能涉及同一句，不是獨立義務數）。
 
 | 類別 | 項數 |
 | --- | --- |
@@ -226,10 +234,10 @@ CO-08、RF-06、VO-07 的實際種類符合核准混合處理，但工作者另�
 | group_routes | 1 |
 | imports | 1 |
 | link_retention | 10 |
-| 刪除完整性 | 22 |
+| 刪除完整性 | 19 |
 | 去向種類 | 153 |
-| 改寫 | 22 |
-| 移除 | 69 |
+| 改寫 | 19 |
+| 移除 | 57 |
 
 機器核對原文、清冊、位置及結構；共通承接是否充分、增減限定是否改變要求、保守理由是否成立仍須人工逐句複核。已核准保留不代表已證明與共通完全等價。
 
@@ -267,13 +275,20 @@ BM-04 的 `java-mapping-integrity` 小節已逐字包含「不得略過欄位或
 後：映射失敗依[錯誤處理](../coding/error-handling.md)及[資料驗證](../coding/validation.md)區分外部不合法資料與內部缺陷。
 ```
 
-登錄於 `docs/body-restructuring/common/existing-sources.json` 的一／BM-04 決策，摘要後續各句未動；15 份 Java 文件及其 JSON 全未改。
+登錄於 `docs/body-restructuring/common/existing-sources.json` 的一／BM-04 決策，摘要後續各句未動；原 b0f13eb 收尾時 15 份 Java 文件及其 JSON 全未改，後續第八次審閱的還原另列下節。
+
+## 第八次審閱還原
+
+在 `1623990` 逐字還原 CA-08、CA-10、BM-09 整條；CA-02 恢復虛擬執行緒與下游容量、VO-05 恢復完整正規化句、EQ-04 恢復雜湊或排序集合契約。CO-01、CO-02、CO-07、CO-08、CO-09、RF-06 引用句移回各小節句首，這十二條均改整條保留。原因分別為共通涵蓋不夠直接、保留 Java 具名提示、恢復完整語意及就近引用。CA-01 的結果處置補登 async-result-reception；ND-05 註解維護補登 nd-05 首句。已還原句的移除斷言全部清空，引言只刪除已回到小節的多餘入口。
+
+檢查規則與固定格式未調整；僅同步本紀錄產生器的歷史敘述。逐處位置、基準原文與前後差異見[修正紀錄](body-restructuring-review-8.md)。任務逐條點名實際涵蓋六份 Java 文件（不是驗收標準概稱的五份）；另只修改 naming-packages-docs 的 JSON 證據，該規範檔不動。L5 維持現狀，L7、L14 僅記錄，L9 至 L13、L15 留待後續。
 
 ## 工具收尾與未執行事項
 
+
 R7-M4：演練使用固定分派前提交的完整 rules／docs 暫存快照與目前 scripts，自身連結與夾具一致；HEAD 的完成文件另由主檢查與負向測試驗證。R7-L12：演練起點提交使用 `--allow-empty`，乾淨 checkout 不會輸出 nothing to commit 污染 JSON。R7-L13：收尾指南要求先 checkout 工作者分支最新提交，再用協調者固定起點執行範圍檢查，不在整合分支或起點冒充工作者最終結果。
 
-五條驗收入口 VO-10、ST-10、RF-07、RF-08、NT-14 全部已核准整條保留，不轉換。集合併檔、74 個共通歷史錨點改名、指路文字可讀性、驗收整合、CA-06／CO-08 驗收重疊與分工，全留下一階段。本輪不修改 Java 文件。
+五條驗收入口 VO-10、ST-10、RF-07、RF-08、NT-14 全部已核准整條保留，不轉換。集合併檔、74 個共通歷史錨點改名、指路文字可讀性、驗收整合、CA-06／CO-08 驗收重疊與分工，全留下一階段。原合併收尾不修改 Java 文件；第八次審閱只作下節明列的還原。
 
 併發與集合皆已完成，原提升提交的獨立撤回驗證不再適用，工具明列 applicable=false；不能據此宣稱日後可單獨撤回，必須同步處理 Java 來源與引用。原始回報的「交協調者決定」保留為歷史，五條入口與保守處置現已依本輪決策確認。
 
@@ -281,20 +296,20 @@ R7-M4：演練使用固定分派前提交的完整 rules／docs 暫存快照與�
 
 | 文件 | 去向分布 | 空分組指路筆數 | 引言保留連結筆數 | 結尾小節 | 三級標題數 | 引言行數 |
 | --- | --- | --- | --- | --- | --- | --- |
-| boundary-mapping | 整條移除 3、整條保留 5、保留增量 1 | 0 | 1 | 有 | 8 | 8 |
+| boundary-mapping | 整條移除 2、整條保留 6、保留增量 1 | 0 | 1 | 有 | 9 | 8 |
 | classes-and-construction | 整條保留 5、整條移除 5 | 0 | 1 | 有 | 7 | 8 |
-| collections-and-ownership | 拆分 5、整條移除 4 | 1 | 1 | 有 | 7 | 8 |
-| concurrency-and-async | 整條移除 4、拆分 1、整條保留 5、保留增量 2 | 0 | 1 | 有 | 10 | 8 |
-| equality-hashing-ordering | 保留增量 3、整條保留 6、拆分 1 | 0 | 0 | 無 | 12 | 6 |
+| collections-and-ownership | 整條保留 5、整條移除 4 | 1 | 1 | 有 | 7 | 8 |
+| concurrency-and-async | 整條移除 2、整條保留 8、保留增量 2 | 0 | 1 | 有 | 12 | 8 |
+| equality-hashing-ordering | 保留增量 3、整條保留 7 | 0 | 0 | 無 | 12 | 6 |
 | exceptions-and-resources | 保留增量 6、整條保留 1、整條移除 2 | 0 | 1 | 有 | 9 | 8 |
 | lambda-and-stream | 整條保留 3、保留增量 7 | 0 | 0 | 有 | 12 | 6 |
 | naming-packages-docs | 保留增量 5、整條保留 1、整條移除 1 | 0 | 1 | 有 | 8 | 8 |
 | null-and-optional | 保留增量 2、拆分 6、整條保留 2、整條移除 1、轉為驗收入口 1 | 0 | 0 | 有 | 12 | 6 |
 | numbers-dates-text | 保留增量 7、整條保留 3、整條移除 4 | 0 | 1 | 有 | 12 | 8 |
-| reflection-and-suppression | 保留增量 2、整條移除 2、拆分 2、整條保留 2 | 0 | 1 | 有 | 8 | 8 |
+| reflection-and-suppression | 保留增量 2、整條移除 2、拆分 1、整條保留 3 | 0 | 1 | 有 | 8 | 8 |
 | states-and-results | 整條保留 6、整條移除 3、保留增量 1 | 0 | 1 | 有 | 9 | 8 |
 | types-and-generics | 保留增量 9、整條保留 2 | 0 | 0 | 有 | 13 | 6 |
-| value-objects | 整條移除 2、保留增量 3、拆分 3、整條保留 2 | 0 | 1 | 有 | 10 | 8 |
+| value-objects | 整條移除 2、保留增量 3、整條保留 3、拆分 2 | 0 | 1 | 有 | 10 | 8 |
 | version-policy | 保留增量 12 | 0 | 0 | 有 | 14 | 6 |
 
 - 錨點皆採 `java-` 加語意字串，細粒度命名仍不同：版本以 declarations／verification 等行為命名，型別以 type-relation／shape 等概念命名，映射混合 fields／integrity／ownership；不統一或新增別名。
