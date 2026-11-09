@@ -43,8 +43,8 @@ manifest=JSON.parse(File.read('scripts/acceptance-batches.json')).values.flat_ma
 records=Dir.glob('docs/body-restructuring/java/*.json').map{|p|JSON.parse(File.read(p))}
 expected_ids=File.read('docs/java-rule-classification.md').scan(/^\| ([A-Z]{2}-\d{2})[： ]/).flatten.reject{|id|id.start_with?('AU-')}.uniq.sort
 require_check(records.flat_map{|r|r['rules'].map{|e|e['id']}}.sort==expected_ids && expected_ids.size==153,'歷史 ID 集合不完整或重複')
-common_paths=Dir.glob('docs/body-restructuring/common/*.json')
-require_check((common_paths.map{|p|File.basename(p)}-BodyStructure::COMMON_FILES).empty?,'未核准的共通紀錄檔名')
+common_paths=Dir.glob('docs/body-restructuring/common/**/*',File::FNM_DOTMATCH).select{|p|File.file?(p)}
+require_check((common_paths-BodyStructure::COMMON_FILES.map{|p|"docs/body-restructuring/common/#{p}"}).empty?,'未核准的共通紀錄檔名')
 common=common_paths.map{|p|JSON.parse(File.read(p))}
 registered={};sentence_count=0;acceptance_count=0;manual=[]
 records.each do |r|

@@ -137,8 +137,16 @@ target_uri 使用該工作者實際建立的小節錨點。工具核對固定基
 
 references 以實際文字為準；對 before 套用這些替換必須恰好等於 after，其他字一概不變。「各條 Java 使用限制仍適用」沒有數字條號，不改它。新增驗收內容另由協調者在工具明列白名單；目前只允許 JN 已搬入引言及下列兩個已核准共同驗收連結，以 `acceptance_additions` 登錄：
 
-- concurrency：`- [結果接收與故障處置](../../../coding/concurrency-and-async.md#acceptance-result-reception)。` 後接換行。
-- collections：`- [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。` 後接換行。
+concurrency（後接換行）：
+
+```markdown
+- [結果接收與故障處置](../../../coding/concurrency-and-async.md#acceptance-result-reception)。
+```
+collections（後接換行）：
+
+```markdown
+- [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。
+```
 
 兩個連結插在「### Java 語言增量驗收」之前、共同清單的末尾；不得用白名單加入其他句子。
 

@@ -95,7 +95,10 @@ add(cases,'句子處置無效','句子處置無效'){|r|r['sentences'][0]['actio
 add(cases,'句子去向清空','句子沒有去向'){|r|r['sentences'][0]['targets']=[]}
 add(cases,'去向不在同一小節','去向文字不存在'){|r|r['sentences'][6]['targets'][0]['uri']=J+'#java-container-nulls'}
 add(cases,'非分類 Java 檔案','Java 文件不在原分類範圍'){|r|r['path']='rules/coding/nullability.md';r['status']='completed'}
+add(cases,'隱藏共通清單','未核准的共通紀錄檔名'){File.write('docs/body-restructuring/common/.zz.json','{}')}
+add(cases,'非 JSON 共通檔','未核准的共通紀錄檔名'){File.write('docs/body-restructuring/common/zz.txt','未核准')}
 results=[]
+
 
 cases.each do |name,diagnostic,command,mutation|
  Dir.mktmpdir('body-negative-') do |dir|
