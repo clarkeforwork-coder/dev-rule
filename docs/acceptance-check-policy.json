@@ -1,5 +1,5 @@
 {
-  "baseline": "6a16349",
+  "baseline": "6a1634959d922b2df5f1259cb176a731a5b5f488",
   "changes": [
     {
       "path": "rules/README.md",
@@ -330,7 +330,7 @@
         "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
       ],
       "insert": [
-        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響與實際邊界選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
         "",
         "### 共同驗收",
         "",
@@ -344,7 +344,7 @@
         "- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。"
       ],
       "kind": "acceptance",
-      "reason": "移除「下表保留原決策編號與 Java 實作案例」歷史追蹤說明；共通引用的效力與 Java 型別、API、版本及框架實際路徑不得略過，改由本節第一段「共同驗收與 Java 語言增量均須經實際採用」逐項承接。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。」。增文逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響與實際邊界選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [隔離與拆分](../../../architecture/boundary-objects.md#acceptance-boundary-separation)。」、「- [轉換要求、最小必要欄位](../../../architecture/data-mapping.md#acceptance-mapping-fields)。」、「- [不可變性](../../../architecture/boundary-objects.md#acceptance-boundary-isolation)。」、「- [責任配置](../../../architecture/data-mapping.md#acceptance-mapping-owner)。」、「- [聚焦轉換與必要驗證](../../../architecture/data-mapping.md#acceptance-mapping-responsibility)。」、「- [各方向分別定義](../../../architecture/data-mapping.md#acceptance-directional-mapping)。」、「- [驗證實際映射路徑](../../../architecture/data-mapping.md#acceptance-mapping-paths)。」、「- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/boundary-mapping.md",
@@ -389,7 +389,7 @@
         "| <a id=\"acceptance-java-update-intent\"></a>5 | 核對 Java 欄位、預設值與反序列化路徑未合併省略、明確清空及設定值的不同意圖。 |"
       ],
       "kind": "acceptance",
-      "reason": "表格列的斷言去向依 docs/acceptance-cleanup-batch-4.md（BM-1-1、BM-2-1、BM-6-1、BM-8-1、BM-3-1、BM-7-1、BM-9-1、BM-4-1、BM-4-2、BM-5-1）；清單逐字列明錨點、原列與現行列。"
+      "reason": "表格列的斷言去向依 docs/acceptance-cleanup-batch-4.md（BM-1-1、BM-2-1、BM-6-1、BM-8-1、BM-3-1、BM-7-1、BM-9-1、BM-4-1、BM-4-2、BM-5-1）；清單逐字列明錨點、原列與現行列。 例外說明：acceptance-java-update-intent 是 fffd115 第一輪修正 L1 新增的 Java 驗收列，依據 BM 第 5 條 正文，沒有原驗收追溯 ID；本區塊列出的追溯 ID 不包含該新增列。"
     },
     {
       "path": "rules/stacks/java/common/classes-and-construction.md",
@@ -424,7 +424,7 @@
         "- [契約與生命週期驗收](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。"
       ],
       "kind": "acceptance",
-      "reason": "原共同驗收行內引用改為本檔「共同驗收」清單；原連結所指斷言保留，介面用途／部分操作的搬移目的地按清單更新；刪除「共同案例不在此重述或另維護副本」整理敘述。"
+      "reason": "刪文逐字為「共同驗收直接依主要來源執行：[介面用途](../../../architecture/dependency-composition.md#acceptance-interface-purpose)、[可替代性](../../../coding/code-design.md#acceptance-substitutability)、[建立與就緒](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)、[依賴取得](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)、[建立入口](../../../coding/code-design.md#acceptance-construction-entrypoints)、[介面能力](../../../coding/code-design.md#acceptance-interface-capabilities)、[共享生命週期](../../../coding/resource-lifecycle.md#acceptance-shared-lifecycle)、[生命週期覆蓋](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。共同案例不在此重述或另維護副本。」。新增內容逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [介面與抽象](../../../quality/rule-verification.md#acceptance-interface-purpose)。」、「- [繼承的可替代性](../../../coding/code-design.md#acceptance-substitutability)。」、「- [必要資料與依賴齊備](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)。」、「- [明確取得依賴](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)。」、「- [依需求選擇建立方式](../../../coding/code-design.md#acceptance-construction-entrypoints)。」、「- [介面的能力劃分](../../../coding/code-design.md#acceptance-interface-capabilities)。」、「- [生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#acceptance-shared-lifecycle)。」、「- [契約與生命週期驗收](../../../coding/resource-lifecycle.md#acceptance-lifecycle-coverage)。」。共同引用改清單；介面用途目的地移至規範驗證，其餘共同目的地不變；刪除不重述副本的整理敘述。"
     },
     {
       "path": "rules/stacks/java/common/classes-and-construction.md",
@@ -436,7 +436,7 @@
         "### Java 語言增量驗收"
       ],
       "kind": "acceptance",
-      "reason": "「下表只列／保留 Java 驗收增量」改成「Java 語言增量驗收」小標題；同段若含依變更影響選擇案例及策略／證據要求，均合入本節第一段。"
+      "reason": "刪文逐字為「下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」。新增內容逐字為「### Java 語言增量驗收」。表格用途說明改為小標題；被刪段中的案例選擇、測試層級與證據要求合入本節第一段，兩個策略／驗證連結仍保留。"
     },
     {
       "path": "rules/stacks/java/common/classes-and-construction.md",
@@ -485,7 +485,7 @@
         "- [所有權與行為驗收](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。"
       ],
       "kind": "acceptance",
-      "reason": "原共同驗收行內引用改為本檔「共同驗收」清單；原連結所指斷言保留，介面用途／部分操作的搬移目的地按清單更新；刪除「共同案例不在此重述或另維護副本」整理敘述。"
+      "reason": "刪文逐字為「共同驗收直接依主要來源執行：[所有權與快照](../../../coding/collections-and-ownership.md#acceptance-collection-ownership)、[順序與重複](../../../coding/collections-and-ownership.md#acceptance-order-duplicates)、[遍歷修改](../../../coding/collections-and-ownership.md#acceptance-traversal-mutation)、[複合原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)、[資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)、[延遲資源](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)、[批次失敗](../../../coding/error-handling.md#acceptance-partial-operation)、[所有權覆蓋](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。共同案例不在此重述或另維護副本。」。新增內容逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [明確定義修改權與參考關係、區分不可修改與不可變快照](../../../coding/collections-and-ownership.md#acceptance-collection-ownership)。」、「- [順序與重複資料](../../../coding/collections-and-ownership.md#acceptance-order-duplicates)。」、「- [遍歷期間的修改](../../../coding/collections-and-ownership.md#acceptance-traversal-mutation)。」、「- [複合操作的原子性](../../../coding/concurrency-and-async.md#acceptance-compound-atomicity)。」、「- [限制資料累積](../../../quality/performance.md#acceptance-bounded-accumulation)。」、「- [延遲讀取的資源責任](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)。」、「- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。」、「- [所有權與行為驗收](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。」。共同引用改清單；部分操作目的地移至規範驗證，其餘共同目的地不變；刪除不重述副本的整理敘述。"
     },
     {
       "path": "rules/stacks/java/common/collections-and-ownership.md",
@@ -535,7 +535,7 @@
         "### 共同驗收"
       ],
       "kind": "acceptance",
-      "reason": "原共同驗收行內引用改為本檔「共同驗收」清單；原連結所指斷言保留，介面用途／部分操作的搬移目的地按清單更新；刪除「共同案例不在此重述或另維護副本」整理敘述。"
+      "reason": "刪文逐字為「共同驗收直接依主要來源執行：[工作所有權](../../../coding/concurrency-and-async.md#acceptance-task-ownership)、[執行資源與阻塞](../../../coding/concurrency-and-async.md#acceptance-execution-resources)、[期限與取消](../../../coding/concurrency-and-async.md#acceptance-deadline-cancellation)、[工作組合](../../../coding/concurrency-and-async.md#acceptance-task-composition)、[脈絡隔離](../../../coding/concurrency-and-async.md#acceptance-context-isolation)、[鎖定範圍](../../../coding/concurrency-and-async.md#acceptance-lock-scope)、[受控關閉](../../../coding/resource-lifecycle.md#acceptance-controlled-shutdown)、[受控交錯](../../../quality/testing.md#acceptance-controlled-interleaving)。共同案例不在此重述或另維護副本。」。新增內容逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」。共同引用及標籤改為新增內容明列的清單／小標題，目的地沒有搬移；刪除不重述副本的整理敘述，實際路徑與選案要求由本節第一段承接。"
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
@@ -554,7 +554,7 @@
         "- [可控制的併發驗收](../../../quality/testing.md#acceptance-controlled-interleaving)。"
       ],
       "kind": "acceptance",
-      "reason": "案例選擇及測試策略／規範驗證要求「依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。」合入本節第一段「依變更影響選擇案例，測試層級及證據依共通測試策略與規範驗證」；非刪除驗收義務。"
+      "reason": "刪文逐字為「依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。」。新增內容逐字為「- [明確的工作擁有者](../../../coding/concurrency-and-async.md#acceptance-task-ownership)。」、「- [統一管理執行資源、執行位置與阻塞行為](../../../coding/concurrency-and-async.md#acceptance-execution-resources)。」、「- [等待期限與逾時處置、取消傳遞與實際停止](../../../coding/concurrency-and-async.md#acceptance-deadline-cancellation)。」、「- [多工作組合的完成條件](../../../coding/concurrency-and-async.md#acceptance-task-composition)。」、「- [明確傳遞與清理脈絡](../../../coding/concurrency-and-async.md#acceptance-context-isolation)。」、「- [鎖定範圍與取得策略](../../../coding/concurrency-and-async.md#acceptance-lock-scope)。」、「- [受控關閉](../../../coding/resource-lifecycle.md#acceptance-controlled-shutdown)。」、「- [可控制的併發驗收](../../../quality/testing.md#acceptance-controlled-interleaving)。」。案例選擇與策略／證據要求合入本節第一段；新增八個共同驗收引用取自基準原共同驗收句，名稱對齊目的列，沒有搬移共同目的地。"
     },
     {
       "path": "rules/stacks/java/common/concurrency-and-async.md",
@@ -566,7 +566,7 @@
         "### Java 語言增量驗收"
       ],
       "kind": "acceptance",
-      "reason": "「下表只列／保留 Java 驗收增量」改成「Java 語言增量驗收」小標題；同段若含依變更影響選擇案例及策略／證據要求，均合入本節第一段。"
+      "reason": "刪文逐字為「下表只保留 Java 的語言機制驗收。」。新增內容逐字為「### Java 語言增量驗收」。表格用途說明改為同義小標題，本區塊沒有案例選擇或測試策略句需要搬移。"
     },
     {
       "path": "rules/stacks/java/common/equality-hashing-ordering.md",
@@ -595,7 +595,7 @@
         "- [Entity 識別碼的生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。"
       ],
       "kind": "acceptance",
-      "reason": "原共同驗收行內引用改為本檔「共同驗收」清單；原連結所指斷言保留，介面用途／部分操作的搬移目的地按清單更新；刪除「共同案例不在此重述或另維護副本」整理敘述。"
+      "reason": "刪文逐字為「共同驗收直接依主要來源執行：[比較語意](../../../coding/domain-modeling.md#acceptance-identity-semantics)、[識別碼生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。共同案例不在此重述或另維護副本。」。新增內容逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [明訂比較語意](../../../coding/domain-modeling.md#acceptance-identity-semantics)。」、「- [Entity 識別碼的生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。」。共同引用及標籤改為新增內容明列的清單／小標題，目的地沒有搬移；刪除不重述副本的整理敘述，實際路徑與選案要求由本節第一段承接。"
     },
     {
       "path": "rules/stacks/java/common/equality-hashing-ordering.md",
@@ -607,7 +607,7 @@
         "### Java 語言增量驗收"
       ],
       "kind": "acceptance",
-      "reason": "「下表只列／保留 Java 驗收增量」改成「Java 語言增量驗收」小標題；同段若含依變更影響選擇案例及策略／證據要求，均合入本節第一段。"
+      "reason": "刪文逐字為「下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」。新增內容逐字為「### Java 語言增量驗收」。表格用途說明改為小標題；被刪段中的案例選擇、測試層級與證據要求合入本節第一段，兩個策略／驗證連結仍保留。"
     },
     {
       "path": "rules/stacks/java/common/equality-hashing-ordering.md",
@@ -686,7 +686,7 @@
         "### Java 語言增量驗收"
       ],
       "kind": "acceptance",
-      "reason": "原共同驗收行內引用改為本檔「共同驗收」清單；原連結所指斷言保留，介面用途／部分操作的搬移目的地按清單更新；刪除「共同案例不在此重述或另維護副本」整理敘述。"
+      "reason": "刪文逐字為「共同驗收直接依主要來源執行：[部分取得與責任移交](../../../coding/resource-lifecycle.md#acceptance-partial-acquisition)、[資源有效期與關閉](../../../coding/resource-lifecycle.md#acceptance-close-contract)。共同案例不在此重述或另維護副本。」。新增內容逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [部分取得與所有權移交](../../../coding/resource-lifecycle.md#acceptance-partial-acquisition)。」、「- [有效期與關閉契約](../../../coding/resource-lifecycle.md#acceptance-close-contract)。」、「### Java 語言增量驗收」。共同引用及標籤改為新增內容明列的清單／小標題，目的地沒有搬移；刪除不重述副本的整理敘述，實際路徑與選案要求由本節第一段承接。"
     },
     {
       "path": "rules/stacks/java/common/exceptions-and-resources.md",
@@ -698,7 +698,7 @@
         "<a id=\"acceptance-java-failure-coverage\"></a>"
       ],
       "kind": "acceptance",
-      "reason": "案例選擇及測試策略／規範驗證要求「依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。」合入本節第一段「依變更影響選擇案例，測試層級及證據依共通測試策略與規範驗證」；非刪除驗收義務。"
+      "reason": "刪文逐字為「依變更影響及實際使用路徑選擇案例，測試層級與證據依[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。」。新增內容逐字為「<a id=\"acceptance-java-failure-coverage\"></a>」。案例選擇、測試層級與證據要求併入本節第一段；在此新增覆蓋段的定位錨點，與原基準第 39 行的同名錨點及第 41 行覆蓋句一起移到表格前。"
     },
     {
       "path": "rules/stacks/java/common/exceptions-and-resources.md",
@@ -710,7 +710,7 @@
         "依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。"
       ],
       "kind": "acceptance",
-      "reason": "「下表只列／保留 Java 驗收增量」改成「Java 語言增量驗收」小標題；同段若含依變更影響選擇案例及策略／證據要求，均合入本節第一段。"
+      "reason": "刪文逐字為「下表只保留 Java 的語言機制驗收。」。新增內容逐字為「依第 9 條核對本次案例涵蓋受影響的 Java 故障、中斷、部分初始化與清理路徑；依賴框架的保證須經實際生命週期驗證，不只測替身或成功流程。」。刪除的句子只標示表格用途；新增的是原基準第 41 行第 9 條覆蓋段，移至表格前，並非新增小標題。覆蓋義務逐字保留，刪除不另設表格列的整理說明。"
     },
     {
       "path": "rules/stacks/java/common/exceptions-and-resources.md",
@@ -754,7 +754,7 @@
         "- [延遲讀取的資源責任](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)。"
       ],
       "kind": "acceptance",
-      "reason": "移除「下表保留原決策編號與 Java 實作案例」歷史追蹤說明；共通引用的效力與 Java 型別、API、版本及框架實際路徑不得略過，改由本節第一段「共同驗收與 Java 語言增量均須經實際採用」逐項承接。"
+      "reason": "刪文逐字為「下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。」。新增內容逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [多步驟與部分成功](../../../quality/rule-verification.md#acceptance-partial-operation)。」、「- [延遲讀取的資源責任](../../../coding/resource-lifecycle.md#acceptance-lazy-resource-lifetime)。」。原決策編號說明移出正式規範；Java 實際路徑不得略過由新增引言承接，新增共同驗收清單逐項引用現行主要來源，並非刪除原斷言。"
     },
     {
       "path": "rules/stacks/java/common/lambda-and-stream.md",
@@ -825,7 +825,7 @@
         "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
       ],
       "insert": [
-        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇檢查，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
         "",
         "### 共同驗收",
         "",
@@ -834,7 +834,7 @@
         "- [審查清單](../../../quality/rule-verification.md#審查清單)。"
       ],
       "kind": "acceptance",
-      "reason": "移除「下表保留原決策編號與 Java 實作案例」歷史追蹤說明；共通引用的效力與 Java 型別、API、版本及框架實際路徑不得略過，改由本節第一段「共同驗收與 Java 語言增量均須經實際採用」逐項承接。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。」。增文逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇檢查，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [註解與公開文件、實作註解與暫時處理](../../../coding/code-design.md#acceptance-document-contract)。」、「- [形式與語意分別驗收](../../../quality/rule-verification.md#acceptance-document-verification)。」、「- [審查清單](../../../quality/rule-verification.md#審查清單)。」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/naming-packages-docs.md",
@@ -878,7 +878,7 @@
         "| <a id=\"acceptance-java-javadoc-examples\"></a>7 | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |"
       ],
       "kind": "acceptance",
-      "reason": "表格列的斷言去向依 docs/acceptance-cleanup-batch-5.md（ND-1、2-1、ND-1、2-2、ND-1、2-3、ND-1、2-4、ND-3-1、ND-6-1、ND-4、5-1、ND-7-1、ND-7-2）；清單逐字列明錨點、原列與現行列。"
+      "reason": "表格列的斷言去向依 docs/acceptance-cleanup-batch-5.md（ND-1、2-1、ND-1、2-2、ND-1、2-3、ND-1、2-4、ND-3-1、ND-6-1、ND-4、5-1、ND-7-1、ND-7-2）；清單逐字列明錨點、原列與現行列。 例外說明：acceptance-java-javadoc-contract 是 fffd115 第一輪修正 L1 新增的 Java 驗收列，依據 ND 第 4 條 正文，沒有原驗收追溯 ID；本區塊列出的追溯 ID 不包含該新增列。"
     },
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -911,10 +911,29 @@
         "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
       ],
       "insert": [
-        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，測試層級及證據依[規範驗證](../../../quality/rule-verification.md)及[共通測試策略](../../../quality/testing.md)辦理。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [第三方空值行為](../../../coding/nullability.md#acceptance-third-party-null)。",
+        "- [空值契約變更](../../../coding/nullability.md#acceptance-null-contract-change)。",
+        "- [API 邊界的缺值轉換](../../../interfaces/api-contracts.md#acceptance-api-absence)。",
+        "- [測試程式碼](../../../quality/rule-verification.md#測試程式碼)。"
       ],
       "kind": "acceptance",
-      "reason": "移除「下表保留原決策編號與 Java 實作案例」歷史追蹤說明；共通引用的效力與 Java 型別、API、版本及框架實際路徑不得略過，改由本節第一段「共同驗收與 Java 語言增量均須經實際採用」逐項承接。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。」。增文逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，測試層級及證據依[規範驗證](../../../quality/rule-verification.md)及[共通測試策略](../../../quality/testing.md)辦理。」、「### 共同驗收」、「- [第三方空值行為](../../../coding/nullability.md#acceptance-third-party-null)。」、「- [空值契約變更](../../../coding/nullability.md#acceptance-null-contract-change)。」、「- [API 邊界的缺值轉換](../../../interfaces/api-contracts.md#acceptance-api-absence)。」、「- [測試程式碼](../../../quality/rule-verification.md#測試程式碼)。」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "baseline_line": 34,
+      "remove": [
+        "依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，另依[規範驗證](../../../quality/rule-verification.md)及[共通測試策略](../../../quality/testing.md)辦理。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "第三次審閱 N-L3：刪文逐字為「依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，另依[規範驗證](../../../quality/rule-verification.md)及[共通測試策略](../../../quality/testing.md)辦理。」。增文逐字為「### Java 語言增量驗收」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -923,15 +942,6 @@
         "| 對應決策 | 驗收內容 |"
       ],
       "insert": [
-        "### 共同驗收",
-        "",
-        "- [第三方空值行為](../../../coding/nullability.md#acceptance-third-party-null)。",
-        "- [空值契約變更](../../../coding/nullability.md#acceptance-null-contract-change)。",
-        "- [API 邊界的缺值轉換](../../../interfaces/api-contracts.md#acceptance-api-absence)。",
-        "- [測試程式碼](../../../quality/rule-verification.md#測試程式碼)。",
-        "",
-        "### Java 語言增量驗收",
-        "",
         "| Java 條文 | 語言增量驗收 |"
       ],
       "kind": "acceptance",
@@ -978,7 +988,7 @@
         "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
       ],
       "insert": [
-        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響契約選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
         "",
         "### 共同驗收",
         "",
@@ -991,7 +1001,7 @@
         "- [可控制的時間基準](../../../coding/numbers-dates-text.md#acceptance-time-source)。"
       ],
       "kind": "acceptance",
-      "reason": "移除「下表保留原決策編號與 Java 實作案例」歷史追蹤說明；共通引用的效力與 Java 型別、API、版本及框架實際路徑不得略過，改由本節第一段「共同驗收與 Java 語言增量均須經實際採用」逐項承接。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。」。增文逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響契約選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [依語意選擇數值型別、從精確來源建立](../../../coding/numbers-dates-text.md#acceptance-numeric-sources)。」、「- [明訂捨入規則、範圍與轉換檢查](../../../coding/numbers-dates-text.md#acceptance-numeric-range-rounding)。」、「- [依業務語意選擇時間型別、明確的時區轉換、區分時間長度與日曆規則](../../../coding/numbers-dates-text.md#acceptance-temporal-semantics)。」、「- [解析與輸出契約](../../../coding/numbers-dates-text.md#acceptance-temporal-format)。」、「- [明確指定字元編碼、長度與截取單位、用途明確的文字轉換](../../../coding/numbers-dates-text.md#acceptance-text-semantics)。」、「- [邊界與環境差異驗收](../../../coding/numbers-dates-text.md#acceptance-data-boundaries)。」、「- [可控制的時間基準](../../../coding/numbers-dates-text.md#acceptance-time-source)。」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/numbers-dates-text.md",
@@ -1003,7 +1013,7 @@
         "### Java 語言增量驗收"
       ],
       "kind": "acceptance",
-      "reason": "案例選擇及測試策略／規範驗證要求「依受影響契約選擇案例，沿用[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」合入本節第一段「依變更影響選擇案例，測試層級及證據依共通測試策略與規範驗證」；非刪除驗收義務。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「依受影響契約選擇案例，沿用[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」。增文逐字為「### Java 語言增量驗收」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/numbers-dates-text.md",
@@ -1068,7 +1078,7 @@
         "- [驗證限制實際有效](../../../quality/rule-verification.md#acceptance-dynamic-controls)。"
       ],
       "kind": "acceptance",
-      "reason": "原共同驗收行內引用改為本檔「共同驗收」清單；原連結所指斷言保留，介面用途／部分操作的搬移目的地按清單更新；刪除「共同案例不在此重述或另維護副本」整理敘述。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「共同驗收直接依主要來源執行：[動態目標授權](../../../quality/security.md#acceptance-dynamic-target-authorization)、[動態契約](../../../coding/type-safety.md#acceptance-dynamic-contract)、[動態故障](../../../coding/error-handling.md#acceptance-dynamic-failure)、[抑制範圍](../../../workflow/rule-governance.md#acceptance-suppression-scope)、[產生碼](../../../workflow/rule-governance.md#acceptance-generated-code)、[動態限制](../../../quality/rule-verification.md#acceptance-dynamic-controls)。共同案例不在此重述或另維護副本。」。增文逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [受控目標與授權](../../../quality/security.md#acceptance-dynamic-target-authorization)。」、「- [使用前驗證契約](../../../coding/type-safety.md#acceptance-dynamic-contract)。」、「- [區分故障與執行結果](../../../coding/error-handling.md#acceptance-dynamic-failure)。」、「- [限定檢查抑制](../../../workflow/rule-governance.md#acceptance-suppression-scope)。」、「- [產生碼不擴大豁免](../../../workflow/rule-governance.md#acceptance-generated-code)。」、「- [驗證限制實際有效](../../../quality/rule-verification.md#acceptance-dynamic-controls)。」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/reflection-and-suppression.md",
@@ -1080,7 +1090,7 @@
         "### Java 語言增量驗收"
       ],
       "kind": "acceptance",
-      "reason": "「下表只列／保留 Java 驗收增量」改成「Java 語言增量驗收」小標題；同段若含依變更影響選擇案例及策略／證據要求，均合入本節第一段。"
+      "reason": "刪文逐字為「下表只列 Java 的驗收增量。依變更影響選擇適用案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」。新增內容逐字為「### Java 語言增量驗收」。表格用途說明改為小標題；被刪段中的案例選擇、測試層級與證據要求合入本節第一段，兩個策略／驗證連結仍保留。"
     },
     {
       "path": "rules/stacks/java/common/reflection-and-suppression.md",
@@ -1090,11 +1100,11 @@
         "| <a id=\"acceptance-reflective-access\"></a>3 | 核對 Java 反射特殊存取的必要性、受支援替代方式與核准範圍；經實際建立及還原路徑確認無法藉私有欄位寫入或存取放寬繞過必要驗證、不變條件及封裝。 |"
       ],
       "insert": [
-        "| <a id=\"acceptance-java-reflection-boundary\"></a>1 | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認動態名稱及未知物件沒有散入業務流程。 |",
+        "| <a id=\"acceptance-java-reflection-boundary\"></a>1 | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |",
         "| <a id=\"acceptance-java-reflective-access\"></a>3 | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。對反射與動態能力核對特殊存取的必要性及受支援替代方式，經實際建立及還原路徑確認維持不變條件及封裝；例如私有欄位寫入或存取放寬亦不得繞過上述保證。 |"
       ],
       "kind": "acceptance",
-      "reason": "表格列的斷言去向依 docs/acceptance-cleanup-batch-1.md（RF-1、2-1、RF-3、4-3）；清單逐字列明錨點、原列與現行列。"
+      "reason": "表格列的斷言去向依 docs/acceptance-cleanup-batch-1.md（RF-1、2-1、RF-3、4-3）；清單逐字列明錨點、原列與現行列。 第三次審閱 R3-M1：第 1 列合併 6a16349 的「確認對內提供明確型別契約」，保留 6f7ae5d 的 RF-1、2-1 原片段與動態呼叫範圍；第 3 列不再修改。"
     },
     {
       "path": "rules/stacks/java/common/states-and-results.md",
@@ -1115,7 +1125,7 @@
         "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
       ],
       "insert": [
-        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的模型與呼叫端選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
         "",
         "### 共同驗收",
         "",
@@ -1125,7 +1135,7 @@
         "- [模型驗收](../../../coding/domain-modeling.md#acceptance-model-coverage)。"
       ],
       "kind": "acceptance",
-      "reason": "移除「下表保留原決策編號與 Java 實作案例」歷史追蹤說明；共通引用的效力與 Java 型別、API、版本及框架實際路徑不得略過，改由本節第一段「共同驗收與 Java 語言增量均須經實際採用」逐項承接。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。」。增文逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的模型與呼叫端選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [結果與目前狀態分開表達](../../../coding/domain-modeling.md#acceptance-operation-results)。」、「- [處理完整性、封閉或允許擴充](../../../coding/domain-modeling.md#acceptance-model-extensibility)。」、「- [結果保留當時事實](../../../coding/domain-modeling.md#acceptance-result-facts)。」、「- [模型驗收](../../../coding/domain-modeling.md#acceptance-model-coverage)。」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/states-and-results.md",
@@ -1137,7 +1147,7 @@
         "### Java 語言增量驗收"
       ],
       "kind": "acceptance",
-      "reason": "案例選擇及測試策略／規範驗證要求「依受影響的模型與呼叫端選擇案例，沿用[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。」合入本節第一段「依變更影響選擇案例，測試層級及證據依共通測試策略與規範驗證」；非刪除驗收義務。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「依受影響的模型與呼叫端選擇案例，沿用[共通測試策略](../../../quality/testing.md)及[規範驗證](../../../quality/rule-verification.md)。」。增文逐字為「### Java 語言增量驗收」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/states-and-results.md",
@@ -1190,10 +1200,26 @@
         "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
       ],
       "insert": [
-        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更範圍核對下列項目，包含受影響的呼叫端與測試程式碼。測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)；可自動判斷的要求依上述規範納入檢查，型別是否表達正確業務語意則由人工審查。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [容器與泛型、禁止主動繞過檢查](../../../coding/type-safety.md#acceptance-data-shape)。"
       ],
       "kind": "acceptance",
-      "reason": "移除「下表保留原決策編號與 Java 實作案例」歷史追蹤說明；共通引用的效力與 Java 型別、API、版本及框架實際路徑不得略過，改由本節第一段「共同驗收與 Java 語言增量均須經實際採用」逐項承接。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。」。增文逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更範圍核對下列項目，包含受影響的呼叫端與測試程式碼。測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)；可自動判斷的要求依上述規範納入檢查，型別是否表達正確業務語意則由人工審查。」、「### 共同驗收」、「- [容器與泛型、禁止主動繞過檢查](../../../coding/type-safety.md#acceptance-data-shape)。」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
+    },
+    {
+      "path": "rules/stacks/java/common/types-and-generics.md",
+      "baseline_line": 39,
+      "remove": [
+        "依變更範圍核對下列項目，包含受影響的呼叫端與測試程式碼。可自動判斷的要求依[規範驗證](../../../quality/rule-verification.md)納入檢查；型別是否表達正確業務語意則由人工審查。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "第三次審閱 N-L3：刪文逐字為「依變更範圍核對下列項目，包含受影響的呼叫端與測試程式碼。可自動判斷的要求依[規範驗證](../../../quality/rule-verification.md)納入檢查；型別是否表達正確業務語意則由人工審查。」。增文逐字為「### Java 語言增量驗收」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/types-and-generics.md",
@@ -1202,12 +1228,6 @@
         "| 對應決策 | 驗收內容 |"
       ],
       "insert": [
-        "### 共同驗收",
-        "",
-        "- [容器與泛型、禁止主動繞過檢查](../../../coding/type-safety.md#acceptance-data-shape)。",
-        "",
-        "### Java 語言增量驗收",
-        "",
         "| Java 條文 | 語言增量驗收 |"
       ],
       "kind": "acceptance",
@@ -1253,7 +1273,7 @@
         "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
       ],
       "insert": [
-        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的值型別與實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。",
         "",
         "### 共同驗收",
         "",
@@ -1263,7 +1283,7 @@
         "- [資料還原](../../../coding/domain-modeling.md#acceptance-value-restoration)。"
       ],
       "kind": "acceptance",
-      "reason": "移除「下表保留原決策編號與 Java 實作案例」歷史追蹤說明；共通引用的效力與 Java 型別、API、版本及框架實際路徑不得略過，改由本節第一段「共同驗收與 Java 語言增量均須經實際採用」逐項承接。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。」。增文逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的值型別與實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」、「### 共同驗收」、「- [不可變性](../../../coding/domain-modeling.md#acceptance-value-immutability)。」、「- [正規化規則](../../../coding/domain-modeling.md#acceptance-value-normalization)。」、「- [運算責任](../../../coding/domain-modeling.md#acceptance-value-operations)。」、「- [資料還原](../../../coding/domain-modeling.md#acceptance-value-restoration)。」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/value-objects.md",
@@ -1275,7 +1295,7 @@
         "### Java 語言增量驗收"
       ],
       "kind": "acceptance",
-      "reason": "案例選擇及測試策略／規範驗證要求「依受影響的值型別與實際使用路徑選擇案例，沿用[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」合入本節第一段「依變更影響選擇案例，測試層級及證據依共通測試策略與規範驗證」；非刪除驗收義務。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「依受影響的值型別與實際使用路徑選擇案例，沿用[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。」。增文逐字為「### Java 語言增量驗收」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/value-objects.md",
@@ -1331,10 +1351,27 @@
         "下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。"
       ],
       "insert": [
-        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。"
+        "共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級、證據與執行門檻依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)制定。",
+        "",
+        "### 共同驗收",
+        "",
+        "- [檢查配置可重現](../../../quality/rule-verification.md#acceptance-check-configuration)。",
+        "- [實際執行範圍](../../../quality/rule-verification.md#acceptance-check-execution)。"
       ],
       "kind": "acceptance",
-      "reason": "移除「下表保留原決策編號與 Java 實作案例」歷史追蹤說明；共通引用的效力與 Java 型別、API、版本及框架實際路徑不得略過，改由本節第一段「共同驗收與 Java 語言增量均須經實際採用」逐項承接。"
+      "reason": "第三次審閱 N-L3：刪文逐字為「下表保留原決策編號與 Java 實作案例。共通原則依各條連結的主要來源及其驗收執行；Java 型別、API、版本與實際框架銜接路徑仍須完成下列適用驗收，不因原則提升而略過。」。增文逐字為「共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級、證據與執行門檻依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)制定。」、「### 共同驗收」、「- [檢查配置可重現](../../../quality/rule-verification.md#acceptance-check-configuration)。」、「- [實際執行範圍](../../../quality/rule-verification.md#acceptance-check-execution)。」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
+    },
+    {
+      "path": "rules/stacks/java/common/version-policy.md",
+      "baseline_line": 36,
+      "remove": [
+        "依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)制定。"
+      ],
+      "insert": [
+        "### Java 語言增量驗收"
+      ],
+      "kind": "acceptance",
+      "reason": "第三次審閱 N-L3：刪文逐字為「依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)制定。」。增文逐字為「### Java 語言增量驗收」。移除歷史編號敘述；依基準還原文件專屬選案範圍，Java 實際路徑要求仍保留，測試層級、證據、執行門檻與人工／自動檢查責任合併表達，不取消要求；清單項目依同批追溯表或補充引用註記維持。"
     },
     {
       "path": "rules/stacks/java/common/version-policy.md",
@@ -1343,13 +1380,6 @@
         "| 對應決策 | 驗收內容 |"
       ],
       "insert": [
-        "### 共同驗收",
-        "",
-        "- [檢查配置一致性](../../../quality/rule-verification.md#acceptance-check-configuration)。",
-        "- [必要檢查實際執行](../../../quality/rule-verification.md#acceptance-check-execution)。",
-        "",
-        "### Java 語言增量驗收",
-        "",
         "| Java 條文 | 語言增量驗收 |"
       ],
       "kind": "acceptance",

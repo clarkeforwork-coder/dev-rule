@@ -29,6 +29,14 @@ def register_test_row(path,row)
     end
   end
 end
+def registered_change(path,pos,remove,insert,kind='acceptance')
+  baseline=Open3.capture2('git',"--git-dir=#{GIT_DIR}",'show',"6a1634959d922b2df5f1259cb176a731a5b5f488:#{path}").first.lines.map(&:chomp)
+  change(path) do |text|
+    lines=text.lines.map(&:chomp);at=lines.index(baseline[pos-1]);raise '找不到測試位置' unless at
+    lines[at,remove.size]=insert;lines.join("\n")+"\n"
+  end
+  edit_policy{|d|d['changes']<<{'path'=>path,'baseline_line'=>pos,'remove'=>remove,'insert'=>insert,'kind'=>kind,'reason'=>'負向測試專用的充分長度理由；此內容只寫在暫存複本，不是核准的規範變更。'}}
+end
 java='rules/stacks/java/common/types-and-generics.md'
 quality='rules/quality/rule-verification.md'
 cases={
@@ -84,6 +92,50 @@ cases.merge!({
  'N19b'=>['充分理由仍拒絕任意 kind',false,lambda{edit_policy{|d|d['changes'].first['kind']='arbitrary'}}],
  'N19c'=>['editorial 不得碰表格列',false,lambda{edit_policy{|d|d['changes'].find{|e|e['insert'].any?{|l|l.start_with?('|')}}['kind']='editorial'}}]
 })
+cases.merge!({
+ 'R3-reason19'=>['差異理由只有 19 個非空白字元',false,lambda{edit_policy{|d|d['changes'].first['reason']='甲'*19}}],
+ 'R3-reason-spaces'=>['改寫理由 19 字加大量空白',false,lambda{change('docs/acceptance-rewritten-fragments.json'){|s|d=JSON.parse(s);d.first['reason']='甲'*19+' '*100;JSON.pretty_generate(d)}}],
+ 'R3-body-rewrite'=>['非混排 Java 正文登錄為 acceptance',false,lambda{
+  old=Open3.capture2('git',"--git-dir=#{GIT_DIR}",'show',"6a16349:#{java}").first.lines[8].chomp
+  registered_change(java,9,[old],[old.sub('須','宜')])
+ }],
+ 'R3-body-insert'=>['正文純插入登錄為 acceptance',false,lambda{registered_change(java,9,[],['所有檢查均可由實作者自行免除。'])}],
+ 'R3-self-heading'=>['增文自帶驗收標題不得取得資格',false,lambda{registered_change(java,9,[],['## 驗收要求','','所有公開方法都須使用新的跨語言框架。',''])}],
+ 'R3-self-subheading'=>['增文自帶小標題不得取得資格',false,lambda{registered_change(java,9,[],['### 契約驗收','','所有公開方法都須使用新的跨語言框架。',''])}],
+ 'R3-table-no-leading-pipe'=>['editorial 插入無前導直線的表格列',false,lambda{
+  row="放寬 | 上述所有驗收均可無需留存證據而免除。\n"
+  change(java){|s|s.sub("| --- | --- |\n","| --- | --- |\n"+row)}
+  register_test_row(java,row)
+  edit_policy{|d|d['changes'].find{|e|e['insert'].include?(row.chomp)}['kind']='editorial'}
+ }],
+ 'R3-hidden-file'=>['隱藏規範檔須納入檔案清單',false,lambda{File.write('rules/.extra.md',"# 額外規範\n")}],
+ 'R3-new-file'=>['新增規範檔應明確回報清單差異',false,lambda{File.write('rules/coding/extra.md',"# 額外規範\n")}],
+ 'R3-crlf'=>['CRLF 不得被逐行 chomp 忽略',false,lambda{change(java){|s|s.gsub("\n","\r\n")}}],
+ 'R3-final-newline'=>['檔尾換行不可被忽略',false,lambda{change(java){|s|s.chomp}}],
+ 'R3-pending-ids'=>['待決評估不得少 NT-04',false,lambda{change('docs/pending-decisions.md'){|s|s.lines.reject{|l|l.include?('[NT-04 第')}.join}}],
+ 'R3-trace-rows'=>['追溯表不得少原片段',false,lambda{change('docs/acceptance-cleanup-batch-4.md'){|s|s.lines.reject{|l|l.start_with?('| VO-1、2-1 |')}.join}}],
+ 'R3-removed-scope'=>['移除無法使用的範圍模式',false,lambda{@test_args=['--batch','3','--check-scope']}],
+ 'R3-removed-trace-only'=>['移除名實不符的 trace-only',false,lambda{@test_args=['--batch','3','--trace-only']}],
+ 'R3-missing-baseline-file'=>['git show 失敗須明確報錯',false,lambda{@test_args=['--batch','1','--baseline','nonexistent-test-ref']}],
+ 'R3-ambiguous-ref'=>['短參照遮蔽不得移動完整基準',false,lambda{
+  raise '無法建立隔離 git 複本' unless system('git','clone','--quiet','--shared','--no-checkout',ROOT,'isolated-git')
+  raise '無法新增測試標籤' unless system('git','-C','isolated-git','tag','6a16349','HEAD')
+  system('git','-C','isolated-git','config','core.warnAmbiguousRefs','false')
+  @test_git_dir=File.expand_path('isolated-git/.git')
+  edit_policy{|d|d['baseline']='6a16349';d['changes']=[]}
+ }]
+})
+cases['R3-record-diff']=['紀錄器的提交範圍檢查須拒絕已提交空白錯誤',false,lambda{
+  raise '無法建立隔離複本' unless system('git','clone','--quiet','--shared',ROOT,'isolated-git')
+  File.write('isolated-git/negative-whitespace.txt',"trailing whitespace \n")
+  raise '無法準備空白錯誤' unless system('git','-C','isolated-git','add','negative-whitespace.txt')
+  raise '無法提交測試資料' unless system('git','-C','isolated-git','-c','user.name=Acceptance test','-c','user.email=acceptance@example.invalid','commit','--quiet','-m','negative whitespace fixture')
+  line=File.readlines('scripts/record-acceptance-verification.rb').find{|l|l.start_with?("commands << ['git'")}
+  raise '找不到紀錄器 git 命令' unless line
+  args=line.scan(/'([^']+)'/).flatten
+  @test_command=['git','-C',File.expand_path('isolated-git'),*args.drop(1)]
+  @expected_exit=2
+}]
 results=[]
 Dir.mktmpdir('acceptance-negative-') do |dir|
  FileUtils.cp_r(["#{ROOT}/rules","#{ROOT}/docs","#{ROOT}/scripts"],dir)
@@ -92,10 +144,25 @@ Dir.mktmpdir('acceptance-negative-') do |dir|
  out,status=Open3.capture2e(env,'ruby',"#{dir}/scripts/verify-acceptance.rb")
  abort("乾淨暫存複本未通過：\n#{out}") unless status.success?
  cases.each do |id,(description,expected_pass,mutate)|
-  saved=Dir.glob("#{dir}/{rules,docs}/**/*").select{|p|File.file?(p)}.to_h{|p|[p,File.binread(p)]}
+  @test_args=[];@test_git_dir=GIT_DIR;@test_command=nil;@expected_exit=expected_pass ? 0 : 1
+  saved=Dir.glob("#{dir}/{rules,docs}/**/*",File::FNM_DOTMATCH).select{|p|File.file?(p)}.to_h{|p|[p,File.binread(p)]}
   Dir.chdir(dir){mutate.call}
-  out,status=Open3.capture2e(env,'ruby',"#{dir}/scripts/verify-acceptance.rb")
+  command=@test_command || ['ruby',"#{dir}/scripts/verify-acceptance.rb",*@test_args]
+  out,status=Open3.capture2e(env.merge('ACCEPTANCE_GIT_DIR'=>@test_git_dir),*command)
   pattern = case id
+            when 'R3-record-diff' then /trailing whitespace/
+            when 'R3-reason19' then /Invalid approved edit/
+            when 'R3-reason-spaces' then /Invalid rewritten fragment/
+            when 'R3-body-rewrite', 'R3-body-insert', 'R3-self-heading', 'R3-self-subheading' then /Acceptance edit outside acceptance section/
+            when 'R3-table-no-leading-pipe' then /Editorial edit touches table/
+            when 'R3-hidden-file', 'R3-new-file' then /Rules file inventory changed: added=/
+            when 'R3-crlf' then /Rule line endings changed/
+            when 'R3-final-newline' then /Rule final newline changed/
+            when 'R3-pending-ids' then /Pending decision ID inventory changed/
+            when 'R3-trace-rows' then /Missing\/changed original fragments/
+            when 'R3-removed-scope', 'R3-removed-trace-only' then /invalid option/
+            when 'R3-missing-baseline-file' then /無法讀取基準檔/
+            when 'R3-ambiguous-ref' then /固定正文基準/
             when 'T1' then /Missing fragment/
             when 'T2' then /Scoped duplicate acceptance/
             when 'T4' then /Trace fragment absent from destination NT-9-2/
@@ -109,9 +176,11 @@ Dir.mktmpdir('acceptance-negative-') do |dir|
             else /Protected rule text (changed|missing)/
             end
   diagnostic = out.lines.find { |line| line.match?(pattern) }
-  matched = status.success? == expected_pass && (expected_pass || !diagnostic.nil?)
-  results << {test:id,description:description,expected_exit:expected_pass ? 0 : 1,actual_exit:status.exitstatus,matched_expectation:matched,diagnostic:status.success? ? '已在暫存清單登錄 T3；換句話說重複與理由內容仍為人工檢查項目' : (diagnostic || out.lines.first).to_s.strip}
+  matched = status.exitstatus == @expected_exit && (expected_pass || !diagnostic.nil?)
+  results << {test:id,description:description,expected_exit:@expected_exit,actual_exit:status.exitstatus,matched_expectation:matched,diagnostic:status.success? ? '已在暫存清單登錄 T3；換句話說重複與理由內容仍為人工檢查項目' : (diagnostic || out.lines.first).to_s.strip}
+  (Dir.glob("#{dir}/{rules,docs}/**/*",File::FNM_DOTMATCH).select{|p|File.file?(p)}-saved.keys).each{|p|File.delete(p)}
   saved.each{|p,body|File.binwrite(p,body)}
+  FileUtils.rm_rf(File.join(dir,'isolated-git'))
  end
 end
 puts JSON.pretty_generate(results)

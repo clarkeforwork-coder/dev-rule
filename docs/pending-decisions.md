@@ -1,6 +1,6 @@
 # 共通與 Java 規範分離：待確認事項
 
-日期：2026-11-06。檢視基準：`6a16349`；本次依獨立審閱修正（修正提交見驗證紀錄）。本文件僅提出決策選項，**未執行正文重編、刪除純引用條目、合併文件、提升義務或變更規則錨點**。
+日期：2026-11-06。檢視基準：`6a16349`；已完成修正提交 `fffd115b257e304ddc56a33edb1307e5458f7c0a` 與 `fba46eefe55a816735dda26bc69c6711c00d7592`；第三輪修正見修正紀錄。本文件僅提出決策選項，**未執行正文重編、刪除純引用條目、合併文件、提升義務或變更規則錨點**。
 
 依據：[原始分類](java-rule-classification.md)、[第一輪去向](java-rule-migration.md)、[第一批](acceptance-cleanup-batch-1.md)、[第二批](acceptance-cleanup-batch-2.md)、[第三批](acceptance-cleanup-batch-3.md)、[第四批](acceptance-cleanup-batch-4.md)、[第五批](acceptance-cleanup-batch-5.md)及[複核修正](acceptance-cleanup-review.md)。以下 ID 是歷史決策 ID；連結指向現行文件，並明列現行條號。
 
@@ -357,3 +357,16 @@
 | AU-01 | [規範驗證](../rules/quality/rule-verification.md)的共同把關與檢查對應；原摘要是規範對應自動檢查、行為測試或人工審查並標示缺口；已由 au-01 承接，證據限於討論摘要而非遺失的 Java 條文。 |
 | AU-07 | [自動修正的審查](../rules/workflow/git-pr-review.md#au-07)：原摘要要求審查差異與行為契約，不得加未核准抑制、移除必要測試或降低規則；現行共同條款有對應，並非既有違規基準那一條。 |
 | AU-09 | [Git／PR](../rules/workflow/git-pr-review.md)與[規範驗證](../rules/quality/rule-verification.md)的合併把關；原摘要要求必要檢查的合併阻擋實際有效，不只提供報告；分類快照原為待確認，後續遷移紀錄記載已確認落實至 au-09。建議保留兩份紀錄的時間先後，不把歷史待確認誤列為本輪待決。 |
+
+## 八、第二次審閱補列的知情事項
+
+下列僅請使用者確認，不執行新增、刪除或搬移規則的決策。
+
+| 位置 | 現況、選項與建議 |
+| --- | --- |
+| [ND 第 4 條](../rules/stacks/java/common/naming-packages-docs.md#acceptance-java-javadoc-contract) | fffd115 依正文新增 Javadoc 契約驗收列，沒有原驗收追溯 ID。選項為確認保留此列，或日後核准整合；建議保留語言機制的驗收，未在本次改動此列。 |
+| [BM 第 5 條](../rules/stacks/java/common/boundary-mapping.md#acceptance-java-update-intent) | fffd115 依正文新增 Java 欄位、預設值與反序列化不得合併意圖的驗收列，沒有原驗收追溯 ID。建議確認保留；若整合須保留全部表示限制。 |
+| [VO 第 10 條補充](../rules/stacks/java/common/value-objects.md#acceptance-java-value-method-coverage) | 句尾補充 equals()、hashCode()、record 產生方法與還原路徑的適用案例，源於 fffd115 修正，沒有獨立原片段。建議確認保留為例示，不得限縮前文完整覆蓋要求。 |
+| [JN 第 10 條補充](../rules/stacks/java/common/null-and-optional.md#acceptance-java-optional-coverage) | 句尾補充 Optional、非空標註與實際 API 路徑，源於 fffd115 修正，沒有獨立原片段。建議確認保留為適用案例，不取代全部有值與缺值分類。 |
+| [LS 第 8 條補充](../rules/stacks/java/common/lambda-and-stream.md#acceptance-java-functional-exceptions) | 句尾補充 Lambda／Stream 函式介面的例外宣告限制與轉換路徑，源於 fffd115 修正，沒有獨立原片段。建議確認保留，仍須驗證所有適用處理階段的失敗。 |
+| 規範驗證的舊隱含錨點 | 標題從「語言與新增共通主題驗收入口」改為「語言與共通主題驗收入口」，儲存庫內連結有效，外部引用無從查證。是否為舊標題補相容錨點須由使用者決定；建議有外部使用者時保留舊入口。本次不改規則檔或新增錨點。 |

@@ -7,14 +7,13 @@
 ```text
 {
   "source": "working-tree",
-  "rules_baseline": "6a16349",
+  "rules_baseline": "6a1634959d922b2df5f1259cb176a731a5b5f488",
   "protected_rule_files": 55,
-  "matched_approved_rule_lines": 3024,
-  "explicit_change_blocks": 91,
+  "matched_approved_rule_lines": 3018,
+  "explicit_change_blocks": 94,
   "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "remaining_global_duplicate_common_rows": 0,
-  "checked_local_links": 1971,
+  "duplicate_java_acceptance_rows": 0,
+  "checked_local_links": 1973,
   "trace_checks": [
     {
       "batch": 1,
@@ -52,25 +51,26 @@
       "listed_rewritten_fragments": 3
     }
   ],
+  "line_endings_check": "逐位元組核對 LF／CRLF 與檔尾換行",
+  "documentation_content_check": "待決清單與批次說明的內容正確性為人工檢查項目；機械檢查僅核對條目 ID 集合及追溯片段完整性",
   "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
 ```
 
-## `ruby scripts/verify-acceptance.rb --batch 1 --trace-only`
+## `ruby scripts/verify-acceptance.rb --batch 1`
 
 ```text
 {
   "source": "working-tree",
-  "rules_baseline": "6a16349",
+  "rules_baseline": "6a1634959d922b2df5f1259cb176a731a5b5f488",
   "protected_rule_files": 55,
-  "matched_approved_rule_lines": 3024,
-  "explicit_change_blocks": 91,
+  "matched_approved_rule_lines": 3018,
+  "explicit_change_blocks": 94,
   "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "remaining_global_duplicate_common_rows": 0,
-  "checked_local_links": 1971,
+  "duplicate_java_acceptance_rows": 0,
+  "checked_local_links": 1973,
   "trace_checks": [
     {
       "batch": 1,
@@ -80,25 +80,26 @@ exit=0
       "listed_rewritten_fragments": 29
     }
   ],
+  "line_endings_check": "逐位元組核對 LF／CRLF 與檔尾換行",
+  "documentation_content_check": "待決清單與批次說明的內容正確性為人工檢查項目；機械檢查僅核對條目 ID 集合及追溯片段完整性",
   "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
 ```
 
-## `ruby scripts/verify-acceptance.rb --batch 2 --trace-only`
+## `ruby scripts/verify-acceptance.rb --batch 2`
 
 ```text
 {
   "source": "working-tree",
-  "rules_baseline": "6a16349",
+  "rules_baseline": "6a1634959d922b2df5f1259cb176a731a5b5f488",
   "protected_rule_files": 55,
-  "matched_approved_rule_lines": 3024,
-  "explicit_change_blocks": 91,
+  "matched_approved_rule_lines": 3018,
+  "explicit_change_blocks": 94,
   "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "remaining_global_duplicate_common_rows": 0,
-  "checked_local_links": 1971,
+  "duplicate_java_acceptance_rows": 0,
+  "checked_local_links": 1973,
   "trace_checks": [
     {
       "batch": 2,
@@ -108,25 +109,26 @@ exit=0
       "listed_rewritten_fragments": 16
     }
   ],
+  "line_endings_check": "逐位元組核對 LF／CRLF 與檔尾換行",
+  "documentation_content_check": "待決清單與批次說明的內容正確性為人工檢查項目；機械檢查僅核對條目 ID 集合及追溯片段完整性",
   "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
 ```
 
-## `ruby scripts/verify-acceptance.rb --batch 3 --trace-only`
+## `ruby scripts/verify-acceptance.rb --batch 3`
 
 ```text
 {
   "source": "working-tree",
-  "rules_baseline": "6a16349",
+  "rules_baseline": "6a1634959d922b2df5f1259cb176a731a5b5f488",
   "protected_rule_files": 55,
-  "matched_approved_rule_lines": 3024,
-  "explicit_change_blocks": 91,
+  "matched_approved_rule_lines": 3018,
+  "explicit_change_blocks": 94,
   "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "remaining_global_duplicate_common_rows": 0,
-  "checked_local_links": 1971,
+  "duplicate_java_acceptance_rows": 0,
+  "checked_local_links": 1973,
   "trace_checks": [
     {
       "batch": 3,
@@ -136,25 +138,26 @@ exit=0
       "listed_rewritten_fragments": 3
     }
   ],
+  "line_endings_check": "逐位元組核對 LF／CRLF 與檔尾換行",
+  "documentation_content_check": "待決清單與批次說明的內容正確性為人工檢查項目；機械檢查僅核對條目 ID 集合及追溯片段完整性",
   "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
 ```
 
-## `ruby scripts/verify-acceptance.rb --batch 4 --trace-only`
+## `ruby scripts/verify-acceptance.rb --batch 4`
 
 ```text
 {
   "source": "working-tree",
-  "rules_baseline": "6a16349",
+  "rules_baseline": "6a1634959d922b2df5f1259cb176a731a5b5f488",
   "protected_rule_files": 55,
-  "matched_approved_rule_lines": 3024,
-  "explicit_change_blocks": 91,
+  "matched_approved_rule_lines": 3018,
+  "explicit_change_blocks": 94,
   "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "remaining_global_duplicate_common_rows": 0,
-  "checked_local_links": 1971,
+  "duplicate_java_acceptance_rows": 0,
+  "checked_local_links": 1973,
   "trace_checks": [
     {
       "batch": 4,
@@ -164,25 +167,26 @@ exit=0
       "listed_rewritten_fragments": 3
     }
   ],
+  "line_endings_check": "逐位元組核對 LF／CRLF 與檔尾換行",
+  "documentation_content_check": "待決清單與批次說明的內容正確性為人工檢查項目；機械檢查僅核對條目 ID 集合及追溯片段完整性",
   "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
 exit=0
 ```
 
-## `ruby scripts/verify-acceptance.rb --batch 5 --trace-only`
+## `ruby scripts/verify-acceptance.rb --batch 5`
 
 ```text
 {
   "source": "working-tree",
-  "rules_baseline": "6a16349",
+  "rules_baseline": "6a1634959d922b2df5f1259cb176a731a5b5f488",
   "protected_rule_files": 55,
-  "matched_approved_rule_lines": 3024,
-  "explicit_change_blocks": 91,
+  "matched_approved_rule_lines": 3018,
+  "explicit_change_blocks": 94,
   "completed_java_files": 15,
-  "completed_duplicate_rows": 0,
-  "remaining_global_duplicate_common_rows": 0,
-  "checked_local_links": 1971,
+  "duplicate_java_acceptance_rows": 0,
+  "checked_local_links": 1973,
   "trace_checks": [
     {
       "batch": 5,
@@ -192,6 +196,8 @@ exit=0
       "listed_rewritten_fragments": 3
     }
   ],
+  "line_endings_check": "逐位元組核對 LF／CRLF 與檔尾換行",
+  "documentation_content_check": "待決清單與批次說明的內容正確性為人工檢查項目；機械檢查僅核對條目 ID 集合及追溯片段完整性",
   "reason_content_check": "理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元",
   "semantic_duplication_check": "人工檢查項目；換句話說的重複無法由本腳本判斷（T3）"
 }
@@ -256,7 +262,7 @@ exit=0
     "expected_exit": 1,
     "actual_exit": 1,
     "matched_expectation": true,
-    "diagnostic": "Protected rule text changed rules/stacks/java/common/types-and-generics.md:49: | <a id=\"acceptance-java-explicit-types\"></a>1、9 | 略。 |"
+    "diagnostic": "Protected rule text changed rules/stacks/java/common/types-and-generics.md:47: | <a id=\"acceptance-java-explicit-types\"></a>1、9 | 略。 |"
   },
   {
     "test": "T7",
@@ -304,7 +310,7 @@ exit=0
     "expected_exit": 1,
     "actual_exit": 1,
     "matched_expectation": true,
-    "diagnostic": "Protected rule text changed rules/stacks/java/common/types-and-generics.md:49: | 放寬 | 上列 acceptance-java 各項可由團隊自行決定是否執行，不必留存證據。 |"
+    "diagnostic": "Protected rule text changed rules/stacks/java/common/types-and-generics.md:47: | 放寬 | 上列 acceptance-java 各項可由團隊自行決定是否執行，不必留存證據。 |"
   },
   {
     "test": "N7",
@@ -369,12 +375,156 @@ exit=0
     "actual_exit": 1,
     "matched_expectation": true,
     "diagnostic": "Editorial edit touches table rules/architecture/boundary-objects.md:33"
+  },
+  {
+    "test": "R3-reason19",
+    "description": "差異理由只有 19 個非空白字元",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Invalid approved edit rules/README.md:11: reason too short or blank"
+  },
+  {
+    "test": "R3-reason-spaces",
+    "description": "改寫理由 19 字加大量空白",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Invalid rewritten fragment CL-1、8-2: full destination and meaningful-length reason required"
+  },
+  {
+    "test": "R3-body-rewrite",
+    "description": "非混排 Java 正文登錄為 acceptance",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Acceptance edit outside acceptance section rules/stacks/java/common/types-and-generics.md:9"
+  },
+  {
+    "test": "R3-body-insert",
+    "description": "正文純插入登錄為 acceptance",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Acceptance edit outside acceptance section rules/stacks/java/common/types-and-generics.md:9"
+  },
+  {
+    "test": "R3-self-heading",
+    "description": "增文自帶驗收標題不得取得資格",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Acceptance edit outside acceptance section rules/stacks/java/common/types-and-generics.md:9"
+  },
+  {
+    "test": "R3-self-subheading",
+    "description": "增文自帶小標題不得取得資格",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Acceptance edit outside acceptance section rules/stacks/java/common/types-and-generics.md:9"
+  },
+  {
+    "test": "R3-table-no-leading-pipe",
+    "description": "editorial 插入無前導直線的表格列",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Editorial edit touches table rules/stacks/java/common/types-and-generics.md:43"
+  },
+  {
+    "test": "R3-hidden-file",
+    "description": "隱藏規範檔須納入檔案清單",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Rules file inventory changed: added=rules/.extra.md; removed="
+  },
+  {
+    "test": "R3-new-file",
+    "description": "新增規範檔應明確回報清單差異",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Rules file inventory changed: added=rules/coding/extra.md; removed="
+  },
+  {
+    "test": "R3-crlf",
+    "description": "CRLF 不得被逐行 chomp 忽略",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Rule line endings changed rules/stacks/java/common/types-and-generics.md"
+  },
+  {
+    "test": "R3-final-newline",
+    "description": "檔尾換行不可被忽略",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Rule final newline changed rules/stacks/java/common/types-and-generics.md"
+  },
+  {
+    "test": "R3-pending-ids",
+    "description": "待決評估不得少 NT-04",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Pending decision ID inventory changed"
+  },
+  {
+    "test": "R3-trace-rows",
+    "description": "追溯表不得少原片段",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "Missing/changed original fragments VO-1、2"
+  },
+  {
+    "test": "R3-removed-scope",
+    "description": "移除無法使用的範圍模式",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/acceptance-negative-20261109-89795-gacw33/scripts/verify-acceptance.rb:18:in `<main>': invalid option: --check-scope (OptionParser::InvalidOption)"
+  },
+  {
+    "test": "R3-removed-trace-only",
+    "description": "移除名實不符的 trace-only",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/acceptance-negative-20261109-89795-gacw33/scripts/verify-acceptance.rb:18:in `<main>': invalid option: --trace-only (OptionParser::InvalidOption)"
+  },
+  {
+    "test": "R3-missing-baseline-file",
+    "description": "git show 失敗須明確報錯",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "無法讀取基準檔 nonexistent-test-ref:rules/stacks/java/common/classes-and-construction.md：fatal: invalid object name 'nonexistent-test-ref'."
+  },
+  {
+    "test": "R3-ambiguous-ref",
+    "description": "短參照遮蔽不得移動完整基準",
+    "expected_exit": 1,
+    "actual_exit": 1,
+    "matched_expectation": true,
+    "diagnostic": "固定正文基準為 6a16349，清單 baseline 不得移動"
+  },
+  {
+    "test": "R3-record-diff",
+    "description": "紀錄器的提交範圍檢查須拒絕已提交空白錯誤",
+    "expected_exit": 2,
+    "actual_exit": 2,
+    "matched_expectation": true,
+    "diagnostic": "negative-whitespace.txt:1: trailing whitespace."
   }
 ]
 exit=0
 ```
 
-## `git diff --check`
+## `git diff --check 6a16349..HEAD`
 
 ```text
 exit=0

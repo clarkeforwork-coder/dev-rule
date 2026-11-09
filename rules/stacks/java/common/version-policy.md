@@ -31,14 +31,12 @@ Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rul
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
-
-依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級與執行門檻依[共通測試策略](../../../quality/testing.md)制定。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級、證據與執行門檻依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)制定。
 
 ### 共同驗收
 
-- [檢查配置一致性](../../../quality/rule-verification.md#acceptance-check-configuration)。
-- [必要檢查實際執行](../../../quality/rule-verification.md#acceptance-check-execution)。
+- [檢查配置可重現](../../../quality/rule-verification.md#acceptance-check-configuration)。
+- [實際執行範圍](../../../quality/rule-verification.md#acceptance-check-execution)。
 
 ### Java 語言增量驗收
 

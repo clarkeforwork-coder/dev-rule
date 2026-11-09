@@ -3,9 +3,9 @@
 require 'open3'
 Dir.chdir(File.expand_path('..',__dir__))
 commands = [['ruby','scripts/verify-acceptance.rb']]
-(1..5).each { |n| commands << ['ruby','scripts/verify-acceptance.rb','--batch',n.to_s,'--trace-only'] }
+(1..5).each { |n| commands << ['ruby','scripts/verify-acceptance.rb','--batch',n.to_s] }
 commands << ['ruby','scripts/test-verify-acceptance.rb']
-commands << ['git','diff','--check']
+commands << ['git','diff','--check','6a16349..HEAD']
 report = +"# 驗收驗證實際輸出\n\n本檔由 `ruby scripts/record-acceptance-verification.rb` 擷取工作區的實際標準輸出、錯誤輸出及結束碼。執行方式與人工檢查邊界見 `docs/review-remediation.md`；數字不代表語意零重複。\n"
 commands.each do |args|
  output,status=Open3.capture2e(*args)

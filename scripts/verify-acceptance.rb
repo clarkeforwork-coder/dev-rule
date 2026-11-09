@@ -5,7 +5,7 @@ require 'json'
 require 'optparse'
 require 'tmpdir'
 
-RULES_BASELINE = '6a16349'.freeze
+RULES_BASELINE = '6a1634959d922b2df5f1259cb176a731a5b5f488'.freeze
 MIN_REASON_LENGTH = 20
 
 Dir.chdir(File.expand_path('..', __dir__))
@@ -15,10 +15,7 @@ OptionParser.new do |p|
   p.on('--baseline COMMIT') { |v| options[:baseline] = v }
   p.on('--rules-baseline COMMIT') { |v| options[:rules_baseline] = v }
   p.on('--target COMMIT') { |v| options[:target] = v }
-  p.on('--trace-only') { options[:trace_only] = true }
-  p.on('--check-scope') { options[:check_scope] = true }
 end.parse!
-abort('--check-scope 須指定 --batch，且不能與 --trace-only 併用') if options[:check_scope] && (!options[:batch] || options[:trace_only])
 # --target 的所有檔案及數字都來自該提交，執行的是目前這支檢查器。
 if options[:target]
   target = options.delete(:target)
@@ -38,8 +35,8 @@ Dir.chdir(ENV.fetch('ACCEPTANCE_ROOT', Dir.pwd))
 def original(commit, path)
   args = ['git']
   args << "--git-dir=#{ENV['ACCEPTANCE_GIT_DIR']}" if ENV['ACCEPTANCE_GIT_DIR']
-  output, status = Open3.capture2e(*args, 'show', "#{commit}:#{path}")
-  raise "無法讀取 #{commit}:#{path}" unless status.success?
+  output, error, status = Open3.capture3(*args, 'show', "#{commit}:#{path}")
+  abort("無法讀取基準檔 #{commit}:#{path}：#{error.strip}") unless status.success?
   output
 end
 def normalize(text)
@@ -86,6 +83,37 @@ def acceptance_mask(path, lines)
   end
   mask
 end
+def table_mask(lines)
+  mask=Array.new(lines.size,false)
+  start=0
+  (0..lines.size).each do |i|
+    next if i<lines.size && !lines[i].strip.empty?
+    block=lines[start...i]
+    table=block.any? do |line|
+      cells=line.strip.sub(/^\|/,'').sub(/\|$/,'').split('|')
+      cells.size>=2 && cells.all?{|cell|cell.strip.match?(/\A:?-{3,}:?\z/)}
+    end
+    (start...i).each{|j|mask[j]=true} if table
+    start=i+1
+  end
+  mask
+end
+# 基準行號（1 起算）：只列既有修正實際新增的三個驗收位置。
+NEW_ACCEPTANCE_LOCATIONS = {
+  ['rules/architecture/boundary-objects.md',33] => '## 契約驗收',
+  ['rules/quality/rule-verification.md',27] => 'acceptance-interface-purpose',
+  ['rules/quality/rule-verification.md',37] => 'acceptance-partial-operation'
+}.freeze
+def approved_acceptance_insertion?(path,pos,lines,source)
+  marker=NEW_ACCEPTANCE_LOCATIONS[[path,pos+1]]
+  if marker
+    content=lines.reject{|l|l.strip.empty?}
+    return content.all?{|l|l.start_with?('|') || l==marker} && content.any?{|l|l.include?(marker)}
+  end
+  # 獨立錨點可加在基準已存在的「驗收：」段之前，不能藉新增標題放行正文。
+  following=source[pos..].to_a.find{|l|!l.strip.empty?}
+  following && following.start_with?('驗收：') && lines.all?{|l|l.strip.empty? || l.match?(/\A<a id="acceptance-[^"]+"><\/a>\z/)}
+end
 def row_content(line)
   m = line.match(/^\| (.+) \| (.+) \|\s*$/)
   m && !m[1].start_with?('---') ? m[2] : nil
@@ -125,11 +153,11 @@ resolve = ->(ref) { value, status = Open3.capture2e(*git_args, 'rev-parse', '--v
 abort('固定正文基準為 6a16349，清單 baseline 不得移動') unless resolve.call(policy.fetch('baseline')) == resolve.call(RULES_BASELINE)
 abort('--rules-baseline 只能指定固定正文基準 6a16349') if options[:rules_baseline] && resolve.call(options[:rules_baseline]) != resolve.call(RULES_BASELINE)
 manifest=JSON.parse(File.read('scripts/acceptance-batches.json'))
-paths=Dir.glob('rules/**/*').select { |p| File.file?(p) }.sort
+paths=Dir.glob('rules/**/*', File::FNM_DOTMATCH).select { |p| File.file?(p) }.sort
 base_paths_args=['git'];base_paths_args<<"--git-dir=#{ENV['ACCEPTANCE_GIT_DIR']}" if ENV['ACCEPTANCE_GIT_DIR']
 base_paths,status=Open3.capture2(*base_paths_args,'ls-tree','-r','--name-only',base,'rules')
 expected_paths=base_paths.lines.map(&:strip).sort
-errors << 'Rules file inventory changed' unless paths==expected_paths
+abort("Rules file inventory changed: added=#{(paths-expected_paths).join(',')}; removed=#{(expected_paths-paths).join(',')}") unless paths==expected_paths
 policy.fetch('changes').each do |edit|
   location = "#{edit['path']}:#{edit['baseline_line']}"
   errors << "Invalid edit kind #{location}" unless %w[editorial acceptance].include?(edit['kind'])
@@ -137,7 +165,8 @@ policy.fetch('changes').each do |edit|
 end
 preserved=0
 paths.each do |path|
-  source=original(base,path).lines.map(&:chomp)
+  baseline_text=original(base,path)
+  source=baseline_text.lines.map(&:chomp)
   edits=policy.fetch('changes').select{|c| c['path']==path}.sort_by{|c| c['baseline_line']}
   expected=[];cursor=0;spans=[]
   edits.each do |edit|
@@ -146,15 +175,21 @@ paths.each do |path|
     expected.concat(source[cursor...pos]);spans << [edit,pos,expected.size];expected.concat(edit.fetch('insert'));cursor=pos+removed.size
   end
   expected.concat(source[cursor..]); actual=File.readlines(path).map(&:chomp)
-  old_mask=acceptance_mask(path,source);new_mask=acceptance_mask(path,expected)
+  old_mask=acceptance_mask(path,source)
+  old_tables=table_mask(source);new_tables=table_mask(expected)
+  expected_bytes=(expected.join("\n")+(baseline_text.end_with?("\n") ? "\n" : '')).b
+  errors << "Rule line endings changed #{path}" if File.binread(path).gsub("\r\n","\n") == expected_bytes && File.binread(path) != expected_bytes
+  errors << "Rule final newline changed #{path}" if File.binread(path).end_with?("\n") != expected_bytes.end_with?("\n")
   spans.each do |edit,old_pos,new_pos|
     case edit['kind']
     when 'editorial'
-      errors << "Editorial edit touches table #{path}:#{old_pos+1}" if (edit['remove']+edit['insert']).any? { |l| l.lstrip.start_with?('|') }
+      errors << "Editorial edit touches table #{path}:#{old_pos+1}" if edit['remove'].each_index.any? { |i| old_tables[old_pos+i] } || edit['insert'].each_index.any? { |i| new_tables[new_pos+i] }
     when 'acceptance'
-      valid = [[edit['remove'],old_pos,old_mask],[edit['insert'],new_pos,new_mask]].all? do |lines,start,mask|
-        lines.each_with_index.all? { |line,offset| line.strip.empty? || mask[start+offset] }
-      end
+      removed_valid = edit['remove'].each_with_index.all? { |line,i| line.strip.empty? || old_mask[old_pos+i] }
+      insertion_valid = edit['insert'].all?(&:empty?) || old_mask[old_pos] || (old_pos == source.size && old_mask.last)
+      # 僅允許已明列的新增驗收小節／搬移表格與現有驗收段落的定位錨點。
+      insertion_valid ||= approved_acceptance_insertion?(path,old_pos,edit['insert'],source)
+      valid = removed_valid && insertion_valid
       errors << "Acceptance edit outside acceptance section #{path}:#{old_pos+1}" unless valid
     else
       errors << "Invalid edit kind #{path}:#{old_pos+1}"
@@ -191,15 +226,6 @@ batches.each do |n|
   report="docs/acceptance-cleanup-batch-#{n}.md"
   body=File.read(report)
   baseline=options[:baseline] || body[/基準提交：`([^`]+)`/,1]
-  if options[:check_scope]
-    batch_paths = manifest.fetch(n).fetch('files').values.map { |slug| "rules/stacks/java/common/#{slug}.md" }
-    scope.each do |path|
-      old = original(baseline, path)
-      current = File.read(path)
-      errors << "Out of scope Java change #{path}" if !batch_paths.include?(path) && old != current
-      errors << "Batch Java body changed #{path}" unless old.split('## 驗收要求').first == current.split('## 驗收要求').first
-    end
-  end
   traces=body.lines.map{|l| l.match(/^\| ([A-Z]+-[\d、]+-\d+) \| (.+) \| \[主要驗收\]\(([^)]+)\) \|\s*$/)}.compact
   malformed=body.lines.select{|l|l.match?(/^\| [A-Z]+-/) && !traces.any?{|m|m[0]==l}}
   errors << "Malformed trace rows batch #{n}" unless malformed.empty?
@@ -227,6 +253,15 @@ batches.each do |n|
   end
   stats << {batch:n.to_i,baseline:baseline,original_rows:rows,verbatim_fragments:verbatim,listed_rewritten_fragments:rewritten}
 end
+classification=File.read('docs/java-rule-classification.md')
+classified=classification.lines.map{|l|l[/^\| ([A-Z]{2}-\d{2})[： ]/,1]}.compact.reject{|id|id.start_with?('AU-')}.uniq.sort
+pending=File.read('docs/pending-decisions.md')
+assessment=pending.split(/^## 三、/,2).last.to_s.split(/^## 五、/,2).first.to_s
+assessed=assessment.scan(/^\| \[([A-Z]{2}-\d{2}) 第/).flatten
+errors << 'Pending decision ID inventory changed' unless assessed.sort==classified
+reference_ids=classification.lines.select{|l|l.include?('**改引用**')}.map{|l|l[/^\| ([A-Z]{2}-\d{2})[： ]/,1]}.compact.reject{|id|id.start_with?('AU-')}.uniq.sort
+reference_section=pending.split(/^## 六、/,2).last.to_s.split(/^## 七、/,2).first.to_s
+errors << 'Pending reference ID inventory changed' unless reference_section.scan(/^\| \[([A-Z]{2}-\d{2}) 第/).flatten.sort==reference_ids
 # 只檢查儲存庫列管的 Markdown 與新增 docs/rules；不讀未提交的審閱報告。
 files=(Dir.glob('{rules,docs}/**/*.md')+['README.md']).select{|p|File.file?(p)}.sort
 anchors={}
@@ -248,4 +283,4 @@ files.each do |p|
  end
 end
 abort(errors.uniq.join("\n")) unless errors.empty?
-puts JSON.pretty_generate({source:ENV.fetch('ACCEPTANCE_SOURCE','working-tree'),rules_baseline:base,protected_rule_files:paths.size,matched_approved_rule_lines:preserved,explicit_change_blocks:policy['changes'].size,completed_java_files:scope.size,completed_duplicate_rows:duplicates.size,remaining_global_duplicate_common_rows:common_tests.count{|t|scope.any?{|p|acceptance_rows(File.read(p)).any?{|v|normalize(v)==t}}},checked_local_links:links,trace_checks:stats,reason_content_check:'理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元',semantic_duplication_check:'人工檢查項目；換句話說的重複無法由本腳本判斷（T3）'})
+puts JSON.pretty_generate({source:ENV.fetch('ACCEPTANCE_SOURCE','working-tree'),rules_baseline:base,protected_rule_files:paths.size,matched_approved_rule_lines:preserved,explicit_change_blocks:policy['changes'].size,completed_java_files:scope.size,duplicate_java_acceptance_rows:duplicates.size,checked_local_links:links,trace_checks:stats,line_endings_check:'逐位元組核對 LF／CRLF 與檔尾換行',documentation_content_check:'待決清單與批次說明的內容正確性為人工檢查項目；機械檢查僅核對條目 ID 集合及追溯片段完整性',reason_content_check:'理由內容為人工檢查項目；機械檢查僅限制分類、位置與至少 20 個非空白字元',semantic_duplication_check:'人工檢查項目；換句話說的重複無法由本腳本判斷（T3）'})

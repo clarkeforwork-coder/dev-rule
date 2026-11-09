@@ -14,7 +14,7 @@
 
 - JV 1、2 的本機／CI 一致性引用既有檢查配置；JV 10、11 保留環境或工具變更後的觸發條件與完整斷言；版本拒絕、位元碼、JDK 發行商及產物相容性仍留 Java。
 - JT 6 全列依既有容器、泛型與未知輸入驗證規則補上單一驗收，未新增規則。JT 2、3、7 與 4、5 保留 Java 泛型編譯拒絕、raw type／unchecked 及向下轉型情境。
-- JN 8 分開第三方語意與 Optional 轉換；JN 9、12 分別引用已有的契約變更與 API 缺值驗收。JN 10 將完整有值／缺值分類覆蓋留 Java，測試資料及替身的型別安全引用測試程式碼要求。
+- JN 8 分開第三方語意與 Optional 轉換；JN 9、12 分別引用已有的契約變更與 API 缺值驗收。JN 10 將完整有值／缺值分類覆蓋留 Java，測試資料及替身的型別安全亦保留於 Java 的 JN-10-2 目的列。
 - JN 4、5 與 6、7、11 的 Java Optional 使用位置、集合非空預設與標註檢查仍保留；不把 Java 非空預設提升為共通義務。
 
 ## 原驗收逐句追溯
@@ -55,4 +55,6 @@
 
 ## 獨立審閱後的重現方式
 
-上文保留當批執行紀錄；舊提交沒有逐句差異與已改寫清單，不能用修正後檢查器回報通過。現行追溯檢查：`ruby scripts/verify-acceptance.rb --batch 3 --trace-only`；基準自本文讀取。常駐檢查預設同時執行五批追溯與全檔保護；`--target` 的全部讀取及統計皆來自指定提交，不混入工作區。精確差異與改寫理由見 [檢查差異清單](acceptance-check-policy.json)、[已改寫片段清單](acceptance-rewritten-fragments.json)及[審閱修正紀錄](review-remediation.md)。
+上文保留當批執行紀錄；舊提交沒有逐句差異與已改寫清單，不能用修正後檢查器回報通過。現行追溯檢查：`ruby scripts/verify-acceptance.rb --batch 3`；基準自本文讀取。常駐檢查預設同時執行五批追溯與全檔保護；`--target` 的全部讀取及統計皆來自指定提交，不混入工作區。精確差異與改寫理由見 [檢查差異清單](acceptance-check-policy.json)、[已改寫片段清單](acceptance-rewritten-fragments.json)及[審閱修正紀錄](review-remediation.md)。
+
+補充引用：null-and-optional.md 共同驗收中的「測試程式碼」連到共通既有整節，沒有對應驗收錨點，也沒有追溯片段；保留為補充引用，不代表 JN-10-2 已移至共通。
