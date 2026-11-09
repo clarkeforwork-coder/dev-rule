@@ -1,0 +1,451 @@
+{
+  "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
+  "path": "rules/stacks/java/common/null-and-optional.md",
+  "status": "pending",
+  "rules": [
+    {
+      "id": "JN-01",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#查詢與-optional"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-02",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#查詢與-optional"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-03",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#查詢與-optional"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-04",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#查詢與-optional"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-05",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#空值限制與整合責任"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-06",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#空值限制與整合責任"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-07",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#空值限制與整合責任"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-08",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#空值限制與整合責任"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-09",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#契約維護與對外表示"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-10",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#契約維護與對外表示"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-11",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#契約維護與對外表示"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JN-12",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#契約維護與對外表示"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    }
+  ],
+  "sentences": [
+    {
+      "source": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+        }
+      ]
+    },
+    {
+      "source": "本文件承接[空值語意](../../../coding/nullability.md)、[型別安全](../../../coding/type-safety.md)與[錯誤處理](../../../coding/error-handling.md)，適用於自行撰寫的 Java 程式碼，包含測試與整合元件。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "本文件承接[空值語意](../../../coding/nullability.md)、[型別安全](../../../coding/type-safety.md)與[錯誤處理](../../../coding/error-handling.md)，適用於自行撰寫的 Java 程式碼，包含測試與整合元件。"
+        }
+      ]
+    },
+    {
+      "source": "語法與 API 須符合[版本要求](version-policy.md)，型別使用另依[型別宣告與泛型](types-and-generics.md)。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "語法與 API 須符合[版本要求](version-policy.md)，型別使用另依[型別宣告與泛型](types-and-generics.md)。"
+        }
+      ]
+    },
+    {
+      "source": "單筆查詢允許正常不存在時，使用 `Optional<T>`；多筆查詢無結果時使用空集合，不回傳 `null`。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "單筆查詢允許正常不存在時，使用 `Optional<T>`；多筆查詢無結果時使用空集合，不回傳 `null`。"
+        }
+      ]
+    },
+    {
+      "source": "依業務要求必須存在卻不存在時，表達明確的業務失敗；查詢技術故障另依錯誤處理規範傳遞，不得混為正常缺值。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "依業務要求必須存在卻不存在時，表達明確的業務失敗；查詢技術故障另依錯誤處理規範傳遞，不得混為正常缺值。"
+        }
+      ]
+    },
+    {
+      "source": "宣告使用 `Optional` 的位置，`Optional` 本身不得為 `null`。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "宣告使用 `Optional` 的位置，`Optional` 本身不得為 `null`。"
+        }
+      ]
+    },
+    {
+      "source": "空的 `Optional` 只能表示契約允許的正常缺值，不得掩蓋業務失敗、技術故障或尚未確認的結果。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "空的 `Optional` 只能表示契約允許的正常缺值，不得掩蓋業務失敗、技術故障或尚未確認的結果。"
+        }
+      ]
+    },
+    {
+      "source": "使用 `Optional` 的值前，須明確處理缺值情境，不得僅憑預期直接取值。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "使用 `Optional` 的值前，須明確處理缺值情境，不得僅憑預期直接取值。"
+        }
+      ]
+    },
+    {
+      "source": "替代值、缺值分支與失敗處理須符合業務語意，不得掩蓋缺值或違反錯誤分類。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "替代值、缺值分支與失敗處理須符合業務語意，不得掩蓋缺值或違反錯誤分類。"
+        }
+      ]
+    },
+    {
+      "source": "選用取值或拋出例外的方法本身不代表符合規範；若依已成立的不變條件必定有值，違反時須按程式缺陷處理。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "選用取值或拋出例外的方法本身不代表符合規範；若依已成立的不變條件必定有值，違反時須按程式缺陷處理。"
+        }
+      ]
+    },
+    {
+      "source": "`Optional` 主要用於方法回傳的正常缺值。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "`Optional` 主要用於方法回傳的正常缺值。"
+        }
+      ]
+    },
+    {
+      "source": "參數與欄位須依業務語意設計，不全面包裝，也不全面禁止使用；採用時須確認契約及相關框架可正確處理。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "參數與欄位須依業務語意設計，不全面包裝，也不全面禁止使用；採用時須確認契約及相關框架可正確處理。"
+        }
+      ]
+    },
+    {
+      "source": "需要區分未提供、清空與設定值等多種狀態時，須使用能完整表達狀態的明確型別，不得以 `Optional` 混合表示。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "需要區分未提供、清空與設定值等多種狀態時，須使用能完整表達狀態的明確型別，不得以 `Optional` 混合表示。"
+        }
+      ]
+    },
+    {
+      "source": "集合與陣列元素，以及映射的鍵和值，預設不得為 `null`。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "集合與陣列元素，以及映射的鍵和值，預設不得為 `null`。"
+        }
+      ]
+    },
+    {
+      "source": "必要缺值須明訂語意與處理方式，優先以明確型別表達。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "必要缺值須明訂語意與處理方式，優先以明確型別表達。"
+        }
+      ]
+    },
+    {
+      "source": "外部資料含有不允許的 `null` 時，須在邊界拒絕或依契約處理，不得默默移除或替換而掩蓋不合法資料。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "外部資料含有不允許的 `null` 時，須在邊界拒絕或依契約處理，不得默默移除或替換而掩蓋不合法資料。"
+        }
+      ]
+    },
+    {
+      "source": "依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。"
+        }
+      ]
+    },
+    {
+      "source": "專案須統一可由工具辨識的空值契約表達方式，明訂非空預設、可空位置與適用範圍，將可自動判斷的違規納入檢查。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "專案須統一可由工具辨識的空值契約表達方式，明訂非空預設、可空位置與適用範圍，將可自動判斷的違規納入檢查。"
+        }
+      ]
+    },
+    {
+      "source": "標註、文件與實際行為須一致；工具無法涵蓋的部分仍須驗證與審查，標註不能取代外部輸入的執行期驗證。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "標註、文件與實際行為須一致；工具無法涵蓋的部分仍須驗證與審查，標註不能取代外部輸入的執行期驗證。"
+        }
+      ]
+    },
+    {
+      "source": "註解套件與工具由專案依版本及框架選定。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "註解套件與工具由專案依版本及框架選定。"
+        }
+      ]
+    },
+    {
+      "source": "依[第三方空值行為的共通要求](../../../coding/nullability.md#jn-08)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "依[第三方空值行為的共通要求](../../../coding/nullability.md#jn-08)執行。"
+        }
+      ]
+    },
+    {
+      "source": "第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`；契約不明或違約的 `null` 不得擅自視為正常缺值。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`；契約不明或違約的 `null` 不得擅自視為正常缺值。"
+        }
+      ]
+    },
+    {
+      "source": "依[空值契約變更的共通要求](../../../coding/nullability.md#jn-09)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "依[空值契約變更的共通要求](../../../coding/nullability.md#jn-09)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 空值標註、`Optional` 使用及缺值處置須同步更新，不因 Java 方法簽章未變就視為相容。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "Java 空值標註、`Optional` 使用及缺值處置須同步更新，不因 Java 方法簽章未變就視為相容。"
+        }
+      ]
+    },
+    {
+      "source": "依[規範驗證](../../../quality/rule-verification.md)、[共通測試策略](../../../quality/testing.md)、[型別安全](../../../coding/type-safety.md)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "依[規範驗證](../../../quality/rule-verification.md)、[共通測試策略](../../../quality/testing.md)、[型別安全](../../../coding/type-safety.md)執行。"
+        }
+      ]
+    },
+    {
+      "source": "保留本文件驗收表中的 `Optional`、非空標註及實際 API 路徑案例；不合法資料從允許承接它的邊界輸入。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "保留本文件驗收表中的 `Optional`、非空標註及實際 API 路徑案例；不合法資料從允許承接它的邊界輸入。"
+        }
+      ]
+    },
+    {
+      "source": "Java 的參數、回傳值與欄位預設不允許 `null`；允許時須明確標示並定義語意，不得以同一個 `null` 混合表示需要不同處理方式的狀態。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "Java 的參數、回傳值與欄位預設不允許 `null`；允許時須明確標示並定義語意，不得以同一個 `null` 混合表示需要不同處理方式的狀態。"
+        }
+      ]
+    },
+    {
+      "source": "查詢結果另遵循本文件的 `Optional` 與空集合要求。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "查詢結果另遵循本文件的 `Optional` 與空集合要求。"
+        }
+      ]
+    },
+    {
+      "source": "依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#jn-12)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#jn-12)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換；不要求對外暴露 `Optional`。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換；不要求對外暴露 `Optional`。"
+        }
+      ]
+    },
+    {
+      "source": "具體序列化配置由 Framework 規範落實，不能用預設輸出代替契約。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "具體序列化配置由 Framework 規範落實，不能用預設輸出代替契約。"
+        }
+      ]
+    },
+    {
+      "source": "對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md)及[資料契約](../../../interfaces/data-contracts.md)一致。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md)及[資料契約](../../../interfaces/data-contracts.md)一致。"
+        }
+      ]
+    },
+    {
+      "source": "本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "text": "本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。"
+        }
+      ]
+    }
+  ],
+  "edits": [
+
+  ],
+  "acceptance_changes": [
+
+  ]
+}

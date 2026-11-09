@@ -1,0 +1,385 @@
+{
+  "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
+  "path": "rules/stacks/java/common/value-objects.md",
+  "status": "pending",
+  "rules": [
+    {
+      "id": "VO-01",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#型別責任與有效性"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "VO-02",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#型別責任與有效性"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "VO-03",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#型別責任與有效性"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "VO-04",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#相等性正規化與運算"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "VO-05",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#相等性正規化與運算"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "VO-06",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#相等性正規化與運算"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "VO-07",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#還原實作形式與對外表示"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "VO-08",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#還原實作形式與對外表示"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "VO-09",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#還原實作形式與對外表示"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "VO-10",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/value-objects.md#還原實作形式與對外表示"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    }
+  ],
+  "sentences": [
+    {
+      "source": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+        }
+      ]
+    },
+    {
+      "source": "本文件承接[領域建模](../../../coding/domain-modeling.md)，適用於 Java 專屬值型別與領域值物件。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "本文件承接[領域建模](../../../coding/domain-modeling.md)，適用於 Java 專屬值型別與領域值物件。"
+        }
+      ]
+    },
+    {
+      "source": "型別使用與空值處理另依[型別宣告與泛型](types-and-generics.md)及[null 與 Optional](null-and-optional.md)。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "型別使用與空值處理另依[型別宣告與泛型](types-and-generics.md)及[null 與 Optional](null-and-optional.md)。"
+        }
+      ]
+    },
+    {
+      "source": "具有身分與生命週期的 Entity，其狀態變更另依業務規則管理，不因本文件而要求所有 Entity 不可變。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "具有身分與生命週期的 Entity，其狀態變更另依業務規則管理，不因本文件而要求所有 Entity 不可變。"
+        }
+      ]
+    },
+    {
+      "source": "依[領域建模](../../../coding/domain-modeling.md)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "依[領域建模](../../../coding/domain-modeling.md)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 的 `OrderId` 與 `CustomerId` 須維持不同業務型別；一般描述性資料不要求機械式包裝。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "Java 的 `OrderId` 與 `CustomerId` 須維持不同業務型別；一般描述性資料不要求機械式包裝。"
+        }
+      ]
+    },
+    {
+      "source": "依[領域建模](../../../coding/domain-modeling.md)、[資料驗證](../../../coding/validation.md)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "依[領域建模](../../../coding/domain-modeling.md)、[資料驗證](../../../coding/validation.md)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 建構子或工廠維持一致驗證；合法 `OrderId` 不代表訂單存在或已取得存取權。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "Java 建構子或工廠維持一致驗證；合法 `OrderId` 不代表訂單存在或已取得存取權。"
+        }
+      ]
+    },
+    {
+      "source": "依[不可變性的共通要求](../../../coding/domain-modeling.md#vo-03)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "依[不可變性的共通要求](../../../coding/domain-modeling.md#vo-03)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。"
+        }
+      ]
+    },
+    {
+      "source": "須明訂相等條件，並維持 `equals()` 與 `hashCode()` 一致，相等物件須具有相同雜湊值。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "須明訂相等條件，並維持 `equals()` 與 `hashCode()` 一致，相等物件須具有相同雜湊值。"
+        }
+      ]
+    },
+    {
+      "source": "相等性須保留業務概念的區別，不得只比較底層值或物件身分，也不得未經確認就採用自動產生的相等性。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "相等性須保留業務概念的區別，不得只比較底層值或物件身分，也不得未經確認就採用自動產生的相等性。"
+        }
+      ]
+    },
+    {
+      "source": "例如不同實例的相同訂單識別碼可相等，但相同數字的 `OrderId` 與 `CustomerId` 不應相等；金額相同而幣別不同也不應視為相等。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "例如不同實例的相同訂單識別碼可相等，但相同數字的 `OrderId` 與 `CustomerId` 不應相等；金額相同而幣別不同也不應視為相等。"
+        }
+      ]
+    },
+    {
+      "source": "依[正規化規則的共通要求](../../../coding/domain-modeling.md#vo-05)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "依[正規化規則的共通要求](../../../coding/domain-modeling.md#vo-05)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。"
+        }
+      ]
+    },
+    {
+      "source": "依[運算責任的共通要求](../../../coding/domain-modeling.md#vo-06)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "依[運算責任的共通要求](../../../coding/domain-modeling.md#vo-06)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 值物件操作保留專屬型別；必要邊界呈現可讀底層值，跨幣別等依賴外部政策的操作由領域元件協調。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "Java 值物件操作保留專屬型別；必要邊界呈現可讀底層值，跨幣別等依賴外部政策的操作由領域元件協調。"
+        }
+      ]
+    },
+    {
+      "source": "依[資料還原的共通要求](../../../coding/domain-modeling.md#vo-07)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "依[資料還原的共通要求](../../../coding/domain-modeling.md#vo-07)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 建構、反序列化及持久化還原均須維持共同保證；一般類別或 `record` 的實作選擇不得形成驗證旁路。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "Java 建構、反序列化及持久化還原均須維持共同保證；一般類別或 `record` 的實作選擇不得形成驗證旁路。"
+        }
+      ]
+    },
+    {
+      "source": "具體框架配置另訂。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "具體框架配置另訂。"
+        }
+      ]
+    },
+    {
+      "source": "可依支援的 Java 版本與業務需求，選用一般類別或 `record`，不強制所有值物件採用相同形式。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "可依支援的 Java 版本與業務需求，選用一般類別或 `record`，不強制所有值物件採用相同形式。"
+        }
+      ]
+    },
+    {
+      "source": "選擇須符合驗證、不可變性與相等性要求，並檢視自動產生的方法是否適合公開，不因採用特定語法就視為符合規範。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "選擇須符合驗證、不可變性與相等性要求，並檢視自動產生的方法是否適合公開，不因採用特定語法就視為符合規範。"
+        }
+      ]
+    },
+    {
+      "source": "可變內容仍須保護，敏感值不得因自動產生字串表示而洩漏。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "可變內容仍須保護，敏感值不得因自動產生字串表示而洩漏。"
+        }
+      ]
+    },
+    {
+      "source": "語言功能另依[版本要求](version-policy.md)。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "語言功能另依[版本要求](version-policy.md)。"
+        }
+      ]
+    },
+    {
+      "source": "值物件的診斷字串與持久化、傳輸格式須分別定義，不得默認以 `toString()` 作為穩定的資料交換契約。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "值物件的診斷字串與持久化、傳輸格式須分別定義，不得默認以 `toString()` 作為穩定的資料交換契約。"
+        }
+      ]
+    },
+    {
+      "source": "對外表示須遵守格式、相容性與敏感資料揭露要求，不能因值被包成物件就允許輸出原值。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "對外表示須遵守格式、相容性與敏感資料揭露要求，不能因值被包成物件就允許輸出原值。"
+        }
+      ]
+    },
+    {
+      "source": "依[領域建模](../../../coding/domain-modeling.md)、[共通測試策略](../../../quality/testing.md)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "依[領域建模](../../../coding/domain-modeling.md)、[共通測試策略](../../../quality/testing.md)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依下方驗收表驗證，不機械式測試每個產生的方法。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依下方驗收表驗證，不機械式測試每個產生的方法。"
+        }
+      ]
+    },
+    {
+      "source": "映射與歷史資料處理另見[資料映射](../../../architecture/data-mapping.md)及[資料遷移](../../../data/migrations.md)；敏感資料與診斷輸出依[安全規範](../../../quality/security.md)及[日誌、稽核與可觀測性](../../../quality/observability.md)。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/value-objects.md#java-專屬值型別與領域值物件",
+          "text": "映射與歷史資料處理另見[資料映射](../../../architecture/data-mapping.md)及[資料遷移](../../../data/migrations.md)；敏感資料與診斷輸出依[安全規範](../../../quality/security.md)及[日誌、稽核與可觀測性](../../../quality/observability.md)。"
+        }
+      ]
+    }
+  ],
+  "edits": [
+
+  ],
+  "acceptance_changes": [
+
+  ]
+}

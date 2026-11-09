@@ -1,0 +1,385 @@
+{
+  "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
+  "path": "rules/stacks/java/common/equality-hashing-ordering.md",
+  "status": "pending",
+  "rules": [
+    {
+      "id": "EQ-01",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#相等性與雜湊"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "EQ-02",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#相等性與雜湊"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "EQ-03",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#相等性與雜湊"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "EQ-04",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#相等性與雜湊"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "EQ-05",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#相等性與雜湊"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "EQ-06",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#排序與集合判同"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "EQ-07",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#排序與集合判同"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "EQ-08",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#排序與集合判同"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "EQ-09",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#排序與集合判同"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "EQ-10",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/equality-hashing-ordering.md#排序與集合判同"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    }
+  ],
+  "sentences": [
+    {
+      "source": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+        }
+      ]
+    },
+    {
+      "source": "本文件延伸[專屬值型別與領域值物件](value-objects.md)的相等性要求，涵蓋 Entity、繼承關係及集合使用。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "本文件延伸[專屬值型別與領域值物件](value-objects.md)的相等性要求，涵蓋 Entity、繼承關係及集合使用。"
+        }
+      ]
+    },
+    {
+      "source": "型別與擴充設計另依[型別宣告與泛型](types-and-generics.md)及[類別、介面與物件建立](classes-and-construction.md)；ORM 代理等具體相容方式由 Framework 規範處理。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "型別與擴充設計另依[型別宣告與泛型](types-and-generics.md)及[類別、介面與物件建立](classes-and-construction.md)；ORM 代理等具體相容方式由 Framework 規範處理。"
+        }
+      ]
+    },
+    {
+      "source": "依[明訂比較語意的共通要求](../../../coding/domain-modeling.md#eq-01)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "依[明訂比較語意的共通要求](../../../coding/domain-modeling.md#eq-01)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java `equals()` 須落實選定比較語意，不任意將 Entity 所有欄位納入比較。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "Java `equals()` 須落實選定比較語意，不任意將 Entity 所有欄位納入比較。"
+        }
+      ]
+    },
+    {
+      "source": "自訂 `equals()` 須維持自反、對稱、遞移與一致性，並正確處理 `null`。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "自訂 `equals()` 須維持自反、對稱、遞移與一致性，並正確處理 `null`。"
+        }
+      ]
+    },
+    {
+      "source": "比較依據未改變時結果須一致，與 `null` 比較須不相等。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "比較依據未改變時結果須一致，與 `null` 比較須不相等。"
+        }
+      ]
+    },
+    {
+      "source": "須同時設計相容的 `hashCode()`，保證相等物件具有相同雜湊值，不得反過來以雜湊值相同判定相等。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "須同時設計相容的 `hashCode()`，保證相等物件具有相同雜湊值，不得反過來以雜湊值相同判定相等。"
+        }
+      ]
+    },
+    {
+      "source": "物件作為雜湊集合的鍵或元素期間，影響 `equals()` 與 `hashCode()` 的資料須保持不變。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "物件作為雜湊集合的鍵或元素期間，影響 `equals()` 與 `hashCode()` 的資料須保持不變。"
+        }
+      ]
+    },
+    {
+      "source": "優先使用不可變且穩定的鍵，例如以 `OrderId` 作為訂單映射的鍵。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "優先使用不可變且穩定的鍵，例如以 `OrderId` 作為訂單映射的鍵。"
+        }
+      ]
+    },
+    {
+      "source": "必要變更須先移出、再修改並重新加入，處理可能與既有項目相等的情況，不得在集合內直接改變比較依據。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "必要變更須先移出、再修改並重新加入，處理可能與既有項目相等的情況，不得在集合內直接改變比較依據。"
+        }
+      ]
+    },
+    {
+      "source": "依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#eq-04)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#eq-04)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。"
+        }
+      ]
+    },
+    {
+      "source": "允許繼承的型別須明訂跨型別的相等範圍，父子型別不得各自採用互相矛盾的比較規則。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "允許繼承的型別須明訂跨型別的相等範圍，父子型別不得各自採用互相矛盾的比較規則。"
+        }
+      ]
+    },
+    {
+      "source": "新增子型別或比較欄位時，須維持對稱性、遞移性與雜湊契約；無法維持時，應調整型別關係或限制擴充。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "新增子型別或比較欄位時，須維持對稱性、遞移性與雜湊契約；無法維持時，應調整型別關係或限制擴充。"
+        }
+      ]
+    },
+    {
+      "source": "不一律指定使用 `instanceof` 或 `getClass()`，應先依契約決定哪些具體型別可以相等。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "不一律指定使用 `instanceof` 或 `getClass()`，應先依契約決定哪些具體型別可以相等。"
+        }
+      ]
+    },
+    {
+      "source": "只有型別具有明確且普遍適用的自然順序時，才實作 `Comparable`；依使用情境變動的排序須使用用途明確的 `Comparator`。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "只有型別具有明確且普遍適用的自然順序時，才實作 `Comparable`；依使用情境變動的排序須使用用途明確的 `Comparator`。"
+        }
+      ]
+    },
+    {
+      "source": "排序規則須明訂比較欄位、方向與必要的同值處理，不將任意情境的順序固定為型別契約，也不要求所有可排序物件都實作 `Comparable`。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "排序規則須明訂比較欄位、方向與必要的同值處理，不將任意情境的順序固定為型別契約，也不要求所有可排序物件都實作 `Comparable`。"
+        }
+      ]
+    },
+    {
+      "source": "`Comparable` 與 `Comparator` 須維持方向一致性、遞移性及比較為零時的一致關係。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "`Comparable` 與 `Comparator` 須維持方向一致性、遞移性及比較為零時的一致關係。"
+        }
+      ]
+    },
+    {
+      "source": "同次排序使用穩定的比較依據，不隱藏外部查詢或依賴持續變動的時間、設定與狀態；需要這些資訊時，先取得本次排序使用的固定資料。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "同次排序使用穩定的比較依據，不隱藏外部查詢或依賴持續變動的時間、設定與狀態；需要這些資訊時，先取得本次排序使用的固定資料。"
+        }
+      ]
+    },
+    {
+      "source": "數值比較不得以可能溢位或損失精度的相減方式實作。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "數值比較不得以可能溢位或損失精度的相減方式實作。"
+        }
+      ]
+    },
+    {
+      "source": "須明訂比較結果為零與 `equals()` 的關係。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "須明訂比較結果為零與 `equals()` 的關係。"
+        }
+      ]
+    },
+    {
+      "source": "自然順序原則上應與相等性一致；情境排序可讓不同物件比較為零，但用於排序集合或映射時，須確認元素與鍵的判同語意符合契約，不得意外合併應分別保留的資料。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "自然順序原則上應與相等性一致；情境排序可讓不同物件比較為零，但用於排序集合或映射時，須確認元素與鍵的判同語意符合契約，不得意外合併應分別保留的資料。"
+        }
+      ]
+    },
+    {
+      "source": "例如僅按金額比較不同訂單，在列表排序中可合理，但用於 `TreeSet` 或 `TreeMap` 時，須確認比較為零所造成的判同效果；必要時加入穩定識別等符合契約的次要依據。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "例如僅按金額比較不同訂單，在列表排序中可合理，但用於 `TreeSet` 或 `TreeMap` 時，須確認比較為零所造成的判同效果；必要時加入穩定識別等符合契約的次要依據。"
+        }
+      ]
+    },
+    {
+      "source": "物件作為排序集合的元素或排序映射的鍵期間，排序依據與比較規則須保持穩定。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "物件作為排序集合的元素或排序映射的鍵期間，排序依據與比較規則須保持穩定。"
+        }
+      ]
+    },
+    {
+      "source": "必要變更須先移出再重新加入，或依新規則重建結構，不得假設集合會自動重新排序。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "必要變更須先移出再重新加入，或依新規則重建結構，不得假設集合會自動重新排序。"
+        }
+      ]
+    },
+    {
+      "source": "比較器設定變更同樣須處理既有結構，並確認資料未因判同規則而遺失。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "比較器設定變更同樣須處理既有結構，並確認資料未因判同規則而遺失。"
+        }
+      ]
+    },
+    {
+      "source": "相等性、雜湊或排序規則新增及變更時，須驗證受影響的關係契約與實際集合行為，涵蓋適用的識別變化、跨型別比較、同值判定及修改後重新加入，不僅測試少數比較結果。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "相等性、雜湊或排序規則新增及變更時，須驗證受影響的關係契約與實際集合行為，涵蓋適用的識別變化、跨型別比較、同值判定及修改後重新加入，不僅測試少數比較結果。"
+        }
+      ]
+    },
+    {
+      "source": "不要求測試不適用的繼承或持久化情境，也不因使用工具產生方法就省略契約驗證。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-相等性雜湊與排序",
+          "text": "不要求測試不適用的繼承或持久化情境，也不因使用工具產生方法就省略契約驗證。"
+        }
+      ]
+    }
+  ],
+  "edits": [
+
+  ],
+  "acceptance_changes": [
+
+  ]
+}

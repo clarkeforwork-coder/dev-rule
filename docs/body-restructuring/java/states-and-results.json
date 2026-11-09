@@ -1,0 +1,375 @@
+{
+  "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
+  "path": "rules/stacks/java/common/states-and-results.md",
+  "status": "pending",
+  "rules": [
+    {
+      "id": "ST-01",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#狀態與轉換"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "ST-02",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#狀態與轉換"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "ST-03",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#狀態與轉換"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "ST-04",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#操作結果與使用端處理"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "ST-05",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#操作結果與使用端處理"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "ST-06",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#操作結果與使用端處理"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "ST-07",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#外部代碼擴充與結果資料"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "ST-08",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#外部代碼擴充與結果資料"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "ST-09",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#外部代碼擴充與結果資料"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "ST-10",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/states-and-results.md#外部代碼擴充與結果資料"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    }
+  ],
+  "sentences": [
+    {
+      "source": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+        }
+      ]
+    },
+    {
+      "source": "本文件承接[領域建模](../../../coding/domain-modeling.md)與[錯誤處理](../../../coding/error-handling.md)，定義 Java 狀態與操作結果的型別要求。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "本文件承接[領域建模](../../../coding/domain-modeling.md)與[錯誤處理](../../../coding/error-handling.md)，定義 Java 狀態與操作結果的型別要求。"
+        }
+      ]
+    },
+    {
+      "source": "實作須符合[版本要求](version-policy.md)、[型別宣告與泛型](types-and-generics.md)及[空值契約](null-and-optional.md)。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "實作須符合[版本要求](version-policy.md)、[型別宣告與泛型](types-and-generics.md)及[空值契約](null-and-optional.md)。"
+        }
+      ]
+    },
+    {
+      "source": "互斥的業務狀態須使用明確型別；僅需區分固定狀態名稱時，可使用 `enum`。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "互斥的業務狀態須使用明確型別；僅需區分固定狀態名稱時，可使用 `enum`。"
+        }
+      ]
+    },
+    {
+      "source": "不得以多個獨立布林值表達互斥狀態。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "不得以多個獨立布林值表達互斥狀態。"
+        }
+      ]
+    },
+    {
+      "source": "不同業務面向須分別建模，不得強行合併，例如付款與配送狀態可各自表達，再明訂兩者之間的限制。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "不同業務面向須分別建模，不得強行合併，例如付款與配送狀態可各自表達，再明訂兩者之間的限制。"
+        }
+      ]
+    },
+    {
+      "source": "依[領域建模](../../../coding/domain-modeling.md)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "依[領域建模](../../../coding/domain-modeling.md)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。"
+        }
+      ]
+    },
+    {
+      "source": "依[領域建模](../../../coding/domain-modeling.md)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "依[領域建模](../../../coding/domain-modeling.md)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。"
+        }
+      ]
+    },
+    {
+      "source": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。"
+        }
+      ]
+    },
+    {
+      "source": "依[錯誤處理](../../../coding/error-handling.md)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "依[錯誤處理](../../../coding/error-handling.md)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。"
+        }
+      ]
+    },
+    {
+      "source": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。"
+        }
+      ]
+    },
+    {
+      "source": "持久化或跨邊界傳遞狀態時，須明訂穩定的外部代碼與映射，不得使用 `ordinal()` 作為業務契約。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "持久化或跨邊界傳遞狀態時，須明訂穩定的外部代碼與映射，不得使用 `ordinal()` 作為業務契約。"
+        }
+      ]
+    },
+    {
+      "source": "若採用列舉名稱作為外部值，須將名稱納入相容性管理，重新命名不能僅視為內部整理。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "若採用列舉名稱作為外部值，須將名稱納入相容性管理，重新命名不能僅視為內部整理。"
+        }
+      ]
+    },
+    {
+      "source": "未知代碼依契約處理，不得默默映射成任意既有狀態。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "未知代碼依契約處理，不得默默映射成任意既有狀態。"
+        }
+      ]
+    },
+    {
+      "source": "不強制額外建立轉換類別，但映射與影響須可辨識。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "不強制額外建立轉換類別，但映射與影響須可辨識。"
+        }
+      ]
+    },
+    {
+      "source": "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。"
+        }
+      ]
+    },
+    {
+      "source": "支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。"
+        }
+      ]
+    },
+    {
+      "source": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 結果不可持有會改變已確認事實的可變業務參考；只隔離必要資料，不要求複製完整物件。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "Java 結果不可持有會改變已確認事實的可變業務參考；只隔離必要資料，不要求複製完整物件。"
+        }
+      ]
+    },
+    {
+      "source": "依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。"
+        }
+      ]
+    },
+    {
+      "source": "Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。"
+        }
+      ]
+    },
+    {
+      "source": "對外結果與完成程度另依[API 操作語意](../../../interfaces/api-contracts.md)及[事件可靠性](../../../interfaces/events.md)；代碼與資料格式變更依[資料契約](../../../interfaces/data-contracts.md)及[資料遷移](../../../data/migrations.md)。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "對外結果與完成程度另依[API 操作語意](../../../interfaces/api-contracts.md)及[事件可靠性](../../../interfaces/events.md)；代碼與資料格式變更依[資料契約](../../../interfaces/data-contracts.md)及[資料遷移](../../../data/migrations.md)。"
+        }
+      ]
+    },
+    {
+      "source": "不可變資料的保護方式另見[專屬值型別與領域值物件](value-objects.md)。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "text": "不可變資料的保護方式另見[專屬值型別與領域值物件](value-objects.md)。"
+        }
+      ]
+    }
+  ],
+  "edits": [
+
+  ],
+  "acceptance_changes": [
+
+  ]
+}

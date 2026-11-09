@@ -8,6 +8,10 @@ require 'tmpdir'
 RULES_BASELINE = '6a1634959d922b2df5f1259cb176a731a5b5f488'.freeze
 MIN_REASON_LENGTH = 20
 
+# 驗收階段已封存；目前正文由新工具保護，舊工具僅驗證歷史提交。
+unless ARGV.include?('--target') || ENV['ACCEPTANCE_ROOT']
+  abort('驗收階段檢查已封存於 350668eb14ede247af22c782323beebf940c2a5f；現行版本請執行 ruby scripts/verify-body-restructuring.rb。歷史驗證使用 --target 提交。')
+end
 Dir.chdir(File.expand_path('..', __dir__))
 options = {}
 OptionParser.new do |p|

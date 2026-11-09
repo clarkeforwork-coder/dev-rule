@@ -1,0 +1,491 @@
+{
+  "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
+  "path": "rules/stacks/java/common/version-policy.md",
+  "status": "pending",
+  "rules": [
+    {
+      "id": "JV-01",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#版本宣告與相容性"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-02",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#版本宣告與相容性"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-03",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#版本宣告與相容性"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-04",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#版本宣告與相容性"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-05",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#依賴升級與特殊功能"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-06",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#依賴升級與特殊功能"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-07",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#依賴升級與特殊功能"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-08",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#依賴升級與特殊功能"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-09",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#依賴升級與特殊功能"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-10",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#工具環境與發布追溯"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-11",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#工具環境與發布追溯"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    },
+    {
+      "id": "JV-12",
+      "kind": "整條保留",
+      "targets": [
+        "rules/stacks/java/common/version-policy.md#工具環境與發布追溯"
+      ],
+      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+    }
+  ],
+  "sentences": [
+    {
+      "source": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。"
+        }
+      ]
+    },
+    {
+      "source": "適用於 Java 應用程式、共用函式庫及多模組專案。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "適用於 Java 應用程式、共用函式庫及多模組專案。"
+        }
+      ]
+    },
+    {
+      "source": "以下要求由各專案依實際建置、交付及執行方式落實，並承接[開發共通規範](../../../README.md)。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "以下要求由各專案依實際建置、交付及執行方式落實，並承接[開發共通規範](../../../README.md)。"
+        }
+      ]
+    },
+    {
+      "source": "專案須記錄建置 JDK、編譯目標與標準函式庫 API 相容範圍，以及實際部署或承諾支援的 Java 執行版本。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "專案須記錄建置 JDK、編譯目標與標準函式庫 API 相容範圍，以及實際部署或承諾支援的 Java 執行版本。"
+        }
+      ]
+    },
+    {
+      "source": "共用函式庫須明列使用端可依賴的支援範圍。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "共用函式庫須明列使用端可依賴的支援範圍。"
+        }
+      ]
+    },
+    {
+      "source": "版本與相容性要求須寫入受版本控制的建置設定，本機與 CI 遵循一致規則。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "版本與相容性要求須寫入受版本控制的建置設定，本機與 CI 遵循一致規則。"
+        }
+      ]
+    },
+    {
+      "source": "編譯時須限制允許的語言功能、標準 API 及產物位元碼格式。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "編譯時須限制允許的語言功能、標準 API 及產物位元碼格式。"
+        }
+      ]
+    },
+    {
+      "source": "具體設定方式依適用 Java 版本及建置工具制定。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "具體設定方式依適用 Java 版本及建置工具制定。"
+        }
+      ]
+    },
+    {
+      "source": "每個承諾支援的執行版本須有實際驗證依據，涵蓋適用的產物啟動、關鍵行為與依賴載入。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "每個承諾支援的執行版本須有實際驗證依據，涵蓋適用的產物啟動、關鍵行為與依賴載入。"
+        }
+      ]
+    },
+    {
+      "source": "函式庫須在使用端執行環境驗證載入與關鍵功能。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "函式庫須在使用端執行環境驗證載入與關鍵功能。"
+        }
+      ]
+    },
+    {
+      "source": "驗證深度依風險決定，結果記錄於 CI 或發布流程。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "驗證深度依風險決定，結果記錄於 CI 或發布流程。"
+        }
+      ]
+    },
+    {
+      "source": "各模組可依部署與使用需求採不同版本要求，但須逐模組明訂編譯目標、支援範圍及依賴關係。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "各模組可依部署與使用需求採不同版本要求，但須逐模組明訂編譯目標、支援範圍及依賴關係。"
+        }
+      ]
+    },
+    {
+      "source": "共用模組須符合使用端承諾的相容範圍，並完成對應驗證。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "共用模組須符合使用端承諾的相容範圍，並完成對應驗證。"
+        }
+      ]
+    },
+    {
+      "source": "例如，建置 JDK 與部署環境使用 Java 21，而產物承諾相容 Java 17 時，編譯須維持 Java 17 的語言、API 及位元碼限制，並有 Java 17 與實際部署環境的驗證依據。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "例如，建置 JDK 與部署環境使用 Java 21，而產物承諾相容 Java 17 時，編譯須維持 Java 17 的語言、API 及位元碼限制，並有 Java 17 與實際部署環境的驗證依據。"
+        }
+      ]
+    },
+    {
+      "source": "新增或升級依賴時，須核對直接與間接依賴的 Java 版本要求。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "新增或升級依賴時，須核對直接與間接依賴的 Java 版本要求。"
+        }
+      ]
+    },
+    {
+      "source": "若超出專案承諾的執行範圍，須先決定保留相容版本、替換依賴或安排專案升級，完成相容性處置後才能採用。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "若超出專案承諾的執行範圍，須先決定保留相容版本、替換依賴或安排專案升級，完成相容性處置後才能採用。"
+        }
+      ]
+    },
+    {
+      "source": "[第三方套件與依賴管理](../../../workflow/dependencies.md)",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "[第三方套件與依賴管理](../../../workflow/dependencies.md)"
+        }
+      ]
+    },
+    {
+      "source": "升級建置 JDK 須維持既有相容承諾。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "升級建置 JDK 須維持既有相容承諾。"
+        }
+      ]
+    },
+    {
+      "source": "提高最低執行版本須獨立評估部署環境、函式庫使用端與回退需求，明訂遷移順序並完成驗證。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "提高最低執行版本須獨立評估部署環境、函式庫使用端與回退需求，明訂遷移順序並完成驗證。"
+        }
+      ]
+    },
+    {
+      "source": "對外提供的函式庫須明確告知新的最低版本。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "對外提供的函式庫須明確告知新的最低版本。"
+        }
+      ]
+    },
+    {
+      "source": "專案預設使用正式發布的語言功能與 API。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "專案預設使用正式發布的語言功能與 API。"
+        }
+      ]
+    },
+    {
+      "source": "採用 Preview 功能須由專案負責人核准，記錄用途、理由與影響範圍，明訂建置、測試、部署配套及後續升級的維護責任。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "採用 Preview 功能須由專案負責人核准，記錄用途、理由與影響範圍，明訂建置、測試、部署配套及後續升級的維護責任。"
+        }
+      ]
+    },
+    {
+      "source": "環境配套無法滿足時，先採正式功能完成需求。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "環境配套無法滿足時，先採正式功能完成需求。"
+        }
+      ]
+    },
+    {
+      "source": "專案預設依賴公開且受支援的 JDK API。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "專案預設依賴公開且受支援的 JDK API。"
+        }
+      ]
+    },
+    {
+      "source": "需要存取內部實作或放寬存取限制時，須依例外流程個別核准，記錄原因、範圍、相關依賴與替代方案，明訂後續處置，並於 JDK 升級時重新驗證。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "需要存取內部實作或放寬存取限制時，須依例外流程個別核准，記錄原因、範圍、相關依賴與替代方案，明訂後續處置，並於 JDK 升級時重新驗證。"
+        }
+      ]
+    },
+    {
+      "source": "新增或修改程式須優先採用符合專案版本範圍的替代 API。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "新增或修改程式須優先採用符合專案版本範圍的替代 API。"
+        }
+      ]
+    },
+    {
+      "source": "既有棄用 API 依移除風險與影響安排遷移，特別檢視已標示預定移除的項目。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "既有棄用 API 依移除風險與影響安排遷移，特別檢視已標示預定移除的項目。"
+        }
+      ]
+    },
+    {
+      "source": "必要的持續使用須經例外核准，記錄原因、適用範圍與重新評估條件。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "必要的持續使用須經例外核准，記錄原因、適用範圍與重新評估條件。"
+        }
+      ]
+    },
+    {
+      "source": "Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rule-governance.md#例外核准)管理。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rule-governance.md#例外核准)管理。"
+        }
+      ]
+    },
+    {
+      "source": "既有程式碼依相同文件的漸進導入要求處理。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "既有程式碼依相同文件的漸進導入要求處理。"
+        }
+      ]
+    },
+    {
+      "source": "Java 版本變更須評估參與編譯、測試、分析及產物處理的工具，包含適用的建置工具、編譯外掛、註解處理器、測試執行器與覆蓋率工具。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "Java 版本變更須評估參與編譯、測試、分析及產物處理的工具，包含適用的建置工具、編譯外掛、註解處理器、測試執行器與覆蓋率工具。"
+        }
+      ]
+    },
+    {
+      "source": "須確認必要檢查實際執行，且產生的程式碼或其他產物符合版本承諾。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "須確認必要檢查實際執行，且產生的程式碼或其他產物符合版本承諾。"
+        }
+      ]
+    },
+    {
+      "source": "專案須記錄實際使用的 JDK 發行商與完整版本。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "專案須記錄實際使用的 JDK 發行商與完整版本。"
+        }
+      ]
+    },
+    {
+      "source": "允許多種發行版本時須明訂支援範圍。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "允許多種發行版本時須明訂支援範圍。"
+        }
+      ]
+    },
+    {
+      "source": "修補更新或更換發行商時，依影響驗證相容性並保留紀錄，例如啟動參數、外部連線與關鍵流程。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "修補更新或更換發行商時，依影響驗證相容性並保留紀錄，例如啟動參數、外部連線與關鍵流程。"
+        }
+      ]
+    },
+    {
+      "source": "每個發布產物須可追溯實際建置 JDK、編譯目標、依賴版本與相容性驗證紀錄。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "每個發布產物須可追溯實際建置 JDK、編譯目標、依賴版本與相容性驗證紀錄。"
+        }
+      ]
+    },
+    {
+      "source": "部署後須能核對產物識別與實際 Java 執行環境，包含發行商、完整版本及相關啟動設定。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "部署後須能核對產物識別與實際 Java 執行環境，包含發行商、完整版本及相關啟動設定。"
+        }
+      ]
+    },
+    {
+      "source": "可沿用專案既有建置與部署紀錄。",
+      "action": "保留",
+      "targets": [
+        {
+          "uri": "rules/stacks/java/common/version-policy.md#java-適用範圍與版本判定",
+          "text": "可沿用專案既有建置與部署紀錄。"
+        }
+      ]
+    }
+  ],
+  "edits": [
+
+  ],
+  "acceptance_changes": [
+
+  ]
+}
