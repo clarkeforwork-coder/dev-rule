@@ -4,6 +4,8 @@ Dir.chdir(ENV.fetch('BODY_ROOT',File.expand_path('..',__dir__)))
 F=FinalAcceptance
 abort('最後驗收階段尚未啟用') unless F.active?
 paths=BodyPresentation.paths
+actual_paths=Dir.glob('rules/**/*',File::FNM_DOTMATCH).select{|p|File.file?(p)}
+abort('驗收檔案清冊不同') unless paths.sort==actual_paths.sort
 before=paths.to_h{|p|[p,BodyRestructuring.original(p,F::START)]}
 actual=paths.to_h{|p|[p,File.read(p)]}
 expected=F.transform(before)

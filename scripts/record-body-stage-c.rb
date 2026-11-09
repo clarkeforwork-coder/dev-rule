@@ -55,5 +55,8 @@ text+=<<'DOC'
 
 Java 小節錨點未改，包含先前指出的 `java-specific-responsibility`、`java-mapping-integrity` 及驗收類英文字差異。驗收整合、殘留整理敘述、原有「下方表格」定位、CA-06／CO-08 驗收重疊、集合是否併入他檔均未處理，留最後階段第二部分。此部分沒有新增或刪除規範義務。
 DOC
-File.write('docs/body-restructuring-stage-c.md',text)
+path='docs/body-restructuring-stage-c.md'
+continuation=File.read(path).split(/^## 第二部分：/,2)[1] if File.file?(path)
+text+="\n## 第二部分："+continuation if continuation
+File.write(path,text)
 puts "階段 C 紀錄已產生：74 別名、#{records.sum{|r|r['group_routes'].size}} 分組指路、3 段尾段。"

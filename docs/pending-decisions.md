@@ -331,25 +331,27 @@
 
 ## 七、獨立審閱後仍須決定的事項
 
+更新：以下原選項與當時限制保留作歷史紀錄；各列粗體「第二部分結果」是最後階段已核准並執行的現況，未標示者維持先前處置。
+
 本節是待決事項，不授權改動規則正文。原要求已先還原；「零逐字重複」不代表沒有語意重複。以下保留重疊是正文不變與不降低要求優先的結果。
 
 | 審閱項目／位置 | 選項與建議 |
 | --- | --- |
-| H1：value-objects、states-and-results、boundary-mapping、numbers-dates-text、lambda-and-stream、naming-packages-docs 的驗收尾句 | 六句已依 `6a16349` 逐字還原。可保留各文件治理入口，或日後集中索引；建議保留，因句子另含工具、既有資料、外部契約等文件專屬的不得豁免條件，不能當成無效重複刪除。 |
-| H2：[規範驗證](../rules/quality/rule-verification.md#架構檢查與可測試性)「不因此強制每個類別建立介面」及「部分成功、降級與補償失敗」 | 已還原政策原句。日後可保留政策與驗收的不同責任，或經核准合併；建議保留原政策，驗收只列證據，不以去重為由再刪政策。 |
+| H1：value-objects、states-and-results、boundary-mapping、numbers-dates-text、lambda-and-stream、naming-packages-docs 的驗收尾句 | 六句已依 `6a16349` 逐字還原。可保留各文件治理入口，或日後集中索引；建議保留，因句子另含工具、既有資料、外部契約等文件專屬的不得豁免條件，不能當成無效重複刪除。 **第二部分結果：維持原文與各文件專屬治理入口。** |
+| H2：[規範驗證](../rules/quality/rule-verification.md#架構檢查與可測試性)「不因此強制每個類別建立介面」及「部分成功、降級與補償失敗」 | 已還原政策原句。日後可保留政策與驗收的不同責任，或經核准合併；建議保留原政策，驗收只列證據，不以去重為由再刪政策。 **第二部分結果：政策原句維持；僅搬指定驗收列。** |
 | M1：VO-10、JN-10、LS-8、JV-10／11、ND-1／2、LS-1／2 | 本次保留完整原斷言，Java 機制僅補充。日後若刪除共同背景，先確認共通列逐項承接；ND 後綴與 LS 複雜邏輯目前沒有完整共通依據，建議留 Java。 |
 | M2：[空值語意](../rules/coding/nullability.md)、[映射驗收](../rules/architecture/data-mapping.md#acceptance-mapping-paths) | 已撤回寫入空值正文的新驗收句與錨點。三種更新意圖的原斷言補入既有映射驗收列，依據 bm-09 與既有空值語意；Java 第 5 條的表示失效情境另列。日後若改歸位方向須一併決定，不再把曾新增的句子描述成基準既有驗收。 |
-| M4：共通驗收歸位 | 選項 A：按規則檔維護驗收，規範驗證只維護共同把關；選項 B：集中規範驗證並從各規則引用。建議 A，專屬情境緊鄰依據，規範驗證維持跨主題機制；但本次不執行搬移，已有指向規範驗證的介面用途與多步驟案例維持現況。 |
-| M4：[領域建模](../rules/coding/domain-modeling.md#模型驗證與還原)、[資料映射](../rules/architecture/data-mapping.md#轉換要求)與補充契約驗收 | 撤回本階段新加的失敗分類連結與三列專屬型別／狀態詳細驗收；完整原斷言保留 Java。基準已有的領域驗證摘要、失敗分類與結果驗收，以及映射摘要與實際路徑驗收仍有重疊。建議先決定 A／B，再整合既有內容，本次不刪正文。 |
+| M4：共通驗收歸位 | 選項 A：按規則檔維護驗收，規範驗證只維護共同把關；選項 B：集中規範驗證並從各規則引用。建議 A，專屬情境緊鄰依據，規範驗證維持跨主題機制；但本次不執行搬移，已有指向規範驗證的介面用途與多步驟案例維持現況。 **第二部分結果：僅介面用途與多步驟／部分成功兩列已搬回各自規則檔，規範驗證原位置留導向；其他主題不搬。** |
+| M4：[領域建模](../rules/coding/domain-modeling.md#模型驗證與還原)、[資料映射](../rules/architecture/data-mapping.md#轉換要求)與補充契約驗收 | 撤回本階段新加的失敗分類連結與三列專屬型別／狀態詳細驗收；完整原斷言保留 Java。基準已有的領域驗證摘要、失敗分類與結果驗收，以及映射摘要與實際路徑驗收仍有重疊。建議先決定 A／B，再整合既有內容，本次不刪正文。 **第二部分結果：只盤點五組重疊句對，見階段 C 第二部分；不刪不改。** |
 | L2：[null／Optional 第 10 條](../rules/stacks/java/common/null-and-optional.md#契約維護與對外表示) | 「本文件驗收表」的 API 案例分散於共同引用與 Java 覆蓋列；建議日後改指整個驗收章節或確切語意錨點，現在不改正文。（以上為歷史決策敘述；第五次審閱後的現行入口為[驗收章節](../rules/stacks/java/common/null-and-optional.md#驗收要求)，已無正文第 10 條。） |
-| L2：[VO-10 第 10 條（歷史；現行整條保留）](../rules/stacks/java/common/value-objects.md#java-value-test-coverage)（歷史第 10 條；全部去向：[java-value-test-coverage](../rules/stacks/java/common/value-objects.md#java-value-test-coverage)） | 還原路徑的詳細斷言位於共同引用；建議改為精確引用共同還原與 Java 覆蓋兩處。 |
-| L2：[ST-10 第 10 條（歷史；現行整條保留）](../rules/stacks/java/common/states-and-results.md#java-model-acceptance)（歷史第 10 條；全部去向：[java-model-acceptance](../rules/stacks/java/common/states-and-results.md#java-model-acceptance)） | 使用端分支及封閉模型已引用共通，並非下方 Java 表格列；建議改指共同處理完整性驗收。 |
-| L2：[BM-04 第 4 條（歷史；現行整條保留）](../rules/stacks/java/common/boundary-mapping.md#java-mapping-integrity)（歷史第 4 條；全部去向：[java-mapping-integrity](../rules/stacks/java/common/boundary-mapping.md#java-mapping-integrity)） | 部分成功驗收已在規範驗證，不能只指下方 Java 表格；建議日後改精確引用部分操作列。 |
-| L2：[NT-14 第 14 條（歷史；現行整條保留）](../rules/stacks/java/common/numbers-dates-text.md#java-boundary-verification)（歷史第 14 條；全部去向：[java-boundary-verification](../rules/stacks/java/common/numbers-dates-text.md#java-boundary-verification)） | java.time 與字串轉換案例主要由共同驗收及 Java 實際路徑引言承接；建議改指整個驗收章節，不宣稱 Java 表內均有獨立列。 |
-| L6：[集合開頭](../rules/stacks/java/common/collections-and-ownership.md)「由後續 Java 主題展開」 | 主題已存在，可改現行連結；因位於正文，本次保留，建議下次正文整理處理。 |
-| L6：[映射「既有共同保證的落實」](../rules/architecture/data-mapping.md#相關共通契約) | 可改中性標題或刪除重述；先處理第一節未列管義務，不能連同義務直接刪除。 |
-| L6：[規範驗證](../rules/quality/rule-verification.md#測試程式碼)「遵守下列型別安全要求」 | 「下列」本來已沒有明確對象；建議日後改成型別安全文件連結，本次保持基準正文。 |
-| L7：BM 轉換失敗與半成品、ST 獨立業務面向、VO 不只測建立成功、JT 外部非法資料、JN 必填拒絕與故障分類 | 這五組 Java 驗收仍與共通正文或驗收有換句話說的重複。選項是先核准共通依據並拆出引用，或保留 Java 原斷言等待正文整理；建議後者優先，避免再次縮小範圍。機械檢查不宣稱消除此類重複。 |
+| L2：[VO-10 第 10 條（歷史；現行整條保留）](../rules/stacks/java/common/value-objects.md#java-value-test-coverage)（歷史第 10 條；全部去向：[java-value-test-coverage](../rules/stacks/java/common/value-objects.md#java-value-test-coverage)） | 還原路徑的詳細斷言位於共同引用；建議改為精確引用共同還原與 Java 覆蓋兩處。 **第二部分結果：改指 Java 業務保證驗收及共通資料還原驗收。** |
+| L2：[ST-10 第 10 條（歷史；現行整條保留）](../rules/stacks/java/common/states-and-results.md#java-model-acceptance)（歷史第 10 條；全部去向：[java-model-acceptance](../rules/stacks/java/common/states-and-results.md#java-model-acceptance)） | 使用端分支及封閉模型已引用共通，並非下方 Java 表格列；建議改指共同處理完整性驗收。 **第二部分結果：改指本文件驗收章節及共通處理完整性／封閉模型驗收。** |
+| L2：[BM-04 第 4 條（歷史；現行整條保留）](../rules/stacks/java/common/boundary-mapping.md#java-mapping-integrity)（歷史第 4 條；全部去向：[java-mapping-integrity](../rules/stacks/java/common/boundary-mapping.md#java-mapping-integrity)） | 部分成功驗收已在規範驗證，不能只指下方 Java 表格；建議日後改精確引用部分操作列。 **第二部分結果：拒絕與缺陷連 Java 映射失敗列，部分成功連錯誤處理的主要驗收列。** |
+| L2：[NT-14 第 14 條（歷史；現行整條保留）](../rules/stacks/java/common/numbers-dates-text.md#java-boundary-verification)（歷史第 14 條；全部去向：[java-boundary-verification](../rules/stacks/java/common/numbers-dates-text.md#java-boundary-verification)） | java.time 與字串轉換案例主要由共同驗收及 Java 實際路徑引言承接；建議改指整個驗收章節，不宣稱 Java 表內均有獨立列。 **第二部分結果：改指整個驗收章節，包含共同引用與 Java 實際路徑。** |
+| L6：[集合開頭](../rules/stacks/java/common/collections-and-ownership.md)「由後續 Java 主題展開」 | 主題已存在，可改現行連結；因位於正文，本次保留，建議下次正文整理處理。 **第二部分結果：改連已存在的 Java 併發及例外／資源文件。** |
+| L6：[映射「既有共同保證的落實」](../rules/architecture/data-mapping.md#相關共通契約) | 可改中性標題或刪除重述；先處理第一節未列管義務，不能連同義務直接刪除。 **第二部分結果：標題改為「相關共通契約」，摘要原文不動。** |
+| L6：[規範驗證](../rules/quality/rule-verification.md#測試程式碼)「遵守下列型別安全要求」 | 「下列」本來已沒有明確對象；建議日後改成型別安全文件連結，本次保持基準正文。 **第二部分結果：改為型別安全文件的明確連結。** |
+| L7：BM 轉換失敗與半成品、ST 獨立業務面向、VO 不只測建立成功、JT 外部非法資料、JN 必填拒絕與故障分類 | 這五組 Java 驗收仍與共通正文或驗收有換句話說的重複。選項是先核准共通依據並拆出引用，或保留 Java 原斷言等待正文整理；建議後者優先，避免再次縮小範圍。機械檢查不宣稱消除此類重複。 **第二部分結果：依原決策保守保留，不以換句話說的重複作為刪除理由。** |
 | L5：[邊界隔離驗收](../rules/architecture/boundary-objects.md#acceptance-boundary-isolation)後半 | 本階段已把共用不可變值與不強制全面複製寫成驗收，依據包含尚未列管的映射摘要。這是既有適用邊界的具體核對，並非新增強制複製，但不能據此宣稱摘要已正式提升。選項為正式列管來源或把此段驗收移回 Java；建議先決定第一節 BM-06，原要求保持。 |
 
 ### AU-01／07／09 與第六節的範圍
@@ -435,3 +437,9 @@ CA-08、CA-10、BM-09 整條逐字還原；CA-02、VO-05、EQ-04 還原基準 Ja
 ### 階段 C 第一部分
 
 74 個共通錨點已採語意名稱並保留舊別名；15 份 Java 指路與引言使用共通標題，所有有整條移除條文的分組都有指路。version-policy 兩段與 types-and-generics 一段中間尾段回原分組，原文不變；索引摘要以現存 Java 小節為準。完整紀錄見[階段 C](body-restructuring-stage-c.md)。Java 條文錨點未改；驗收整合、殘留敘述、集合是否併檔仍留後續。
+
+### 階段 C 第二部分已執行
+
+起點 `53c26dcbecbdd31c6082ffd91f608660a2d38b0d`。介面用途與部分成功驗收分別以 `7afa278`、`7c3d651` 歸位；`5365c72` 保留四列原文並補分工；`f5019a4` 修正八處指代／標題並補映射略過欄位的核對。共通逐塊變更追加在 existing-sources 的 final_acceptance_changes，Java 指代追加在各份 final_reference_changes，歷史紀錄不刪。
+
+集合文件仍有多條 Java 專屬正文，原「只剩失敗狀態提醒才合併」條件不成立，確定保留獨立文件。授權限制與不可變資料兩個入口經核對仍有效，未改；M4 第二列五組重疊只盤點，H1、H2、L7 維持。詳細前後文字與未處理理由見[階段 C 第二部分](body-restructuring-stage-c.md#第二部分驗收歸位分工與指代修正)，全案總結見[共通與 Java 分離總結](java-common-separation-summary.md)。

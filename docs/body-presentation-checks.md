@@ -24,3 +24,11 @@
 執行：`ruby scripts/verify-body-restructuring.rb`、`ruby scripts/verify-body-sentences.rb`、`ruby scripts/test-body-presentation.rb`；完整命令集由 `ruby scripts/record-body-verification.rb` 擷取。`apply-body-presentation.rb` 按 `--aliases`、`--layout`、`--index` 順序執行，已啟用時先核對現況，避免覆蓋未登錄修改。
 
 封存驗收負向測試在階段 C 直接執行時，會以 `350668eb14ede247af22c782323beebf940c2a5f` 暫存 checkout 重跑並明列 archived_at；原分支不變。現行驗收仍由主檢查直接執行 `verify-body-acceptance.rb`，兩者範圍不同。
+
+## 最後階段第二部分的精確例外
+
+起點固定為 `53c26dcbecbdd31c6082ffd91f608660a2d38b0d`。`scripts/final-acceptance-plan.json` 明列兩列搬移、四列分工增補、八筆指代／標題修正及一筆映射驗收補充；工具以固定雜湊核對清單，沒有放寬整條保留的一般規則。啟用步驟由 `docs/final-acceptance.json` 記錄。共通既有紀錄追加 `final_acceptance_changes`，Java 紀錄追加 `final_reference_changes`，原歷史句子的處置不變。
+
+主檢查先計算第一部分的精確結果，再依核准步驟轉換並比對現行全文與紀錄。句子集合檢查先逆轉這些明列差異；驗收追溯先逆轉明列增補，現行列的完整文字另由 `verify-final-acceptance.rb` 直接核對。新腳本同時核對 rules 檔案清冊、全部 acceptance 錨點唯一及兩列搬移；除了五筆明列增補，正規化連結後每列內容不變。
+
+日常執行 `ruby scripts/verify-body-restructuring.rb` 與 `ruby scripts/verify-final-acceptance.rb`；完整驗證與正負向測試使用 `ruby scripts/record-body-verification.rb`。`test-final-acceptance.rb` 在暫存複本演練四個核准步驟與十一個反例，核對預期診斷，不修改真實規則。分工與指代是否合理仍由人工複核，不能由比對通過推論。

@@ -250,6 +250,11 @@ module BodyPresentation
     result['legacy_snapshot_local_links']=result.delete('local_links')
     result['current_local_links']=links
     result['presentation']={'start'=>START,'aliases'=>aliases.size,'layout'=>config['layout'],'index'=>config['index'],'semantic_snapshot'=>START,'guarantee'=>'現行全文與紀錄逐字等於起點的核准連結及版面轉換；逐句語意／驗收仍由起點檢查承接'}
+    if FinalAcceptance.active?
+      result['presentation']['guarantee']+='；第二部分只追加 final_acceptance 中固定步驟的逐筆指代、驗收搬移與增補，不放寬其餘內容'
+      result['legacy_snapshot_common_change_blocks']=result.delete('common_change_blocks')
+      result['final_common_change_blocks']=FinalAcceptance.ops.count{|o|!o['path'].include?('/stacks/')}
+    end
     puts JSON.pretty_generate(result)
   end
 end

@@ -6,6 +6,7 @@ ids=%w[interface partial division references]
 rv='rules/quality/rule-verification.md';dep='rules/architecture/dependency-composition.md';err='rules/coding/error-handling.md';bm='rules/stacks/java/common/boundary-mapping.md'
 cases=(1..4).map{|n|["核准步驟 #{ids.take(n).join('+')}",nil,ids.take(n),lambda{}]}
 cases += [
+ ['新增檔案不能藏驗收錨點','驗收檔案清冊不同',ids,lambda{File.write('rules/.extra.md',%(<a id="acceptance-hidden"></a>\n額外驗收。\n))}],
  ['驗收不能留兩份','驗收錨點重複',ids,lambda{File.open(rv,'a'){|f|f.puts File.read(dep).lines.find{|l|l.include?('id="acceptance-interface-purpose"')}}}],
  ['不能刪驗收','驗收錨點清冊不同',ids,lambda{File.write(dep,File.read(dep).lines.reject{|l|l.include?('id="acceptance-interface-purpose"')}.join)}],
  ['不能縮小原列','未核准驗收增補',ids,lambda{File.write(dep,File.read(dep).sub('也未省略必要隔離','可以省略必要隔離'))}],
@@ -26,6 +27,7 @@ cases.each do |name,diagnostic,steps,mutate|
    files,_=BodyPresentation.render(JSON.parse(File.read(BodyPresentation::CONFIG)))
    files.each{|p,t|File.write(p,t)};mutate.call
    out,s=Open3.capture2e({'BODY_ROOT'=>dir},'ruby',File.join(dir,'scripts/verify-final-acceptance.rb'))
+   out=out.gsub(dir,"<暫存複本>")
    results<<{test:name,exit:s.exitstatus,matched:diagnostic ? !s.success?&&out.include?(diagnostic) : s.success?,diagnostic:diagnostic ? out.lines.find{|l|l.include?(diagnostic)}.to_s.strip : '核准搬移、增補及其餘全文一致'}
   end
  end
