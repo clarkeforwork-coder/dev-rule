@@ -1,71 +1,72 @@
 {
   "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
   "path": "rules/stacks/java/common/reflection-and-suppression.md",
-  "status": "pending",
+  "status": "completed",
   "rules": [
     {
       "id": "RF-01",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#動態能力與存取邊界"
+        "rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-type-contract"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "第四節判斷為否，原文保留反射需求、靜態型別契約、責任集中與動態物件不得散入業務流程的完整限制。"
     },
     {
       "id": "RF-02",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#動態能力與存取邊界"
+        "rules/quality/security.md#rf-02"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "第三節判斷為重述，受控類別、方法與建構子及型別符合不能取代授權均由安全共通原句直接承接。"
     },
     {
       "id": "RF-03",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#動態能力與存取邊界"
+        "rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "第四節判斷為否，原文保留特殊存取核准、受支援整合優先、不得自行豁免及私有欄位不得避開建立規則。"
     },
     {
       "id": "RF-04",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#動態能力與存取邊界"
+        "rules/coding/type-safety.md#rf-04"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "第三節判斷為重述，能力、版本及型別驗證與不得只憑名稱或未驗證轉型由型別安全共通原句直接承接。"
     },
     {
       "id": "RF-05",
-      "kind": "整條保留",
+      "kind": "拆分",
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#動態能力與存取邊界"
+        "rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "第三節判斷為混合，保留 Java 反射外層例外及原始原因；不得推定未執行而替換或重跑由共通外層例外與重試安全性原句承接。"
     },
     {
       "id": "RF-06",
-      "kind": "整條保留",
+      "kind": "拆分",
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#檢查抑制與產生碼"
+        "rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression",
+        "rules/workflow/rule-governance.md#rf-06"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "第三節判斷為混合，純共通引用句移至引言連結；共通未直接點明 SuppressWarnings 及 raw type／unchecked 禁令，且抽掉最小範圍子句會使 Java 主詞失去謂語，故整個 Java 操作句保守原樣保留。"
     },
     {
       "id": "RF-07",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#檢查抑制與產生碼"
+        "rules/stacks/java/common/reflection-and-suppression.md#java-generated-code"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "第三節判斷為驗收入口，依作業說明整條逐字保留來源重建、手寫銜接型別檢查及例外範圍確認，交協調者決定。"
     },
     {
       "id": "RF-08",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#檢查抑制與產生碼"
+        "rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-verification"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "第三節判斷為驗收入口，依作業說明整條逐字保留 Java 實際反射、存取、重新產生路徑及不能只確認成功的要求，交協調者決定。"
     }
   ],
   "sentences": [
@@ -130,7 +131,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-type-contract",
           "text": "反射與動態呼叫須有明確需求，已知的業務能力優先透過靜態型別契約表達。"
         }
       ],
@@ -144,7 +145,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-type-contract",
           "text": "必要動態能力須集中於責任明確的元件，限制影響範圍並提供具型別的內部契約，不得藉此繞過型別安全要求。"
         }
       ],
@@ -158,7 +159,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-type-contract",
           "text": "框架整合、外掛或通用工具的動態名稱與未知物件不得任意散入業務流程。"
         }
       ],
@@ -169,38 +170,51 @@
     },
     {
       "source": "依[受控目標與授權的共通要求](../../../quality/security.md#rf-02)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
-          "text": "依[受控目標與授權的共通要求](../../../quality/security.md#rf-02)執行。"
+          "uri": "rules/quality/security.md#rf-02"
         }
       ],
       "history_id": "RF-02",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[受控目標與授權的共通要求](../../../quality/security.md#rf-02)執行。",
+          "source_uri": "rules/quality/security.md#rf-02",
+          "source_text": "動態載入、建立或呼叫的目標須由受控登錄或允許清單限定，不得直接依未受信任輸入解析並執行任意類別、方法或建構子。"
+        }
+      ],
+      "reason": "本句只要求依安全共通受控目標條文執行，移除純引用入口並於引言保留相同錨點，實際受控登錄與授權政策仍由該來源維護。"
     },
     {
       "source": "Java 類別、方法及建構子的動態目標須受控，不因型別符合就略過授權。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
-          "text": "Java 類別、方法及建構子的動態目標須受控，不因型別符合就略過授權。"
+          "uri": "rules/quality/security.md#rf-02"
         }
       ],
       "history_id": "RF-02",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "Java 類別、方法及建構子的動態目標須受控",
+          "source_uri": "rules/quality/security.md#rf-02",
+          "source_text": "動態載入、建立或呼叫的目標須由受控登錄或允許清單限定，不得直接依未受信任輸入解析並執行任意類別、方法或建構子。"
+        },
+        {
+          "text": "不因型別符合就略過授權",
+          "source_uri": "rules/quality/security.md#rf-02",
+          "source_text": "未知目標須明確拒絕，目標符合型別也不能取代授權檢查。"
+        }
+      ],
+      "reason": "第三節判斷為重述，受控類別、方法與建構子及型別符合不能取代授權均由安全共通原句直接承接。"
     },
     {
       "source": "反射與動態能力不得繞過可見性設計、建立驗證或業務不變條件。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation",
           "text": "反射與動態能力不得繞過可見性設計、建立驗證或業務不變條件。"
         }
       ],
@@ -214,7 +228,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation",
           "text": "需要特殊存取時，優先採用受支援的整合方式；必要的存取放寬須個別核准並驗證影響，不得以框架、映射或測試用途自行豁免。"
         }
       ],
@@ -228,7 +242,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation",
           "text": "例如不能以直接寫入私有欄位避開正式建立規則。"
         }
       ],
@@ -239,38 +253,51 @@
     },
     {
       "source": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#rf-04)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
-          "text": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#rf-04)執行。"
+          "uri": "rules/coding/type-safety.md#rf-04"
         }
       ],
       "history_id": "RF-04",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#rf-04)執行。",
+          "source_uri": "rules/coding/type-safety.md#rf-04",
+          "source_text": "動態元件須在適當的啟動、註冊或呼叫階段驗證能力、版本與型別契約。"
+        }
+      ],
+      "reason": "本句只要求依型別安全共通契約驗證條文執行，移除純引用入口並於引言保留相同錨點，能力版本與型別的檢查仍由原來源維護。"
     },
     {
       "source": "Java 動態元件須驗證能力、版本及型別，不只確認名稱存在，也不靠未驗證轉型掩蓋不相容。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
-          "text": "Java 動態元件須驗證能力、版本及型別，不只確認名稱存在，也不靠未驗證轉型掩蓋不相容。"
+          "uri": "rules/coding/type-safety.md#rf-04"
         }
       ],
       "history_id": "RF-04",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "Java 動態元件須驗證能力、版本及型別",
+          "source_uri": "rules/coding/type-safety.md#rf-04",
+          "source_text": "動態元件須在適當的啟動、註冊或呼叫階段驗證能力、版本與型別契約。"
+        },
+        {
+          "text": "不只確認名稱存在，也不靠未驗證轉型掩蓋不相容",
+          "source_uri": "rules/coding/type-safety.md#rf-04",
+          "source_text": "不符合時明確拒絕，不得僅憑名稱存在就執行，也不得靠未經驗證的轉型或任意替代掩蓋不相容。"
+        }
+      ],
+      "reason": "第三節判斷為重述，能力、版本及型別驗證與不得只憑名稱或未驗證轉型由型別安全共通原句直接承接。"
     },
     {
       "source": "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure",
           "text": "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。"
         }
       ],
@@ -281,108 +308,122 @@
     },
     {
       "source": "Java 反射或動態呼叫的外層例外須保留原始原因，不能據此推定目標未執行而替換或重跑。",
-      "action": "保留",
+      "action": "改寫",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
-          "text": "Java 反射或動態呼叫的外層例外須保留原始原因，不能據此推定目標未執行而替換或重跑。"
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure",
+          "text": "Java 反射或動態呼叫的外層例外須保留原始原因。"
         }
       ],
       "history_id": "RF-05",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "不能據此推定目標未執行而替換或重跑",
+          "source_uri": "rules/coding/error-handling.md#rf-05",
+          "source_text": "不得將所有失敗統一視為目標不存在，也不得未確認執行結果與重試安全性就改用其他目標或重新執行；外層收到例外不代表目標未執行或未產生副作用。"
+        }
+      ],
+      "reason": "第三節判斷為混合，保留 Java 反射外層例外及原始原因；不得推定未執行而替換或重跑由共通外層例外與重試安全性原句承接。"
     },
     {
       "source": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
-          "text": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。"
+          "uri": "rules/workflow/rule-governance.md#rf-06"
         }
       ],
       "history_id": "RF-06",
       "removed_assertions": [
-
-      ]
+        {
+          "text": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。",
+          "source_uri": "rules/workflow/rule-governance.md#rf-06",
+          "source_text": "檢查抑制須有可核對的原因，限定具體規則與最小必要範圍，不得廣泛關閉檢查掩蓋違規。"
+        }
+      ],
+      "reason": "第三節判斷為混合，移除純共通引用句並在引言保留連結；具體 SuppressWarnings 與 raw type／unchecked 的禁止及核准要求未由共通直接點明，保守保留整個 Java 操作句。"
     },
     {
       "source": "Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression",
           "text": "Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。"
         }
       ],
       "history_id": "RF-06",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通限定最小抑制範圍，但未直接點明 SuppressWarnings 與 raw type／unchecked 的禁止及個別核准；抽掉前半要求會留下不完整主詞，故不另造句式而完整保留 Java 操作限制。"
     },
     {
       "source": "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-generated-code",
           "text": "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。"
         }
       ],
       "history_id": "RF-07",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "第三節判斷為驗收入口，依作業說明整條逐字保留來源重建、手寫銜接型別檢查及例外範圍確認，交協調者決定。"
     },
     {
       "source": "Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-generated-code",
           "text": "Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。"
         }
       ],
       "history_id": "RF-07",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "第三節判斷為驗收入口，依作業說明整條逐字保留來源重建、手寫銜接型別檢查及例外範圍確認，交協調者決定。"
     },
     {
       "source": "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#rf-08)執行。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-verification",
           "text": "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#rf-08)執行。"
         }
       ],
       "history_id": "RF-08",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "第三節判斷為驗收入口，依作業說明整條逐字保留 Java 實際反射、存取、重新產生路徑及不能只確認成功的要求，交協調者決定。"
     },
     {
       "source": "Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-verification",
           "text": "Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。"
         }
       ],
       "history_id": "RF-08",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "第三節判斷為驗收入口，依作業說明整條逐字保留 Java 實際反射、存取、重新產生路徑及不能只確認成功的要求，交協調者決定。"
     },
     {
       "source": "目標與操作權限另依[安全規範](../../../quality/security.md)，動態呼叫的失敗傳遞依[例外與資源管理](exceptions-and-resources.md)。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-closing-requirements",
           "text": "目標與操作權限另依[安全規範](../../../quality/security.md)，動態呼叫的失敗傳遞依[例外與資源管理](exceptions-and-resources.md)。"
         }
       ],
@@ -396,7 +437,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-反射動態能力與檢查抑制",
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-closing-requirements",
           "text": "建立與還原仍須遵守[類別、介面與物件建立](classes-and-construction.md)及[值物件規範](value-objects.md)。"
         }
       ],
@@ -407,10 +448,136 @@
     }
   ],
   "edits": [
+    {
+      "baseline_line": 7,
+      "remove": [
 
+      ],
+      "insert": [
+        "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)、[rf-06](../../../workflow/rule-governance.md#rf-06)辦理。\n",
+        "\n"
+      ],
+      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+    },
+    {
+      "baseline_line": 9,
+      "remove": [
+        "1. **明確需求與型別契約**。反射與動態呼叫須有明確需求，已知的業務能力優先透過靜態型別契約表達。必要動態能力須集中於責任明確的元件，限制影響範圍並提供具型別的內部契約，不得藉此繞過型別安全要求。框架整合、外掛或通用工具的動態名稱與未知物件不得任意散入業務流程。\n",
+        "2. **受控目標與授權**。依[受控目標與授權的共通要求](../../../quality/security.md#rf-02)執行。Java 類別、方法及建構子的動態目標須受控，不因型別符合就略過授權。\n",
+        "3. **維持封裝與不變條件**。反射與動態能力不得繞過可見性設計、建立驗證或業務不變條件。需要特殊存取時，優先採用受支援的整合方式；必要的存取放寬須個別核准並驗證影響，不得以框架、映射或測試用途自行豁免。例如不能以直接寫入私有欄位避開正式建立規則。\n",
+        "4. **使用前驗證契約**。依[使用前驗證契約的共通要求](../../../coding/type-safety.md#rf-04)執行。Java 動態元件須驗證能力、版本及型別，不只確認名稱存在，也不靠未驗證轉型掩蓋不相容。\n",
+        "5. **區分故障與執行結果**。依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。Java 反射或動態呼叫的外層例外須保留原始原因，不能據此推定目標未執行而替換或重跑。\n"
+      ],
+      "insert": [
+        "<a id=\"java-dynamic-type-contract\"></a>\n"
+      ],
+      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+    },
+    {
+      "baseline_line": 15,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 明確需求與型別契約\n",
+        "\n",
+        "反射與動態呼叫須有明確需求，已知的業務能力優先透過靜態型別契約表達。必要動態能力須集中於責任明確的元件，限制影響範圍並提供具型別的內部契約，不得藉此繞過型別安全要求。框架整合、外掛或通用工具的動態名稱與未知物件不得任意散入業務流程。\n",
+        "\n",
+        "<a id=\"java-reflective-encapsulation\"></a>\n",
+        "\n",
+        "### 維持封裝與不變條件\n",
+        "\n",
+        "反射與動態能力不得繞過可見性設計、建立驗證或業務不變條件。需要特殊存取時，優先採用受支援的整合方式；必要的存取放寬須個別核准並驗證影響，不得以框架、映射或測試用途自行豁免。例如不能以直接寫入私有欄位避開正式建立規則。\n",
+        "\n",
+        "<a id=\"java-reflection-failure\"></a>\n",
+        "\n",
+        "### 區分故障與執行結果\n",
+        "\n",
+        "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。Java 反射或動態呼叫的外層例外須保留原始原因。\n",
+        "\n"
+      ],
+      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+    },
+    {
+      "baseline_line": 17,
+      "remove": [
+        "6. **限定檢查抑制**。依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。\n",
+        "7. **產生碼不擴大豁免**。依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。\n",
+        "8. **驗證限制實際有效**。依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#rf-08)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。\n"
+      ],
+      "insert": [
+        "<a id=\"java-warning-suppression\"></a>\n"
+      ],
+      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+    },
+    {
+      "baseline_line": 21,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 限定檢查抑制\n",
+        "\n",
+        "Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。\n",
+        "\n",
+        "<a id=\"java-generated-code\"></a>\n",
+        "\n",
+        "### 產生碼不擴大豁免\n",
+        "\n",
+        "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。\n",
+        "\n",
+        "<a id=\"java-dynamic-verification\"></a>\n",
+        "\n",
+        "### 驗證限制實際有效\n",
+        "\n",
+        "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#rf-08)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。\n",
+        "\n",
+        "<a id=\"java-closing-requirements\"></a>\n",
+        "\n",
+        "## 補充要求\n",
+        "\n"
+      ],
+      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+    },
+    {
+      "baseline_line": 38,
+      "remove": [
+        "| Java 條文 | 語言增量驗收 |\n"
+      ],
+      "insert": [
+        "| 對應要求 | 語言增量驗收 |\n"
+      ],
+      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+    },
+    {
+      "baseline_line": 40,
+      "remove": [
+        "| <a id=\"acceptance-java-reflection-boundary\"></a>1 | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |\n",
+        "| <a id=\"acceptance-java-reflective-access\"></a>3 | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。對反射與動態能力核對特殊存取的必要性及受支援替代方式，經實際建立及還原路徑確認維持不變條件及封裝；例如私有欄位寫入或存取放寬亦不得繞過上述保證。 |\n"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-reflection-boundary\"></a>[明確需求與型別契約](#java-dynamic-type-contract) | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |\n",
+        "| <a id=\"acceptance-java-reflective-access\"></a>[維持封裝與不變條件](#java-reflective-encapsulation) | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。對反射與動態能力核對特殊存取的必要性及受支援替代方式，經實際建立及還原路徑確認維持不變條件及封裝；例如私有欄位寫入或存取放寬亦不得繞過上述保證。 |\n"
+      ],
+      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+    }
   ],
   "acceptance_changes": [
-
+    {
+      "before": "| Java 條文 | 語言增量驗收 |\n",
+      "after": "| 對應要求 | 語言增量驗收 |\n",
+      "reason": "驗收第一欄改用現行語意錨點並統一表頭，第二欄原有驗收條件、適用範圍與禁止事項逐字不變。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-reflection-boundary\"></a>1 | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |\n",
+      "after": "| <a id=\"acceptance-java-reflection-boundary\"></a>[明確需求與型別契約](#java-dynamic-type-contract) | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |\n",
+      "reason": "驗收第一欄改用現行語意錨點並統一表頭，第二欄原有驗收條件、適用範圍與禁止事項逐字不變。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-reflective-access\"></a>3 | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。對反射與動態能力核對特殊存取的必要性及受支援替代方式，經實際建立及還原路徑確認維持不變條件及封裝；例如私有欄位寫入或存取放寬亦不得繞過上述保證。 |\n",
+      "after": "| <a id=\"acceptance-java-reflective-access\"></a>[維持封裝與不變條件](#java-reflective-encapsulation) | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。對反射與動態能力核對特殊存取的必要性及受支援替代方式，經實際建立及還原路徑確認維持不變條件及封裝；例如私有欄位寫入或存取放寬亦不得繞過上述保證。 |\n",
+      "reason": "驗收第一欄改用現行語意錨點並統一表頭，第二欄原有驗收條件、適用範圍與禁止事項逐字不變。"
+    }
   ],
   "imports": [
 
@@ -420,5 +587,18 @@
   ],
   "acceptance_additions": [
 
+  ],
+  "group_routes": [
+
+  ],
+  "link_retention": [
+    {
+      "targets": [
+        "rules/coding/type-safety.md#rf-04",
+        "rules/quality/security.md#rf-02",
+        "rules/workflow/rule-governance.md#rf-06"
+      ],
+      "text": "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)、[rf-06](../../../workflow/rule-governance.md#rf-06)辦理。"
+    }
   ]
 }
