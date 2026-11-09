@@ -112,6 +112,9 @@ manifest=JSON.parse(File.read('scripts/acceptance-batches.json'))
 paths=Dir.glob('rules/**/*.md')
 common=paths.reject{|p| p.include?('/stacks/')}
 scope=manifest.values.flat_map{|b|b.fetch('files').values}.uniq.map{|s|"rules/stacks/java/common/#{s}.md"}
+# 整份併入時，以接收檔承接原文件驗收；歷史來源仍從原提交讀取。
+merges=Dir.glob('docs/body-restructuring/java/*.json').map{|p|JSON.parse(File.read(p))}.select{|r|r['status']=='merged'}.map{|r|[r['path'],r.fetch('merged_target')]}.to_h
+scope=scope.map{|p|merges.fetch(p,p)}.uniq
 common_tests=common.flat_map{|p| acceptance_rows(File.read(p)).map{|t|normalize(t)}}
 duplicates=scope.flat_map{|p| acceptance_rows(File.read(p)).select{|t|common_tests.include?(normalize(t))}.map{|t|[p,t]}}
 errors << "Scoped duplicate acceptance: #{duplicates}" unless duplicates.empty?

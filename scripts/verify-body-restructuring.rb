@@ -19,6 +19,26 @@ end
 check_uri=lambda do |uri|
  p,a=uri.split('#',2);require_check(File.file?(p)&&a&&anchors.fetch(p,[]).include?(a),"去向錨點無效 #{uri}")
 end
+# 驗證目的內容落在指定錨點所在小節／表列，不能只在同檔任意位置找到。
+excerpt=lambda do |uri|
+ path,id=uri.split('#',2);lines=File.readlines(path);counts=Hash.new(0);index=nil;level=1
+ lines.each_with_index do |line,i|
+  if line.include?(%(<a id="#{id}">));index=i;break;end
+  if h=line.match(/^(\#{1,6})\s+(.+)$/)
+   slug=h[2].downcase.gsub(/[\p{P}\p{S}&&[^_-]]/,'').gsub(/\s/,'-');n=counts[slug];counts[slug]+=1;slug="#{slug}-#{n}" unless n.zero?
+   if slug==id;index=i;level=h[1].size;break;end
+  end
+ end
+ return '' unless index
+ return lines[index] if lines[index].start_with?('|')
+ if lines[index].start_with?('<a ')
+  next_heading=((index+1)...lines.size).find{|i|!lines[i].strip.empty?}
+  if next_heading && (h=lines[next_heading].match(/^(\#{1,6}) /));level=h[1].size;index=next_heading;end
+ end
+ tail=lines[(index+1)..].take_while{|l|!(h=l.match(/^(\#{1,6}) /)) || h[1].size>level}
+ ([lines[index]]+tail).join
+end
+manifest=JSON.parse(File.read('scripts/acceptance-batches.json')).values.flat_map{|b|b['files'].to_a}.to_h
 records=Dir.glob('docs/body-restructuring/java/*.json').map{|p|JSON.parse(File.read(p))}
 expected_ids=File.read('docs/java-rule-classification.md').scan(/^\| ([A-Z]{2}-\d{2})[： ]/).flatten.reject{|id|id.start_with?('AU-')}.uniq.sort
 require_check(records.flat_map{|r|r['rules'].map{|e|e['id']}}.sort==expected_ids && expected_ids.size==153,'歷史 ID 集合不完整或重複')
@@ -35,7 +55,8 @@ records.each do |r|
 require_check(!registered.key?(path),'重複文件紀錄');registered[path]=r.fetch('edits')
  require_check(%w[pending completed merged].include?(r['status']),'整理狀態無效')
  require_check(File.binread(path)==base.b && r['edits'].empty?,"未整理文件改動 #{path}") if r['status']=='pending'
- prefix=r['rules'].first.fetch('id').split('-').first
+ prefix=manifest.find{|_,slug|path=="rules/stacks/java/common/#{slug}.md"}.to_a.first
+ require_check(prefix,'Java 文件不在原分類範圍')
  require_check(r['rules'].map{|e|e['id']}==B.rules(base).map{|n,_,_|format('%s-%02d',prefix,n)},'文件歷史 ID 不符合基準條文')
  r['rules'].each do |e|
   require_check(B::KINDS.include?(e['kind']),'去向種類無效');require_check(e['targets'].is_a?(Array)&&!e['targets'].empty?,'歷史 ID 沒有現行去向')
@@ -48,11 +69,12 @@ require_check(!registered.key?(path),'重複文件紀錄');registered[path]=r.fe
   require_check(%w[保留 改寫 移除].include?(s['action']),'句子處置無效')
   require_check(!s.fetch('targets').empty?,'句子沒有去向')
   require_check(s.fetch('reason','').gsub(/\s/,'').size>=20,'句子改寫／移除理由不足') unless s['action']=='保留'
+  s.fetch('common_sources',[]).each{|u|check_uri.call(u);require_check(!u.split('#').first.include?('/stacks/'),'共通來源指向 Java')}
   s['targets'].each do |t|
    check_uri.call(t.fetch('uri'));p=t['uri'].split('#').first
    if s['action']=='移除';require_check(!p.include?('/stacks/'),'移除須指向共通條文')
    else
-    require_check(t['text'].is_a?(String)&&!t['text'].strip.empty?&&File.read(p).include?(t['text']),'去向文字不存在')
+    require_check(t['text'].is_a?(String)&&!t['text'].strip.empty?&&excerpt.call(t['uri']).include?(t['text']),'去向文字不存在')
     require_check(t['text']==s['source'],'保留句子不是逐字保留') if s['action']=='保留'
    end
   end
@@ -65,6 +87,7 @@ require_check(!registered.key?(path),'重複文件紀錄');registered[path]=r.fe
  rows.each do |row|
   acceptance_count+=1;replacement=r['acceptance_changes'].select{|e|e['before']==row};require_check(replacement.size<=1,'驗收變更重複')
   expected=replacement.empty? ? row : replacement.first.fetch('after')
+  require_check(expected.split(' | ',3)[1..]==row.split(' | ',3)[1..],'驗收內容不得以條號調整之名改寫')
   require_check(!expected.strip.empty?&&actual.lines.include?(expected),"驗收列消失 #{path}")
  end
 end
@@ -78,7 +101,7 @@ common.each do |r|
 end
 args=['git'];args<<"--git-dir=#{ENV['BODY_GIT_DIR']}" if ENV['BODY_GIT_DIR']
 paths,status=Open3.capture2(*args,'ls-tree','-r','--name-only',B::BASELINE,'rules');require_check(status.success?,'基準檔案清單失敗')
-paths=paths.lines.map(&:strip);actual=Dir.glob('rules/**/*',File::FNM_DOTMATCH).select{|p|File.file?(p)}
+paths=paths.lines.map(&:strip);require_check((registered.keys-paths).empty?,'差異清單包含未知檔案');actual=Dir.glob('rules/**/*',File::FNM_DOTMATCH).select{|p|File.file?(p)}
 merged=records.select{|r|r['status']=='merged'}.map{|r|r['path']}
 require_check(actual.sort==(paths-merged).sort,'rules 檔案清單變更未登錄為整份併入')
 paths.each do |p|
@@ -98,5 +121,5 @@ files.each do |p|
 end
 trace_output,trace_status=Open3.capture2e('ruby',File.expand_path('verify-body-acceptance.rb',__dir__))
 require_check(trace_status.success?,"驗收追溯失敗：\n#{trace_output}")
-puts trace_output
-puts JSON.pretty_generate({baseline:B::BASELINE,historical_ids:expected_ids.size,java_files:records.size,completed:records.count{|r|r['status']=='completed'},pending:records.count{|r|r['status']=='pending'},body_sentences:sentence_count,preserved_acceptance_rows:acceptance_count,common_change_blocks:common.sum{|r|r['changes'].size},local_links:links,manual_checks:['移除／改寫是否完整承接每個斷言','共通來源是否足以涵蓋原要求','理由與決策列是否相符','語意重複與不降低要求']})
+trace_result=JSON.parse(trace_output)
+puts JSON.pretty_generate({baseline:B::BASELINE,acceptance:trace_result,historical_ids:expected_ids.size,java_files:records.size,completed:records.count{|r|r['status']=='completed'},pending:records.count{|r|r['status']=='pending'},body_sentences:sentence_count,preserved_acceptance_rows:acceptance_count,common_change_blocks:common.sum{|r|r['changes'].size},local_links:links,manual_checks:['移除／改寫是否完整承接每個斷言','共通來源是否足以涵蓋原要求','理由與決策列是否相符','語意重複與不降低要求']})

@@ -20,7 +20,16 @@ cases={
  '缺值清單白紙理由'=>proc{|r|r['sentences'][0]['action']='改寫';r['sentences'][0]['reason']=' '},
  '行尾變更'=>proc{p='rules/stacks/java/common/value-objects.md';File.binwrite(p,File.binread(p).gsub("\n","\r\n"))}
 }
+cases['同檔錯誤小節']=proc{|r|e=r['sentences'].find{|x|x['action']=='改寫'};e['targets'][0]['uri']='rules/stacks/java/common/null-and-optional.md#java-container-nulls'}
+cases['共通來源錨點錯誤']=proc{|r|e=r['sentences'].find{|x|x['common_sources']};e['common_sources']=['rules/coding/nullability.md#不存在']}
+cases['分類ID換檔']=proc{|r|r['rules'].each{|e|e['id']=e['id'].sub('JN-','CA-')}}
+cases['共通差異刪文遭竄改']=proc{p='docs/body-restructuring/common/ca-06.json';r=JSON.parse(File.read(p));r['changes'][0]['remove']=['假的來源'];File.write(p,JSON.generate(r))}
+cases['共通差異理由不足']=proc{p='docs/body-restructuring/common/ca-06.json';r=JSON.parse(File.read(p));r['changes'][0]['reason']='x';File.write(p,JSON.generate(r))}
+cases['共通差異沒有決策']=proc{p='docs/body-restructuring/common/ca-06.json';r=JSON.parse(File.read(p));r['changes'][0].delete('decision');File.write(p,JSON.generate(r))}
+cases['驗收內容偽裝條號調整']=proc{|r|r['acceptance_changes'][0]['after']=r['acceptance_changes'][0]['after'].sub('驗證有值','忽略有值')}
+cases['整份併入沒有接收檔']=proc{|r|r['status']='merged';r['merged_target']='rules/不存在.md'}
 results=[]
+
 (['乾淨複本']+cases.keys).each do |name|
  Dir.mktmpdir('body-negative-') do |dir|
   %w[rules docs scripts README.md].each{|p|FileUtils.cp_r(File.join(ROOT,p),dir) if File.exist?(File.join(ROOT,p))}
