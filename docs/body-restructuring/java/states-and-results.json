@@ -538,17 +538,6 @@
   ],
   "edits": [
     {
-      "baseline_line": 7,
-      "remove": [
-
-      ],
-      "insert": [
-        "本文件另依[st-04](../../../coding/domain-modeling.md#operation-results)、[st-06](../../../coding/domain-modeling.md#exhaustive-result-handling)、[st-09](../../../coding/domain-modeling.md#result-facts)辦理。\n",
-        "\n"
-      ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
-    },
-    {
       "baseline_line": 9,
       "remove": [
         "1. **明確的狀態型別**。互斥的業務狀態須使用明確型別；僅需區分固定狀態名稱時，可使用 `enum`。不得以多個獨立布林值表達互斥狀態。不同業務面向須分別建模，不得強行合併，例如付款與配送狀態可各自表達，再明訂兩者之間的限制。\n",
@@ -593,7 +582,7 @@
         "6. **處理完整性**。依[處理完整性的共通要求](../../../coding/domain-modeling.md#exhaustive-result-handling)執行。Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。\n"
       ],
       "insert": [
-        "<a id=\"java-typed-business-failures\"></a>\n"
+        "本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -603,6 +592,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-typed-business-failures\"></a>\n",
+        "\n",
         "### 具型別的業務失敗\n",
         "\n",
         "依[錯誤處理](../../../coding/error-handling.md)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。\n",
@@ -619,7 +610,7 @@
         "10. **模型驗收**。依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。\n"
       ],
       "insert": [
-        "<a id=\"java-stable-external-codes\"></a>\n"
+        "本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -629,6 +620,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-stable-external-codes\"></a>\n",
+        "\n",
         "### 穩定的外部代碼\n",
         "\n",
         "持久化或跨邊界傳遞狀態時，須明訂穩定的外部代碼與映射，不得使用 `ordinal()` 作為業務契約。若採用列舉名稱作為外部值，須將名稱納入相容性管理，重新命名不能僅視為內部整理。未知代碼依契約處理，不得默默映射成任意既有狀態。不強制額外建立轉換類別，但映射與影響須可辨識。\n",
@@ -709,16 +702,27 @@
 
   ],
   "group_routes": [
-
-  ],
-  "link_retention": [
     {
+      "heading": "操作結果與使用端處理",
       "targets": [
-        "rules/coding/domain-modeling.md#operation-results",
         "rules/coding/domain-modeling.md#exhaustive-result-handling",
+        "rules/coding/domain-modeling.md#operation-results"
+      ],
+      "text": "本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。"
+    },
+    {
+      "heading": "外部代碼、擴充與結果資料",
+      "targets": [
         "rules/coding/domain-modeling.md#result-facts"
       ],
-      "text": "本文件另依[st-04](../../../coding/domain-modeling.md#operation-results)、[st-06](../../../coding/domain-modeling.md#exhaustive-result-handling)、[st-09](../../../coding/domain-modeling.md#result-facts)辦理。"
+      "text": "本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。"
     }
-  ]
+  ],
+  "link_retention": [
+
+  ],
+  "group_endings": [
+
+  ],
+  "presentation_version": 1
 }

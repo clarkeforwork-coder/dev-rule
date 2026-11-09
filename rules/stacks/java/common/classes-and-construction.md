@@ -4,9 +4,9 @@
 
 本文件承接[框架與依賴組裝](../../../architecture/dependency-composition.md)及[程式碼設計與公開介面](../../../coding/code-design.md)，定義 Java 類別契約、建立方式與生命週期的共同要求。具體 DI、代理與啟動配置由 Framework 規範及專案落實，仍須符合專案架構的依賴方向。
 
-本文件另依[cl-02](../../../coding/code-design.md#substitutability)、[cl-06](../../../coding/code-design.md#construction-entrypoints)、[cl-08](../../../coding/code-design.md#interface-capabilities)、[cl-03](../../../coding/resource-lifecycle.md#initialization-readiness)、[cl-09](../../../coding/resource-lifecycle.md#shared-lifecycle)辦理。
-
 ## 介面、繼承與建立條件
+
+本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。
 
 <a id="java-interface-purpose"></a>
 
@@ -22,6 +22,8 @@
 
 ## 依賴、建立方式與擴充
 
+本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。
+
 <a id="java-explicit-dependencies"></a>
 
 ### 明確取得依賴
@@ -35,6 +37,8 @@
 類別與方法的繼承、覆寫範圍須依明確的擴充需求設計，不供擴充的部分應適當限制。必要業務檢查不得依賴子類別自行遵守才能成立，例如不能只靠子類別記得呼叫 `super`。框架需要的代理或繼承機制須與上述保證相容，不一律強制或禁止使用 `final`。
 
 ## 共用範圍與驗證
+
+本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。
 
 <a id="java-lifecycle-verification"></a>
 

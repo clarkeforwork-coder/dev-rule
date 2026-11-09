@@ -4,9 +4,9 @@
 
 本文件承接[錯誤處理](../../../coding/error-handling.md)與[效能與資源使用](../../../quality/performance.md)，定義 Java 併發工作的所有權、同步、結果及生命週期。中斷與資源清理另依[例外與資源管理](exceptions-and-resources.md)，具體 API 須符合[版本要求](version-policy.md)。
 
-本文件另依[ca-01](../../../coding/concurrency-and-async.md#task-ownership)、[ca-04](../../../coding/concurrency-and-async.md#deadline-budget)辦理。
-
 ## 工作所有權與執行資源
+
+本組下列要求由共通規範承接：[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)、[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)。
 
 <a id="java-execution-resources"></a>
 
@@ -21,6 +21,8 @@
 跨執行緒資料須透過具備可見性保證的方式交付，優先使用不可變資料或符合契約的隔離快照。需要共享可變狀態時，須明訂同步與原子性範圍，不得以單一 `volatile` 欄位或偶然成功的執行結果推定整個物件安全。
 
 ## 期限、取消與結果
+
+本組下列要求由共通規範承接：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。
 
 <a id="java-cancellation-propagation"></a>
 

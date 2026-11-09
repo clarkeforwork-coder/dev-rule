@@ -473,17 +473,6 @@
   ],
   "edits": [
     {
-      "baseline_line": 7,
-      "remove": [
-
-      ],
-      "insert": [
-        "本文件另依[co-03](../../../coding/collections-and-ownership.md#order-and-duplicates)、[co-06](../../../quality/performance.md#bounded-accumulation)辦理。\n",
-        "\n"
-      ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
-    },
-    {
       "baseline_line": 9,
       "remove": [
         "1. **明確定義修改權與參考關係**。依[明確定義修改權與參考關係的共通要求](../../../coding/collections-and-ownership.md#collection-ownership)執行。Java 集合介面本身不能取代所有權契約；接收或回傳集合時須涵蓋可變元素及參考保留行為。\n",
@@ -491,7 +480,7 @@
         "3. **順序與重複資料**。依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#order-and-duplicates)執行。Java 選用或轉換 List、Set、Map 時須維持約定順序、重複元素與重複鍵處理，不意外去重或覆蓋。\n"
       ],
       "insert": [
-        "<a id=\"java-collection-ownership\"></a>\n"
+        "本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -501,6 +490,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-collection-ownership\"></a>\n",
+        "\n",
         "### 明確定義修改權與參考關係\n",
         "\n",
         "依[明確定義修改權與參考關係的共通要求](../../../coding/collections-and-ownership.md#collection-ownership)執行。Java 集合介面本身不能取代所有權契約；接收或回傳集合時須涵蓋可變元素及參考保留行為。\n",
@@ -521,7 +512,7 @@
         "5. **複合操作的原子性**。依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#compound-atomicity)執行。Java concurrent collection 的單一操作保證不能推導為多步驟或跨鍵操作原子性。\n"
       ],
       "insert": [
-        "本組要求依[co-04](../../../coding/collections-and-ownership.md#traversal-mutation)、[co-05](../../../coding/concurrency-and-async.md#compound-atomicity)辦理。\n"
+        "本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -534,7 +525,7 @@
         "9. **所有權與行為驗收**。依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#collection-verification)執行。Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。\n"
       ],
       "insert": [
-        "<a id=\"java-lazy-resource-lifetime\"></a>\n"
+        "本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -544,6 +535,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-lazy-resource-lifetime\"></a>\n",
+        "\n",
         "### 延遲讀取的資源責任\n",
         "\n",
         "依[延遲讀取的資源責任的共通要求](../../../coding/resource-lifecycle.md#lazy-resource-lifetime)執行。Java 資源型 Iterator／Stream 須明確有效期及關閉責任；必要時在資源範圍內產生受控結果，關閉方式依例外與資源管理。\n",
@@ -592,21 +585,33 @@
   ],
   "group_routes": [
     {
+      "heading": "所有權與集合語意",
+      "targets": [
+        "rules/coding/collections-and-ownership.md#order-and-duplicates"
+      ],
+      "text": "本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。"
+    },
+    {
       "heading": "修改與併發",
       "targets": [
         "rules/coding/collections-and-ownership.md#traversal-mutation",
         "rules/coding/concurrency-and-async.md#compound-atomicity"
       ],
-      "text": "本組要求依[co-04](../../../coding/collections-and-ownership.md#traversal-mutation)、[co-05](../../../coding/concurrency-and-async.md#compound-atomicity)辦理。"
+      "text": "本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。"
+    },
+    {
+      "heading": "資料規模、資源與批次結果",
+      "targets": [
+        "rules/quality/performance.md#bounded-accumulation"
+      ],
+      "text": "本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。"
     }
   ],
   "link_retention": [
-    {
-      "targets": [
-        "rules/coding/collections-and-ownership.md#order-and-duplicates",
-        "rules/quality/performance.md#bounded-accumulation"
-      ],
-      "text": "本文件另依[co-03](../../../coding/collections-and-ownership.md#order-and-duplicates)、[co-06](../../../quality/performance.md#bounded-accumulation)辦理。"
-    }
-  ]
+
+  ],
+  "group_endings": [
+
+  ],
+  "presentation_version": 1
 }

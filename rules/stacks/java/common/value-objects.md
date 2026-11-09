@@ -4,9 +4,11 @@
 
 本文件承接[領域建模](../../../coding/domain-modeling.md)，適用於 Java 專屬值型別與領域值物件。型別使用與空值處理另依[型別宣告與泛型](types-and-generics.md)及[null 與 Optional](null-and-optional.md)。具有身分與生命週期的 Entity，其狀態變更另依業務規則管理，不因本文件而要求所有 Entity 不可變。
 
-本文件另依[validation](../../../coding/validation.md)辦理。
+本文件另依[資料驗證](../../../coding/validation.md)辦理。
 
 ## 型別責任與有效性
+
+本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。
 
 <a id="java-value-immutability"></a>
 

@@ -110,6 +110,7 @@ module BodyPresentation
         text.insert(insertion,block);r['group_endings']<<tail
         r['sentences'].each{|s|s['targets'].each{|t|t['uri']=path+'#'+tail['anchor'] if !s['history_id']&&tail['text'].include?(s['source'])}}
       end
+      text=text.sub(%(<a id="java-closing-requirements"></a>\n\n## 補充要求\n\n## 驗收要求),'## 驗收要求')
       r['presentation_version']=1
     end
     # 原始基準按相同別名表正規化後再記錄差異；句子文字只變連結目的地。

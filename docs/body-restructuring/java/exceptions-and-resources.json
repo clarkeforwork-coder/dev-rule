@@ -526,17 +526,6 @@
   ],
   "edits": [
     {
-      "baseline_line": 7,
-      "remove": [
-
-      ],
-      "insert": [
-        "本文件另依[ex-07](../../../coding/resource-lifecycle.md#partial-acquisition)、[ex-08](../../../coding/resource-lifecycle.md#resource-close-contract)辦理。\n",
-        "\n"
-      ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
-    },
-    {
       "baseline_line": 9,
       "remove": [
         "1. **明確的故障分類**。例外型別須能表達契約所需的故障分類，避免無必要的籠統宣告或拋出，例如一律使用 `throws Exception` 或沒有明確語意的 `RuntimeException`。既有標準或第三方例外足以表達且符合架構隔離時，不強制自訂例外。需要邊界轉換時，須保留原始原因，不改變故障語意，也不將預期業務失敗改用例外表示。\n",
@@ -590,7 +579,7 @@
         "9. **失敗路徑驗收**。例外處理或資源生命週期新增及變更時，須依影響驗證故障分類、原因保留、中斷傳遞與適用的資源釋放路徑，涵蓋部分初始化及清理失敗，並確認所有權與實際使用期間一致，不僅驗證成功流程。涉及框架管理的生命週期時須驗證實際配置，不能只靠替身推定正確；不要求每個方法套用全部情境。\n"
       ],
       "insert": [
-        "<a id=\"java-resource-management\"></a>\n"
+        "本組下列要求由共通規範承接：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -600,6 +589,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-resource-management\"></a>\n",
+        "\n",
         "### 優先使用語言資源管理機制\n",
         "\n",
         "由目前操作負責關閉且支援 `AutoCloseable` 的資源，優先使用 `try-with-resources`，讓使用範圍與關閉時機對應，涵蓋正常完成及例外退出。借用或框架管理的資源依所有權契約處理，不得擅自關閉。其他生命週期須明訂可靠的釋放方式，不以垃圾回收代替必要的資源管理。\n",
@@ -707,15 +698,20 @@
 
   ],
   "link_retention": [
+
+  ],
+  "group_routes": [
     {
+      "heading": "資源所有權與失敗清理",
       "targets": [
         "rules/coding/resource-lifecycle.md#partial-acquisition",
         "rules/coding/resource-lifecycle.md#resource-close-contract"
       ],
-      "text": "本文件另依[ex-07](../../../coding/resource-lifecycle.md#partial-acquisition)、[ex-08](../../../coding/resource-lifecycle.md#resource-close-contract)辦理。"
+      "text": "本組下列要求由共通規範承接：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。"
     }
   ],
-  "group_routes": [
+  "group_endings": [
 
-  ]
+  ],
+  "presentation_version": 1
 }

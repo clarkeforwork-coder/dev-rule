@@ -36,6 +36,12 @@
 
 新增或修改程式碼不得留下 raw type 或 unchecked 警告，須修正造成警告的契約與實作，不得以 `@SuppressWarnings` 或關閉檢查規避要求。工具限制須依例外流程個別核准，記錄影響範圍、型別安全依據與驗證方式。
 
+<a id="java-group-notes-explicit-types"></a>
+
+### 本組補充說明
+
+既有程式碼的漸進導入、工具產生碼與個別例外依[規範治理](../../../workflow/rule-governance.md)辦理。測試不得透過不安全轉型偽造有效物件，另見[測試程式碼要求](../../../quality/rule-verification.md#測試程式碼)。
+
 ## 資料結構與泛型契約
 
 <a id="java-business-data-shape"></a>
@@ -77,8 +83,6 @@
 <a id="java-closing-requirements"></a>
 
 ## 補充要求
-
-既有程式碼的漸進導入、工具產生碼與個別例外依[規範治理](../../../workflow/rule-governance.md)辦理。測試不得透過不安全轉型偽造有效物件，另見[測試程式碼要求](../../../quality/rule-verification.md#測試程式碼)。
 
 例如，下列宣告保留元素與鍵值型別，並允許建構端省略重複資訊；其中 `ordersById` 表達依識別碼查找訂單的關係，不是用任意欄位名稱拼湊單一訂單：
 

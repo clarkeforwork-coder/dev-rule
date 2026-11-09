@@ -4,8 +4,6 @@
 
 本文件承接[領域建模](../../../coding/domain-modeling.md)與[錯誤處理](../../../coding/error-handling.md)，定義 Java 狀態與操作結果的型別要求。實作須符合[版本要求](version-policy.md)、[型別宣告與泛型](types-and-generics.md)及[空值契約](null-and-optional.md)。
 
-本文件另依[st-04](../../../coding/domain-modeling.md#operation-results)、[st-06](../../../coding/domain-modeling.md#exhaustive-result-handling)、[st-09](../../../coding/domain-modeling.md#result-facts)辦理。
-
 ## 狀態與轉換
 
 <a id="java-explicit-state-types"></a>
@@ -28,6 +26,8 @@
 
 ## 操作結果與使用端處理
 
+本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。
+
 <a id="java-typed-business-failures"></a>
 
 ### 具型別的業務失敗
@@ -35,6 +35,8 @@
 依[錯誤處理](../../../coding/error-handling.md)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。
 
 ## 外部代碼、擴充與結果資料
+
+本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。
 
 <a id="java-stable-external-codes"></a>
 

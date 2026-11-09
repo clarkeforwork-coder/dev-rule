@@ -445,17 +445,6 @@
   ],
   "edits": [
     {
-      "baseline_line": 7,
-      "remove": [
-
-      ],
-      "insert": [
-        "本文件另依[rf-04](../../../coding/type-safety.md#dynamic-contract-validation)、[rf-02](../../../quality/security.md#dynamic-target-authorization)辦理。\n",
-        "\n"
-      ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
-    },
-    {
       "baseline_line": 9,
       "remove": [
         "1. **明確需求與型別契約**。反射與動態呼叫須有明確需求，已知的業務能力優先透過靜態型別契約表達。必要動態能力須集中於責任明確的元件，限制影響範圍並提供具型別的內部契約，不得藉此繞過型別安全要求。框架整合、外掛或通用工具的動態名稱與未知物件不得任意散入業務流程。\n",
@@ -465,7 +454,7 @@
         "5. **區分故障與執行結果**。依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#dynamic-failure-classification)執行。Java 反射或動態呼叫的外層例外須保留原始原因，不能據此推定目標未執行而替換或重跑。\n"
       ],
       "insert": [
-        "<a id=\"java-dynamic-type-contract\"></a>\n"
+        "本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -475,6 +464,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-dynamic-type-contract\"></a>\n",
+        "\n",
         "### 明確需求與型別契約\n",
         "\n",
         "反射與動態呼叫須有明確需求，已知的業務能力優先透過靜態型別契約表達。必要動態能力須集中於責任明確的元件，限制影響範圍並提供具型別的內部契約，不得藉此繞過型別安全要求。框架整合、外掛或通用工具的動態名稱與未知物件不得任意散入業務流程。\n",
@@ -585,15 +576,20 @@
 
   ],
   "group_routes": [
-
-  ],
-  "link_retention": [
     {
+      "heading": "動態能力與存取邊界",
       "targets": [
         "rules/coding/type-safety.md#dynamic-contract-validation",
         "rules/quality/security.md#dynamic-target-authorization"
       ],
-      "text": "本文件另依[rf-04](../../../coding/type-safety.md#dynamic-contract-validation)、[rf-02](../../../quality/security.md#dynamic-target-authorization)辦理。"
+      "text": "本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。"
     }
-  ]
+  ],
+  "link_retention": [
+
+  ],
+  "group_endings": [
+
+  ],
+  "presentation_version": 1
 }

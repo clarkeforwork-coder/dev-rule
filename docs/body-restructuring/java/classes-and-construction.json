@@ -568,17 +568,6 @@
   ],
   "edits": [
     {
-      "baseline_line": 7,
-      "remove": [
-
-      ],
-      "insert": [
-        "本文件另依[cl-02](../../../coding/code-design.md#substitutability)、[cl-06](../../../coding/code-design.md#construction-entrypoints)、[cl-08](../../../coding/code-design.md#interface-capabilities)、[cl-03](../../../coding/resource-lifecycle.md#initialization-readiness)、[cl-09](../../../coding/resource-lifecycle.md#shared-lifecycle)辦理。\n",
-        "\n"
-      ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
-    },
-    {
       "baseline_line": 9,
       "remove": [
         "1. **介面的用途**。依[框架與依賴組裝](../../../architecture/dependency-composition.md)、[模組責任與公開入口](../../../architecture/module-boundaries.md)執行。Java 可依契約依賴介面或具體類別；單一實作不構成省略必要架構隔離的理由。\n",
@@ -587,7 +576,7 @@
         "4. **建構期間的安全性**。建構期間不得讓 `this` 外洩至可能使用該物件的外部元件，也不得呼叫可被覆寫的方法。事件註冊、回呼發布與背景工作啟動等行為，須在物件建立完成且符合生命週期條件後執行，避免使用尚未完成初始化的物件。\n"
       ],
       "insert": [
-        "<a id=\"java-interface-purpose\"></a>\n"
+        "本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -597,6 +586,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-interface-purpose\"></a>\n",
+        "\n",
         "### 介面的用途\n",
         "\n",
         "依[框架與依賴組裝](../../../architecture/dependency-composition.md)、[模組責任與公開入口](../../../architecture/module-boundaries.md)執行。Java 可依契約依賴介面或具體類別；單一實作不構成省略必要架構隔離的理由。\n",
@@ -619,7 +610,7 @@
         "8. **介面的能力劃分**。依[介面的能力劃分的共通要求](../../../coding/code-design.md#interface-capabilities)執行。Java 介面不機械式拆成單一方法；同一責任的操作可共用契約，執行時授權仍須另外檢查。\n"
       ],
       "insert": [
-        "<a id=\"java-explicit-dependencies\"></a>\n"
+        "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -629,6 +620,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-explicit-dependencies\"></a>\n",
+        "\n",
         "### 明確取得依賴\n",
         "\n",
         "依[明確取得依賴的共通要求](../../../architecture/dependency-composition.md#explicit-dependencies)執行。Java 服務透過明確依賴取得；需要延後或按次建立時使用工廠或提供者，不隱藏查全域容器、靜態服務登錄或單例。\n",
@@ -649,7 +642,7 @@
         "10. **契約與生命週期驗收**。依[契約與生命週期驗收的共通要求](../../../coding/resource-lifecycle.md#lifecycle-verification)執行。Java 建構、繼承、覆寫及框架代理須驗證實際路徑；單純值物件不必啟動完整框架。\n"
       ],
       "insert": [
-        "<a id=\"java-lifecycle-verification\"></a>\n"
+        "本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -659,6 +652,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-lifecycle-verification\"></a>\n",
+        "\n",
         "### 契約與生命週期驗收\n",
         "\n",
         "依[契約與生命週期驗收的共通要求](../../../coding/resource-lifecycle.md#lifecycle-verification)執行。Java 建構、繼承、覆寫及框架代理須驗證實際路徑；單純值物件不必啟動完整框架。\n",
@@ -720,18 +715,35 @@
 
   ],
   "link_retention": [
-    {
-      "targets": [
-        "rules/coding/code-design.md#substitutability",
-        "rules/coding/code-design.md#construction-entrypoints",
-        "rules/coding/code-design.md#interface-capabilities",
-        "rules/coding/resource-lifecycle.md#initialization-readiness",
-        "rules/coding/resource-lifecycle.md#shared-lifecycle"
-      ],
-      "text": "本文件另依[cl-02](../../../coding/code-design.md#substitutability)、[cl-06](../../../coding/code-design.md#construction-entrypoints)、[cl-08](../../../coding/code-design.md#interface-capabilities)、[cl-03](../../../coding/resource-lifecycle.md#initialization-readiness)、[cl-09](../../../coding/resource-lifecycle.md#shared-lifecycle)辦理。"
-    }
+
   ],
   "group_routes": [
+    {
+      "heading": "介面、繼承與建立條件",
+      "targets": [
+        "rules/coding/code-design.md#substitutability",
+        "rules/coding/resource-lifecycle.md#initialization-readiness"
+      ],
+      "text": "本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。"
+    },
+    {
+      "heading": "依賴、建立方式與擴充",
+      "targets": [
+        "rules/coding/code-design.md#construction-entrypoints",
+        "rules/coding/code-design.md#interface-capabilities"
+      ],
+      "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。"
+    },
+    {
+      "heading": "共用範圍與驗證",
+      "targets": [
+        "rules/coding/resource-lifecycle.md#shared-lifecycle"
+      ],
+      "text": "本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。"
+    }
+  ],
+  "group_endings": [
 
-  ]
+  ],
+  "presentation_version": 1
 }

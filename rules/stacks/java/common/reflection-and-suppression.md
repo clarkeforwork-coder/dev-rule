@@ -4,9 +4,9 @@
 
 本文件承接[型別安全](../../../coding/type-safety.md)及[規範治理](../../../workflow/rule-governance.md)，定義動態能力、特殊存取與檢查抑制的限制。手寫整合與測試程式碼適用相同要求，工具限制不構成自動例外。Java 型別要求另依[型別宣告與泛型](types-and-generics.md)，JDK 內部 API 與存取放寬另依[版本要求](version-policy.md)。
 
-本文件另依[rf-04](../../../coding/type-safety.md#dynamic-contract-validation)、[rf-02](../../../quality/security.md#dynamic-target-authorization)辦理。
-
 ## 動態能力與存取邊界
+
+本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。
 
 <a id="java-dynamic-type-contract"></a>
 

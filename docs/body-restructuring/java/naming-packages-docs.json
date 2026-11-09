@@ -416,17 +416,6 @@
   ],
   "edits": [
     {
-      "baseline_line": 7,
-      "remove": [
-
-      ],
-      "insert": [
-        "本文件另依[nd-05](../../../coding/code-design.md#implementation-notes)辦理。\n",
-        "\n"
-      ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
-    },
-    {
       "baseline_line": 9,
       "remove": [
         "1. **一致的命名形式**。Java 識別字須遵循一致的命名形式，並以業務概念與責任表達含義。類別、介面、列舉與 `record` 使用 `UpperCamelCase`；方法、欄位、參數與區域變數使用 `lowerCamelCase`；常數與列舉常數使用 `UPPER_SNAKE_CASE`；套件名稱使用小寫。團隊須統一縮寫慣例，避免同一概念大小寫不一致。不以 `final` 等修飾詞機械式判定常數，也不強制以 `I` 等名稱前綴標示介面。\n",
@@ -472,7 +461,7 @@
         "7. **形式與語意分別驗收**。依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#document-verification)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。\n"
       ],
       "insert": [
-        "<a id=\"java-javadoc-contract\"></a>\n"
+        "本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -482,6 +471,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-javadoc-contract\"></a>\n",
+        "\n",
         "### 補足契約資訊\n",
         "\n",
         "供使用端依賴的類別與方法須記錄型別及名稱無法充分表達的契約，依責任補充前置條件、結果、失敗、副作用與適用的生命週期保證。可包含非空、資源所有權、執行緒安全或資料時效等必要資訊，不要求每個方法套用全部項目。優先以 Javadoc 就近維護，或明確引用既有權威契約，避免重複定義；不以重述名稱代替說明。\n",
@@ -576,14 +567,19 @@
 
   ],
   "link_retention": [
+
+  ],
+  "group_routes": [
     {
+      "heading": "契約文件與維護",
       "targets": [
         "rules/coding/code-design.md#implementation-notes"
       ],
-      "text": "本文件另依[nd-05](../../../coding/code-design.md#implementation-notes)辦理。"
+      "text": "本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。"
     }
   ],
-  "group_routes": [
+  "group_endings": [
 
-  ]
+  ],
+  "presentation_version": 1
 }

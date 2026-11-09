@@ -674,17 +674,6 @@
   ],
   "edits": [
     {
-      "baseline_line": 7,
-      "remove": [
-
-      ],
-      "insert": [
-        "本文件另依[nt-04](../../../coding/numbers-dates-text.md#numeric-range-checks)、[nt-07](../../../coding/numbers-dates-text.md#timezone-conversion)、[nt-11](../../../coding/numbers-dates-text.md#character-encoding)、[nt-13](../../../coding/numbers-dates-text.md#text-transformations)辦理。\n",
-        "\n"
-      ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
-    },
-    {
       "baseline_line": 9,
       "remove": [
         "1. **依語意選擇數值型別**。依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#numeric-representation)執行。Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。\n",
@@ -694,7 +683,7 @@
         "5. **BigDecimal 判同語意**。須明訂數值相等與小數位數的關係，依契約選擇比較及正規化方式。例如 `1.0` 與 `1.00` 是否視為相同，須確認小數位數是呈現格式或資料語意的一部分。專屬型別的相等、雜湊與排序須維持一致，不得讓格式差異意外改變業務判同或集合行為。\n"
       ],
       "insert": [
-        "<a id=\"java-numeric-representation\"></a>\n"
+        "本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -704,6 +693,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-numeric-representation\"></a>\n",
+        "\n",
         "### 依語意選擇數值型別\n",
         "\n",
         "依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#numeric-representation)執行。Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。\n",
@@ -739,7 +730,7 @@
         "10. **解析與輸出契約**。依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#temporal-parsing-formatting)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。\n"
       ],
       "insert": [
-        "<a id=\"java-temporal-representation\"></a>\n"
+        "本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -749,6 +740,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-temporal-representation\"></a>\n",
+        "\n",
         "### 依業務語意選擇時間型別\n",
         "\n",
         "依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#temporal-representation)執行。Java 優先使用 `java.time`：日期可用 `LocalDate`，確切時點可用 `Instant`；不得以 `LocalDateTime` 冒充唯一時點，必要時保留時區或偏移。\n",
@@ -783,7 +776,7 @@
         "14. **邊界與環境差異驗收**。依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。\n"
       ],
       "insert": [
-        "<a id=\"java-text-length-units\"></a>\n"
+        "本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -793,6 +786,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-text-length-units\"></a>\n",
+        "\n",
         "### 長度與截取單位\n",
         "\n",
         "依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#text-length-units)執行。Java `String.length()` 計算 UTF-16 單位，不是通用字數；截取不能切斷代理對或契約要求保留的字元組合。\n",
@@ -860,17 +855,34 @@
 
   ],
   "link_retention": [
+
+  ],
+  "group_routes": [
     {
+      "heading": "數值表示與運算",
       "targets": [
-        "rules/coding/numbers-dates-text.md#numeric-range-checks",
-        "rules/coding/numbers-dates-text.md#timezone-conversion",
+        "rules/coding/numbers-dates-text.md#numeric-range-checks"
+      ],
+      "text": "本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。"
+    },
+    {
+      "heading": "日期時間語意與來源",
+      "targets": [
+        "rules/coding/numbers-dates-text.md#timezone-conversion"
+      ],
+      "text": "本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。"
+    },
+    {
+      "heading": "文字編碼、長度與比較",
+      "targets": [
         "rules/coding/numbers-dates-text.md#character-encoding",
         "rules/coding/numbers-dates-text.md#text-transformations"
       ],
-      "text": "本文件另依[nt-04](../../../coding/numbers-dates-text.md#numeric-range-checks)、[nt-07](../../../coding/numbers-dates-text.md#timezone-conversion)、[nt-11](../../../coding/numbers-dates-text.md#character-encoding)、[nt-13](../../../coding/numbers-dates-text.md#text-transformations)辦理。"
+      "text": "本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。"
     }
   ],
-  "group_routes": [
+  "group_endings": [
 
-  ]
+  ],
+  "presentation_version": 1
 }

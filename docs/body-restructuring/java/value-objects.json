@@ -589,7 +589,7 @@
 
       ],
       "insert": [
-        "本文件另依[validation](../../../coding/validation.md)辦理。\n",
+        "本文件另依[資料驗證](../../../coding/validation.md)辦理。\n",
         "\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
@@ -602,7 +602,7 @@
         "3. **不可變性**。依[不可變性的共通要求](../../../coding/domain-modeling.md#value-immutability)執行。Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。\n"
       ],
       "insert": [
-        "<a id=\"java-value-immutability\"></a>\n"
+        "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
@@ -612,6 +612,8 @@
 
       ],
       "insert": [
+        "<a id=\"java-value-immutability\"></a>\n",
+        "\n",
         "### 不可變性\n",
         "\n",
         "依[不可變性的共通要求](../../../coding/domain-modeling.md#value-immutability)執行。Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。\n",
@@ -775,14 +777,26 @@
 
   ],
   "group_routes": [
-
+    {
+      "heading": "型別責任與有效性",
+      "targets": [
+        "rules/coding/code-design.md#construction-entrypoints",
+        "rules/coding/domain-modeling.md#專屬型別",
+        "rules/coding/validation.md#責任分工"
+      ],
+      "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。"
+    }
   ],
   "link_retention": [
     {
       "targets": [
         "rules/coding/validation.md"
       ],
-      "text": "本文件另依[validation](../../../coding/validation.md)辦理。"
+      "text": "本文件另依[資料驗證](../../../coding/validation.md)辦理。"
     }
-  ]
+  ],
+  "group_endings": [
+
+  ],
+  "presentation_version": 1
 }

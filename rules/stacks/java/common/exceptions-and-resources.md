@@ -4,8 +4,6 @@
 
 本文件承接[錯誤處理](../../../coding/error-handling.md)，定義 Java 例外傳遞、中斷及資源生命週期的共同要求。預期業務失敗依[狀態與結果建模](states-and-results.md)使用明確結果型別；元件建立及延遲讀取的所有權另依[類別、介面與物件建立](classes-and-construction.md)與[集合與資料所有權](collections-and-ownership.md)。
 
-本文件另依[ex-07](../../../coding/resource-lifecycle.md#partial-acquisition)、[ex-08](../../../coding/resource-lifecycle.md#resource-close-contract)辦理。
-
 ## 例外契約與捕捉責任
 
 <a id="java-exception-classification"></a>
@@ -33,6 +31,8 @@
 `InterruptedException` 須依呼叫契約向上傳遞；無法傳遞而在本層捕捉時，須恢復中斷旗標並停止或依明確取消契約處理。不得吞掉中斷後照常執行或自動重試，必要清理不得掩蓋中斷意圖。
 
 ## 資源所有權與失敗清理
+
+本組下列要求由共通規範承接：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。
 
 <a id="java-resource-management"></a>
 

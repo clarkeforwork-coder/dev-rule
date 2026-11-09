@@ -5,7 +5,7 @@ P=BodyPresentation
 skip='rules/stacks/java/README.md'
 def units(text,path)
  text=BodyPresentation.rename(text,path,true)
- text.lines.reject{|l|l.strip.empty?||l.start_with?('<a id=','本文件另依','本組要求依','本組下列要求由共通規範承接：')||l.strip=='### 本組補充說明'}.map(&:strip).sort
+ text.lines.reject{|l|l.strip.empty?||l.start_with?('<a id=','本文件另依','本組要求依','本組下列要求由共通規範承接：')||['### 本組補充說明','## 補充要求'].include?(l.strip)}.map(&:strip).sort
 end
 failures=[];count=0
 P.paths.each do |path|

@@ -4,9 +4,9 @@
 
 本文件承接[型別安全](../../../coding/type-safety.md)與[領域建模](../../../coding/domain-modeling.md)，定義 Java 數值、時間與文字的表示及轉換要求。專屬型別與正規化依[值物件規範](value-objects.md)，比較與集合判同另依[相等性、雜湊與排序](equality-hashing-ordering.md)。
 
-本文件另依[nt-04](../../../coding/numbers-dates-text.md#numeric-range-checks)、[nt-07](../../../coding/numbers-dates-text.md#timezone-conversion)、[nt-11](../../../coding/numbers-dates-text.md#character-encoding)、[nt-13](../../../coding/numbers-dates-text.md#text-transformations)辦理。
-
 ## 數值表示與運算
+
+本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。
 
 <a id="java-numeric-representation"></a>
 
@@ -34,6 +34,8 @@
 
 ## 日期時間語意與來源
 
+本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。
+
 <a id="java-temporal-representation"></a>
 
 ### 依業務語意選擇時間型別
@@ -59,6 +61,8 @@
 依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#temporal-parsing-formatting)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。
 
 ## 文字編碼、長度與比較
+
+本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。
 
 <a id="java-text-length-units"></a>
 

@@ -4,8 +4,6 @@
 
 本文件承接[命名與可讀性](../../../coding/naming.md)、[程式碼設計與公開介面](../../../coding/code-design.md)及[模組責任與公開入口](../../../architecture/module-boundaries.md)，定義 Java 命名形式、套件組織與契約文件要求。
 
-本文件另依[nd-05](../../../coding/code-design.md#implementation-notes)辦理。
-
 ## 命名與套件責任
 
 <a id="java-naming-form"></a>
@@ -27,6 +25,8 @@ Java 識別字須遵循一致的命名形式，並以業務概念與責任表達
 套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。共用套件須有明確責任與依賴方向，不作為雜項收容處，也不得反向依賴使用它的業務模組。邊界須以可見性及適用檢查落實，不能只靠套件名稱。
 
 ## 契約文件與維護
+
+本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。
 
 <a id="java-javadoc-contract"></a>
 

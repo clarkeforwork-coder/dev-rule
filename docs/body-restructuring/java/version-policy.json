@@ -298,7 +298,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/version-policy.md#java-closing-requirements",
+          "uri": "rules/stacks/java/common/version-policy.md#java-group-notes-version-declarations",
           "text": "例如，建置 JDK 與部署環境使用 Java 21，而產物承諾相容 Java 17 時，編譯須維持 Java 17 的語言、API 及位元碼限制，並有 Java 17 與實際部署環境的驗證依據。"
         }
       ],
@@ -522,7 +522,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/version-policy.md#java-closing-requirements",
+          "uri": "rules/stacks/java/common/version-policy.md#java-group-notes-dependency-versions",
           "text": "Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rule-governance.md#例外核准)管理。"
         }
       ],
@@ -536,7 +536,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/version-policy.md#java-closing-requirements",
+          "uri": "rules/stacks/java/common/version-policy.md#java-group-notes-dependency-versions",
           "text": "既有程式碼依相同文件的漸進導入要求處理。"
         }
       ],
@@ -683,19 +683,11 @@
     {
       "baseline_line": 14,
       "remove": [
-        "例如，建置 JDK 與部署環境使用 Java 21，而產物承諾相容 Java 17 時，編譯須維持 Java 17 的語言、API 及位元碼限制，並有 Java 17 與實際部署環境的驗證依據。\n"
-      ],
-      "insert": [
-        "### 分別記錄版本資訊\n"
-      ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
-    },
-    {
-      "baseline_line": 16,
-      "remove": [
 
       ],
       "insert": [
+        "### 分別記錄版本資訊\n",
+        "\n",
         "專案須記錄建置 JDK、編譯目標與標準函式庫 API 相容範圍，以及實際部署或承諾支援的 Java 執行版本。共用函式庫須明列使用端可依賴的支援範圍。\n",
         "\n",
         "<a id=\"java-build-compatibility\"></a>\n",
@@ -715,6 +707,10 @@
         "### 多模組版本要求\n",
         "\n",
         "各模組可依部署與使用需求採不同版本要求，但須逐模組明訂編譯目標、支援範圍及依賴關係。共用模組須符合使用端承諾的相容範圍，並完成對應驗證。\n",
+        "\n",
+        "<a id=\"java-group-notes-version-declarations\"></a>\n",
+        "\n",
+        "### 本組補充說明\n",
         "\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
@@ -736,19 +732,11 @@
     {
       "baseline_line": 24,
       "remove": [
-        "Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rule-governance.md#例外核准)管理。既有程式碼依相同文件的漸進導入要求處理。\n"
-      ],
-      "insert": [
-        "### 依賴版本要求\n"
-      ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
-    },
-    {
-      "baseline_line": 26,
-      "remove": [
 
       ],
       "insert": [
+        "### 依賴版本要求\n",
+        "\n",
         "新增或升級依賴時，須核對直接與間接依賴的 Java 版本要求。若超出專案承諾的執行範圍，須先決定保留相容版本、替換依賴或安排專案升級，完成相容性處置後才能採用。[第三方套件與依賴管理](../../../workflow/dependencies.md)\n",
         "\n",
         "<a id=\"java-build-upgrade\"></a>\n",
@@ -774,6 +762,10 @@
         "### 棄用 API\n",
         "\n",
         "新增或修改程式須優先採用符合專案版本範圍的替代 API。既有棄用 API 依移除風險與影響安排遷移，特別檢視已標示預定移除的項目。必要的持續使用須經例外核准，記錄原因、適用範圍與重新評估條件。\n",
+        "\n",
+        "<a id=\"java-group-notes-dependency-versions\"></a>\n",
+        "\n",
+        "### 本組補充說明\n",
         "\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
@@ -811,14 +803,6 @@
         "### 產物與執行環境追溯\n",
         "\n",
         "每個發布產物須可追溯實際建置 JDK、編譯目標、依賴版本與相容性驗證紀錄。部署後須能核對產物識別與實際 Java 執行環境，包含發行商、完整版本及相關啟動設定。可沿用專案既有建置與部署紀錄。\n",
-        "\n",
-        "<a id=\"java-closing-requirements\"></a>\n",
-        "\n",
-        "## 補充要求\n",
-        "\n",
-        "例如，建置 JDK 與部署環境使用 Java 21，而產物承諾相容 Java 17 時，編譯須維持 Java 17 的語言、API 及位元碼限制，並有 Java 17 與實際部署環境的驗證依據。\n",
-        "\n",
-        "Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rule-governance.md#例外核准)管理。既有程式碼依相同文件的漸進導入要求處理。\n",
         "\n"
       ],
       "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
@@ -902,5 +886,21 @@
   ],
   "group_routes": [
 
-  ]
+  ],
+  "link_retention": [
+
+  ],
+  "group_endings": [
+    {
+      "heading": "版本宣告與相容性",
+      "anchor": "java-group-notes-version-declarations",
+      "text": "例如，建置 JDK 與部署環境使用 Java 21，而產物承諾相容 Java 17 時，編譯須維持 Java 17 的語言、API 及位元碼限制，並有 Java 17 與實際部署環境的驗證依據。"
+    },
+    {
+      "heading": "依賴、升級與特殊功能",
+      "anchor": "java-group-notes-dependency-versions",
+      "text": "Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rule-governance.md#例外核准)管理。既有程式碼依相同文件的漸進導入要求處理。"
+    }
+  ],
+  "presentation_version": 1
 }

@@ -4,9 +4,9 @@
 
 本文件承接[程式碼設計與公開介面](../../../coding/code-design.md)，定義集合及其元素的所有權、修改與處理契約。集合宣告依[型別宣告與泛型](types-and-generics.md)，空值依[null 與 Optional](null-and-optional.md)，鍵與元素的比較依[相等性、雜湊與排序](equality-hashing-ordering.md)。具體併發 API 與資源管理方式由後續 Java 主題展開。
 
-本文件另依[co-03](../../../coding/collections-and-ownership.md#order-and-duplicates)、[co-06](../../../quality/performance.md#bounded-accumulation)辦理。
-
 ## 所有權與集合語意
+
+本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。
 
 <a id="java-collection-ownership"></a>
 
@@ -22,9 +22,11 @@
 
 ## 修改與併發
 
-本組要求依[co-04](../../../coding/collections-and-ownership.md#traversal-mutation)、[co-05](../../../coding/concurrency-and-async.md#compound-atomicity)辦理。
+本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。
 
 ## 資料規模、資源與批次結果
+
+本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。
 
 <a id="java-lazy-resource-lifetime"></a>
 

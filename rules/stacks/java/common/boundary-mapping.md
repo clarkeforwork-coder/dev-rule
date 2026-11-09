@@ -4,9 +4,9 @@
 
 本文件承接[邊界物件](../../../architecture/boundary-objects.md)與[資料映射](../../../architecture/data-mapping.md)，適用於 Java 的 API、模組、持久化及第三方整合邊界。實際分層與依賴方向由專案架構決定，具體映射與序列化工具設定由 Framework 規範及專案配置落實。
 
-本文件另依[bm-03](../../../architecture/data-mapping.md#mapping-responsibility)辦理。
-
 ## 契約與映射責任
+
+本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。
 
 <a id="java-mapping-fields"></a>
 

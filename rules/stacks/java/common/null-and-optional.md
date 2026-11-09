@@ -32,6 +32,8 @@
 
 ## 空值限制與整合責任
 
+本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[狀態建模](../../../coding/domain-modeling.md#狀態建模)、[程式缺陷與不變條件](../../../coding/error-handling.md#程式缺陷與不變條件)、[責任分工](../../../coding/validation.md#責任分工)。
+
 <a id="java-container-nulls"></a>
 
 ### 集合內容的空值
