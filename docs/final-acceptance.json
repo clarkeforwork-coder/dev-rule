@@ -2,6 +2,7 @@
   "start": "53c26dcbecbdd31c6082ffd91f608660a2d38b0d",
   "steps": [
     "interface",
-    "partial"
+    "partial",
+    "division"
   ]
 }

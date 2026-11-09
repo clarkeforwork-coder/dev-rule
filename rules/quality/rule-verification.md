@@ -177,7 +177,7 @@
 
 Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言索引](../stacks/java/README.md#驗收入口)，不在共通文件重複維護各主題摘要。其他語言依其適用規範補足；共同要求的效力依[規範索引](../README.md#規範效力)。
 
-共通主題的具體驗收見[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)及[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)。領域、映射、空值與介面等補充契約的驗收由各自主要文件維護。
+[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)、[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose)與[多步驟及部分成功](../coding/error-handling.md#acceptance-partial-operation)的驗收也由各自規則檔維護。本文件保留共同把關、架構檢查與可測試性、跨情境錯誤處理，以及補償、外部整合與事件、安全、資料庫、API、可觀測性、效能、設定、依賴及 Git 等主題的驗收。
 
 ## 測試程式碼
 

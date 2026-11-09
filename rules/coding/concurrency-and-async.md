@@ -82,8 +82,8 @@
 | 契約 | 驗收內容 |
 | --- | --- |
 | <a id="acceptance-compound-atomicity"></a>[複合操作的原子性](#compound-atomicity) | 對共享複合操作，以受控交錯或併發案例驗證約定的原子性及業務條件；跨鍵或跨集合的保證須驗證整個操作，不僅確認單一集合操作安全。 |
-| <a id="acceptance-task-ownership"></a>[明確的工作擁有者](#task-ownership) | 核對每項工作及脫離原呼叫流程後的擁有者，確認責任移交明確，結果、失敗、取消與資源均有負責元件追蹤，不留下無人接手的工作。 |
-| <a id="acceptance-result-reception"></a>[結果接收與故障處置](#async-result-reception) | 核對成功、業務失敗、技術故障及取消的接收路徑，確認結果分類保留且故障未被丟棄。 |
+| <a id="acceptance-task-ownership"></a>[明確的工作擁有者](#task-ownership) | 核對每項工作及脫離原呼叫流程後的擁有者，確認責任移交明確，結果、失敗、取消與資源均有負責元件追蹤，不留下無人接手的工作。本列核對工作擁有者與責任移交；結果分類與接收路徑見[結果接收驗收](#acceptance-result-reception)。 |
+| <a id="acceptance-result-reception"></a>[結果接收與故障處置](#async-result-reception) | 核對成功、業務失敗、技術故障及取消的接收路徑，確認結果分類保留且故障未被丟棄。本列核對結果分類與接收路徑；工作擁有者與責任移交見[工作追蹤驗收](#acceptance-task-ownership)。 |
 | <a id="acceptance-execution-resources"></a>[統一管理執行資源](#execution-resources)、[執行位置與阻塞行為](#execution-and-blocking) | 核對實際執行配置、各階段執行位置及阻塞關係。依風險模擬容量耗盡、排隊與拒絕，確認不超出下游限制，也不因同一受限資源上的相互等待而無法前進。 |
 | <a id="acceptance-deadline-cancellation"></a>[等待期限與逾時處置](#deadline-budget)、[取消傳遞與實際停止](#cancellation-and-termination) | 驗證期限承接整體預算，逾時與取消後工作依契約停止或受控繼續。確認相關子工作收到所需訊號，未確認停止的工作仍有擁有者，執行名額依實際資源釋放回收。 |
 | <a id="acceptance-task-composition"></a>[多工作組合的完成條件](#task-completion-contract) | 以不同完成順序及子工作失敗驗證全部成功、部分成功或競速等適用契約。核對每項結果與來源對應，剩餘工作持續受到管理，未將最快失敗當成第一個成功。 |
