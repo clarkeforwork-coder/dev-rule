@@ -45,6 +45,32 @@ add(cases,'保留句文字改寫','保留句子不是逐字保留'){|r|r['senten
 add(cases,'驗收列遺失且同步刪列紀錄','去向錨點無效'){|r|e=r['acceptance_changes'].last;patch(r,e['after'],'')}
 add(cases,'核准移入理由不足','移入句理由不足'){|_|r=BodyRehearsal.convert('boundary-mapping');r['imports'][0]['reason']='x';BodyRehearsal.save(r)}
 add(cases,'完整轉換卻留數字第一欄','驗收第一欄不符固定格式'){|_|r=BodyRehearsal.convert('exceptions-and-resources');e=r['acceptance_changes'].find{|e|e['before'].include?('<a id=')};File.write(r['path'],File.read(r['path']).sub(e['after'],e['before']));r['acceptance_changes'].delete(e);BodyRehearsal.save(r)}
+# R7 的 ST／RF 只在暫存測試提供語意錨點，不更動共用演練夾具。
+r7_names=BodyRehearsal::NAMES.merge(
+ 'ST'=>%w[state-model transitions independent-facets results failures openness external-codes unknown-codes payloads state-verification],
+ 'RF'=>%w[dynamic-contracts dynamic-necessity reflective-access boundaries invocation-failure suppression generated-code reflection-verification])
+BodyRehearsal.send(:remove_const,:NAMES);BodyRehearsal.const_set(:NAMES,r7_names.freeze)
+[
+ ['K01','exceptions-and-resources','EX-02','拆分','rules/coding/error-handling.md#失敗分類與表達'],
+ ['K02','states-and-results','ST-08','保留增量','rules/coding/domain-modeling.md#st-08'],
+ ['K03','reflection-and-suppression','RF-05','拆分','rules/coding/error-handling.md#rf-05']
+].each do |name,topic,id,kind,source|
+ add(cases,"R7 #{name} 整條刪光仍填#{kind}","拆分或保留增量須保留本文件 Java 小節及至少一句正文 #{id}") do |_|
+  r=BodyRehearsal.convert(topic);BodyRehearsal.remove(r,id,[source]);r['rules'].find{|e|e['id']==id}['kind']=kind;BodyRehearsal.finish_links(r)
+ end
+end
+add(cases,'R7 H01 拆分漏共通去向','歷史 ID 去向與句子小節不一致 BM-03：若有整句移除，請在 rules[].targets 加列該句承接的共通錨點') do |_|
+ r=BodyRehearsal.convert('boundary-mapping');BodyRehearsal.remove(r,'BM-03',['rules/architecture/data-mapping.md#bm-03'],true)
+ r['rules'].find{|e|e['id']=='BM-03'}['targets'].reject!{|u|u.start_with?('rules/architecture/')};BodyRehearsal.finish_links(r)
+end
+# 分別驗證兩個必要條件，不能以不相干的 Java 去向掩飾全句移除。
+add(cases,'R7 全句移除但借用另一 Java 小節','拆分或保留增量須保留本文件 Java 小節及至少一句正文 EX-02') do |_|
+ r=BodyRehearsal.convert('exceptions-and-resources');BodyRehearsal.remove(r,'EX-02',['rules/coding/error-handling.md#失敗分類與表達'])
+ e=r['rules'].find{|x|x['id']=='EX-02'};e['kind']='拆分';e['targets']+=r['rules'].first['targets'];BodyRehearsal.finish_links(r)
+end
+add(cases,'R7 有保留句但歷史去向無 Java 小節','拆分或保留增量須保留本文件 Java 小節及至少一句正文 JN-01') do |r|
+ r['rules'].first['targets']=['rules/coding/error-handling.md#失敗分類與表達']
+end
 results=[]
 cases.each do |name,diagnostic,mutation|
  Dir.mktmpdir('body-policy-') do |dir|

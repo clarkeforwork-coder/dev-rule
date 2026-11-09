@@ -1127,7 +1127,7 @@
   "body_sentences": 437,
   "preserved_acceptance_rows": 86,
   "common_change_blocks": 13,
-  "local_links": 2042,
+  "local_links": 2046,
   "manual_review_count": 55,
   "manual_review_sentences": [
     {
@@ -2010,7 +2010,7 @@ exit=0
     "actual_exit": 1,
     "expected_diagnostic": "歷史 ID 去向與句子小節不一致",
     "matched": true,
-    "diagnostic": "<暫存複本> `check': 歷史 ID 去向與句子小節不一致 (RuntimeError)"
+    "diagnostic": "<暫存複本> `check': 歷史 ID 去向與句子小節不一致 JN-01：若有整句移除，請在 rules[].targets 加列該句承接的共通錨點 (RuntimeError)"
   },
   {
     "test": "N12b 保留小節新增義務",
@@ -2809,6 +2809,48 @@ exit=0
     "exit": 1,
     "matched": true,
     "diagnostic": "<暫存複本> `check': 驗收第一欄不符固定格式 (RuntimeError)"
+  },
+  {
+    "test": "R7 K01 整條刪光仍填拆分",
+    "expected": "拆分或保留增量須保留本文件 Java 小節及至少一句正文 EX-02",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "<暫存複本> `check': 拆分或保留增量須保留本文件 Java 小節及至少一句正文 EX-02 (RuntimeError)"
+  },
+  {
+    "test": "R7 K02 整條刪光仍填保留增量",
+    "expected": "拆分或保留增量須保留本文件 Java 小節及至少一句正文 ST-08",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "<暫存複本> `check': 拆分或保留增量須保留本文件 Java 小節及至少一句正文 ST-08 (RuntimeError)"
+  },
+  {
+    "test": "R7 K03 整條刪光仍填拆分",
+    "expected": "拆分或保留增量須保留本文件 Java 小節及至少一句正文 RF-05",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "<暫存複本> `check': 拆分或保留增量須保留本文件 Java 小節及至少一句正文 RF-05 (RuntimeError)"
+  },
+  {
+    "test": "R7 H01 拆分漏共通去向",
+    "expected": "歷史 ID 去向與句子小節不一致 BM-03：若有整句移除，請在 rules[].targets 加列該句承接的共通錨點",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "<暫存複本> `check': 歷史 ID 去向與句子小節不一致 BM-03：若有整句移除，請在 rules[].targets 加列該句承接的共通錨點 (RuntimeError)"
+  },
+  {
+    "test": "R7 全句移除但借用另一 Java 小節",
+    "expected": "拆分或保留增量須保留本文件 Java 小節及至少一句正文 EX-02",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "<暫存複本> `check': 拆分或保留增量須保留本文件 Java 小節及至少一句正文 EX-02 (RuntimeError)"
+  },
+  {
+    "test": "R7 有保留句但歷史去向無 Java 小節",
+    "expected": "拆分或保留增量須保留本文件 Java 小節及至少一句正文 JN-01",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "<暫存複本> `check': 拆分或保留增量須保留本文件 Java 小節及至少一句正文 JN-01 (RuntimeError)"
   }
 ]
 exit=0
@@ -2875,7 +2917,13 @@ exit=0
     "diagnostic": "主檢查通過"
   },
   {
-    "test": "重述保留一句",
+    "test": "R7 H02 BM-03 拆分同列 Java 與共通去向",
+    "exit": 0,
+    "matched": true,
+    "diagnostic": "主檢查通過"
+  },
+  {
+    "test": "R7 第四節否原句不動填保留增量",
     "exit": 0,
     "matched": true,
     "diagnostic": "主檢查通過"

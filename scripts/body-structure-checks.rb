@@ -41,6 +41,9 @@ module BodyStructure
     check(r['rules'].none?{|e|e['reason'].include?('尚未整理')},'已完成紀錄仍有尚未整理去向')
     r['rules'].each do |e|
       sentences=r['sentences'].select{|s|s['history_id']==e['id']}
+      if %w[拆分 保留增量].include?(e['kind'])
+        check(e['targets'].any?{|u|u.start_with?(path+'#java-')&&excerpt.call(u).start_with?('### ')} && sentences.any?{|s|s['action']!='移除'},"拆分或保留增量須保留本文件 Java 小節及至少一句正文 #{e['id']}")
+      end
       if e['kind']=='整條保留'
         check(sentences.all?{|s|s['action']=='保留'},'整條保留必須逐句保留')
         original=BodyRestructuring.rules(base).find{|n,_,_|n==e['id'].split('-').last.to_i}[2]
@@ -51,7 +54,7 @@ module BodyStructure
       elsif e['kind']=='整條移除'
         check(sentences.all?{|s|s['action']=='移除'},'整條移除必須逐句移除')
       end
-      check(sentences.all?{|s|(s['targets'].map{|t|t['uri']}&e['targets']).any?},'歷史 ID 去向與句子小節不一致')
+      check(sentences.all?{|s|(s['targets'].map{|t|t['uri']}&e['targets']).any?},"歷史 ID 去向與句子小節不一致 #{e['id']}：若有整句移除，請在 rules[].targets 加列該句承接的共通錨點")
     end
     r['sentences'].select{|s|s['action']=='改寫'}.each{|s|s['targets'].each{|t|check(units(excerpt.call(t['uri'])).include?(t['text']),'改寫 text 必須為目的地完整一句')}}
     manual=policy(r,base,prefix,excerpt,check_uri)

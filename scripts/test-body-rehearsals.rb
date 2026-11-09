@@ -10,7 +10,10 @@ cases={
   r=BodyRehearsal.convert('collections-and-ownership')
   %w[CO-01 CO-02 CO-03 CO-09].each{|id|BodyRehearsal.remove(r,id,['rules/coding/collections-and-ownership.md#'+id.downcase])};BodyRehearsal.finish_links(r)
  },
- '重述保留一句'=>lambda{r=BodyRehearsal.convert('boundary-mapping');BodyRehearsal.remove(r,'BM-03',['rules/architecture/data-mapping.md#bm-03'],true);BodyRehearsal.finish_links(r)},
+ 'R7 H02 BM-03 拆分同列 Java 與共通去向'=>lambda{r=BodyRehearsal.convert('boundary-mapping');BodyRehearsal.remove(r,'BM-03',['rules/architecture/data-mapping.md#bm-03'],true);BodyRehearsal.finish_links(r)},
+ 'R7 第四節否原句不動填保留增量'=>lambda{
+  r=BodyRehearsal.convert('exceptions-and-resources');r['rules'].find{|e|e['id']=='EX-02'}['kind']='保留增量';BodyRehearsal.save(r)
+ },
  'EX 條號改錨點'=>lambda{BodyRehearsal.convert('exceptions-and-resources')},
  'EQ 條號改錨點'=>lambda{BodyRehearsal.convert('equality-hashing-ordering')},
  'CA 清單正常增文'=>lambda{BodyRehearsal.convert('concurrency-and-async')},
