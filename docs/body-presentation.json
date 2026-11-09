@@ -2,5 +2,5 @@
   "start": "3f68be483882d8dbfb6611bd58c40ec7446414af",
   "aliases": true,
   "layout": true,
-  "index": false
+  "index": true
 }
