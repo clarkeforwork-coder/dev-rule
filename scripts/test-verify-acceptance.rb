@@ -14,6 +14,7 @@ if File.exist?(File.expand_path('../docs/body-presentation.json',__dir__))
     _,err,status=Open3.capture3('git','clone','--quiet','--shared',root,dir+'/repo');raise err unless status.success?
     _,err,status=Open3.capture3('git','checkout','--quiet','--detach',BodyRestructuring::BASELINE,chdir:dir+'/repo');raise err unless status.success?
     out,status=Open3.capture2e('ruby','scripts/test-verify-acceptance.rb',chdir:dir+'/repo')
+    out=out.gsub(%r{(?:/private)?/var/folders/[^\s"]+/acceptance-negative-[^/\s"]+},'<驗收暫存複本>').gsub(%r{/tmp/acceptance-negative-[^/\s"]+},'<驗收暫存複本>')
     passed=status.success?;result={'archived_at'=>BodyRestructuring::BASELINE,'scope'=>'封存驗收階段；現行內容另由正文及版面檢查驗證','exit'=>status.exitstatus,'output'=>out}
   end
   puts JSON.pretty_generate(result);exit(passed ? 0 : 1)
