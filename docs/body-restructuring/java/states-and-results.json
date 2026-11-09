@@ -1,87 +1,87 @@
 {
   "baseline": "350668eb14ede247af22c782323beebf940c2a5f",
   "path": "rules/stacks/java/common/states-and-results.md",
-  "status": "pending",
+  "status": "completed",
   "rules": [
     {
       "id": "ST-01",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#狀態與轉換"
+        "rules/stacks/java/common/states-and-results.md#java-explicit-state-types"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依選 B 整條保留互斥型別、enum 選擇及不同業務面向分別建模與相互限制，不抽取共同背景。"
     },
     {
       "id": "ST-02",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#狀態與轉換"
+        "rules/stacks/java/common/states-and-results.md#java-required-state-data"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通狀態建模以不同狀態需要不同資料為條件，未直接寫出不得只用狀態碼搭配多個可空欄位讓使用端推測，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "ST-03",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#狀態與轉換"
+        "rules/stacks/java/common/states-and-results.md#java-business-state-transitions"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通禁止任意修改狀態欄位可涵蓋 setter 限制，但未直接明訂修改既有物件或產生新狀態物件由模型決定，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "ST-04",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#操作結果與使用端處理"
+        "rules/coding/domain-modeling.md#st-04"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "使用端所需區別與資料及不要求複雜結果物件由共通 st-04 完整原句直接承接，移除重述並在引言保留原引用。"
     },
     {
       "id": "ST-05",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#操作結果與使用端處理"
+        "rules/stacks/java/common/states-and-results.md#java-typed-business-failures"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "共通要求明確結果型別及可辨識原因，未直接列不同失敗型別或具型別原因代碼選擇，且例外句限定非預期技術故障，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "ST-06",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#操作結果與使用端處理"
+        "rules/coding/domain-modeling.md#st-06"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "編譯檢查優先、測試審查補足及不得以 default 將未知狀態當成功由共通 st-06 的編譯檢查及預設分支兩句直接承接。"
     },
     {
       "id": "ST-07",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#外部代碼擴充與結果資料"
+        "rules/stacks/java/common/states-and-results.md#java-stable-external-codes"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依第四節可能新增義務判斷整條保留，包含 ordinal 禁止、列舉名稱相容性、未知代碼及不強制轉換類別的範圍。"
     },
     {
       "id": "ST-08",
-      "kind": "整條保留",
+      "kind": "保留增量",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#外部代碼擴充與結果資料"
+        "rules/stacks/java/common/states-and-results.md#java-model-extensibility"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依增量判斷保留 sealed 版本能力與其他版本使用可見性、建立入口及檢查的落實方式，原共通引用一併保留。"
     },
     {
       "id": "ST-09",
-      "kind": "整條保留",
+      "kind": "整條移除",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#外部代碼擴充與結果資料"
+        "rules/coding/domain-modeling.md#st-09"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "可變業務參考不得改變當時事實及只隔離必要資料、不要求完整複製，由共通 st-09 兩句直接承接。"
     },
     {
       "id": "ST-10",
       "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/states-and-results.md#外部代碼擴充與結果資料"
+        "rules/stacks/java/common/states-and-results.md#java-model-acceptance"
       ],
-      "reason": "尚未整理，正文及驗收均維持新基準逐字不變。"
+      "reason": "依作業說明將驗收入口整條保留，Java 狀態型別、分支、enum 外部代碼、封閉模型與實際副作用均不刪，交協調者決定。"
     }
   ],
   "sentences": [
@@ -132,7 +132,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-explicit-state-types",
           "text": "互斥的業務狀態須使用明確型別；僅需區分固定狀態名稱時，可使用 `enum`。"
         }
       ],
@@ -146,7 +146,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-explicit-state-types",
           "text": "不得以多個獨立布林值表達互斥狀態。"
         }
       ],
@@ -160,7 +160,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-explicit-state-types",
           "text": "不同業務面向須分別建模，不得強行合併，例如付款與配送狀態可各自表達，再明訂兩者之間的限制。"
         }
       ],
@@ -174,83 +174,101 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-required-state-data",
           "text": "依[領域建模](../../../coding/domain-modeling.md)執行。"
         }
       ],
       "history_id": "ST-02",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通狀態建模以不同狀態需要不同資料為條件，未直接寫出不得只用狀態碼搭配多個可空欄位讓使用端推測，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-required-state-data",
           "text": "Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。"
         }
       ],
       "history_id": "ST-02",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通狀態建模以不同狀態需要不同資料為條件，未直接寫出不得只用狀態碼搭配多個可空欄位讓使用端推測，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "依[領域建模](../../../coding/domain-modeling.md)執行。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-business-state-transitions",
           "text": "依[領域建模](../../../coding/domain-modeling.md)執行。"
         }
       ],
       "history_id": "ST-03",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通禁止任意修改狀態欄位可涵蓋 setter 限制，但未直接明訂修改既有物件或產生新狀態物件由模型決定，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-business-state-transitions",
           "text": "Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。"
         }
       ],
       "history_id": "ST-03",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通禁止任意修改狀態欄位可涵蓋 setter 限制，但未直接明訂修改既有物件或產生新狀態物件由模型決定，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
-          "text": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。"
+          "uri": "rules/coding/domain-modeling.md#st-04"
         }
       ],
       "history_id": "ST-04",
       "removed_assertions": [
-
+        {
+          "text": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。",
+          "source_uri": "rules/coding/domain-modeling.md#st-04",
+          "source_text": "結果型別只包含使用端所需的區別與資料，不要求每次操作都建立複雜結果物件。"
+        }
+      ],
+      "reason": "本句僅引用 ST-04 的共通小節，移除引用句後以檔頭固定指路保留同一目標，實際承接依據取自該共通小節完整原句。",
+      "common_sources": [
+        "rules/coding/domain-modeling.md#st-04"
       ]
     },
     {
       "source": "Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
-          "text": "Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。"
+          "uri": "rules/coding/domain-modeling.md#st-04"
         }
       ],
       "history_id": "ST-04",
       "removed_assertions": [
-
+        {
+          "text": "Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。",
+          "source_uri": "rules/coding/domain-modeling.md#st-04",
+          "source_text": "結果型別只包含使用端所需的區別與資料，不要求每次操作都建立複雜結果物件。"
+        }
+      ],
+      "reason": "使用端所需區別與資料及不要求複雜結果物件由共通 st-04 完整原句直接承接，移除重述並在引言保留原引用。",
+      "common_sources": [
+        "rules/coding/domain-modeling.md#st-04"
       ]
     },
     {
@@ -258,55 +276,76 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-typed-business-failures",
           "text": "依[錯誤處理](../../../coding/error-handling.md)執行。"
         }
       ],
       "history_id": "ST-05",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通要求明確結果型別及可辨識原因，未直接列不同失敗型別或具型別原因代碼選擇，且例外句限定非預期技術故障，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。",
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-typed-business-failures",
           "text": "Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。"
         }
       ],
       "history_id": "ST-05",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "共通要求明確結果型別及可辨識原因，未直接列不同失敗型別或具型別原因代碼選擇，且例外句限定非預期技術故障，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "source": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
-          "text": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。"
+          "uri": "rules/coding/domain-modeling.md#st-06"
         }
       ],
       "history_id": "ST-06",
       "removed_assertions": [
-
+        {
+          "text": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。",
+          "source_uri": "rules/coding/domain-modeling.md#st-06",
+          "source_text": "優先利用適用版本的編譯檢查，並由測試與審查補足工具無法涵蓋的部分。"
+        }
+      ],
+      "reason": "本句僅引用 ST-06 的共通小節，移除引用句後以檔頭固定指路保留同一目標，實際承接依據取自該共通小節完整原句。",
+      "common_sources": [
+        "rules/coding/domain-modeling.md#st-06"
       ]
     },
     {
       "source": "Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
-          "text": "Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。"
+          "uri": "rules/coding/domain-modeling.md#st-06"
         }
       ],
       "history_id": "ST-06",
       "removed_assertions": [
-
+        {
+          "text": "Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足",
+          "source_uri": "rules/coding/domain-modeling.md#st-06",
+          "source_text": "優先利用適用版本的編譯檢查，並由測試與審查補足工具無法涵蓋的部分。"
+        },
+        {
+          "text": "不以 `default` 將未知狀態當成功",
+          "source_uri": "rules/coding/domain-modeling.md#st-06",
+          "source_text": "狀態與結果的使用端須明確處理契約要求的情況，不得以預設分支將新增、未知或未處理的情況當成成功或默默忽略。"
+        }
+      ],
+      "reason": "編譯檢查優先、測試審查補足及不得以 default 將未知狀態當成功由共通 st-06 的編譯檢查及預設分支兩句直接承接。",
+      "common_sources": [
+        "rules/coding/domain-modeling.md#st-06"
       ]
     },
     {
@@ -314,7 +353,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-stable-external-codes",
           "text": "持久化或跨邊界傳遞狀態時，須明訂穩定的外部代碼與映射，不得使用 `ordinal()` 作為業務契約。"
         }
       ],
@@ -328,7 +367,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-stable-external-codes",
           "text": "若採用列舉名稱作為外部值，須將名稱納入相容性管理，重新命名不能僅視為內部整理。"
         }
       ],
@@ -342,7 +381,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-stable-external-codes",
           "text": "未知代碼依契約處理，不得默默映射成任意既有狀態。"
         }
       ],
@@ -356,7 +395,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-stable-external-codes",
           "text": "不強制額外建立轉換類別，但映射與影響須可辨識。"
         }
       ],
@@ -370,7 +409,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-model-extensibility",
           "text": "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。"
         }
       ],
@@ -384,7 +423,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-model-extensibility",
           "text": "支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。"
         }
       ],
@@ -395,30 +434,49 @@
     },
     {
       "source": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
-          "text": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。"
+          "uri": "rules/coding/domain-modeling.md#st-09"
         }
       ],
       "history_id": "ST-09",
       "removed_assertions": [
-
+        {
+          "text": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。",
+          "source_uri": "rules/coding/domain-modeling.md#st-09",
+          "source_text": "操作結果須穩定表達產生當時可確認的事實，必要資料不得因外部可變參考而改變。"
+        }
+      ],
+      "reason": "本句僅引用 ST-09 的共通小節，移除引用句後以檔頭固定指路保留同一目標，實際承接依據取自該共通小節完整原句。",
+      "common_sources": [
+        "rules/coding/domain-modeling.md#st-09"
       ]
     },
     {
       "source": "Java 結果不可持有會改變已確認事實的可變業務參考；只隔離必要資料，不要求複製完整物件。",
-      "action": "保留",
+      "action": "移除",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
-          "text": "Java 結果不可持有會改變已確認事實的可變業務參考；只隔離必要資料，不要求複製完整物件。"
+          "uri": "rules/coding/domain-modeling.md#st-09"
         }
       ],
       "history_id": "ST-09",
       "removed_assertions": [
-
+        {
+          "text": "Java 結果不可持有會改變已確認事實的可變業務參考",
+          "source_uri": "rules/coding/domain-modeling.md#st-09",
+          "source_text": "操作結果須穩定表達產生當時可確認的事實，必要資料不得因外部可變參考而改變。"
+        },
+        {
+          "text": "只隔離必要資料，不要求複製完整物件",
+          "source_uri": "rules/coding/domain-modeling.md#st-09",
+          "source_text": "只保留契約所需資訊，不要求複製完整物件；最新狀態另行查詢，不以持有可變業務物件代替結果資料。"
+        }
+      ],
+      "reason": "可變業務參考不得改變當時事實及只隔離必要資料、不要求完整複製，由共通 st-09 兩句直接承接。",
+      "common_sources": [
+        "rules/coding/domain-modeling.md#st-09"
       ]
     },
     {
@@ -426,7 +484,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-model-acceptance",
           "text": "依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。"
         }
       ],
@@ -440,7 +498,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-model-acceptance",
           "text": "Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。"
         }
       ],
@@ -454,7 +512,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-closing-requirements",
           "text": "對外結果與完成程度另依[API 操作語意](../../../interfaces/api-contracts.md)及[事件可靠性](../../../interfaces/events.md)；代碼與資料格式變更依[資料契約](../../../interfaces/data-contracts.md)及[資料遷移](../../../data/migrations.md)。"
         }
       ],
@@ -468,7 +526,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/states-and-results.md#java-狀態與結果建模",
+          "uri": "rules/stacks/java/common/states-and-results.md#java-closing-requirements",
           "text": "不可變資料的保護方式另見[專屬值型別與領域值物件](value-objects.md)。"
         }
       ],
@@ -479,10 +537,167 @@
     }
   ],
   "edits": [
+    {
+      "baseline_line": 7,
+      "remove": [
 
+      ],
+      "insert": [
+        "本文件另依[st-04](../../../coding/domain-modeling.md#st-04)、[st-06](../../../coding/domain-modeling.md#st-06)、[st-09](../../../coding/domain-modeling.md#st-09)辦理。\n",
+        "\n"
+      ],
+      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+    },
+    {
+      "baseline_line": 9,
+      "remove": [
+        "1. **明確的狀態型別**。互斥的業務狀態須使用明確型別；僅需區分固定狀態名稱時，可使用 `enum`。不得以多個獨立布林值表達互斥狀態。不同業務面向須分別建模，不得強行合併，例如付款與配送狀態可各自表達，再明訂兩者之間的限制。\n",
+        "2. **各狀態的必要資料**。依[領域建模](../../../coding/domain-modeling.md)執行。Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。\n",
+        "3. **業務操作控制轉換**。依[領域建模](../../../coding/domain-modeling.md)執行。Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。\n"
+      ],
+      "insert": [
+        "<a id=\"java-explicit-state-types\"></a>\n"
+      ],
+      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+    },
+    {
+      "baseline_line": 13,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 明確的狀態型別\n",
+        "\n",
+        "互斥的業務狀態須使用明確型別；僅需區分固定狀態名稱時，可使用 `enum`。不得以多個獨立布林值表達互斥狀態。不同業務面向須分別建模，不得強行合併，例如付款與配送狀態可各自表達，再明訂兩者之間的限制。\n",
+        "\n",
+        "<a id=\"java-required-state-data\"></a>\n",
+        "\n",
+        "### 各狀態的必要資料\n",
+        "\n",
+        "依[領域建模](../../../coding/domain-modeling.md)執行。Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。\n",
+        "\n",
+        "<a id=\"java-business-state-transitions\"></a>\n",
+        "\n",
+        "### 業務操作控制轉換\n",
+        "\n",
+        "依[領域建模](../../../coding/domain-modeling.md)執行。Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。\n",
+        "\n"
+      ],
+      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+    },
+    {
+      "baseline_line": 15,
+      "remove": [
+        "4. **結果與目前狀態分開表達**。依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。\n",
+        "5. **具型別的業務失敗**。依[錯誤處理](../../../coding/error-handling.md)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。\n",
+        "6. **處理完整性**。依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。\n"
+      ],
+      "insert": [
+        "<a id=\"java-typed-business-failures\"></a>\n"
+      ],
+      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+    },
+    {
+      "baseline_line": 19,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 具型別的業務失敗\n",
+        "\n",
+        "依[錯誤處理](../../../coding/error-handling.md)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。\n",
+        "\n"
+      ],
+      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+    },
+    {
+      "baseline_line": 21,
+      "remove": [
+        "7. **穩定的外部代碼**。持久化或跨邊界傳遞狀態時，須明訂穩定的外部代碼與映射，不得使用 `ordinal()` 作為業務契約。若採用列舉名稱作為外部值，須將名稱納入相容性管理，重新命名不能僅視為內部整理。未知代碼依契約處理，不得默默映射成任意既有狀態。不強制額外建立轉換類別，但映射與影響須可辨識。\n",
+        "8. **封閉或允許擴充**。依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。\n",
+        "9. **結果保留當時事實**。依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。Java 結果不可持有會改變已確認事實的可變業務參考；只隔離必要資料，不要求複製完整物件。\n",
+        "10. **模型驗收**。依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。\n"
+      ],
+      "insert": [
+        "<a id=\"java-stable-external-codes\"></a>\n"
+      ],
+      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+    },
+    {
+      "baseline_line": 26,
+      "remove": [
+
+      ],
+      "insert": [
+        "### 穩定的外部代碼\n",
+        "\n",
+        "持久化或跨邊界傳遞狀態時，須明訂穩定的外部代碼與映射，不得使用 `ordinal()` 作為業務契約。若採用列舉名稱作為外部值，須將名稱納入相容性管理，重新命名不能僅視為內部整理。未知代碼依契約處理，不得默默映射成任意既有狀態。不強制額外建立轉換類別，但映射與影響須可辨識。\n",
+        "\n",
+        "<a id=\"java-model-extensibility\"></a>\n",
+        "\n",
+        "### 封閉或允許擴充\n",
+        "\n",
+        "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。\n",
+        "\n",
+        "<a id=\"java-model-acceptance\"></a>\n",
+        "\n",
+        "### 模型驗收\n",
+        "\n",
+        "依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。\n",
+        "\n",
+        "<a id=\"java-closing-requirements\"></a>\n",
+        "\n",
+        "## 補充要求\n",
+        "\n"
+      ],
+      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+    },
+    {
+      "baseline_line": 41,
+      "remove": [
+        "| Java 條文 | 語言增量驗收 |\n"
+      ],
+      "insert": [
+        "| 對應要求 | 語言增量驗收 |\n"
+      ],
+      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+    },
+    {
+      "baseline_line": 43,
+      "remove": [
+        "| <a id=\"acceptance-java-independent-state-models\"></a>1、2 | 審查互斥狀態與獨立業務面向是否正確分開，必要資料是否由對應型別保護。確認不能建立契約禁止的狀態與資料組合，不以僅存在狀態碼作為符合依據。 |\n",
+        "| <a id=\"acceptance-java-state-transition\"></a>3 | 驗證允許與不允許的來源狀態、前置條件及轉換後資料。確認公開介面沒有可繞過規則的任意設定路徑，拒絕時未產生不應發生的副作用。 |\n",
+        "| <a id=\"acceptance-java-enum-codes\"></a>7 | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |\n"
+      ],
+      "insert": [
+        "| <a id=\"acceptance-java-independent-state-models\"></a>[明確的狀態型別](#java-explicit-state-types)、[各狀態的必要資料](#java-required-state-data) | 審查互斥狀態與獨立業務面向是否正確分開，必要資料是否由對應型別保護。確認不能建立契約禁止的狀態與資料組合，不以僅存在狀態碼作為符合依據。 |\n",
+        "| <a id=\"acceptance-java-state-transition\"></a>[業務操作控制轉換](#java-business-state-transitions) | 驗證允許與不允許的來源狀態、前置條件及轉換後資料。確認公開介面沒有可繞過規則的任意設定路徑，拒絕時未產生不應發生的副作用。 |\n",
+        "| <a id=\"acceptance-java-enum-codes\"></a>[穩定的外部代碼](#java-stable-external-codes) | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |\n"
+      ],
+      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+    }
   ],
   "acceptance_changes": [
-
+    {
+      "before": "| Java 條文 | 語言增量驗收 |\n",
+      "after": "| 對應要求 | 語言增量驗收 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，原有第二欄驗收條件與案例逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-independent-state-models\"></a>1、2 | 審查互斥狀態與獨立業務面向是否正確分開，必要資料是否由對應型別保護。確認不能建立契約禁止的狀態與資料組合，不以僅存在狀態碼作為符合依據。 |\n",
+      "after": "| <a id=\"acceptance-java-independent-state-models\"></a>[明確的狀態型別](#java-explicit-state-types)、[各狀態的必要資料](#java-required-state-data) | 審查互斥狀態與獨立業務面向是否正確分開，必要資料是否由對應型別保護。確認不能建立契約禁止的狀態與資料組合，不以僅存在狀態碼作為符合依據。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，原有第二欄驗收條件與案例逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-state-transition\"></a>3 | 驗證允許與不允許的來源狀態、前置條件及轉換後資料。確認公開介面沒有可繞過規則的任意設定路徑，拒絕時未產生不應發生的副作用。 |\n",
+      "after": "| <a id=\"acceptance-java-state-transition\"></a>[業務操作控制轉換](#java-business-state-transitions) | 驗證允許與不允許的來源狀態、前置條件及轉換後資料。確認公開介面沒有可繞過規則的任意設定路徑，拒絕時未產生不應發生的副作用。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，原有第二欄驗收條件與案例逐字保留。"
+    },
+    {
+      "before": "| <a id=\"acceptance-java-enum-codes\"></a>7 | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |\n",
+      "after": "| <a id=\"acceptance-java-enum-codes\"></a>[穩定的外部代碼](#java-stable-external-codes) | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |\n",
+      "reason": "驗收第一欄改為對應要求及現行 Java 語意小節連結，原有第二欄驗收條件與案例逐字保留。"
+    }
   ],
   "imports": [
 
@@ -492,5 +707,18 @@
   ],
   "acceptance_additions": [
 
+  ],
+  "group_routes": [
+
+  ],
+  "link_retention": [
+    {
+      "targets": [
+        "rules/coding/domain-modeling.md#st-04",
+        "rules/coding/domain-modeling.md#st-06",
+        "rules/coding/domain-modeling.md#st-09"
+      ],
+      "text": "本文件另依[st-04](../../../coding/domain-modeling.md#st-04)、[st-06](../../../coding/domain-modeling.md#st-06)、[st-09](../../../coding/domain-modeling.md#st-09)辦理。"
+    }
   ]
 }
