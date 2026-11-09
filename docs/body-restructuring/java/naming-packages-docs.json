@@ -39,7 +39,7 @@
       "id": "ND-05",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/code-design.md#nd-05"
+        "rules/coding/code-design.md#implementation-notes"
       ],
       "reason": "依第三節重述判斷整條移除；註解維護、TODO 待處理內容與追蹤方式及禁止模糊標記由共通 nd-05 直接承接。"
     },
@@ -260,28 +260,28 @@
       ]
     },
     {
-      "source": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
+      "source": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#implementation-notes)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#nd-05"
+          "uri": "rules/coding/code-design.md#implementation-notes"
         }
       ],
       "history_id": "ND-05",
       "removed_assertions": [
         {
-          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#implementation-notes)執行。",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "實作註解依本文件的[註解與公開文件](#註解與公開文件)說明理由、限制與依據，變更時同步更新或移除。"
         },
         {
-          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#implementation-notes)執行。",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "可由設計與命名改善的問題應優先修正。"
         },
         {
-          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "text": "依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#implementation-notes)執行。",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
         }
       ],
@@ -292,24 +292,24 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/code-design.md#nd-05"
+          "uri": "rules/coding/code-design.md#implementation-notes"
         }
       ],
       "history_id": "ND-05",
       "removed_assertions": [
         {
           "text": "Java 註解及 TODO 依共同追蹤要求維護",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
         },
         {
           "text": "不以模糊標記代替負責事項",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "暫時性處理須有可追蹤的後續事項，`TODO` 須說明待處理內容與追蹤方式，不以模糊註解或標記代替責任管理。"
         },
         {
           "text": "Java 註解及 TODO 依共同追蹤要求維護",
-          "source_uri": "rules/coding/code-design.md#nd-05",
+          "source_uri": "rules/coding/code-design.md#implementation-notes",
           "source_text": "實作註解依本文件的[註解與公開文件](#註解與公開文件)說明理由、限制與依據，變更時同步更新或移除。"
         }
       ],
@@ -358,12 +358,12 @@
       ]
     },
     {
-      "source": "依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#nd-07)執行。",
+      "source": "依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#document-verification)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/naming-packages-docs.md#java-document-verification",
-          "text": "依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#nd-07)執行。"
+          "text": "依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#document-verification)執行。"
         }
       ],
       "history_id": "ND-07",
@@ -421,10 +421,10 @@
 
       ],
       "insert": [
-        "本文件另依[nd-05](../../../coding/code-design.md#nd-05)辦理。\n",
+        "本文件另依[nd-05](../../../coding/code-design.md#implementation-notes)辦理。\n",
         "\n"
       ],
-      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 9,
@@ -436,7 +436,7 @@
       "insert": [
         "<a id=\"java-naming-form\"></a>\n"
       ],
-      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 13,
@@ -461,20 +461,20 @@
         "套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。共用套件須有明確責任與依賴方向，不作為雜項收容處，也不得反向依賴使用它的業務模組。邊界須以可見性及適用檢查落實，不能只靠套件名稱。\n",
         "\n"
       ],
-      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 15,
       "remove": [
         "4. **補足契約資訊**。供使用端依賴的類別與方法須記錄型別及名稱無法充分表達的契約，依責任補充前置條件、結果、失敗、副作用與適用的生命週期保證。可包含非空、資源所有權、執行緒安全或資料時效等必要資訊，不要求每個方法套用全部項目。優先以 Javadoc 就近維護，或明確引用既有權威契約，避免重複定義；不以重述名稱代替說明。\n",
-        "5. **實作註解與暫時處理**。依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#nd-05)執行。Java 註解及 TODO 依共同追蹤要求維護，不以模糊標記代替負責事項。\n",
+        "5. **實作註解與暫時處理**。依[實作註解與暫時處理的共通要求](../../../coding/code-design.md#implementation-notes)執行。Java 註解及 TODO 依共同追蹤要求維護，不以模糊標記代替負責事項。\n",
         "6. **重新命名與搬移的影響**。類別、方法與套件重新命名或搬移時，須核對直接引用、設定、動態機制及外部使用端的影響。已構成公開或持久化契約的名稱，須依相容性要求處理，必要時安排遷移，並同步更新文件、範例與驗證。不僅依賴 IDE 重構結果，也不得因直接引用已更新就推定所有影響已處理。\n",
-        "7. **形式與語意分別驗收**。依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#nd-07)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。\n"
+        "7. **形式與語意分別驗收**。依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#document-verification)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。\n"
       ],
       "insert": [
         "<a id=\"java-javadoc-contract\"></a>\n"
       ],
-      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 20,
@@ -496,14 +496,14 @@
         "\n",
         "### 形式與語意分別驗收\n",
         "\n",
-        "依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#nd-07)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。\n",
+        "依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#document-verification)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 34,
@@ -513,7 +513,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 36,
@@ -531,7 +531,7 @@
         "| <a id=\"acceptance-java-rename-paths\"></a>[重新命名與搬移的影響](#java-rename-impact) | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |\n",
         "| <a id=\"acceptance-java-javadoc-examples\"></a>[形式與語意分別驗收](#java-document-verification) | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |\n"
       ],
-      "reason": "依 ND 逐句去向整理語意小節，僅移除共通已直接承接的 ND-05，保留全部驗收內容並更新定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     }
   ],
   "acceptance_changes": [
@@ -578,9 +578,9 @@
   "link_retention": [
     {
       "targets": [
-        "rules/coding/code-design.md#nd-05"
+        "rules/coding/code-design.md#implementation-notes"
       ],
-      "text": "本文件另依[nd-05](../../../coding/code-design.md#nd-05)辦理。"
+      "text": "本文件另依[nd-05](../../../coding/code-design.md#implementation-notes)辦理。"
     }
   ],
   "group_routes": [

@@ -30,6 +30,7 @@
 
 合併流程的核對方式見[Git 與 PR 驗收](../quality/rule-verification.md#git-與-pr-驗收)。
 
+<a id="automated-fix-review"></a>
 <a id="au-07"></a>
 
 ## 自動修正的審查
@@ -38,4 +39,4 @@
 
 驗收：核對修正差異及相關驗證，檢查是否擴大抑制、弱化斷言或門檻，以及必要測試被移除後是否仍有同等保證。
 
-必要檢查及分支保護新增或變更時，依[合併門檻實際有效](../quality/rule-verification.md#au-09)確認真正阻擋不符合條件的變更；[受驗證據](../quality/rule-verification.md#au-06)須適用實際合併內容。工具故障不得視為通過。
+必要檢查及分支保護新增或變更時，依[合併門檻實際有效](../quality/rule-verification.md#effective-merge-gates)確認真正阻擋不符合條件的變更；[受驗證據](../quality/rule-verification.md#evidence-version-validity)須適用實際合併內容。工具故障不得視為通過。

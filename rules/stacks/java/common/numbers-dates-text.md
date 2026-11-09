@@ -4,7 +4,7 @@
 
 本文件承接[型別安全](../../../coding/type-safety.md)與[領域建模](../../../coding/domain-modeling.md)，定義 Java 數值、時間與文字的表示及轉換要求。專屬型別與正規化依[值物件規範](value-objects.md)，比較與集合判同另依[相等性、雜湊與排序](equality-hashing-ordering.md)。
 
-本文件另依[nt-04](../../../coding/numbers-dates-text.md#nt-04)、[nt-07](../../../coding/numbers-dates-text.md#nt-07)、[nt-11](../../../coding/numbers-dates-text.md#nt-11)、[nt-13](../../../coding/numbers-dates-text.md#nt-13)辦理。
+本文件另依[nt-04](../../../coding/numbers-dates-text.md#numeric-range-checks)、[nt-07](../../../coding/numbers-dates-text.md#timezone-conversion)、[nt-11](../../../coding/numbers-dates-text.md#character-encoding)、[nt-13](../../../coding/numbers-dates-text.md#text-transformations)辦理。
 
 ## 數值表示與運算
 
@@ -12,19 +12,19 @@
 
 ### 依語意選擇數值型別
 
-依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#nt-01)執行。Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。
+依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#numeric-representation)執行。Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。
 
 <a id="java-exact-numeric-sources"></a>
 
 ### 從精確來源建立
 
-依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#nt-02)執行。Java 精確值不可先轉浮點數再轉 `BigDecimal` 期待還原；直接從契約允許的精確來源建立後仍須驗證業務限制。
+依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#exact-numeric-sources)執行。Java 精確值不可先轉浮點數再轉 `BigDecimal` 期待還原；直接從契約允許的精確來源建立後仍須驗證業務限制。
 
 <a id="java-rounding-policy"></a>
 
 ### 明訂捨入規則
 
-依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#nt-03)執行。Java 數值運算依契約指定精度、捨入模式及時機，不能讓 API 預設或各呼叫端自行決定。
+依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#rounding-policy)執行。Java 數值運算依契約指定精度、捨入模式及時機，不能讓 API 預設或各呼叫端自行決定。
 
 <a id="java-decimal-equivalence"></a>
 
@@ -38,25 +38,25 @@
 
 ### 依業務語意選擇時間型別
 
-依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#nt-06)執行。Java 優先使用 `java.time`：日期可用 `LocalDate`，確切時點可用 `Instant`；不得以 `LocalDateTime` 冒充唯一時點，必要時保留時區或偏移。
+依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#temporal-representation)執行。Java 優先使用 `java.time`：日期可用 `LocalDate`，確切時點可用 `Instant`；不得以 `LocalDateTime` 冒充唯一時點，必要時保留時區或偏移。
 
 <a id="java-durations-calendar-periods"></a>
 
 ### 區分時間長度與日曆規則
 
-依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#nt-08)執行。Java 按語意使用 `Duration`、`Period` 或業務計算，不假設一般日曆間隔包含營業日規則。
+依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#durations-and-calendar-periods)執行。Java 按語意使用 `Duration`、`Period` 或業務計算，不假設一般日曆間隔包含營業日規則。
 
 <a id="java-clock-source"></a>
 
 ### 可控制的時間基準
 
-依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#nt-09)執行。Java 業務目前時間優先由明確提供的 `Clock` 取得；耗時及等待期限使用適合的單調時間來源。
+依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#time-source)執行。Java 業務目前時間優先由明確提供的 `Clock` 取得；耗時及等待期限使用適合的單調時間來源。
 
 <a id="java-temporal-parsing-formatting"></a>
 
 ### 解析與輸出契約
 
-依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#nt-10)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。
+依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#temporal-parsing-formatting)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。
 
 ## 文字編碼、長度與比較
 
@@ -64,13 +64,13 @@
 
 ### 長度與截取單位
 
-依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#nt-12)執行。Java `String.length()` 計算 UTF-16 單位，不是通用字數；截取不能切斷代理對或契約要求保留的字元組合。
+依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#text-length-units)執行。Java `String.length()` 計算 UTF-16 單位，不是通用字數；截取不能切斷代理對或契約要求保留的字元組合。
 
 <a id="java-boundary-verification"></a>
 
 ### 邊界與環境差異驗收
 
-依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#nt-14)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。
+依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。
 
 <a id="java-closing-requirements"></a>
 

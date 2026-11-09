@@ -4,7 +4,7 @@
 
 本文件承接[命名與可讀性](../../../coding/naming.md)、[程式碼設計與公開介面](../../../coding/code-design.md)及[模組責任與公開入口](../../../architecture/module-boundaries.md)，定義 Java 命名形式、套件組織與契約文件要求。
 
-本文件另依[nd-05](../../../coding/code-design.md#nd-05)辦理。
+本文件另依[nd-05](../../../coding/code-design.md#implementation-notes)辦理。
 
 ## 命名與套件責任
 
@@ -44,7 +44,7 @@ Java 識別字須遵循一致的命名形式，並以業務概念與責任表達
 
 ### 形式與語意分別驗收
 
-依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#nd-07)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。
+依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#document-verification)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。
 
 <a id="java-closing-requirements"></a>
 

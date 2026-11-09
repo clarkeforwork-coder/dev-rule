@@ -42,13 +42,13 @@
 
 ### 工具可辨識的契約
 
-專案須統一可由工具辨識的空值契約表達方式，明訂非空預設、可空位置與適用範圍。可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#au-01)納入檢查、驗證與審查。標註、文件與實際行為須一致；標註不能取代外部輸入的執行期驗證。註解套件與工具由專案依版本及框架選定。
+專案須統一可由工具辨識的空值契約表達方式，明訂非空預設、可空位置與適用範圍。可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#verification-coverage)納入檢查、驗證與審查。標註、文件與實際行為須一致；標註不能取代外部輸入的執行期驗證。註解套件與工具由專案依版本及框架選定。
 
 <a id="java-third-party-optional"></a>
 
 ### 第三方空值行為
 
-依[第三方空值行為](../../../coding/nullability.md#jn-08)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。
+依[第三方空值行為](../../../coding/nullability.md#third-party-null-contract)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。
 
 ## 契約維護與對外表示
 
@@ -56,7 +56,7 @@
 
 ### 空值契約變更
 
-依[空值契約變更](../../../coding/nullability.md#jn-09)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。
+依[空值契約變更](../../../coding/nullability.md#null-contract-evolution)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。
 
 <a id="java-nonnull-default"></a>
 
@@ -68,7 +68,7 @@ Java 的參數、回傳值與欄位預設不允許 `null`；允許時須明確�
 
 ### API 邊界的缺值轉換
 
-Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#jn-12)落實對外契約。具體序列化配置由 Framework 規範落實。
+Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#api-absence-representation)落實對外契約。具體序列化配置由 Framework 規範落實。
 
 <a id="java-closing-requirements"></a>
 

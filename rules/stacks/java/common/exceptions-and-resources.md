@@ -4,7 +4,7 @@
 
 本文件承接[錯誤處理](../../../coding/error-handling.md)，定義 Java 例外傳遞、中斷及資源生命週期的共同要求。預期業務失敗依[狀態與結果建模](states-and-results.md)使用明確結果型別；元件建立及延遲讀取的所有權另依[類別、介面與物件建立](classes-and-construction.md)與[集合與資料所有權](collections-and-ownership.md)。
 
-本文件另依[ex-07](../../../coding/resource-lifecycle.md#ex-07)、[ex-08](../../../coding/resource-lifecycle.md#ex-08)辦理。
+本文件另依[ex-07](../../../coding/resource-lifecycle.md#partial-acquisition)、[ex-08](../../../coding/resource-lifecycle.md#resource-close-contract)辦理。
 
 ## 例外契約與捕捉責任
 

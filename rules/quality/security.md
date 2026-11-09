@@ -63,6 +63,7 @@
 
 ## 動態載入與呼叫目標
 
+<a id="dynamic-target-authorization"></a>
 <a id="rf-02"></a>
 
 ### 受控目標與授權
@@ -75,4 +76,4 @@
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-dynamic-target-authorization"></a>[受控目標與授權](#rf-02) | 驗證登錄或允許清單內的目標依權限執行，未知目標被拒絕；型別符合但未授權的目標也須被拒絕，且沒有不應發生的副作用。 |
+| <a id="acceptance-dynamic-target-authorization"></a>[受控目標與授權](#dynamic-target-authorization) | 驗證登錄或允許清單內的目標依權限執行，未知目標被拒絕；型別符合但未授權的目標也須被拒絕，且沒有不應發生的副作用。 |

@@ -55,6 +55,7 @@
 
 ## 併發驗證
 
+<a id="controlled-interleaving"></a>
 <a id="ca-12"></a>
 
 ### 可控制的併發驗收
@@ -67,4 +68,4 @@
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-controlled-interleaving"></a>[可控制的併發驗收](#ca-12) | 確認案例使用明確的協調與完成條件，等待有期限且失敗保留診斷資訊，涵蓋受影響的交錯與故障路徑。壓力測試結果須搭配同步及生命週期審查，不作為唯一安全證據。 |
+| <a id="acceptance-controlled-interleaving"></a>[可控制的併發驗收](#controlled-interleaving) | 確認案例使用明確的協調與完成條件，等待有期限且失敗保留診斷資訊，涵蓋受影響的交錯與故障路徑。壓力測試結果須搭配同步及生命週期審查，不作為唯一安全證據。 |

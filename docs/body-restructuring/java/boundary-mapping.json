@@ -23,7 +23,7 @@
       "id": "BM-03",
       "kind": "整條移除",
       "targets": [
-        "rules/architecture/data-mapping.md#bm-03"
+        "rules/architecture/data-mapping.md#mapping-responsibility"
       ],
       "reason": "格式解析、專屬型別建立與補查資料先協調均由共通 bm-03 原句直接承接，移除純引用與後附重述。"
     },
@@ -202,29 +202,29 @@
       "reason": "保守保留同名欄位與新增來源不得擴大範圍及可信欄位來源的整句；共通轉換要求未直接點明同名欄位觸發情境，不拆除部分條件。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
-      "source": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#bm-03)執行。",
+      "source": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#mapping-responsibility)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/architecture/data-mapping.md#bm-03"
+          "uri": "rules/architecture/data-mapping.md#mapping-responsibility"
         }
       ],
       "history_id": "BM-03",
       "removed_assertions": [
         {
-          "text": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#bm-03)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-03",
+          "text": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#mapping-responsibility)執行。",
+          "source_uri": "rules/architecture/data-mapping.md#mapping-responsibility",
           "source_text": "映射須聚焦契約定義的資料轉換與必要驗證，不得隱藏外部存取、業務決策或業務副作用。"
         },
         {
-          "text": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#bm-03)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-03",
+          "text": "依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#mapping-responsibility)執行。",
+          "source_uri": "rules/architecture/data-mapping.md#mapping-responsibility",
           "source_text": "可依契約解析格式及建立專屬型別；查詢補充資料、決定折扣、寫入資料庫或發送事件等行為，由負責元件明確協調，再進行映射。"
         }
       ],
       "reason": "本句只引用共通聚焦轉換與必要驗證，原 bm-03 目標移至檔頭保留引用，來源原句持續約束轉換與協調責任。",
       "common_sources": [
-        "rules/architecture/data-mapping.md#bm-03"
+        "rules/architecture/data-mapping.md#mapping-responsibility"
       ]
     },
     {
@@ -232,25 +232,25 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/architecture/data-mapping.md#bm-03"
+          "uri": "rules/architecture/data-mapping.md#mapping-responsibility"
         }
       ],
       "history_id": "BM-03",
       "removed_assertions": [
         {
           "text": "Java 映射可解析格式及建立專屬型別",
-          "source_uri": "rules/architecture/data-mapping.md#bm-03",
+          "source_uri": "rules/architecture/data-mapping.md#mapping-responsibility",
           "source_text": "可依契約解析格式及建立專屬型別；查詢補充資料、決定折扣、寫入資料庫或發送事件等行為，由負責元件明確協調，再進行映射。"
         },
         {
           "text": "需要補查資料時，由負責流程的元件先協調",
-          "source_uri": "rules/architecture/data-mapping.md#bm-03",
+          "source_uri": "rules/architecture/data-mapping.md#mapping-responsibility",
           "source_text": "可依契約解析格式及建立專屬型別；查詢補充資料、決定折扣、寫入資料庫或發送事件等行為，由負責元件明確協調，再進行映射。"
         }
       ],
       "reason": "格式解析、專屬型別建立與補查資料先協調均由共通 bm-03 原句直接承接，移除純引用與後附重述。",
       "common_sources": [
-        "rules/architecture/data-mapping.md#bm-03"
+        "rules/architecture/data-mapping.md#mapping-responsibility"
       ]
     },
     {
@@ -344,12 +344,12 @@
       "reason": "保守保留複製集合外層、符合契約的不可變值共用與不要求全面深層複製；現有邊界及程式碼設計正文未直接完整承接後兩項適用範圍，不以未列管摘要代替證據。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
-      "source": "依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#bm-07)執行。",
+      "source": "依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#directional-mapping)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/boundary-mapping.md#java-directional-mapping",
-          "text": "依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#bm-07)執行。"
+          "text": "依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#directional-mapping)執行。"
         }
       ],
       "history_id": "BM-07",
@@ -404,12 +404,12 @@
       "reason": "共通責任配置與介面原則涵蓋部分內容，但簡單映射可使用方法及不強制 Mapper 包裝層沒有同樣直接的完整原句，保守整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
-      "source": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。",
+      "source": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#mapping-path-verification)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/boundary-mapping.md#java-mapping-verification",
-          "text": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。"
+          "text": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#mapping-path-verification)執行。"
         }
       ],
       "history_id": "BM-09",
@@ -469,22 +469,22 @@
 
       ],
       "insert": [
-        "本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)辦理。\n",
+        "本文件另依[bm-03](../../../architecture/data-mapping.md#mapping-responsibility)辦理。\n",
         "\n"
       ],
-      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 9,
       "remove": [
         "1. **依隔離需求拆分**。依[邊界物件](../../../architecture/boundary-objects.md)執行。Java 模組內的物件傳遞依架構決議處理，不強制每次呼叫轉 DTO；對外 API 及跨模組仍使用公開資料契約。\n",
         "2. **明確控制欄位及來源**。依[資料映射](../../../architecture/data-mapping.md)、[API 操作語意與介面設計](../../../interfaces/api-contracts.md)、[安全](../../../quality/security.md)執行。Java 映射工具不得因同名或來源新增欄位而擴大傳遞範圍；租戶與建立者等可信欄位仍依伺服器契約取得。\n",
-        "3. **聚焦轉換與必要驗證**。依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#bm-03)執行。Java 映射可解析格式及建立專屬型別；需要補查資料時，由負責流程的元件先協調。\n"
+        "3. **聚焦轉換與必要驗證**。依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#mapping-responsibility)執行。Java 映射可解析格式及建立專屬型別；需要補查資料時，由負責流程的元件先協調。\n"
       ],
       "insert": [
         "<a id=\"java-mapping-fields\"></a>\n"
       ],
-      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 13,
@@ -497,7 +497,7 @@
         "依[資料映射](../../../architecture/data-mapping.md)、[API 操作語意與介面設計](../../../interfaces/api-contracts.md)、[安全](../../../quality/security.md)執行。Java 映射工具不得因同名或來源新增欄位而擴大傳遞範圍；租戶與建立者等可信欄位仍依伺服器契約取得。\n",
         "\n"
       ],
-      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 15,
@@ -505,12 +505,12 @@
         "4. **失敗明確回報**。依[錯誤處理](../../../coding/error-handling.md)、[資料驗證](../../../coding/validation.md)、[資料映射](../../../architecture/data-mapping.md)執行。依下方 Java 實際映射路徑驗收拒絕、缺陷與部分成功，不以建立了目標型別就視為有效。\n",
         "5. **保留更新意圖**。映射須保留契約要求的未提供、明確清空與設定值等差異，不得因 Java 欄位、預設值或反序列化行為而合併不同意圖。需要多種更新狀態時，須使用明確型別一路傳遞至負責更新的業務操作，不能僅依同一個 `null` 或 `Optional` 推測三種意圖。\n",
         "6. **可變參考隔離**。依[邊界物件](../../../architecture/boundary-objects.md)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。Java 複製集合外層不一定隔離可變元素；符合契約的不可變值可共用，不要求全面深層複製。\n",
-        "7. **各方向分別定義**。依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#bm-07)執行。Java 映射工具支援反向產生不代表可直接採用；具體工具配置另由 Framework 規範落實。\n"
+        "7. **各方向分別定義**。依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#directional-mapping)執行。Java 映射工具支援反向產生不代表可直接採用；具體工具配置另由 Framework 規範落實。\n"
       ],
       "insert": [
         "<a id=\"java-mapping-integrity\"></a>\n"
       ],
-      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 20,
@@ -538,21 +538,21 @@
         "\n",
         "### 各方向分別定義\n",
         "\n",
-        "依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#bm-07)執行。Java 映射工具支援反向產生不代表可直接採用；具體工具配置另由 Framework 規範落實。\n",
+        "依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#directional-mapping)執行。Java 映射工具支援反向產生不代表可直接採用；具體工具配置另由 Framework 規範落實。\n",
         "\n"
       ],
-      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 22,
       "remove": [
         "8. **明確維護責任**。依[資料映射](../../../architecture/data-mapping.md)、[共用能力](../../../architecture/shared-capabilities.md)、[框架與依賴組裝](../../../architecture/dependency-composition.md)執行。Java 簡單映射可使用方法，有實際責任或共用需求才建立專責類別，不強制 Mapper 介面或包裝層。\n",
-        "9. **驗證實際映射路徑**。依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。\n"
+        "9. **驗證實際映射路徑**。依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#mapping-path-verification)執行。Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。\n"
       ],
       "insert": [
         "<a id=\"java-mapping-ownership\"></a>\n"
       ],
-      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 25,
@@ -568,14 +568,14 @@
         "\n",
         "### 驗證實際映射路徑\n",
         "\n",
-        "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。\n",
+        "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#mapping-path-verification)執行。Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 44,
@@ -585,7 +585,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 46,
@@ -597,7 +597,7 @@
         "| <a id=\"acceptance-java-mapping-failure\"></a>[失敗明確回報](#java-mapping-integrity) | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。 |\n",
         "| <a id=\"acceptance-java-update-intent\"></a>[保留更新意圖](#java-update-intent) | 核對 Java 欄位、預設值與反序列化路徑未合併省略、明確清空及設定值的不同意圖。 |\n"
       ],
-      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     }
   ],
   "acceptance_changes": [
@@ -635,9 +635,9 @@
   "link_retention": [
     {
       "targets": [
-        "rules/architecture/data-mapping.md#bm-03"
+        "rules/architecture/data-mapping.md#mapping-responsibility"
       ],
-      "text": "本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)辦理。"
+      "text": "本文件另依[bm-03](../../../architecture/data-mapping.md#mapping-responsibility)辦理。"
     }
   ]
 }

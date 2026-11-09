@@ -50,7 +50,7 @@
         "rules/coding/validation.md#責任分工",
         "rules/coding/error-handling.md#程式缺陷與不變條件",
         "rules/coding/domain-modeling.md#專屬型別",
-        "rules/coding/code-design.md#cl-06",
+        "rules/coding/code-design.md#construction-entrypoints",
         "rules/coding/domain-modeling.md#狀態建模"
       ],
       "reason": "JN-06：本句的三個整份規範引用移到檔頭，沒有縮小為單一小節；承接證據分別列接收驗證、缺陷處置及建立有效的既有原文。整理前原文未提交，無法證明完整覆蓋。；本句的接收、一般建立、專屬型別建立與狀態變更逐項登錄來源；可信內部免重查由資料驗證原句承接，未用專屬型別代替全部建立入口。整理前原文未提交，無法證明完整覆蓋。"
@@ -415,7 +415,7 @@
           "uri": "rules/coding/validation.md#責任分工"
         },
         {
-          "uri": "rules/coding/code-design.md#cl-06"
+          "uri": "rules/coding/code-design.md#construction-entrypoints"
         },
         {
           "uri": "rules/coding/domain-modeling.md#狀態建模"
@@ -434,7 +434,7 @@
         },
         {
           "text": "Java 接收、建立及狀態變更位置依上述非空保證驗證",
-          "source_uri": "rules/coding/code-design.md#cl-06",
+          "source_uri": "rules/coding/code-design.md#construction-entrypoints",
           "source_text": "所有建立入口須一致保護必要條件，避免各自維護不一致的驗證。"
         },
         {
@@ -455,7 +455,7 @@
       ],
       "common_sources": [
         "rules/coding/validation.md#責任分工",
-        "rules/coding/code-design.md#cl-06",
+        "rules/coding/code-design.md#construction-entrypoints",
         "rules/coding/domain-modeling.md#狀態建模",
         "rules/coding/domain-modeling.md#專屬型別"
       ]
@@ -470,7 +470,7 @@
         },
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-tools",
-          "text": "可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#au-01)納入檢查、驗證與審查。"
+          "text": "可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#verification-coverage)納入檢查、驗證與審查。"
         }
       ],
       "reason": "本句的工具辨識方式、非空預設、可空位置及範圍保留；可自動判斷違規納入檢查改連共同把關的工具執行原句，目的兩句合起來承接原句。",
@@ -478,12 +478,12 @@
       "removed_assertions": [
         {
           "text": "，將可自動判斷的違規納入檢查",
-          "source_uri": "rules/quality/rule-verification.md#au-01",
+          "source_uri": "rules/quality/rule-verification.md#verification-coverage",
           "source_text": "可由工具判斷的要求，必須使用適用的編譯器、靜態分析、Lint 或架構檢查執行，例如明確型別宣告、不安全轉型與依賴限制。"
         }
       ],
       "common_sources": [
-        "rules/quality/rule-verification.md#au-01"
+        "rules/quality/rule-verification.md#verification-coverage"
       ]
     },
     {
@@ -492,7 +492,7 @@
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-tools",
-          "text": "可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#au-01)納入檢查、驗證與審查。"
+          "text": "可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#verification-coverage)納入檢查、驗證與審查。"
         },
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-tools",
@@ -504,17 +504,17 @@
       "removed_assertions": [
         {
           "text": "工具無法涵蓋的部分仍須驗證與審查，",
-          "source_uri": "rules/quality/rule-verification.md#au-01",
+          "source_uri": "rules/quality/rule-verification.md#verification-coverage",
           "source_text": "工具尚未涵蓋的要求必須列入審查清單，不能因 CI 通過就視為全部符合。"
         },
         {
           "text": "工具無法涵蓋的部分仍須驗證與審查，",
-          "source_uri": "rules/quality/rule-verification.md#au-01",
+          "source_uri": "rules/quality/rule-verification.md#verification-coverage",
           "source_text": "行為測試驗證錯誤輸入拒絕、資料轉換、空值語意、業務條件，以及 Response 不含敏感欄位等實際行為。"
         }
       ],
       "common_sources": [
-        "rules/quality/rule-verification.md#au-01"
+        "rules/quality/rule-verification.md#verification-coverage"
       ]
     },
     {
@@ -532,12 +532,12 @@
       ]
     },
     {
-      "source": "依[第三方空值行為的共通要求](../../../coding/nullability.md#jn-08)執行。",
+      "source": "依[第三方空值行為的共通要求](../../../coding/nullability.md#third-party-null-contract)執行。",
       "action": "改寫",
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-third-party-optional",
-          "text": "依[第三方空值行為](../../../coding/nullability.md#jn-08)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。"
+          "text": "依[第三方空值行為](../../../coding/nullability.md#third-party-null-contract)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。"
         }
       ],
       "reason": "本句只調整共同要求的連結文字及執行敘述，第三方空值的 jn-08 目的地未變；不把另一句的 Optional 轉換當作此句被刪政策。",
@@ -552,7 +552,7 @@
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-third-party-optional",
-          "text": "依[第三方空值行為](../../../coding/nullability.md#jn-08)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。"
+          "text": "依[第三方空值行為](../../../coding/nullability.md#third-party-null-contract)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。"
         }
       ],
       "reason": "本句保留正常查無資料才轉空 Optional；只刪契約不明或違約不得推測的後半，逐字承接依據為 jn-08 的保證不明或違反契約條款。",
@@ -560,21 +560,21 @@
       "removed_assertions": [
         {
           "text": "契約不明或違約的 `null` 不得擅自視為正常缺值",
-          "source_uri": "rules/coding/nullability.md#jn-08",
+          "source_uri": "rules/coding/nullability.md#third-party-null-contract",
           "source_text": "對方明訂 `null` 表示正常查無資料時，才轉成內部正常缺值；保證不明或違反契約的 `null`，不得直接當成非空使用，也不得擅自解讀為正常缺值。"
         }
       ],
       "common_sources": [
-        "rules/coding/nullability.md#jn-08"
+        "rules/coding/nullability.md#third-party-null-contract"
       ]
     },
     {
-      "source": "依[空值契約變更的共通要求](../../../coding/nullability.md#jn-09)執行。",
+      "source": "依[空值契約變更的共通要求](../../../coding/nullability.md#null-contract-evolution)執行。",
       "action": "改寫",
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-evolution",
-          "text": "依[空值契約變更](../../../coding/nullability.md#jn-09)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。"
+          "text": "依[空值契約變更](../../../coding/nullability.md#null-contract-evolution)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。"
         }
       ],
       "reason": "本句只調整同一 jn-09 連結的顯示文字，並明說評估相容性與使用端影響，沒有將下一句的同步更新義務省略。",
@@ -589,7 +589,7 @@
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-null-contract-evolution",
-          "text": "依[空值契約變更](../../../coding/nullability.md#jn-09)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。"
+          "text": "依[空值契約變更](../../../coding/nullability.md#null-contract-evolution)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。"
         }
       ],
       "reason": "本句保留標註、Optional 及缺值處置同步更新；刪除的簽章未變不能視為相容，由 jn-09 即使型別或方法簽章未變的明文承接。",
@@ -597,12 +597,12 @@
       "removed_assertions": [
         {
           "text": "不因 Java 方法簽章未變就視為相容",
-          "source_uri": "rules/coding/nullability.md#jn-09",
+          "source_uri": "rules/coding/nullability.md#null-contract-evolution",
           "source_text": "空值契約變更須評估參數、回傳值及欄位對使用端的影響，涵蓋是否允許缺值、缺值語意、標註及實際處置；即使型別或方法簽章未變，也不得直接視為相容。"
         }
       ],
       "common_sources": [
-        "rules/coding/nullability.md#jn-09"
+        "rules/coding/nullability.md#null-contract-evolution"
       ]
     },
     {
@@ -672,12 +672,12 @@
       ]
     },
     {
-      "source": "依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#jn-12)執行。",
+      "source": "依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#api-absence-representation)執行。",
       "action": "改寫",
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-api-absence",
-          "text": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#jn-12)落實對外契約。"
+          "text": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#api-absence-representation)落實對外契約。"
         }
       ],
       "reason": "本句的 API jn-12 引用保留於對外契約一句，連結目的地不變；它承接共同缺值轉換規範，而非另設 Java 對外表示政策。",
@@ -692,7 +692,7 @@
       "targets": [
         {
           "uri": "rules/stacks/java/common/null-and-optional.md#java-api-absence",
-          "text": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#jn-12)落實對外契約。"
+          "text": "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#api-absence-representation)落實對外契約。"
         }
       ],
       "reason": "本句保留 Java Optional 與內部 null 的 API 邊界轉換；不要求外露 Optional 由共同原文不直接暴露語言缺值包裝型別承接，後者較強且未放寬。",
@@ -700,12 +700,12 @@
       "removed_assertions": [
         {
           "text": "不要求對外暴露 `Optional`",
-          "source_uri": "rules/interfaces/api-contracts.md#jn-12",
+          "source_uri": "rules/interfaces/api-contracts.md#api-absence-representation",
           "source_text": "內部缺值型別須在 API 邊界依公開契約轉換，不直接暴露語言的缺值包裝型別，也不得由框架預設序列化行為決定對外語意。"
         }
       ],
       "common_sources": [
-        "rules/interfaces/api-contracts.md#jn-12"
+        "rules/interfaces/api-contracts.md#api-absence-representation"
       ]
     },
     {
@@ -722,12 +722,12 @@
       "removed_assertions": [
         {
           "text": "不能用預設輸出代替契約",
-          "source_uri": "rules/interfaces/api-contracts.md#jn-12",
+          "source_uri": "rules/interfaces/api-contracts.md#api-absence-representation",
           "source_text": "內部缺值型別須在 API 邊界依公開契約轉換，不直接暴露語言的缺值包裝型別，也不得由框架預設序列化行為決定對外語意。"
         }
       ],
       "common_sources": [
-        "rules/interfaces/api-contracts.md#jn-12"
+        "rules/interfaces/api-contracts.md#api-absence-representation"
       ]
     },
     {
@@ -768,7 +768,7 @@
       "insert": [
         "本文件承接[空值語意](../../../coding/nullability.md)、[型別安全](../../../coding/type-safety.md)、[錯誤處理](../../../coding/error-handling.md)、[資料驗證](../../../coding/validation.md)與[領域建模](../../../coding/domain-modeling.md)，適用於自行撰寫的 Java 程式碼，包含測試與整合元件。語法與 API 須符合[版本要求](version-policy.md)，型別使用另依[型別宣告與泛型](types-and-generics.md)。\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 9,
@@ -781,7 +781,7 @@
       "insert": [
         "<a id=\"java-query-absence\"></a>\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 14,
@@ -812,7 +812,7 @@
         "`Optional` 主要用於方法回傳的正常缺值。參數與欄位須依業務語意設計，不全面包裝，也不全面禁止使用；採用時須確認契約及相關框架可正確處理。需要區分多種狀態時，依[空值語意](../../../coding/nullability.md#空值語意)使用能完整表達狀態的明確型別，不得以 `Optional` 混合表示。\n",
         "\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 16,
@@ -820,12 +820,12 @@
         "5. **集合內容的空值**。集合與陣列元素，以及映射的鍵和值，預設不得為 `null`。必要缺值須明訂語意與處理方式，優先以明確型別表達。外部資料含有不允許的 `null` 時，須在邊界拒絕或依契約處理，不得默默移除或替換而掩蓋不合法資料。\n",
         "6. **非空驗證的位置**。依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。\n",
         "7. **工具可辨識的契約**。專案須統一可由工具辨識的空值契約表達方式，明訂非空預設、可空位置與適用範圍，將可自動判斷的違規納入檢查。標註、文件與實際行為須一致；工具無法涵蓋的部分仍須驗證與審查，標註不能取代外部輸入的執行期驗證。註解套件與工具由專案依版本及框架選定。\n",
-        "8. **第三方空值行為**。依[第三方空值行為的共通要求](../../../coding/nullability.md#jn-08)執行。第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`；契約不明或違約的 `null` 不得擅自視為正常缺值。\n"
+        "8. **第三方空值行為**。依[第三方空值行為的共通要求](../../../coding/nullability.md#third-party-null-contract)執行。第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`；契約不明或違約的 `null` 不得擅自視為正常缺值。\n"
       ],
       "insert": [
         "<a id=\"java-container-nulls\"></a>\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 21,
@@ -841,29 +841,29 @@
         "\n",
         "### 工具可辨識的契約\n",
         "\n",
-        "專案須統一可由工具辨識的空值契約表達方式，明訂非空預設、可空位置與適用範圍。可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#au-01)納入檢查、驗證與審查。標註、文件與實際行為須一致；標註不能取代外部輸入的執行期驗證。註解套件與工具由專案依版本及框架選定。\n",
+        "專案須統一可由工具辨識的空值契約表達方式，明訂非空預設、可空位置與適用範圍。可自動判斷的違規及工具缺口依[共同把關](../../../quality/rule-verification.md#verification-coverage)納入檢查、驗證與審查。標註、文件與實際行為須一致；標註不能取代外部輸入的執行期驗證。註解套件與工具由專案依版本及框架選定。\n",
         "\n",
         "<a id=\"java-third-party-optional\"></a>\n",
         "\n",
         "### 第三方空值行為\n",
         "\n",
-        "依[第三方空值行為](../../../coding/nullability.md#jn-08)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。\n",
+        "依[第三方空值行為](../../../coding/nullability.md#third-party-null-contract)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。\n",
         "\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 23,
       "remove": [
-        "9. **空值契約變更**。依[空值契約變更的共通要求](../../../coding/nullability.md#jn-09)執行。Java 空值標註、`Optional` 使用及缺值處置須同步更新，不因 Java 方法簽章未變就視為相容。\n",
+        "9. **空值契約變更**。依[空值契約變更的共通要求](../../../coding/nullability.md#null-contract-evolution)執行。Java 空值標註、`Optional` 使用及缺值處置須同步更新，不因 Java 方法簽章未變就視為相容。\n",
         "10. **空值情境驗收**。依[規範驗證](../../../quality/rule-verification.md)、[共通測試策略](../../../quality/testing.md)、[型別安全](../../../coding/type-safety.md)執行。保留本文件驗收表中的 `Optional`、非空標註及實際 API 路徑案例；不合法資料從允許承接它的邊界輸入。\n",
         "11. **預設非空與明確語意**。Java 的參數、回傳值與欄位預設不允許 `null`；允許時須明確標示並定義語意，不得以同一個 `null` 混合表示需要不同處理方式的狀態。查詢結果另遵循本文件的 `Optional` 與空集合要求。\n",
-        "12. **API 邊界的缺值轉換**。依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#jn-12)執行。Java 的 `Optional` 與內部 `null` 在 API 邊界轉換；不要求對外暴露 `Optional`。具體序列化配置由 Framework 規範落實，不能用預設輸出代替契約。\n"
+        "12. **API 邊界的缺值轉換**。依[API 邊界的缺值轉換的共通要求](../../../interfaces/api-contracts.md#api-absence-representation)執行。Java 的 `Optional` 與內部 `null` 在 API 邊界轉換；不要求對外暴露 `Optional`。具體序列化配置由 Framework 規範落實，不能用預設輸出代替契約。\n"
       ],
       "insert": [
         "<a id=\"java-null-contract-evolution\"></a>\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 28,
@@ -873,7 +873,7 @@
       "insert": [
         "### 空值契約變更\n",
         "\n",
-        "依[空值契約變更](../../../coding/nullability.md#jn-09)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。\n",
+        "依[空值契約變更](../../../coding/nullability.md#null-contract-evolution)評估相容性與使用端影響；Java 空值標註、`Optional` 使用及缺值處置須同步更新。\n",
         "\n",
         "<a id=\"java-nonnull-default\"></a>\n",
         "\n",
@@ -885,14 +885,14 @@
         "\n",
         "### API 邊界的缺值轉換\n",
         "\n",
-        "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#jn-12)落實對外契約。具體序列化配置由 Framework 規範落實。\n",
+        "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#api-absence-representation)落實對外契約。具體序列化配置由 Framework 規範落實。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 34,
@@ -903,7 +903,7 @@
         "不合法資料從允許承接它的邊界輸入；型別要求依[型別安全](../../../coding/type-safety.md)。\n",
         "\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 43,
@@ -913,7 +913,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 45,
@@ -931,7 +931,7 @@
         "| <a id=\"acceptance-java-optional-adaptation\"></a>[第三方轉換](#java-third-party-optional) | 檢查第三方回傳值轉成 `Optional` 的路徑，只有契約允許的正常缺值才能使用空的 `Optional`。 |\n",
         "| <a id=\"acceptance-java-optional-coverage\"></a>覆蓋要求（原驗收入口） | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。Optional、非空標註與實際 API 路徑均納入適用案例。 |\n"
       ],
-      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     }
   ],
   "acceptance_changes": [

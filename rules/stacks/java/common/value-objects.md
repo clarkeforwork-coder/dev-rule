@@ -12,7 +12,7 @@
 
 ### 不可變性
 
-依[不可變性的共通要求](../../../coding/domain-modeling.md#vo-03)執行。Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。
+依[不可變性的共通要求](../../../coding/domain-modeling.md#value-immutability)執行。Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。
 
 ## 相等性、正規化與運算
 
@@ -26,13 +26,13 @@
 
 ### 正規化規則
 
-依[正規化規則的共通要求](../../../coding/domain-modeling.md#vo-05)執行。Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。
+依[正規化規則的共通要求](../../../coding/domain-modeling.md#value-normalization)執行。Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。
 
 <a id="java-value-operations"></a>
 
 ### 運算責任
 
-依[運算責任的共通要求](../../../coding/domain-modeling.md#vo-06)執行。跨幣別等依賴外部政策的操作由領域元件協調。
+依[運算責任的共通要求](../../../coding/domain-modeling.md#value-operations)執行。跨幣別等依賴外部政策的操作由領域元件協調。
 
 ## 還原、實作形式與對外表示
 
@@ -40,7 +40,7 @@
 
 ### 資料還原
 
-依[資料還原的共通要求](../../../coding/domain-modeling.md#vo-07)執行。Java 建構、反序列化及持久化還原均須維持共同保證；一般類別或 `record` 的實作選擇不得形成驗證旁路。
+依[資料還原的共通要求](../../../coding/domain-modeling.md#value-restoration)執行。Java 建構、反序列化及持久化還原均須維持共同保證；一般類別或 `record` 的實作選擇不得形成驗證旁路。
 
 <a id="java-value-implementation"></a>
 
@@ -81,7 +81,7 @@
 
 | 對應要求 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-value-validity"></a>[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[建立入口](../../../coding/code-design.md#cl-06)、[驗證責任](../../../coding/validation.md#責任分工) | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |
+| <a id="acceptance-java-value-validity"></a>[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[建立入口](../../../coding/code-design.md#construction-entrypoints)、[驗證責任](../../../coding/validation.md#責任分工) | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |
 | <a id="acceptance-java-final-references"></a>[不可變性](#java-value-immutability) | 檢查 final 欄位仍可能指向可變內容的路徑；不得以欄位修飾詞作為不可變性證據。 |
 | <a id="acceptance-java-value-equality"></a>[值相等的條件](#java-value-equality) | 驗證不同實例的相等值及具代表性的不相等值，相等物件的雜湊值須相同。適用時確認作為集合元素或映射鍵的行為符合契約，不要求不相等物件一定具有不同雜湊值。 |
 | <a id="acceptance-java-generated-representation"></a>[一般類別與 record](#java-value-implementation)、[診斷字串與交換格式](#java-diagnostic-representation) | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |

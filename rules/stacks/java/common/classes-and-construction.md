@@ -4,7 +4,7 @@
 
 本文件承接[框架與依賴組裝](../../../architecture/dependency-composition.md)及[程式碼設計與公開介面](../../../coding/code-design.md)，定義 Java 類別契約、建立方式與生命週期的共同要求。具體 DI、代理與啟動配置由 Framework 規範及專案落實，仍須符合專案架構的依賴方向。
 
-本文件另依[cl-02](../../../coding/code-design.md#cl-02)、[cl-06](../../../coding/code-design.md#cl-06)、[cl-08](../../../coding/code-design.md#cl-08)、[cl-03](../../../coding/resource-lifecycle.md#cl-03)、[cl-09](../../../coding/resource-lifecycle.md#cl-09)辦理。
+本文件另依[cl-02](../../../coding/code-design.md#substitutability)、[cl-06](../../../coding/code-design.md#construction-entrypoints)、[cl-08](../../../coding/code-design.md#interface-capabilities)、[cl-03](../../../coding/resource-lifecycle.md#initialization-readiness)、[cl-09](../../../coding/resource-lifecycle.md#shared-lifecycle)辦理。
 
 ## 介面、繼承與建立條件
 
@@ -26,7 +26,7 @@
 
 ### 明確取得依賴
 
-依[明確取得依賴的共通要求](../../../architecture/dependency-composition.md#cl-05)執行。Java 服務透過明確依賴取得；需要延後或按次建立時使用工廠或提供者，不隱藏查全域容器、靜態服務登錄或單例。
+依[明確取得依賴的共通要求](../../../architecture/dependency-composition.md#explicit-dependencies)執行。Java 服務透過明確依賴取得；需要延後或按次建立時使用工廠或提供者，不隱藏查全域容器、靜態服務登錄或單例。
 
 <a id="java-override-scope"></a>
 
@@ -40,7 +40,7 @@
 
 ### 契約與生命週期驗收
 
-依[契約與生命週期驗收的共通要求](../../../coding/resource-lifecycle.md#cl-10)執行。Java 建構、繼承、覆寫及框架代理須驗證實際路徑；單純值物件不必啟動完整框架。
+依[契約與生命週期驗收的共通要求](../../../coding/resource-lifecycle.md#lifecycle-verification)執行。Java 建構、繼承、覆寫及框架代理須驗證實際路徑；單純值物件不必啟動完整框架。
 
 <a id="java-closing-requirements"></a>
 

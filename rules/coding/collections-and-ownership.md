@@ -6,30 +6,35 @@
 
 ## 契約要求
 
+<a id="collection-ownership"></a>
 <a id="co-01"></a>
 
 ### 明確定義修改權與參考關係
 
 集合的接收與回傳契約須明訂修改權、參考保留及快照或檢視語意，涵蓋集合本身與元素。須能辨識接收方是否保留傳入參考、提供方是否仍可修改，以及來源變更是否反映到結果。實作須維持約定的所有權與隔離，不得讓外部修改繞過必要的業務規則；不要求所有集合都複製。
 
+<a id="snapshots-and-views"></a>
 <a id="co-02"></a>
 
 ### 區分不可修改與不可變快照
 
 不得將不可修改的集合介面或包裝直接視為不可變快照。需要快照時，須依元素可變性建立足夠的隔離；僅複製集合外層不一定隔離可變元素。提供唯讀檢視時，須明訂來源變更是否可見，不得讓實際行為違反契約。
 
+<a id="order-and-duplicates"></a>
 <a id="co-03"></a>
 
 ### 順序與重複資料
 
 集合契約須明訂所需的順序保證與重複資料處理方式，選用或轉換集合時不得意外改變這些語意。建立映射遇到重複鍵時，須依明確規則拒絕、合併或取代，不得默默遺失資料；不得僅為去重而移除契約允許的重複項目。
 
+<a id="traversal-mutation"></a>
 <a id="co-04"></a>
 
 ### 遍歷期間的修改
 
 遍歷期間需要修改集合時，須使用符合集合契約的操作方式，並明確界定處理範圍。可依需求使用支援的移除機制，或先產生結果再統一套用。不得依賴未拋例外來推定安全，也不得以捕捉遍歷修改例外後直接重跑來掩蓋問題。涉及併發修改時，須另行保障一致性與副作用安全。
 
+<a id="collection-verification"></a>
 <a id="co-09"></a>
 
 ### 所有權與行為驗收
@@ -42,11 +47,11 @@
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-collection-ownership"></a>[明確定義修改權與參考關係](#co-01)、[區分不可修改與不可變快照](#co-02) | 修改傳入或回傳的集合與適用的可變元素，確認修改權及隔離符合契約。改變來源後核對快照仍固定、檢視依約反映變更，不能只測試增刪操作是否遭拒。 |
-| <a id="acceptance-order-duplicates"></a>[順序與重複資料](#co-03) | 以有順序意義、重複元素及重複鍵的資料驗證選用與轉換後的結果，確認拒絕、合併或取代符合契約，沒有默默丟失應保留項目。 |
-| <a id="acceptance-traversal-mutation"></a>[遍歷期間的修改](#co-04) | 驗證適用的遍歷新增、移除或其他修改路徑，核對實際處理項目與副作用。確認沒有以例外後重跑掩蓋問題，不僅以未拋例外判定安全。 |
-| <a id="acceptance-collection-coverage"></a>[所有權與行為驗收](#co-09) | 核對測試涵蓋變更影響的所有權與行為保證，不以元素內容相同取代參考隔離、生命週期或失敗狀態的驗證，也不強制測試不適用的情境。 |
+| <a id="acceptance-collection-ownership"></a>[明確定義修改權與參考關係](#collection-ownership)、[區分不可修改與不可變快照](#snapshots-and-views) | 修改傳入或回傳的集合與適用的可變元素，確認修改權及隔離符合契約。改變來源後核對快照仍固定、檢視依約反映變更，不能只測試增刪操作是否遭拒。 |
+| <a id="acceptance-order-duplicates"></a>[順序與重複資料](#order-and-duplicates) | 以有順序意義、重複元素及重複鍵的資料驗證選用與轉換後的結果，確認拒絕、合併或取代符合契約，沒有默默丟失應保留項目。 |
+| <a id="acceptance-traversal-mutation"></a>[遍歷期間的修改](#traversal-mutation) | 驗證適用的遍歷新增、移除或其他修改路徑，核對實際處理項目與副作用。確認沒有以例外後重跑掩蓋問題，不僅以未拋例外判定安全。 |
+| <a id="acceptance-collection-coverage"></a>[所有權與行為驗收](#collection-verification) | 核對測試涵蓋變更影響的所有權與行為保證，不以元素內容相同取代參考隔離、生命週期或失敗狀態的驗證，也不強制測試不適用的情境。 |
 
 ## 跨主題契約
 
-共享集合複合操作的原子性依[併發與非同步](concurrency-and-async.md#co-05)；大量資料累積依[效能與資源使用](../quality/performance.md#co-06)；延遲讀取的所有權及關閉依[資源生命週期](resource-lifecycle.md#co-07)。批次修改依[多步驟與部分成功](error-handling.md#多步驟與部分成功)及[失敗後狀態](error-handling.md#failure-state-guarantee)。
+共享集合複合操作的原子性依[併發與非同步](concurrency-and-async.md#compound-atomicity)；大量資料累積依[效能與資源使用](../quality/performance.md#bounded-accumulation)；延遲讀取的所有權及關閉依[資源生命週期](resource-lifecycle.md#lazy-resource-lifetime)。批次修改依[多步驟與部分成功](error-handling.md#多步驟與部分成功)及[失敗後狀態](error-handling.md#failure-state-guarantee)。

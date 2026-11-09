@@ -96,6 +96,7 @@
 
 ## 動態呼叫的故障分類
 
+<a id="dynamic-failure-classification"></a>
 <a id="rf-05"></a>
 
 ### 區分故障與執行結果
@@ -108,5 +109,5 @@
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-dynamic-failure"></a>[區分故障與執行結果](#rf-05) | 分別觸發適用的解析、存取、契約及目標執行故障，確認原因與分類保留，未將已執行的故障誤當未找到目標，且未進行無安全依據的替換或重跑。 |
+| <a id="acceptance-dynamic-failure"></a>[區分故障與執行結果](#dynamic-failure-classification) | 分別觸發適用的解析、存取、契約及目標執行故障，確認原因與分類保留，未將已執行的故障誤當未找到目標，且未進行無安全依據的替換或重跑。 |
 | <a id="acceptance-failure-state"></a>[失敗後狀態](#failure-state-guarantee) | 觸發批次修改的適用失敗路徑，核對例外後實際狀態符合約定，不以拋例外推定未修改，也不要求所有集合操作具備交易能力。 |

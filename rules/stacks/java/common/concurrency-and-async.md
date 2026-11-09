@@ -4,7 +4,7 @@
 
 本文件承接[錯誤處理](../../../coding/error-handling.md)與[效能與資源使用](../../../quality/performance.md)，定義 Java 併發工作的所有權、同步、結果及生命週期。中斷與資源清理另依[例外與資源管理](exceptions-and-resources.md)，具體 API 須符合[版本要求](version-policy.md)。
 
-本文件另依[ca-01](../../../coding/concurrency-and-async.md#ca-01)、[ca-04](../../../coding/concurrency-and-async.md#ca-04)辦理。
+本文件另依[ca-01](../../../coding/concurrency-and-async.md#task-ownership)、[ca-04](../../../coding/concurrency-and-async.md#deadline-budget)辦理。
 
 ## 工作所有權與執行資源
 
@@ -12,7 +12,7 @@
 
 ### 統一管理執行資源
 
-依[統一管理執行資源的共通要求](../../../coding/concurrency-and-async.md#ca-02)執行。Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作；虛擬執行緒也須遵守下游容量。
+依[統一管理執行資源的共通要求](../../../coding/concurrency-and-async.md#execution-resources)執行。Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作；虛擬執行緒也須遵守下游容量。
 
 <a id="java-visibility-sharing"></a>
 
@@ -26,7 +26,7 @@
 
 ### 取消傳遞與實際停止
 
-依[取消傳遞與實際停止的共通要求](../../../coding/concurrency-and-async.md#ca-05)執行。Java 取消訊號及中斷依任務契約傳遞，不把取消最外層 Future 視為全部子工作已停止。
+依[取消傳遞與實際停止的共通要求](../../../coding/concurrency-and-async.md#cancellation-and-termination)執行。Java 取消訊號及中斷依任務契約傳遞，不把取消最外層 Future 視為全部子工作已停止。
 
 <a id="java-result-reception"></a>
 
@@ -38,7 +38,7 @@
 
 ### 多工作組合的完成條件
 
-依[多工作組合的完成條件的共通要求](../../../coding/concurrency-and-async.md#ca-07)執行。Java 多工作組合須驗證完成順序及剩餘任務處置，第一個完成不等於第一個成功。
+依[多工作組合的完成條件的共通要求](../../../coding/concurrency-and-async.md#task-completion-contract)執行。Java 多工作組合須驗證完成順序及剩餘任務處置，第一個完成不等於第一個成功。
 
 ## 執行位置、脈絡與同步
 
@@ -46,19 +46,19 @@
 
 ### 執行位置與阻塞行為
 
-依[執行位置與阻塞行為的共通要求](../../../coding/concurrency-and-async.md#ca-08)執行。Java 任務及回呼須明確安排 executor 與阻塞行為，避免占用同一受限 executor 等待其排隊工作。
+依[執行位置與阻塞行為的共通要求](../../../coding/concurrency-and-async.md#execution-and-blocking)執行。Java 任務及回呼須明確安排 executor 與阻塞行為，避免占用同一受限 executor 等待其排隊工作。
 
 <a id="java-context-propagation"></a>
 
 ### 明確傳遞與清理脈絡
 
-依[明確傳遞與清理脈絡的共通要求](../../../coding/concurrency-and-async.md#ca-09)執行。Java 不假設 `ThreadLocal` 或日誌脈絡自動沿用；共用執行緒上的脈絡須在結束時清理或還原。
+依[明確傳遞與清理脈絡的共通要求](../../../coding/concurrency-and-async.md#context-propagation)執行。Java 不假設 `ThreadLocal` 或日誌脈絡自動沿用；共用執行緒上的脈絡須在結束時清理或還原。
 
 <a id="java-lock-scope"></a>
 
 ### 鎖定範圍與取得策略
 
-依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#ca-10)執行。Java 同步與鎖的實作須涵蓋全部退出路徑，必要檢查不能為縮短持鎖而移出原子範圍。
+依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#lock-scope)執行。Java 同步與鎖的實作須涵蓋全部退出路徑，必要檢查不能為縮短持鎖而移出原子範圍。
 
 ## 關閉與驗證
 
@@ -66,13 +66,13 @@
 
 ### 受控關閉
 
-依[受控關閉的共通要求](../../../coding/resource-lifecycle.md#ca-11)執行。Java 執行元件開始關閉或發出停止要求不代表工作全數結束；實際關閉與資源釋放依共同契約驗證。
+依[受控關閉的共通要求](../../../coding/resource-lifecycle.md#controlled-shutdown)執行。Java 執行元件開始關閉或發出停止要求不代表工作全數結束；實際關閉與資源釋放依共同契約驗證。
 
 <a id="java-controlled-verification"></a>
 
 ### 可控制的併發驗收
 
-依[可控制的併發驗收的共通要求](../../../quality/testing.md#ca-12)執行。Java 測試使用可控制的協調與完成條件，並審查同步／可見性設計，不以固定睡眠或壓力測試單獨證明安全。
+依[可控制的併發驗收的共通要求](../../../quality/testing.md#controlled-interleaving)執行。Java 測試使用可控制的協調與完成條件，並審查同步／可見性設計，不以固定睡眠或壓力測試單獨證明安全。
 
 <a id="java-closing-requirements"></a>
 

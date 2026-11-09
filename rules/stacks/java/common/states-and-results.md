@@ -4,7 +4,7 @@
 
 本文件承接[領域建模](../../../coding/domain-modeling.md)與[錯誤處理](../../../coding/error-handling.md)，定義 Java 狀態與操作結果的型別要求。實作須符合[版本要求](version-policy.md)、[型別宣告與泛型](types-and-generics.md)及[空值契約](null-and-optional.md)。
 
-本文件另依[st-04](../../../coding/domain-modeling.md#st-04)、[st-06](../../../coding/domain-modeling.md#st-06)、[st-09](../../../coding/domain-modeling.md#st-09)辦理。
+本文件另依[st-04](../../../coding/domain-modeling.md#operation-results)、[st-06](../../../coding/domain-modeling.md#exhaustive-result-handling)、[st-09](../../../coding/domain-modeling.md#result-facts)辦理。
 
 ## 狀態與轉換
 
@@ -46,13 +46,13 @@
 
 ### 封閉或允許擴充
 
-依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。
+依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#model-extensibility)執行。支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。
 
 <a id="java-model-acceptance"></a>
 
 ### 模型驗收
 
-依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。
+依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。
 
 <a id="java-closing-requirements"></a>
 

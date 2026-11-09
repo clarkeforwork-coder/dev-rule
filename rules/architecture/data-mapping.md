@@ -20,18 +20,21 @@
 
 ## 映射執行與方向契約
 
+<a id="mapping-responsibility"></a>
 <a id="bm-03"></a>
 
 ### 聚焦轉換與必要驗證
 
 映射須聚焦契約定義的資料轉換與必要驗證，不得隱藏外部存取、業務決策或業務副作用。可依契約解析格式及建立專屬型別；查詢補充資料、決定折扣、寫入資料庫或發送事件等行為，由負責元件明確協調，再進行映射。
 
+<a id="directional-mapping"></a>
 <a id="bm-07"></a>
 
 ### 各方向分別定義
 
 各方向的映射須分別定義欄位、來源與轉換規則，不得預設輸出映射可反向用於輸入。只有契約明確允許且轉換可逆時，才共用或產生反向映射；不得將唯讀、衍生或經遮罩的資料直接寫回業務物件。工具具備反向產生功能不代表可免除上述判斷。
 
+<a id="mapping-path-verification"></a>
 <a id="bm-09"></a>
 
 ### 驗證實際映射路徑
@@ -44,12 +47,12 @@
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-mapping-responsibility"></a>[聚焦轉換與必要驗證](#bm-03) | 審查映射及其呼叫路徑，確認外部資料取得、業務決策與副作用由負責元件明確協調，沒有藏在單純轉換的方法中。 |
-| <a id="acceptance-directional-mapping"></a>[各方向分別定義](#bm-07) | 分別核對輸入與輸出欄位及轉換；驗證唯讀、衍生與遮罩資料不會被直接寫回。採用反向映射時，須有允許依據並確認可逆性。 |
-| <a id="acceptance-mapping-paths"></a>[驗證實際映射路徑](#bm-09) | 確認測試執行實際採用的映射實作或工具產出，必要時涵蓋序列化與反序列化邊界；斷言須涵蓋欄位值、拒絕結果與禁止傳遞的資料，不僅確認物件非空。對需要區分更新意圖的契約，從實際接收入口分別提供省略、明確清空及設定值，確認意圖傳遞到業務操作並產生約定效果。 |
+| <a id="acceptance-mapping-responsibility"></a>[聚焦轉換與必要驗證](#mapping-responsibility) | 審查映射及其呼叫路徑，確認外部資料取得、業務決策與副作用由負責元件明確協調，沒有藏在單純轉換的方法中。 |
+| <a id="acceptance-directional-mapping"></a>[各方向分別定義](#directional-mapping) | 分別核對輸入與輸出欄位及轉換；驗證唯讀、衍生與遮罩資料不會被直接寫回。採用反向映射時，須有允許依據並確認可逆性。 |
+| <a id="acceptance-mapping-paths"></a>[驗證實際映射路徑](#mapping-path-verification) | 確認測試執行實際採用的映射實作或工具產出，必要時涵蓋序列化與反序列化邊界；斷言須涵蓋欄位值、拒絕結果與禁止傳遞的資料，不僅確認物件非空。對需要區分更新意圖的契約，從實際接收入口分別提供省略、明確清空及設定值，確認意圖傳遞到業務操作並產生約定效果。 |
 | <a id="acceptance-mapping-fields"></a>[轉換要求](#轉換要求)、[最小必要欄位](boundary-objects.md#明確列出最小必要) | 核對允許欄位及來源，以含管理欄位的外部輸入驗證其無法覆寫可信資料，並確認內部敏感欄位未輸出。映射設定或契約變更時，確認新增來源或目標欄位不會自動擴大允許範圍。 |
 | <a id="acceptance-mapping-owner"></a>[責任配置](#責任配置) | 核對映射所有權、位置與依賴方向，相同契約沒有散落的不一致轉換，不同責任也未被不當集中。 |
 
 ## 既有共同保證的落實
 
-映射失敗依[錯誤處理](../coding/error-handling.md)及[資料驗證](../coding/validation.md)區分外部不合法資料與內部缺陷。部分成功依[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功)。更新意圖依[空值語意](../coding/nullability.md)。隔離與共用值依[邊界隔離](boundary-objects.md)、[共用值契約](boundary-objects.md#隔離與拆分)、[值物件不可變性](../coding/domain-modeling.md#vo-03)及[集合所有權](../coding/collections-and-ownership.md)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#責任配置)、[介面用途](dependency-composition.md#介面與抽象)及[共用能力](shared-capabilities.md)。
+映射失敗依[錯誤處理](../coding/error-handling.md)及[資料驗證](../coding/validation.md)區分外部不合法資料與內部缺陷。部分成功依[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功)。更新意圖依[空值語意](../coding/nullability.md)。隔離與共用值依[邊界隔離](boundary-objects.md)、[共用值契約](boundary-objects.md#隔離與拆分)、[值物件不可變性](../coding/domain-modeling.md#value-immutability)及[集合所有權](../coding/collections-and-ownership.md)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#責任配置)、[介面用途](dependency-composition.md#介面與抽象)及[共用能力](shared-capabilities.md)。

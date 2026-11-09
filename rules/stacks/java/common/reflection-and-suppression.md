@@ -4,7 +4,7 @@
 
 本文件承接[型別安全](../../../coding/type-safety.md)及[規範治理](../../../workflow/rule-governance.md)，定義動態能力、特殊存取與檢查抑制的限制。手寫整合與測試程式碼適用相同要求，工具限制不構成自動例外。Java 型別要求另依[型別宣告與泛型](types-and-generics.md)，JDK 內部 API 與存取放寬另依[版本要求](version-policy.md)。
 
-本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)辦理。
+本文件另依[rf-04](../../../coding/type-safety.md#dynamic-contract-validation)、[rf-02](../../../quality/security.md#dynamic-target-authorization)辦理。
 
 ## 動態能力與存取邊界
 
@@ -24,7 +24,7 @@
 
 ### 區分故障與執行結果
 
-依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。Java 反射或動態呼叫的外層例外須保留原始原因。
+依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#dynamic-failure-classification)執行。Java 反射或動態呼叫的外層例外須保留原始原因。
 
 ## 檢查抑制與產生碼
 
@@ -32,19 +32,19 @@
 
 ### 限定檢查抑制
 
-依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。
+依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#suppression-scope)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。
 
 <a id="java-generated-code"></a>
 
 ### 產生碼不擴大豁免
 
-依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。
+依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#generated-code-exceptions)執行。Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。
 
 <a id="java-dynamic-verification"></a>
 
 ### 驗證限制實際有效
 
-依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#rf-08)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。
+依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。
 
 <a id="java-closing-requirements"></a>
 

@@ -2,6 +2,7 @@
 
 各主題的必測情境與審查項目列於下文。選擇測試層級、安排執行門檻及維護案例時，依[共通測試策略](testing.md)辦理。
 
+<a id="verification-coverage"></a>
 <a id="au-01"></a>
 
 ## 共同把關
@@ -224,12 +225,14 @@ Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言�
 
 ## 動態限制與文件驗證
 
+<a id="dynamic-control-verification"></a>
 <a id="rf-08"></a>
 
 ### 驗證限制實際有效
 
 動態能力、特殊存取或檢查抑制新增及變更時，須驗證允許與拒絕路徑、故障分類、必要不變條件及檢查範圍。涉及工具產出時，須驗證實際重新產生的結果，不僅測試成功案例或確認警告消失。
 
+<a id="document-verification"></a>
 <a id="nd-07"></a>
 
 ### 形式與語意分別驗收
@@ -242,9 +245,10 @@ Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言�
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-dynamic-controls"></a>[驗證限制實際有效](#rf-08) | 確認驗收包含成功與拒絕、故障及限制生效的證據，不以警告消失或合法目標成功作為全部符合的依據。 |
-| <a id="acceptance-document-verification"></a>[形式與語意分別驗收](#nd-07) | 驗證受影響的連結、文件參照與適用範例，確認在適用環境下可用。保留語意與契約審查，不把格式或文件產生成功當成全部符合。 |
+| <a id="acceptance-dynamic-controls"></a>[驗證限制實際有效](#dynamic-control-verification) | 確認驗收包含成功與拒絕、故障及限制生效的證據，不以警告消失或合法目標成功作為全部符合的依據。 |
+| <a id="acceptance-document-verification"></a>[形式與語意分別驗收](#document-verification) | 驗證受影響的連結、文件參照與適用範例，確認在適用環境下可用。保留語意與契約審查，不把格式或文件產生成功當成全部符合。 |
 
+<a id="reproducible-check-configuration"></a>
 <a id="au-02"></a>
 
 ## 檢查配置可重現
@@ -255,6 +259,7 @@ Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言�
 
 驗收：在依專案文件建立的環境執行同一入口，核對版本、規則及設定一致；確認不是只有 IDE 能執行。
 
+<a id="actual-check-scope"></a>
 <a id="au-03"></a>
 
 ## 實際執行範圍
@@ -265,6 +270,7 @@ Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言�
 
 驗收：以實際執行紀錄核對必要範圍，辨識略過、未收集測試及排除內容；無適用內容的判斷可追查。
 
+<a id="check-configuration-validation"></a>
 <a id="au-04"></a>
 
 ## 檢查設定本身的有效性
@@ -273,6 +279,7 @@ Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言�
 
 驗收：代表性正例通過、反例被適用規則拒絕，並確認排除或抑制沒有擴大到其他必要範圍。
 
+<a id="evidence-version-validity"></a>
 <a id="au-06"></a>
 
 ## 證據版本與快取有效性
@@ -281,6 +288,7 @@ Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言�
 
 驗收：從結果追溯程式版本、工具／規則設定及環境；改變受影響輸入或依賴時，確認快取失效或有可核對的有效性依據。
 
+<a id="diagnostic-classification"></a>
 <a id="au-08"></a>
 
 ## 結果分類與安全診斷
@@ -289,6 +297,7 @@ Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言�
 
 驗收：分別核對違規、測試失敗與工具故障的結果及處置；確認定位與重現資料足夠且經安全檢查。
 
+<a id="effective-merge-gates"></a>
 <a id="au-09"></a>
 
 ## 合併門檻實際有效
@@ -297,4 +306,4 @@ Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言�
 
 驗收：以受控方式確認不符合條件會阻擋，符合條件可依程序合併，涵蓋人工與自動化操作；例外具核准及紀錄。
 
-違規基準依[精確違規基準](../workflow/rule-governance.md#au-05)，自動修正依[自動修正的審查](../workflow/git-pr-review.md#au-07)。檢查抑制與產生碼依[規範治理](../workflow/rule-governance.md)，診斷遵守[安全](security.md)及[可觀測性](observability.md)。
+違規基準依[精確違規基準](../workflow/rule-governance.md#precise-violation-baseline)，自動修正依[自動修正的審查](../workflow/git-pr-review.md#automated-fix-review)。檢查抑制與產生碼依[規範治理](../workflow/rule-governance.md)，診斷遵守[安全](security.md)及[可觀測性](observability.md)。

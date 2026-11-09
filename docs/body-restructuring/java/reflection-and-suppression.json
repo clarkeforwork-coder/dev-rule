@@ -15,7 +15,7 @@
       "id": "RF-02",
       "kind": "整條移除",
       "targets": [
-        "rules/quality/security.md#rf-02"
+        "rules/quality/security.md#dynamic-target-authorization"
       ],
       "reason": "第三節判斷為重述，受控類別、方法與建構子及型別符合不能取代授權均由安全共通原句直接承接。"
     },
@@ -31,7 +31,7 @@
       "id": "RF-04",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/type-safety.md#rf-04"
+        "rules/coding/type-safety.md#dynamic-contract-validation"
       ],
       "reason": "第三節判斷為重述，能力、版本及型別驗證與不得只憑名稱或未驗證轉型由型別安全共通原句直接承接。"
     },
@@ -168,18 +168,18 @@
       ]
     },
     {
-      "source": "依[受控目標與授權的共通要求](../../../quality/security.md#rf-02)執行。",
+      "source": "依[受控目標與授權的共通要求](../../../quality/security.md#dynamic-target-authorization)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/quality/security.md#rf-02"
+          "uri": "rules/quality/security.md#dynamic-target-authorization"
         }
       ],
       "history_id": "RF-02",
       "removed_assertions": [
         {
-          "text": "依[受控目標與授權的共通要求](../../../quality/security.md#rf-02)執行。",
-          "source_uri": "rules/quality/security.md#rf-02",
+          "text": "依[受控目標與授權的共通要求](../../../quality/security.md#dynamic-target-authorization)執行。",
+          "source_uri": "rules/quality/security.md#dynamic-target-authorization",
           "source_text": "動態載入、建立或呼叫的目標須由受控登錄或允許清單限定，不得直接依未受信任輸入解析並執行任意類別、方法或建構子。"
         }
       ],
@@ -190,19 +190,19 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/quality/security.md#rf-02"
+          "uri": "rules/quality/security.md#dynamic-target-authorization"
         }
       ],
       "history_id": "RF-02",
       "removed_assertions": [
         {
           "text": "Java 類別、方法及建構子的動態目標須受控",
-          "source_uri": "rules/quality/security.md#rf-02",
+          "source_uri": "rules/quality/security.md#dynamic-target-authorization",
           "source_text": "動態載入、建立或呼叫的目標須由受控登錄或允許清單限定，不得直接依未受信任輸入解析並執行任意類別、方法或建構子。"
         },
         {
           "text": "不因型別符合就略過授權",
-          "source_uri": "rules/quality/security.md#rf-02",
+          "source_uri": "rules/quality/security.md#dynamic-target-authorization",
           "source_text": "未知目標須明確拒絕，目標符合型別也不能取代授權檢查。"
         }
       ],
@@ -251,18 +251,18 @@
       ]
     },
     {
-      "source": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#rf-04)執行。",
+      "source": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#dynamic-contract-validation)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/type-safety.md#rf-04"
+          "uri": "rules/coding/type-safety.md#dynamic-contract-validation"
         }
       ],
       "history_id": "RF-04",
       "removed_assertions": [
         {
-          "text": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#rf-04)執行。",
-          "source_uri": "rules/coding/type-safety.md#rf-04",
+          "text": "依[使用前驗證契約的共通要求](../../../coding/type-safety.md#dynamic-contract-validation)執行。",
+          "source_uri": "rules/coding/type-safety.md#dynamic-contract-validation",
           "source_text": "動態元件須在適當的啟動、註冊或呼叫階段驗證能力、版本與型別契約。"
         }
       ],
@@ -273,31 +273,31 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/type-safety.md#rf-04"
+          "uri": "rules/coding/type-safety.md#dynamic-contract-validation"
         }
       ],
       "history_id": "RF-04",
       "removed_assertions": [
         {
           "text": "Java 動態元件須驗證能力、版本及型別",
-          "source_uri": "rules/coding/type-safety.md#rf-04",
+          "source_uri": "rules/coding/type-safety.md#dynamic-contract-validation",
           "source_text": "動態元件須在適當的啟動、註冊或呼叫階段驗證能力、版本與型別契約。"
         },
         {
           "text": "不只確認名稱存在，也不靠未驗證轉型掩蓋不相容",
-          "source_uri": "rules/coding/type-safety.md#rf-04",
+          "source_uri": "rules/coding/type-safety.md#dynamic-contract-validation",
           "source_text": "不符合時明確拒絕，不得僅憑名稱存在就執行，也不得靠未經驗證的轉型或任意替代掩蓋不相容。"
         }
       ],
       "reason": "第三節判斷為重述，能力、版本及型別驗證與不得只憑名稱或未驗證轉型由型別安全共通原句直接承接。"
     },
     {
-      "source": "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。",
+      "source": "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#dynamic-failure-classification)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure",
-          "text": "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。"
+          "text": "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#dynamic-failure-classification)執行。"
         }
       ],
       "history_id": "RF-05",
@@ -318,19 +318,19 @@
       "removed_assertions": [
         {
           "text": "不能據此推定目標未執行而替換或重跑",
-          "source_uri": "rules/coding/error-handling.md#rf-05",
+          "source_uri": "rules/coding/error-handling.md#dynamic-failure-classification",
           "source_text": "不得將所有失敗統一視為目標不存在，也不得未確認執行結果與重試安全性就改用其他目標或重新執行；外層收到例外不代表目標未執行或未產生副作用。"
         }
       ],
       "reason": "第三節判斷為混合，保留 Java 反射外層例外及原始原因；不得推定未執行而替換或重跑由共通外層例外與重試安全性原句承接。"
     },
     {
-      "source": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。",
+      "source": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#suppression-scope)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression",
-          "text": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。"
+          "text": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#suppression-scope)執行。"
         }
       ],
       "history_id": "RF-06",
@@ -355,12 +355,12 @@
       "reason": "第八次審閱 RF-06：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
-      "source": "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。",
+      "source": "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#generated-code-exceptions)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-generated-code",
-          "text": "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。"
+          "text": "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#generated-code-exceptions)執行。"
         }
       ],
       "history_id": "RF-07",
@@ -385,12 +385,12 @@
       "reason": "第三節判斷為驗收入口，依作業說明整條逐字保留來源重建、手寫銜接型別檢查及例外範圍確認，交協調者決定。"
     },
     {
-      "source": "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#rf-08)執行。",
+      "source": "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-verification",
-          "text": "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#rf-08)執行。"
+          "text": "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。"
         }
       ],
       "history_id": "RF-08",
@@ -450,24 +450,24 @@
 
       ],
       "insert": [
-        "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)辦理。\n",
+        "本文件另依[rf-04](../../../coding/type-safety.md#dynamic-contract-validation)、[rf-02](../../../quality/security.md#dynamic-target-authorization)辦理。\n",
         "\n"
       ],
-      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 9,
       "remove": [
         "1. **明確需求與型別契約**。反射與動態呼叫須有明確需求，已知的業務能力優先透過靜態型別契約表達。必要動態能力須集中於責任明確的元件，限制影響範圍並提供具型別的內部契約，不得藉此繞過型別安全要求。框架整合、外掛或通用工具的動態名稱與未知物件不得任意散入業務流程。\n",
-        "2. **受控目標與授權**。依[受控目標與授權的共通要求](../../../quality/security.md#rf-02)執行。Java 類別、方法及建構子的動態目標須受控，不因型別符合就略過授權。\n",
+        "2. **受控目標與授權**。依[受控目標與授權的共通要求](../../../quality/security.md#dynamic-target-authorization)執行。Java 類別、方法及建構子的動態目標須受控，不因型別符合就略過授權。\n",
         "3. **維持封裝與不變條件**。反射與動態能力不得繞過可見性設計、建立驗證或業務不變條件。需要特殊存取時，優先採用受支援的整合方式；必要的存取放寬須個別核准並驗證影響，不得以框架、映射或測試用途自行豁免。例如不能以直接寫入私有欄位避開正式建立規則。\n",
-        "4. **使用前驗證契約**。依[使用前驗證契約的共通要求](../../../coding/type-safety.md#rf-04)執行。Java 動態元件須驗證能力、版本及型別，不只確認名稱存在，也不靠未驗證轉型掩蓋不相容。\n",
-        "5. **區分故障與執行結果**。依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。Java 反射或動態呼叫的外層例外須保留原始原因，不能據此推定目標未執行而替換或重跑。\n"
+        "4. **使用前驗證契約**。依[使用前驗證契約的共通要求](../../../coding/type-safety.md#dynamic-contract-validation)執行。Java 動態元件須驗證能力、版本及型別，不只確認名稱存在，也不靠未驗證轉型掩蓋不相容。\n",
+        "5. **區分故障與執行結果**。依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#dynamic-failure-classification)執行。Java 反射或動態呼叫的外層例外須保留原始原因，不能據此推定目標未執行而替換或重跑。\n"
       ],
       "insert": [
         "<a id=\"java-dynamic-type-contract\"></a>\n"
       ],
-      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 15,
@@ -489,22 +489,22 @@
         "\n",
         "### 區分故障與執行結果\n",
         "\n",
-        "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。Java 反射或動態呼叫的外層例外須保留原始原因。\n",
+        "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#dynamic-failure-classification)執行。Java 反射或動態呼叫的外層例外須保留原始原因。\n",
         "\n"
       ],
-      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 17,
       "remove": [
-        "6. **限定檢查抑制**。依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。\n",
-        "7. **產生碼不擴大豁免**。依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。\n",
-        "8. **驗證限制實際有效**。依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#rf-08)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。\n"
+        "6. **限定檢查抑制**。依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#suppression-scope)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。\n",
+        "7. **產生碼不擴大豁免**。依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#generated-code-exceptions)執行。Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。\n",
+        "8. **驗證限制實際有效**。依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。\n"
       ],
       "insert": [
         "<a id=\"java-warning-suppression\"></a>\n"
       ],
-      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 21,
@@ -514,26 +514,26 @@
       "insert": [
         "### 限定檢查抑制\n",
         "\n",
-        "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。\n",
+        "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#suppression-scope)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。\n",
         "\n",
         "<a id=\"java-generated-code\"></a>\n",
         "\n",
         "### 產生碼不擴大豁免\n",
         "\n",
-        "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。\n",
+        "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#generated-code-exceptions)執行。Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。\n",
         "\n",
         "<a id=\"java-dynamic-verification\"></a>\n",
         "\n",
         "### 驗證限制實際有效\n",
         "\n",
-        "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#rf-08)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。\n",
+        "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 38,
@@ -543,7 +543,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 40,
@@ -555,7 +555,7 @@
         "| <a id=\"acceptance-java-reflection-boundary\"></a>[明確需求與型別契約](#java-dynamic-type-contract) | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |\n",
         "| <a id=\"acceptance-java-reflective-access\"></a>[維持封裝與不變條件](#java-reflective-encapsulation) | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。對反射與動態能力核對特殊存取的必要性及受支援替代方式，經實際建立及還原路徑確認維持不變條件及封裝；例如私有欄位寫入或存取放寬亦不得繞過上述保證。 |\n"
       ],
-      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     }
   ],
   "acceptance_changes": [
@@ -590,10 +590,10 @@
   "link_retention": [
     {
       "targets": [
-        "rules/coding/type-safety.md#rf-04",
-        "rules/quality/security.md#rf-02"
+        "rules/coding/type-safety.md#dynamic-contract-validation",
+        "rules/quality/security.md#dynamic-target-authorization"
       ],
-      "text": "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)辦理。"
+      "text": "本文件另依[rf-04](../../../coding/type-safety.md#dynamic-contract-validation)、[rf-02](../../../quality/security.md#dynamic-target-authorization)辦理。"
     }
   ]
 }

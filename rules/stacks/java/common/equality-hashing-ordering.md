@@ -10,7 +10,7 @@
 
 ### 明訂比較語意
 
-依[明訂比較語意的共通要求](../../../coding/domain-modeling.md#eq-01)執行。Java `equals()` 須落實選定比較語意，不任意將 Entity 所有欄位納入比較。
+依[明訂比較語意的共通要求](../../../coding/domain-modeling.md#identity-semantics)執行。Java `equals()` 須落實選定比較語意，不任意將 Entity 所有欄位納入比較。
 
 <a id="java-equality-hash-contract"></a>
 
@@ -28,7 +28,7 @@
 
 ### Entity 識別碼的生命週期
 
-依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#eq-04)執行。Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。
+依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#identity-lifecycle)執行。Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。
 
 <a id="java-cross-type-equality"></a>
 

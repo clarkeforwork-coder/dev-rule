@@ -31,7 +31,7 @@
       "id": "ST-04",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/domain-modeling.md#st-04"
+        "rules/coding/domain-modeling.md#operation-results"
       ],
       "reason": "使用端所需區別與資料及不要求複雜結果物件由共通 st-04 完整原句直接承接，移除重述並在引言保留原引用。"
     },
@@ -47,7 +47,7 @@
       "id": "ST-06",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/domain-modeling.md#st-06"
+        "rules/coding/domain-modeling.md#exhaustive-result-handling"
       ],
       "reason": "編譯檢查優先、測試審查補足及不得以 default 將未知狀態當成功由共通 st-06 的編譯檢查及預設分支兩句直接承接。"
     },
@@ -71,7 +71,7 @@
       "id": "ST-09",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/domain-modeling.md#st-09"
+        "rules/coding/domain-modeling.md#result-facts"
       ],
       "reason": "可變業務參考不得改變當時事實及只隔離必要資料、不要求完整複製，由共通 st-09 兩句直接承接。"
     },
@@ -230,24 +230,24 @@
       "reason": "共通禁止任意修改狀態欄位可涵蓋 setter 限制，但未直接明訂修改既有物件或產生新狀態物件由模型決定，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
-      "source": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。",
+      "source": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#operation-results)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-04"
+          "uri": "rules/coding/domain-modeling.md#operation-results"
         }
       ],
       "history_id": "ST-04",
       "removed_assertions": [
         {
-          "text": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。",
-          "source_uri": "rules/coding/domain-modeling.md#st-04",
+          "text": "依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#operation-results)執行。",
+          "source_uri": "rules/coding/domain-modeling.md#operation-results",
           "source_text": "結果型別只包含使用端所需的區別與資料，不要求每次操作都建立複雜結果物件。"
         }
       ],
       "reason": "本句僅引用 ST-04 的共通小節，移除引用句後以檔頭固定指路保留同一目標，實際承接依據取自該共通小節完整原句。",
       "common_sources": [
-        "rules/coding/domain-modeling.md#st-04"
+        "rules/coding/domain-modeling.md#operation-results"
       ]
     },
     {
@@ -255,20 +255,20 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-04"
+          "uri": "rules/coding/domain-modeling.md#operation-results"
         }
       ],
       "history_id": "ST-04",
       "removed_assertions": [
         {
           "text": "Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。",
-          "source_uri": "rules/coding/domain-modeling.md#st-04",
+          "source_uri": "rules/coding/domain-modeling.md#operation-results",
           "source_text": "結果型別只包含使用端所需的區別與資料，不要求每次操作都建立複雜結果物件。"
         }
       ],
       "reason": "使用端所需區別與資料及不要求複雜結果物件由共通 st-04 完整原句直接承接，移除重述並在引言保留原引用。",
       "common_sources": [
-        "rules/coding/domain-modeling.md#st-04"
+        "rules/coding/domain-modeling.md#operation-results"
       ]
     },
     {
@@ -302,24 +302,24 @@
       "reason": "共通要求明確結果型別及可辨識原因，未直接列不同失敗型別或具型別原因代碼選擇，且例外句限定非預期技術故障，故整條保留。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
-      "source": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。",
+      "source": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#exhaustive-result-handling)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-06"
+          "uri": "rules/coding/domain-modeling.md#exhaustive-result-handling"
         }
       ],
       "history_id": "ST-06",
       "removed_assertions": [
         {
-          "text": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。",
-          "source_uri": "rules/coding/domain-modeling.md#st-06",
+          "text": "依[處理完整性的共通要求](../../../coding/domain-modeling.md#exhaustive-result-handling)執行。",
+          "source_uri": "rules/coding/domain-modeling.md#exhaustive-result-handling",
           "source_text": "優先利用適用版本的編譯檢查，並由測試與審查補足工具無法涵蓋的部分。"
         }
       ],
       "reason": "本句僅引用 ST-06 的共通小節，移除引用句後以檔頭固定指路保留同一目標，實際承接依據取自該共通小節完整原句。",
       "common_sources": [
-        "rules/coding/domain-modeling.md#st-06"
+        "rules/coding/domain-modeling.md#exhaustive-result-handling"
       ]
     },
     {
@@ -327,25 +327,25 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-06"
+          "uri": "rules/coding/domain-modeling.md#exhaustive-result-handling"
         }
       ],
       "history_id": "ST-06",
       "removed_assertions": [
         {
           "text": "Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足",
-          "source_uri": "rules/coding/domain-modeling.md#st-06",
+          "source_uri": "rules/coding/domain-modeling.md#exhaustive-result-handling",
           "source_text": "優先利用適用版本的編譯檢查，並由測試與審查補足工具無法涵蓋的部分。"
         },
         {
           "text": "不以 `default` 將未知狀態當成功",
-          "source_uri": "rules/coding/domain-modeling.md#st-06",
+          "source_uri": "rules/coding/domain-modeling.md#exhaustive-result-handling",
           "source_text": "狀態與結果的使用端須明確處理契約要求的情況，不得以預設分支將新增、未知或未處理的情況當成成功或默默忽略。"
         }
       ],
       "reason": "編譯檢查優先、測試審查補足及不得以 default 將未知狀態當成功由共通 st-06 的編譯檢查及預設分支兩句直接承接。",
       "common_sources": [
-        "rules/coding/domain-modeling.md#st-06"
+        "rules/coding/domain-modeling.md#exhaustive-result-handling"
       ]
     },
     {
@@ -405,12 +405,12 @@
       ]
     },
     {
-      "source": "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。",
+      "source": "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#model-extensibility)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/states-and-results.md#java-model-extensibility",
-          "text": "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。"
+          "text": "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#model-extensibility)執行。"
         }
       ],
       "history_id": "ST-08",
@@ -433,24 +433,24 @@
       ]
     },
     {
-      "source": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。",
+      "source": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#result-facts)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-09"
+          "uri": "rules/coding/domain-modeling.md#result-facts"
         }
       ],
       "history_id": "ST-09",
       "removed_assertions": [
         {
-          "text": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。",
-          "source_uri": "rules/coding/domain-modeling.md#st-09",
+          "text": "依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#result-facts)執行。",
+          "source_uri": "rules/coding/domain-modeling.md#result-facts",
           "source_text": "操作結果須穩定表達產生當時可確認的事實，必要資料不得因外部可變參考而改變。"
         }
       ],
       "reason": "本句僅引用 ST-09 的共通小節，移除引用句後以檔頭固定指路保留同一目標，實際承接依據取自該共通小節完整原句。",
       "common_sources": [
-        "rules/coding/domain-modeling.md#st-09"
+        "rules/coding/domain-modeling.md#result-facts"
       ]
     },
     {
@@ -458,34 +458,34 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/domain-modeling.md#st-09"
+          "uri": "rules/coding/domain-modeling.md#result-facts"
         }
       ],
       "history_id": "ST-09",
       "removed_assertions": [
         {
           "text": "Java 結果不可持有會改變已確認事實的可變業務參考",
-          "source_uri": "rules/coding/domain-modeling.md#st-09",
+          "source_uri": "rules/coding/domain-modeling.md#result-facts",
           "source_text": "操作結果須穩定表達產生當時可確認的事實，必要資料不得因外部可變參考而改變。"
         },
         {
           "text": "只隔離必要資料，不要求複製完整物件",
-          "source_uri": "rules/coding/domain-modeling.md#st-09",
+          "source_uri": "rules/coding/domain-modeling.md#result-facts",
           "source_text": "只保留契約所需資訊，不要求複製完整物件；最新狀態另行查詢，不以持有可變業務物件代替結果資料。"
         }
       ],
       "reason": "可變業務參考不得改變當時事實及只隔離必要資料、不要求完整複製，由共通 st-09 兩句直接承接。",
       "common_sources": [
-        "rules/coding/domain-modeling.md#st-09"
+        "rules/coding/domain-modeling.md#result-facts"
       ]
     },
     {
-      "source": "依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。",
+      "source": "依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/states-and-results.md#java-model-acceptance",
-          "text": "依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。"
+          "text": "依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。"
         }
       ],
       "history_id": "ST-10",
@@ -543,10 +543,10 @@
 
       ],
       "insert": [
-        "本文件另依[st-04](../../../coding/domain-modeling.md#st-04)、[st-06](../../../coding/domain-modeling.md#st-06)、[st-09](../../../coding/domain-modeling.md#st-09)辦理。\n",
+        "本文件另依[st-04](../../../coding/domain-modeling.md#operation-results)、[st-06](../../../coding/domain-modeling.md#exhaustive-result-handling)、[st-09](../../../coding/domain-modeling.md#result-facts)辦理。\n",
         "\n"
       ],
-      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 9,
@@ -558,7 +558,7 @@
       "insert": [
         "<a id=\"java-explicit-state-types\"></a>\n"
       ],
-      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 13,
@@ -583,19 +583,19 @@
         "依[領域建模](../../../coding/domain-modeling.md)執行。Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。\n",
         "\n"
       ],
-      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 15,
       "remove": [
-        "4. **結果與目前狀態分開表達**。依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#st-04)執行。Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。\n",
+        "4. **結果與目前狀態分開表達**。依[結果與目前狀態分開表達的共通要求](../../../coding/domain-modeling.md#operation-results)執行。Java 結果型別只保留使用端需要的區別及資料，不要求每個操作建立複雜物件。\n",
         "5. **具型別的業務失敗**。依[錯誤處理](../../../coding/error-handling.md)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。\n",
-        "6. **處理完整性**。依[處理完整性的共通要求](../../../coding/domain-modeling.md#st-06)執行。Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。\n"
+        "6. **處理完整性**。依[處理完整性的共通要求](../../../coding/domain-modeling.md#exhaustive-result-handling)執行。Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。\n"
       ],
       "insert": [
         "<a id=\"java-typed-business-failures\"></a>\n"
       ],
-      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 19,
@@ -608,20 +608,20 @@
         "依[錯誤處理](../../../coding/error-handling.md)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。\n",
         "\n"
       ],
-      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 21,
       "remove": [
         "7. **穩定的外部代碼**。持久化或跨邊界傳遞狀態時，須明訂穩定的外部代碼與映射，不得使用 `ordinal()` 作為業務契約。若採用列舉名稱作為外部值，須將名稱納入相容性管理，重新命名不能僅視為內部整理。未知代碼依契約處理，不得默默映射成任意既有狀態。不強制額外建立轉換類別，但映射與影響須可辨識。\n",
-        "8. **封閉或允許擴充**。依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。\n",
-        "9. **結果保留當時事實**。依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#st-09)執行。Java 結果不可持有會改變已確認事實的可變業務參考；只隔離必要資料，不要求複製完整物件。\n",
-        "10. **模型驗收**。依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。\n"
+        "8. **封閉或允許擴充**。依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#model-extensibility)執行。支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。\n",
+        "9. **結果保留當時事實**。依[結果保留當時事實的共通要求](../../../coding/domain-modeling.md#result-facts)執行。Java 結果不可持有會改變已確認事實的可變業務參考；只隔離必要資料，不要求複製完整物件。\n",
+        "10. **模型驗收**。依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。\n"
       ],
       "insert": [
         "<a id=\"java-stable-external-codes\"></a>\n"
       ],
-      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 26,
@@ -637,20 +637,20 @@
         "\n",
         "### 封閉或允許擴充\n",
         "\n",
-        "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#st-08)執行。支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。\n",
+        "依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#model-extensibility)執行。支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。\n",
         "\n",
         "<a id=\"java-model-acceptance\"></a>\n",
         "\n",
         "### 模型驗收\n",
         "\n",
-        "依[模型驗收的共通要求](../../../coding/domain-modeling.md#st-10)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。\n",
+        "依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 41,
@@ -660,7 +660,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 43,
@@ -674,7 +674,7 @@
         "| <a id=\"acceptance-java-state-transition\"></a>[業務操作控制轉換](#java-business-state-transitions) | 驗證允許與不允許的來源狀態、前置條件及轉換後資料。確認公開介面沒有可繞過規則的任意設定路徑，拒絕時未產生不應發生的副作用。 |\n",
         "| <a id=\"acceptance-java-enum-codes\"></a>[穩定的外部代碼](#java-stable-external-codes) | 經適用的傳輸或持久化路徑驗證外部代碼與狀態對應，未知代碼依契約處理。確認未使用 `ordinal()` 作為業務代碼，採用列舉名稱時已評估重新命名的相容性影響。 |\n"
       ],
-      "reason": "依逐句共通承接證據移除重述，其餘條文保留原文並改語意小標題，驗收只更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     }
   ],
   "acceptance_changes": [
@@ -714,11 +714,11 @@
   "link_retention": [
     {
       "targets": [
-        "rules/coding/domain-modeling.md#st-04",
-        "rules/coding/domain-modeling.md#st-06",
-        "rules/coding/domain-modeling.md#st-09"
+        "rules/coding/domain-modeling.md#operation-results",
+        "rules/coding/domain-modeling.md#exhaustive-result-handling",
+        "rules/coding/domain-modeling.md#result-facts"
       ],
-      "text": "本文件另依[st-04](../../../coding/domain-modeling.md#st-04)、[st-06](../../../coding/domain-modeling.md#st-06)、[st-09](../../../coding/domain-modeling.md#st-09)辦理。"
+      "text": "本文件另依[st-04](../../../coding/domain-modeling.md#operation-results)、[st-06](../../../coding/domain-modeling.md#exhaustive-result-handling)、[st-09](../../../coding/domain-modeling.md#result-facts)辦理。"
     }
   ]
 }

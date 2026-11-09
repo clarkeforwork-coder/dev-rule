@@ -18,12 +18,14 @@
 
 ## 整合與契約演進
 
+<a id="third-party-null-contract"></a>
 <a id="jn-08"></a>
 
 ### 第三方空值行為
 
 第三方 API 的空值行為須在整合邊界確認並轉換成內部契約。對方明訂 `null` 表示正常查無資料時，才轉成內部正常缺值；保證不明或違反契約的 `null`，不得直接當成非空使用，也不得擅自解讀為正常缺值。無法確認語意時，須先釐清或明訂處置。
 
+<a id="null-contract-evolution"></a>
 <a id="jn-09"></a>
 
 ### 空值契約變更
@@ -36,5 +38,5 @@
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-third-party-null"></a>[第三方空值行為](#jn-08) | 依第三方契約分別驗證正常缺值及適用的異常空值、故障情境，確認內部轉換保留語意，未一律轉成正常缺值。 |
-| <a id="acceptance-null-contract-change"></a>[空值契約變更](#jn-09) | 檢查空值契約差異、使用端影響與必要遷移，確認相關標註、文件及驗證同步更新，不僅比對方法簽章。 |
+| <a id="acceptance-third-party-null"></a>[第三方空值行為](#third-party-null-contract) | 依第三方契約分別驗證正常缺值及適用的異常空值、故障情境，確認內部轉換保留語意，未一律轉成正常缺值。 |
+| <a id="acceptance-null-contract-change"></a>[空值契約變更](#null-contract-evolution) | 檢查空值契約差異、使用端影響與必要遷移，確認相關標註、文件及驗證同步更新，不僅比對方法簽章。 |

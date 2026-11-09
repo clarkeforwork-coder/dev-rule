@@ -31,7 +31,7 @@
       "id": "NT-04",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/numbers-dates-text.md#nt-04"
+        "rules/coding/numbers-dates-text.md#numeric-range-checks"
       ],
       "reason": "縮窄轉型、溢位回繞、小數捨棄的明確檢查及強制轉型不得掩蓋超限，由共通 nt-04 前兩句直接承接。"
     },
@@ -55,7 +55,7 @@
       "id": "NT-07",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/numbers-dates-text.md#nt-07"
+        "rules/coding/numbers-dates-text.md#timezone-conversion"
       ],
       "reason": "契約時區或偏移及不存在或重複當地時間不得交由函式庫預設決策，由共通 nt-07 兩句直接承接。"
     },
@@ -87,7 +87,7 @@
       "id": "NT-11",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/numbers-dates-text.md#nt-11"
+        "rules/coding/numbers-dates-text.md#character-encoding"
       ],
       "reason": "明確字元編碼、不得依賴系統預設與不得未授權替換掩蓋損失，由共通 nt-11 前兩句直接承接。"
     },
@@ -103,7 +103,7 @@
       "id": "NT-13",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/numbers-dates-text.md#nt-13"
+        "rules/coding/numbers-dates-text.md#text-transformations"
       ],
       "reason": "比較、大小寫、正規化的地區與用途及不得無意依賴預設，由共通 nt-13 第一與第三句直接承接。"
     },
@@ -160,12 +160,12 @@
       ]
     },
     {
-      "source": "依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#nt-01)執行。",
+      "source": "依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#numeric-representation)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/numbers-dates-text.md#java-numeric-representation",
-          "text": "依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#nt-01)執行。"
+          "text": "依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#numeric-representation)執行。"
         }
       ],
       "history_id": "NT-01",
@@ -188,12 +188,12 @@
       ]
     },
     {
-      "source": "依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#nt-02)執行。",
+      "source": "依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#exact-numeric-sources)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources",
-          "text": "依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#nt-02)執行。"
+          "text": "依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#exact-numeric-sources)執行。"
         }
       ],
       "history_id": "NT-02",
@@ -216,12 +216,12 @@
       ]
     },
     {
-      "source": "依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#nt-03)執行。",
+      "source": "依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#rounding-policy)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/numbers-dates-text.md#java-rounding-policy",
-          "text": "依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#nt-03)執行。"
+          "text": "依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#rounding-policy)執行。"
         }
       ],
       "history_id": "NT-03",
@@ -246,23 +246,23 @@
       "reason": "共通 nt-03 以可能損失精度的運算為條件，Java 原句涵蓋數值運算且明禁 API 預設決定；適用範圍與禁止條件未獲同一小節直接完整承接，整條保留原文。"
     },
     {
-      "source": "依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#nt-04)執行。",
+      "source": "依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#numeric-range-checks)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-04"
+          "uri": "rules/coding/numbers-dates-text.md#numeric-range-checks"
         }
       ],
       "history_id": "NT-04",
       "removed_assertions": [
         {
-          "text": "依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#nt-04)執行。",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-04",
+          "text": "依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#numeric-range-checks)執行。",
+          "source_uri": "rules/coding/numbers-dates-text.md#numeric-range-checks",
           "source_text": "數值運算與轉換須維持目標型別及業務範圍限制，對可能溢位、縮小範圍或捨棄小數的操作採取明確檢查。"
         }
       ],
       "common_sources": [
-        "rules/coding/numbers-dates-text.md#nt-04"
+        "rules/coding/numbers-dates-text.md#numeric-range-checks"
       ],
       "reason": "原句為共通 nt-04 的純引用入口，引用目標移至檔頭固定引用句，完整共通義務仍具約束力。"
     },
@@ -271,24 +271,24 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-04"
+          "uri": "rules/coding/numbers-dates-text.md#numeric-range-checks"
         }
       ],
       "history_id": "NT-04",
       "removed_assertions": [
         {
           "text": "Java 縮窄轉型、整數溢位回繞與小數捨棄須明確檢查",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-04",
+          "source_uri": "rules/coding/numbers-dates-text.md#numeric-range-checks",
           "source_text": "數值運算與轉換須維持目標型別及業務範圍限制，對可能溢位、縮小範圍或捨棄小數的操作採取明確檢查。"
         },
         {
           "text": "不能用強制轉型掩蓋超限",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-04",
+          "source_uri": "rules/coding/numbers-dates-text.md#numeric-range-checks",
           "source_text": "不得以強制轉型、溢位回繞或未授權截斷掩蓋超限與精度損失。"
         }
       ],
       "common_sources": [
-        "rules/coding/numbers-dates-text.md#nt-04"
+        "rules/coding/numbers-dates-text.md#numeric-range-checks"
       ],
       "reason": "縮窄轉型、溢位回繞、小數捨棄的明確檢查及強制轉型不得掩蓋超限，由共通 nt-04 前兩句直接承接。"
     },
@@ -335,12 +335,12 @@
       ]
     },
     {
-      "source": "依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#nt-06)執行。",
+      "source": "依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#temporal-representation)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/numbers-dates-text.md#java-temporal-representation",
-          "text": "依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#nt-06)執行。"
+          "text": "依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#temporal-representation)執行。"
         }
       ],
       "history_id": "NT-06",
@@ -363,23 +363,23 @@
       ]
     },
     {
-      "source": "依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#nt-07)執行。",
+      "source": "依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#timezone-conversion)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-07"
+          "uri": "rules/coding/numbers-dates-text.md#timezone-conversion"
         }
       ],
       "history_id": "NT-07",
       "removed_assertions": [
         {
-          "text": "依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#nt-07)執行。",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-07",
+          "text": "依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#timezone-conversion)執行。",
+          "source_uri": "rules/coding/numbers-dates-text.md#timezone-conversion",
           "source_text": "日期時間轉換須明確指定契約要求的時區或偏移，不得無意依賴系統預設時區。"
         }
       ],
       "common_sources": [
-        "rules/coding/numbers-dates-text.md#nt-07"
+        "rules/coding/numbers-dates-text.md#timezone-conversion"
       ],
       "reason": "原句為共通 nt-07 的純引用入口，引用目標移至檔頭固定引用句，完整共通義務仍具約束力。"
     },
@@ -388,34 +388,34 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-07"
+          "uri": "rules/coding/numbers-dates-text.md#timezone-conversion"
         }
       ],
       "history_id": "NT-07",
       "removed_assertions": [
         {
           "text": "Java 時區轉換須明確指定契約時區或偏移",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-07",
+          "source_uri": "rules/coding/numbers-dates-text.md#timezone-conversion",
           "source_text": "日期時間轉換須明確指定契約要求的時區或偏移，不得無意依賴系統預設時區。"
         },
         {
           "text": "不讓函式庫預設決定不存在或重複當地時間的業務處置",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-07",
+          "source_uri": "rules/coding/numbers-dates-text.md#timezone-conversion",
           "source_text": "當地時間可能不存在或對應多個時點時，須明訂拒絕、調整或補充資訊等判定與處理規則，不以函式庫預設行為取代業務決策。"
         }
       ],
       "common_sources": [
-        "rules/coding/numbers-dates-text.md#nt-07"
+        "rules/coding/numbers-dates-text.md#timezone-conversion"
       ],
       "reason": "契約時區或偏移及不存在或重複當地時間不得交由函式庫預設決策，由共通 nt-07 兩句直接承接。"
     },
     {
-      "source": "依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#nt-08)執行。",
+      "source": "依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#durations-and-calendar-periods)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods",
-          "text": "依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#nt-08)執行。"
+          "text": "依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#durations-and-calendar-periods)執行。"
         }
       ],
       "history_id": "NT-08",
@@ -438,12 +438,12 @@
       ]
     },
     {
-      "source": "依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#nt-09)執行。",
+      "source": "依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#time-source)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/numbers-dates-text.md#java-clock-source",
-          "text": "依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#nt-09)執行。"
+          "text": "依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#time-source)執行。"
         }
       ],
       "history_id": "NT-09",
@@ -466,12 +466,12 @@
       ]
     },
     {
-      "source": "依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#nt-10)執行。",
+      "source": "依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#temporal-parsing-formatting)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting",
-          "text": "依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#nt-10)執行。"
+          "text": "依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#temporal-parsing-formatting)執行。"
         }
       ],
       "history_id": "NT-10",
@@ -496,23 +496,23 @@
       "reason": "共通 nt-10 明訂必要的地區設定，Java 原句未加必要限定；無法直接證明地區設定義務的適用範圍完全一致，連同完整解析限制整條保留原文。"
     },
     {
-      "source": "依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#nt-11)執行。",
+      "source": "依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#character-encoding)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-11"
+          "uri": "rules/coding/numbers-dates-text.md#character-encoding"
         }
       ],
       "history_id": "NT-11",
       "removed_assertions": [
         {
-          "text": "依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#nt-11)執行。",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-11",
+          "text": "依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#character-encoding)執行。",
+          "source_uri": "rules/coding/numbers-dates-text.md#character-encoding",
           "source_text": "文字與位元組轉換須明確使用契約指定的字元編碼，不依賴系統預設。"
         }
       ],
       "common_sources": [
-        "rules/coding/numbers-dates-text.md#nt-11"
+        "rules/coding/numbers-dates-text.md#character-encoding"
       ],
       "reason": "原句為共通 nt-11 的純引用入口，引用目標移至檔頭固定引用句，完整共通義務仍具約束力。"
     },
@@ -521,39 +521,39 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-11"
+          "uri": "rules/coding/numbers-dates-text.md#character-encoding"
         }
       ],
       "history_id": "NT-11",
       "removed_assertions": [
         {
           "text": "Java 文字與位元組轉換明確指定字元編碼",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-11",
+          "source_uri": "rules/coding/numbers-dates-text.md#character-encoding",
           "source_text": "文字與位元組轉換須明確使用契約指定的字元編碼，不依賴系統預設。"
         },
         {
           "text": "不得靠系統預設",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-11",
+          "source_uri": "rules/coding/numbers-dates-text.md#character-encoding",
           "source_text": "文字與位元組轉換須明確使用契約指定的字元編碼，不依賴系統預設。"
         },
         {
           "text": "或未授權替換掩蓋資料損失",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-11",
+          "source_uri": "rules/coding/numbers-dates-text.md#character-encoding",
           "source_text": "無效編碼或無法表示的字元須依契約拒絕或處理，不得未經允許替換而掩蓋資料損失。"
         }
       ],
       "common_sources": [
-        "rules/coding/numbers-dates-text.md#nt-11"
+        "rules/coding/numbers-dates-text.md#character-encoding"
       ],
       "reason": "明確字元編碼、不得依賴系統預設與不得未授權替換掩蓋損失，由共通 nt-11 前兩句直接承接。"
     },
     {
-      "source": "依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#nt-12)執行。",
+      "source": "依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#text-length-units)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/numbers-dates-text.md#java-text-length-units",
-          "text": "依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#nt-12)執行。"
+          "text": "依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#text-length-units)執行。"
         }
       ],
       "history_id": "NT-12",
@@ -576,23 +576,23 @@
       ]
     },
     {
-      "source": "依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#nt-13)執行。",
+      "source": "依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#text-transformations)執行。",
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-13"
+          "uri": "rules/coding/numbers-dates-text.md#text-transformations"
         }
       ],
       "history_id": "NT-13",
       "removed_assertions": [
         {
-          "text": "依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#nt-13)執行。",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-13",
+          "text": "依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#text-transformations)執行。",
+          "source_uri": "rules/coding/numbers-dates-text.md#text-transformations",
           "source_text": "文字比較、大小寫轉換及正規化須明訂適用範圍、地區設定與等價規則，不無意依賴系統預設。"
         }
       ],
       "common_sources": [
-        "rules/coding/numbers-dates-text.md#nt-13"
+        "rules/coding/numbers-dates-text.md#text-transformations"
       ],
       "reason": "原句為共通 nt-13 的純引用入口，引用目標移至檔頭固定引用句，完整共通義務仍具約束力。"
     },
@@ -601,39 +601,39 @@
       "action": "移除",
       "targets": [
         {
-          "uri": "rules/coding/numbers-dates-text.md#nt-13"
+          "uri": "rules/coding/numbers-dates-text.md#text-transformations"
         }
       ],
       "history_id": "NT-13",
       "removed_assertions": [
         {
           "text": "Java 字串比較、大小寫與正規化須使用明確地區及用途",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-13",
+          "source_uri": "rules/coding/numbers-dates-text.md#text-transformations",
           "source_text": "文字比較、大小寫轉換及正規化須明訂適用範圍、地區設定與等價規則，不無意依賴系統預設。"
         },
         {
           "text": "Java 字串比較、大小寫與正規化須使用明確地區及用途",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-13",
+          "source_uri": "rules/coding/numbers-dates-text.md#text-transformations",
           "source_text": "去除空白、Unicode 正規化及全形半形轉換均依用途決定，不將協定代碼規則直接套用到自然語言資料。"
         },
         {
           "text": "不無意依賴環境預設",
-          "source_uri": "rules/coding/numbers-dates-text.md#nt-13",
+          "source_uri": "rules/coding/numbers-dates-text.md#text-transformations",
           "source_text": "文字比較、大小寫轉換及正規化須明訂適用範圍、地區設定與等價規則，不無意依賴系統預設。"
         }
       ],
       "common_sources": [
-        "rules/coding/numbers-dates-text.md#nt-13"
+        "rules/coding/numbers-dates-text.md#text-transformations"
       ],
       "reason": "比較、大小寫、正規化的地區與用途及不得無意依賴預設，由共通 nt-13 第一與第三句直接承接。"
     },
     {
-      "source": "依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#nt-14)執行。",
+      "source": "依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。",
       "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/numbers-dates-text.md#java-boundary-verification",
-          "text": "依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#nt-14)執行。"
+          "text": "依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。"
         }
       ],
       "history_id": "NT-14",
@@ -679,24 +679,24 @@
 
       ],
       "insert": [
-        "本文件另依[nt-04](../../../coding/numbers-dates-text.md#nt-04)、[nt-07](../../../coding/numbers-dates-text.md#nt-07)、[nt-11](../../../coding/numbers-dates-text.md#nt-11)、[nt-13](../../../coding/numbers-dates-text.md#nt-13)辦理。\n",
+        "本文件另依[nt-04](../../../coding/numbers-dates-text.md#numeric-range-checks)、[nt-07](../../../coding/numbers-dates-text.md#timezone-conversion)、[nt-11](../../../coding/numbers-dates-text.md#character-encoding)、[nt-13](../../../coding/numbers-dates-text.md#text-transformations)辦理。\n",
         "\n"
       ],
-      "reason": "依逐句證據移除四條共通重述，其餘保留原文並改語意小標題，驗收僅更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 9,
       "remove": [
-        "1. **依語意選擇數值型別**。依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#nt-01)執行。Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。\n",
-        "2. **從精確來源建立**。依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#nt-02)執行。Java 精確值不可先轉浮點數再轉 `BigDecimal` 期待還原；直接從契約允許的精確來源建立後仍須驗證業務限制。\n",
-        "3. **明訂捨入規則**。依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#nt-03)執行。Java 數值運算依契約指定精度、捨入模式及時機，不能讓 API 預設或各呼叫端自行決定。\n",
-        "4. **範圍與轉換檢查**。依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#nt-04)執行。Java 縮窄轉型、整數溢位回繞與小數捨棄須明確檢查，不能用強制轉型掩蓋超限。\n",
+        "1. **依語意選擇數值型別**。依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#numeric-representation)執行。Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。\n",
+        "2. **從精確來源建立**。依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#exact-numeric-sources)執行。Java 精確值不可先轉浮點數再轉 `BigDecimal` 期待還原；直接從契約允許的精確來源建立後仍須驗證業務限制。\n",
+        "3. **明訂捨入規則**。依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#rounding-policy)執行。Java 數值運算依契約指定精度、捨入模式及時機，不能讓 API 預設或各呼叫端自行決定。\n",
+        "4. **範圍與轉換檢查**。依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#numeric-range-checks)執行。Java 縮窄轉型、整數溢位回繞與小數捨棄須明確檢查，不能用強制轉型掩蓋超限。\n",
         "5. **BigDecimal 判同語意**。須明訂數值相等與小數位數的關係，依契約選擇比較及正規化方式。例如 `1.0` 與 `1.00` 是否視為相同，須確認小數位數是呈現格式或資料語意的一部分。專屬型別的相等、雜湊與排序須維持一致，不得讓格式差異意外改變業務判同或集合行為。\n"
       ],
       "insert": [
         "<a id=\"java-numeric-representation\"></a>\n"
       ],
-      "reason": "依逐句證據移除四條共通重述，其餘保留原文並改語意小標題，驗收僅更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 15,
@@ -706,19 +706,19 @@
       "insert": [
         "### 依語意選擇數值型別\n",
         "\n",
-        "依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#nt-01)執行。Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。\n",
+        "依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#numeric-representation)執行。Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。\n",
         "\n",
         "<a id=\"java-exact-numeric-sources\"></a>\n",
         "\n",
         "### 從精確來源建立\n",
         "\n",
-        "依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#nt-02)執行。Java 精確值不可先轉浮點數再轉 `BigDecimal` 期待還原；直接從契約允許的精確來源建立後仍須驗證業務限制。\n",
+        "依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#exact-numeric-sources)執行。Java 精確值不可先轉浮點數再轉 `BigDecimal` 期待還原；直接從契約允許的精確來源建立後仍須驗證業務限制。\n",
         "\n",
         "<a id=\"java-rounding-policy\"></a>\n",
         "\n",
         "### 明訂捨入規則\n",
         "\n",
-        "依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#nt-03)執行。Java 數值運算依契約指定精度、捨入模式及時機，不能讓 API 預設或各呼叫端自行決定。\n",
+        "依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#rounding-policy)執行。Java 數值運算依契約指定精度、捨入模式及時機，不能讓 API 預設或各呼叫端自行決定。\n",
         "\n",
         "<a id=\"java-decimal-equivalence\"></a>\n",
         "\n",
@@ -727,21 +727,21 @@
         "須明訂數值相等與小數位數的關係，依契約選擇比較及正規化方式。例如 `1.0` 與 `1.00` 是否視為相同，須確認小數位數是呈現格式或資料語意的一部分。專屬型別的相等、雜湊與排序須維持一致，不得讓格式差異意外改變業務判同或集合行為。\n",
         "\n"
       ],
-      "reason": "依逐句證據移除四條共通重述，其餘保留原文並改語意小標題，驗收僅更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 17,
       "remove": [
-        "6. **依業務語意選擇時間型別**。依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#nt-06)執行。Java 優先使用 `java.time`：日期可用 `LocalDate`，確切時點可用 `Instant`；不得以 `LocalDateTime` 冒充唯一時點，必要時保留時區或偏移。\n",
-        "7. **明確的時區轉換**。依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#nt-07)執行。Java 時區轉換須明確指定契約時區或偏移，不讓函式庫預設決定不存在或重複當地時間的業務處置。\n",
-        "8. **區分時間長度與日曆規則**。依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#nt-08)執行。Java 按語意使用 `Duration`、`Period` 或業務計算，不假設一般日曆間隔包含營業日規則。\n",
-        "9. **可控制的時間基準**。依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#nt-09)執行。Java 業務目前時間優先由明確提供的 `Clock` 取得；耗時及等待期限使用適合的單調時間來源。\n",
-        "10. **解析與輸出契約**。依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#nt-10)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。\n"
+        "6. **依業務語意選擇時間型別**。依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#temporal-representation)執行。Java 優先使用 `java.time`：日期可用 `LocalDate`，確切時點可用 `Instant`；不得以 `LocalDateTime` 冒充唯一時點，必要時保留時區或偏移。\n",
+        "7. **明確的時區轉換**。依[明確的時區轉換的共通要求](../../../coding/numbers-dates-text.md#timezone-conversion)執行。Java 時區轉換須明確指定契約時區或偏移，不讓函式庫預設決定不存在或重複當地時間的業務處置。\n",
+        "8. **區分時間長度與日曆規則**。依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#durations-and-calendar-periods)執行。Java 按語意使用 `Duration`、`Period` 或業務計算，不假設一般日曆間隔包含營業日規則。\n",
+        "9. **可控制的時間基準**。依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#time-source)執行。Java 業務目前時間優先由明確提供的 `Clock` 取得；耗時及等待期限使用適合的單調時間來源。\n",
+        "10. **解析與輸出契約**。依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#temporal-parsing-formatting)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。\n"
       ],
       "insert": [
         "<a id=\"java-temporal-representation\"></a>\n"
       ],
-      "reason": "依逐句證據移除四條共通重述，其餘保留原文並改語意小標題，驗收僅更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 23,
@@ -751,41 +751,41 @@
       "insert": [
         "### 依業務語意選擇時間型別\n",
         "\n",
-        "依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#nt-06)執行。Java 優先使用 `java.time`：日期可用 `LocalDate`，確切時點可用 `Instant`；不得以 `LocalDateTime` 冒充唯一時點，必要時保留時區或偏移。\n",
+        "依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#temporal-representation)執行。Java 優先使用 `java.time`：日期可用 `LocalDate`，確切時點可用 `Instant`；不得以 `LocalDateTime` 冒充唯一時點，必要時保留時區或偏移。\n",
         "\n",
         "<a id=\"java-durations-calendar-periods\"></a>\n",
         "\n",
         "### 區分時間長度與日曆規則\n",
         "\n",
-        "依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#nt-08)執行。Java 按語意使用 `Duration`、`Period` 或業務計算，不假設一般日曆間隔包含營業日規則。\n",
+        "依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#durations-and-calendar-periods)執行。Java 按語意使用 `Duration`、`Period` 或業務計算，不假設一般日曆間隔包含營業日規則。\n",
         "\n",
         "<a id=\"java-clock-source\"></a>\n",
         "\n",
         "### 可控制的時間基準\n",
         "\n",
-        "依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#nt-09)執行。Java 業務目前時間優先由明確提供的 `Clock` 取得；耗時及等待期限使用適合的單調時間來源。\n",
+        "依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#time-source)執行。Java 業務目前時間優先由明確提供的 `Clock` 取得；耗時及等待期限使用適合的單調時間來源。\n",
         "\n",
         "<a id=\"java-temporal-parsing-formatting\"></a>\n",
         "\n",
         "### 解析與輸出契約\n",
         "\n",
-        "依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#nt-10)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。\n",
+        "依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#temporal-parsing-formatting)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。\n",
         "\n"
       ],
-      "reason": "依逐句證據移除四條共通重述，其餘保留原文並改語意小標題，驗收僅更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 25,
       "remove": [
-        "11. **明確指定字元編碼**。依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#nt-11)執行。Java 文字與位元組轉換明確指定字元編碼；不得靠系統預設或未授權替換掩蓋資料損失。\n",
-        "12. **長度與截取單位**。依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#nt-12)執行。Java `String.length()` 計算 UTF-16 單位，不是通用字數；截取不能切斷代理對或契約要求保留的字元組合。\n",
-        "13. **用途明確的文字轉換**。依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#nt-13)執行。Java 字串比較、大小寫與正規化須使用明確地區及用途，不無意依賴環境預設。\n",
-        "14. **邊界與環境差異驗收**。依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#nt-14)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。\n"
+        "11. **明確指定字元編碼**。依[明確指定字元編碼的共通要求](../../../coding/numbers-dates-text.md#character-encoding)執行。Java 文字與位元組轉換明確指定字元編碼；不得靠系統預設或未授權替換掩蓋資料損失。\n",
+        "12. **長度與截取單位**。依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#text-length-units)執行。Java `String.length()` 計算 UTF-16 單位，不是通用字數；截取不能切斷代理對或契約要求保留的字元組合。\n",
+        "13. **用途明確的文字轉換**。依[用途明確的文字轉換的共通要求](../../../coding/numbers-dates-text.md#text-transformations)執行。Java 字串比較、大小寫與正規化須使用明確地區及用途，不無意依賴環境預設。\n",
+        "14. **邊界與環境差異驗收**。依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。\n"
       ],
       "insert": [
         "<a id=\"java-text-length-units\"></a>\n"
       ],
-      "reason": "依逐句證據移除四條共通重述，其餘保留原文並改語意小標題，驗收僅更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 30,
@@ -795,20 +795,20 @@
       "insert": [
         "### 長度與截取單位\n",
         "\n",
-        "依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#nt-12)執行。Java `String.length()` 計算 UTF-16 單位，不是通用字數；截取不能切斷代理對或契約要求保留的字元組合。\n",
+        "依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#text-length-units)執行。Java `String.length()` 計算 UTF-16 單位，不是通用字數；截取不能切斷代理對或契約要求保留的字元組合。\n",
         "\n",
         "<a id=\"java-boundary-verification\"></a>\n",
         "\n",
         "### 邊界與環境差異驗收\n",
         "\n",
-        "依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#nt-14)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。\n",
+        "依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "依逐句證據移除四條共通重述，其餘保留原文並改語意小標題，驗收僅更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 48,
@@ -818,7 +818,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "依逐句證據移除四條共通重述，其餘保留原文並改語意小標題，驗收僅更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     },
     {
       "baseline_line": 50,
@@ -830,7 +830,7 @@
         "| <a id=\"acceptance-java-decimal-equivalence\"></a>[BigDecimal 判同語意](#java-decimal-equivalence) | 以數值相同但小數位數不同及其他代表性資料，確認比較、正規化、雜湊與集合判同符合契約。 |\n",
         "| <a id=\"acceptance-java-clock-injection\"></a>[可控制的時間基準](#java-clock-source) | 以注入的 Clock 驗證業務時間邊界前、當下與之後，核對實際 Java 取時路徑使用該 Clock。 |\n"
       ],
-      "reason": "依逐句證據移除四條共通重述，其餘保留原文並改語意小標題，驗收僅更新第一欄定位。"
+      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
     }
   ],
   "acceptance_changes": [
@@ -862,12 +862,12 @@
   "link_retention": [
     {
       "targets": [
-        "rules/coding/numbers-dates-text.md#nt-04",
-        "rules/coding/numbers-dates-text.md#nt-07",
-        "rules/coding/numbers-dates-text.md#nt-11",
-        "rules/coding/numbers-dates-text.md#nt-13"
+        "rules/coding/numbers-dates-text.md#numeric-range-checks",
+        "rules/coding/numbers-dates-text.md#timezone-conversion",
+        "rules/coding/numbers-dates-text.md#character-encoding",
+        "rules/coding/numbers-dates-text.md#text-transformations"
       ],
-      "text": "本文件另依[nt-04](../../../coding/numbers-dates-text.md#nt-04)、[nt-07](../../../coding/numbers-dates-text.md#nt-07)、[nt-11](../../../coding/numbers-dates-text.md#nt-11)、[nt-13](../../../coding/numbers-dates-text.md#nt-13)辦理。"
+      "text": "本文件另依[nt-04](../../../coding/numbers-dates-text.md#numeric-range-checks)、[nt-07](../../../coding/numbers-dates-text.md#timezone-conversion)、[nt-11](../../../coding/numbers-dates-text.md#character-encoding)、[nt-13](../../../coding/numbers-dates-text.md#text-transformations)辦理。"
     }
   ],
   "group_routes": [

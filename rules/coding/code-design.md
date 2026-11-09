@@ -24,24 +24,28 @@
 
 ## 物件契約與維護責任
 
+<a id="substitutability"></a>
 <a id="cl-02"></a>
 
 ### 繼承的可替代性
 
 繼承須具有明確的可替代關係，子型別不得破壞父型別承諾的輸入、結果與行為保證。僅為共用實作時，優先採用組合或委派，不以不成立的繼承關係換取程式碼重用；若子型別無法支援父型別承諾的操作，須重新檢視契約與能力劃分。
 
+<a id="construction-entrypoints"></a>
 <a id="cl-06"></a>
 
 ### 依需求選擇建立方式
 
 建構子、具名工廠方法或 Builder 須依資料組合、建立語意與呼叫可讀性選擇，不強制每個類別使用工廠或 Builder。所有建立入口須一致保護必要條件，避免各自維護不一致的驗證。Builder 可暫存未完成的組裝資料，但不得產出無效的目標物件。
 
+<a id="interface-capabilities"></a>
 <a id="cl-08"></a>
 
 ### 介面的能力劃分
 
 介面須依內聚的能力與使用端需求劃分，避免迫使使用端依賴無關操作，或迫使實作提供不支援的方法。不機械式拆成單一方法介面，共同服務同一責任的操作可保留於同一契約；不得以介面可見範圍取代執行期授權檢查。
 
+<a id="implementation-notes"></a>
 <a id="nd-05"></a>
 
 ### 實作註解與暫時處理
@@ -54,7 +58,7 @@
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-substitutability"></a>[繼承的可替代性](#cl-02) | 以受影響的子型別或替代實作驗證父型別承諾的輸入、結果及必要檢查，確認替代後仍符合共同契約。 |
-| <a id="acceptance-construction-entrypoints"></a>[依需求選擇建立方式](#cl-06) | 逐一驗證實際提供的建構子、工廠及 Builder 都執行一致的有效性檢查；組裝中資料不完整時不得產出無效目標物件。 |
-| <a id="acceptance-interface-capabilities"></a>[介面的能力劃分](#cl-08) | 核對實作能支援介面承諾的操作，沒有被迫提供不支援的方法；驗證介面劃分未取代操作所需的授權檢查。 |
-| <a id="acceptance-document-contract"></a>[註解與公開文件](#註解與公開文件)、[實作註解與暫時處理](#nd-05) | 比對文件、註解與實際行為，確認使用端所需契約完整，理由與限制仍有效，暫時性處理有可追蹤事項。移除過時說明，避免僅重述名稱或複製多份契約。 |
+| <a id="acceptance-substitutability"></a>[繼承的可替代性](#substitutability) | 以受影響的子型別或替代實作驗證父型別承諾的輸入、結果及必要檢查，確認替代後仍符合共同契約。 |
+| <a id="acceptance-construction-entrypoints"></a>[依需求選擇建立方式](#construction-entrypoints) | 逐一驗證實際提供的建構子、工廠及 Builder 都執行一致的有效性檢查；組裝中資料不完整時不得產出無效目標物件。 |
+| <a id="acceptance-interface-capabilities"></a>[介面的能力劃分](#interface-capabilities) | 核對實作能支援介面承諾的操作，沒有被迫提供不支援的方法；驗證介面劃分未取代操作所需的授權檢查。 |
+| <a id="acceptance-document-contract"></a>[註解與公開文件](#註解與公開文件)、[實作註解與暫時處理](#implementation-notes) | 比對文件、註解與實際行為，確認使用端所需契約完整，理由與限制仍有效，暫時性處理有可追蹤事項。移除過時說明，避免僅重述名稱或複製多份契約。 |

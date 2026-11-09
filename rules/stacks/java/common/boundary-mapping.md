@@ -4,7 +4,7 @@
 
 本文件承接[邊界物件](../../../architecture/boundary-objects.md)與[資料映射](../../../architecture/data-mapping.md)，適用於 Java 的 API、模組、持久化及第三方整合邊界。實際分層與依賴方向由專案架構決定，具體映射與序列化工具設定由 Framework 規範及專案配置落實。
 
-本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)辦理。
+本文件另依[bm-03](../../../architecture/data-mapping.md#mapping-responsibility)辦理。
 
 ## 契約與映射責任
 
@@ -38,7 +38,7 @@
 
 ### 各方向分別定義
 
-依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#bm-07)執行。Java 映射工具支援反向產生不代表可直接採用；具體工具配置另由 Framework 規範落實。
+依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#directional-mapping)執行。Java 映射工具支援反向產生不代表可直接採用；具體工具配置另由 Framework 規範落實。
 
 ## 維護與驗證
 
@@ -52,7 +52,7 @@
 
 ### 驗證實際映射路徑
 
-依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。
+依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#mapping-path-verification)執行。Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。
 
 <a id="java-closing-requirements"></a>
 

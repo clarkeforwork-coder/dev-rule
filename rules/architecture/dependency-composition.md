@@ -26,6 +26,7 @@
 
 ## 延後建立與依賴取得
 
+<a id="explicit-dependencies"></a>
 <a id="cl-05"></a>
 
 ### 明確取得依賴
@@ -38,4 +39,4 @@
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-explicit-dependencies"></a>[明確取得依賴](#cl-05) | 核對服務與外部能力可從明確依賴辨識，沒有隱藏的全域查找。工廠或提供者具有明確責任，延後或按次建立的實例符合所需生命週期。 |
+| <a id="acceptance-explicit-dependencies"></a>[明確取得依賴](#explicit-dependencies) | 核對服務與外部能力可從明確依賴辨識，沒有隱藏的全域查找。工廠或提供者具有明確責任，延後或按次建立的實例符合所需生命週期。 |

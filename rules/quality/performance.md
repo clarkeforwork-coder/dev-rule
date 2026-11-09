@@ -23,6 +23,7 @@
 
 ## 延遲資料處理的成本
 
+<a id="bounded-accumulation"></a>
 <a id="co-06"></a>
 
 ### 限制資料累積
@@ -35,4 +36,4 @@
 
 | 契約 | 驗收內容 |
 | --- | --- |
-| <a id="acceptance-bounded-accumulation"></a>[限制資料累積](#co-06) | 使用代表性資料量核對載入範圍與處理界限，確認來源、中間操作及結果收集沒有無限制累積；依風險檢查排序、分組或去重的資源成本。 |
+| <a id="acceptance-bounded-accumulation"></a>[限制資料累積](#bounded-accumulation) | 使用代表性資料量核對載入範圍與處理界限，確認來源、中間操作及結果收集沒有無限制累積；依風險檢查排序、分組或去重的資源成本。 |
