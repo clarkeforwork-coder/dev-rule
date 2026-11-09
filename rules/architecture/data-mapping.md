@@ -52,4 +52,4 @@
 
 ## 既有共同保證的落實
 
-映射失敗與部分成功依[錯誤分類](../coding/error-handling.md#失敗分類與表達)、[程式缺陷](../coding/error-handling.md#程式缺陷與不變條件)、[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功)及[資料驗證](../coding/validation.md#責任分工)。更新意圖依[空值語意](../coding/nullability.md#空值語意)。隔離與共用值依[邊界隔離](boundary-objects.md#不可變性)、[共用值契約](boundary-objects.md#隔離與拆分)、[值物件不可變性](../coding/domain-modeling.md#vo-03)及[集合所有權](../coding/collections-and-ownership.md#co-01)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#責任配置)、[介面用途](dependency-composition.md#介面與抽象)及[共用能力](shared-capabilities.md)。
+映射失敗依[錯誤處理](../coding/error-handling.md)及[資料驗證](../coding/validation.md)區分外部不合法資料與內部缺陷；不得略過欄位或產生不完整物件掩蓋失敗，允許部分成功時保留各筆結果及來源對應。更新意圖依[空值語意](../coding/nullability.md)。隔離與共用值依[邊界隔離](boundary-objects.md)、[共用值契約](boundary-objects.md#隔離與拆分)、[值物件不可變性](../coding/domain-modeling.md#vo-03)及[集合所有權](../coding/collections-and-ownership.md)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#責任配置)、[介面用途](dependency-composition.md#介面與抽象)及[共用能力](shared-capabilities.md)。
