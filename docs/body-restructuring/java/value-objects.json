@@ -39,11 +39,11 @@
     },
     {
       "id": "VO-05",
-      "kind": "拆分",
+      "kind": "整條保留",
       "targets": [
         "rules/stacks/java/common/value-objects.md#java-value-normalization"
       ],
-      "reason": "所有建立入口一致正規化交由 vo-05 原文承接，保留 Java 建構子、工廠與其他入口須讓 equals／hashCode 反映值語意。"
+      "reason": "第八次審閱 VO-05：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "id": "VO-06",
@@ -338,29 +338,23 @@
       "history_id": "VO-05",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "第八次審閱 VO-05：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。",
-      "action": "改寫",
+      "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/value-objects.md#java-value-normalization",
-          "text": "Java 建構子、工廠及其他建立入口須讓 `equals()` 與 `hashCode()` 反映已定義的值語意。"
+          "text": "Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。"
         }
       ],
       "history_id": "VO-05",
       "removed_assertions": [
-        {
-          "text": "一致執行正規化，並",
-          "source_uri": "rules/coding/domain-modeling.md#vo-05",
-          "source_text": "需要正規化時，須明訂轉換規則及其與驗證、相等性的關係，並由所有建立入口一致執行。"
-        }
+
       ],
-      "reason": "所有建立入口一致正規化已有共通原句承接，只刪此共同子句；Java 建構子、工廠及其他入口的 equals／hashCode 值語意義務與須字均保留。",
-      "common_sources": [
-        "rules/coding/domain-modeling.md#vo-05"
-      ]
+      "reason": "第八次審閱 VO-05：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "依[運算責任的共通要求](../../../coding/domain-modeling.md#vo-06)執行。",
@@ -598,7 +592,7 @@
         "本文件另依[validation](../../../coding/validation.md)辦理。\n",
         "\n"
       ],
-      "reason": "依逐句共通證據移除重述，保留 Java API 與未直接涵蓋的責任限定，語意小標題與驗收定位同步更新。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 9,
@@ -610,7 +604,7 @@
       "insert": [
         "<a id=\"java-value-immutability\"></a>\n"
       ],
-      "reason": "依逐句共通證據移除重述，保留 Java API 與未直接涵蓋的責任限定，語意小標題與驗收定位同步更新。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 13,
@@ -623,7 +617,7 @@
         "依[不可變性的共通要求](../../../coding/domain-modeling.md#vo-03)執行。Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。\n",
         "\n"
       ],
-      "reason": "依逐句共通證據移除重述，保留 Java API 與未直接涵蓋的責任限定，語意小標題與驗收定位同步更新。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 15,
@@ -635,7 +629,7 @@
       "insert": [
         "<a id=\"java-value-equality\"></a>\n"
       ],
-      "reason": "依逐句共通證據移除重述，保留 Java API 與未直接涵蓋的責任限定，語意小標題與驗收定位同步更新。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 19,
@@ -651,7 +645,7 @@
         "\n",
         "### 正規化規則\n",
         "\n",
-        "依[正規化規則的共通要求](../../../coding/domain-modeling.md#vo-05)執行。Java 建構子、工廠及其他建立入口須讓 `equals()` 與 `hashCode()` 反映已定義的值語意。\n",
+        "依[正規化規則的共通要求](../../../coding/domain-modeling.md#vo-05)執行。Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。\n",
         "\n",
         "<a id=\"java-value-operations\"></a>\n",
         "\n",
@@ -660,7 +654,7 @@
         "依[運算責任的共通要求](../../../coding/domain-modeling.md#vo-06)執行。跨幣別等依賴外部政策的操作由領域元件協調。\n",
         "\n"
       ],
-      "reason": "依逐句共通證據移除重述，保留 Java API 與未直接涵蓋的責任限定，語意小標題與驗收定位同步更新。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 21,
@@ -673,7 +667,7 @@
       "insert": [
         "<a id=\"java-value-restoration\"></a>\n"
       ],
-      "reason": "依逐句共通證據移除重述，保留 Java API 與未直接涵蓋的責任限定，語意小標題與驗收定位同步更新。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 26,
@@ -708,7 +702,7 @@
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "依逐句共通證據移除重述，保留 Java API 與未直接涵蓋的責任限定，語意小標題與驗收定位同步更新。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 41,
@@ -718,7 +712,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "依逐句共通證據移除重述，保留 Java API 與未直接涵蓋的責任限定，語意小標題與驗收定位同步更新。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 43,
@@ -736,7 +730,7 @@
         "| <a id=\"acceptance-java-generated-representation\"></a>[一般類別與 record](#java-value-implementation)、[診斷字串與交換格式](#java-diagnostic-representation) | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |\n",
         "| <a id=\"acceptance-java-value-method-coverage\"></a>[業務保證的測試](#java-value-test-coverage) | 核對測試涵蓋受影響的業務保證與失效邊界，不以只有建立成功的案例代替驗收，也不要求無業務邏輯的存取方法逐一測試。Java 的 equals()、hashCode()、record 產生方法與還原路徑均納入適用案例。 |\n"
       ],
-      "reason": "依逐句共通證據移除重述，保留 Java API 與未直接涵蓋的責任限定，語意小標題與驗收定位同步更新。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     }
   ],
   "acceptance_changes": [

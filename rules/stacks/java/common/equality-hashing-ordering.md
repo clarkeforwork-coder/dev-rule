@@ -28,7 +28,7 @@
 
 ### Entity 識別碼的生命週期
 
-依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#eq-04)執行。Java 沒有跨實例相等需求時不強制覆寫 `equals()`。
+依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#eq-04)執行。Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。
 
 <a id="java-cross-type-equality"></a>
 

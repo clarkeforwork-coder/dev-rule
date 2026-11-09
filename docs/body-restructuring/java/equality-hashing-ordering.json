@@ -29,11 +29,11 @@
     },
     {
       "id": "EQ-04",
-      "kind": "拆分",
+      "kind": "整條保留",
       "targets": [
         "rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle"
       ],
-      "reason": "依第三節混合判斷保留共通引用及 Java 不強制覆寫 equals 的條件；識別碼變化不得破壞雜湊或排序集合契約，由共通 eq-04 的集合契約禁令承接。"
+      "reason": "第八次審閱 EQ-04：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "id": "EQ-05",
@@ -251,29 +251,23 @@
       "history_id": "EQ-04",
       "removed_assertions": [
 
-      ]
+      ],
+      "reason": "第八次審閱 EQ-04：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。",
-      "action": "改寫",
+      "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle",
-          "text": "Java 沒有跨實例相等需求時不強制覆寫 `equals()`。"
+          "text": "Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。"
         }
       ],
       "history_id": "EQ-04",
       "removed_assertions": [
-        {
-          "text": "識別碼變化不得破壞雜湊或排序集合契約",
-          "source_uri": "rules/coding/domain-modeling.md#eq-04",
-          "source_text": "建立時即具備穩定識別碼，或持久化後才取得識別碼，須各自明訂適用規則與使用限制；識別碼變化不得破壞集合契約。"
-        }
+
       ],
-      "common_sources": [
-        "rules/coding/domain-modeling.md#eq-04"
-      ],
-      "reason": "保留沒有跨實例相等需求時不強制覆寫 equals 的 Java 操作條件；只移除識別碼變化不得破壞雜湊或排序集合契約的子句，共通原文明訂識別碼變化不得破壞集合契約，涵蓋此處兩種集合。"
+      "reason": "第八次審閱 EQ-04：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "允許繼承的型別須明訂跨型別的相等範圍，父子型別不得各自採用互相矛盾的比較規則。",
@@ -513,7 +507,7 @@
       "insert": [
         "<a id=\"java-comparison-semantics\"></a>\n"
       ],
-      "reason": "依逐句去向改為語意小標題，EQ-04 集合契約子句由共通明文承接，驗收內容逐字保留並更新定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 15,
@@ -541,7 +535,7 @@
         "\n",
         "### Entity 識別碼的生命週期\n",
         "\n",
-        "依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#eq-04)執行。Java 沒有跨實例相等需求時不強制覆寫 `equals()`。\n",
+        "依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#eq-04)執行。Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。\n",
         "\n",
         "<a id=\"java-cross-type-equality\"></a>\n",
         "\n",
@@ -550,7 +544,7 @@
         "允許繼承的型別須明訂跨型別的相等範圍，父子型別不得各自採用互相矛盾的比較規則。新增子型別或比較欄位時，須維持對稱性、遞移性與雜湊契約；無法維持時，應調整型別關係或限制擴充。不一律指定使用 `instanceof` 或 `getClass()`，應先依契約決定哪些具體型別可以相等。\n",
         "\n"
       ],
-      "reason": "依逐句去向改為語意小標題，EQ-04 集合契約子句由共通明文承接，驗收內容逐字保留並更新定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 17,
@@ -564,7 +558,7 @@
       "insert": [
         "<a id=\"java-ordering-choice\"></a>\n"
       ],
-      "reason": "依逐句去向改為語意小標題，EQ-04 集合契約子句由共通明文承接，驗收內容逐字保留並更新定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 23,
@@ -601,7 +595,7 @@
         "相等性、雜湊或排序規則新增及變更時，須驗證受影響的關係契約與實際集合行為，涵蓋適用的識別變化、跨型別比較、同值判定及修改後重新加入，不僅測試少數比較結果。不要求測試不適用的繼承或持久化情境，也不因使用工具產生方法就省略契約驗證。\n",
         "\n"
       ],
-      "reason": "依逐句去向改為語意小標題，EQ-04 集合契約子句由共通明文承接，驗收內容逐字保留並更新定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 36,
@@ -611,7 +605,7 @@
       "insert": [
         "依[關係與集合行為驗收](#java-relationship-coverage)，核對本次驗收同時涵蓋受影響的 Java 關係契約與實際集合操作；不能只測少數成對比較，也不能因方法由工具產生就省略驗證。\n"
       ],
-      "reason": "依逐句去向改為語意小標題，EQ-04 集合契約子句由共通明文承接，驗收內容逐字保留並更新定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 38,
@@ -621,7 +615,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "依逐句去向改為語意小標題，EQ-04 集合契約子句由共通明文承接，驗收內容逐字保留並更新定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 40,
@@ -643,7 +637,7 @@
         "| <a id=\"acceptance-java-sorted-key-equivalence\"></a>[比較為零與相等性](#java-sorted-key-equivalence) | 核對比較為零與 `equals()` 的約定，將不同但排序值相同的資料放入實際採用的 Java 排序集合或映射，確認鍵判同及資料保留符合契約。 |\n",
         "| <a id=\"acceptance-java-sorted-collection-stability\"></a>[排序集合中的穩定性](#java-sorted-collection-stability) | 核對 Java 排序元素、鍵及比較器設定的變更路徑；驗證移出重加或重建後的順序、查找及資料保留，不依賴既有集合自動調整。 |\n"
       ],
-      "reason": "依逐句去向改為語意小標題，EQ-04 集合契約子句由共通明文承接，驗收內容逐字保留並更新定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     }
   ],
   "acceptance_changes": [
@@ -708,6 +702,9 @@
 
   ],
   "group_routes": [
+
+  ],
+  "link_retention": [
 
   ]
 }

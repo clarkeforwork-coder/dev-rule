@@ -69,11 +69,11 @@
     },
     {
       "id": "BM-09",
-      "kind": "整條移除",
+      "kind": "整條保留",
       "targets": [
-        "rules/architecture/data-mapping.md#bm-09"
+        "rules/stacks/java/common/boundary-mapping.md#java-mapping-verification"
       ],
-      "reason": "共通 bm-09 明訂驗證實際映射、不得只測手寫替代版本及實際序列化邊界，完整承接兩句後移除重述。"
+      "reason": "第八次審閱 BM-09：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     }
   ],
   "sentences": [
@@ -405,65 +405,33 @@
     },
     {
       "source": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。",
-      "action": "移除",
+      "action": "保留",
       "targets": [
         {
-          "uri": "rules/architecture/data-mapping.md#bm-09"
+          "uri": "rules/stacks/java/common/boundary-mapping.md#java-mapping-verification",
+          "text": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。"
         }
       ],
       "history_id": "BM-09",
       "removed_assertions": [
-        {
-          "text": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "映射新增或變更時，須依影響驗證欄位來源、轉換語意、失敗處理、更新意圖與可變資料隔離，以及禁止流出的資料。"
-        },
-        {
-          "text": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "使用工具或框架時須驗證實際映射路徑，不能只測試手寫替代版本，也不能僅確認轉換成功或物件型別正確。"
-        },
-        {
-          "text": "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "涉及反序列化或序列化設定時，須透過實際邊界路徑驗證。"
-        }
+
       ],
-      "reason": "本句為實際映射路徑的共通引用，原 bm-09 連結移至檔頭固定引用文字，實際路徑與驗證義務仍由來源約束。",
-      "common_sources": [
-        "rules/architecture/data-mapping.md#bm-09"
-      ]
+      "reason": "第八次審閱 BM-09：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。",
-      "action": "移除",
+      "action": "保留",
       "targets": [
         {
-          "uri": "rules/architecture/data-mapping.md#bm-09"
+          "uri": "rules/stacks/java/common/boundary-mapping.md#java-mapping-verification",
+          "text": "Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。"
         }
       ],
       "history_id": "BM-09",
       "removed_assertions": [
-        {
-          "text": "Java 測試須經實際映射及適用的序列化／反序列化路徑",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "使用工具或框架時須驗證實際映射路徑，不能只測試手寫替代版本，也不能僅確認轉換成功或物件型別正確。"
-        },
-        {
-          "text": "Java 測試須經實際映射及適用的序列化／反序列化路徑",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "涉及反序列化或序列化設定時，須透過實際邊界路徑驗證。"
-        },
-        {
-          "text": "不能只測手寫替代版本",
-          "source_uri": "rules/architecture/data-mapping.md#bm-09",
-          "source_text": "使用工具或框架時須驗證實際映射路徑，不能只測試手寫替代版本，也不能僅確認轉換成功或物件型別正確。"
-        }
+
       ],
-      "reason": "共通 bm-09 明訂驗證實際映射、不得只測手寫替代版本及實際序列化邊界，完整承接兩句後移除重述。",
-      "common_sources": [
-        "rules/architecture/data-mapping.md#bm-09"
-      ]
+      "reason": "第八次審閱 BM-09：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "型別與缺值處理另依[型別宣告與泛型](types-and-generics.md)及[null 與 Optional](null-and-optional.md)；專屬型別的建立與還原依[值物件規範](value-objects.md)。",
@@ -501,10 +469,10 @@
 
       ],
       "insert": [
-        "本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)、[bm-09](../../../architecture/data-mapping.md#bm-09)辦理。\n",
+        "本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)辦理。\n",
         "\n"
       ],
-      "reason": "逐句登錄直接承接來源並保守保留未完整涵蓋的說明，新增語意小標題及核准移入句，驗收僅更新第一欄定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 9,
@@ -516,7 +484,7 @@
       "insert": [
         "<a id=\"java-mapping-fields\"></a>\n"
       ],
-      "reason": "逐句登錄直接承接來源並保守保留未完整涵蓋的說明，新增語意小標題及核准移入句，驗收僅更新第一欄定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 13,
@@ -529,7 +497,7 @@
         "依[資料映射](../../../architecture/data-mapping.md)、[API 操作語意與介面設計](../../../interfaces/api-contracts.md)、[安全](../../../quality/security.md)執行。Java 映射工具不得因同名或來源新增欄位而擴大傳遞範圍；租戶與建立者等可信欄位仍依伺服器契約取得。\n",
         "\n"
       ],
-      "reason": "逐句登錄直接承接來源並保守保留未完整涵蓋的說明，新增語意小標題及核准移入句，驗收僅更新第一欄定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 15,
@@ -542,7 +510,7 @@
       "insert": [
         "<a id=\"java-mapping-integrity\"></a>\n"
       ],
-      "reason": "逐句登錄直接承接來源並保守保留未完整涵蓋的說明，新增語意小標題及核准移入句，驗收僅更新第一欄定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 20,
@@ -573,7 +541,7 @@
         "依[各方向分別定義的共通要求](../../../architecture/data-mapping.md#bm-07)執行。Java 映射工具支援反向產生不代表可直接採用；具體工具配置另由 Framework 規範落實。\n",
         "\n"
       ],
-      "reason": "逐句登錄直接承接來源並保守保留未完整涵蓋的說明，新增語意小標題及核准移入句，驗收僅更新第一欄定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 22,
@@ -584,7 +552,7 @@
       "insert": [
         "<a id=\"java-mapping-ownership\"></a>\n"
       ],
-      "reason": "逐句登錄直接承接來源並保守保留未完整涵蓋的說明，新增語意小標題及核准移入句，驗收僅更新第一欄定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 25,
@@ -596,12 +564,18 @@
         "\n",
         "依[資料映射](../../../architecture/data-mapping.md)、[共用能力](../../../architecture/shared-capabilities.md)、[框架與依賴組裝](../../../architecture/dependency-composition.md)執行。Java 簡單映射可使用方法，有實際責任或共用需求才建立專責類別，不強制 Mapper 介面或包裝層。\n",
         "\n",
+        "<a id=\"java-mapping-verification\"></a>\n",
+        "\n",
+        "### 驗證實際映射路徑\n",
+        "\n",
+        "依[驗證實際映射路徑的共通要求](../../../architecture/data-mapping.md#bm-09)執行。Java 測試須經實際映射及適用的序列化／反序列化路徑，不能只測手寫替代版本。\n",
+        "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "逐句登錄直接承接來源並保守保留未完整涵蓋的說明，新增語意小標題及核准移入句，驗收僅更新第一欄定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 44,
@@ -611,7 +585,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "逐句登錄直接承接來源並保守保留未完整涵蓋的說明，新增語意小標題及核准移入句，驗收僅更新第一欄定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 46,
@@ -623,7 +597,7 @@
         "| <a id=\"acceptance-java-mapping-failure\"></a>[失敗明確回報](#java-mapping-integrity) | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題。 |\n",
         "| <a id=\"acceptance-java-update-intent\"></a>[保留更新意圖](#java-update-intent) | 核對 Java 欄位、預設值與反序列化路徑未合併省略、明確清空及設定值的不同意圖。 |\n"
       ],
-      "reason": "逐句登錄直接承接來源並保守保留未完整涵蓋的說明，新增語意小標題及核准移入句，驗收僅更新第一欄定位。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     }
   ],
   "acceptance_changes": [
@@ -661,10 +635,9 @@
   "link_retention": [
     {
       "targets": [
-        "rules/architecture/data-mapping.md#bm-03",
-        "rules/architecture/data-mapping.md#bm-09"
+        "rules/architecture/data-mapping.md#bm-03"
       ],
-      "text": "本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)、[bm-09](../../../architecture/data-mapping.md#bm-09)辦理。"
+      "text": "本文件另依[bm-03](../../../architecture/data-mapping.md#bm-03)辦理。"
     }
   ]
 }

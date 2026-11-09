@@ -26,7 +26,7 @@
 
 ### 正規化規則
 
-依[正規化規則的共通要求](../../../coding/domain-modeling.md#vo-05)執行。Java 建構子、工廠及其他建立入口須讓 `equals()` 與 `hashCode()` 反映已定義的值語意。
+依[正規化規則的共通要求](../../../coding/domain-modeling.md#vo-05)執行。Java 建構子、工廠及其他建立入口須一致執行正規化，並讓 `equals()` 與 `hashCode()` 反映已定義的值語意。
 
 <a id="java-value-operations"></a>
 

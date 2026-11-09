@@ -7,17 +7,18 @@
       "id": "CA-01",
       "kind": "整條移除",
       "targets": [
-        "rules/coding/concurrency-and-async.md#ca-01"
+        "rules/coding/concurrency-and-async.md#ca-01",
+        "rules/coding/concurrency-and-async.md#async-result-reception"
       ],
       "reason": "工作脫離呼叫流程的接手元件與結果處置，由 ca-01 的擁有者、責任移交及背景元件接手三句完整承接。"
     },
     {
       "id": "CA-02",
-      "kind": "拆分",
+      "kind": "整條保留",
       "targets": [
         "rules/stacks/java/common/concurrency-and-async.md#java-execution-resources"
       ],
-      "reason": "保留明確提供 Executor、ExecutorService 或框架提交工作的 Java API；虛擬執行緒的下游容量要求由 ca-02 不論排程或執行緒機制均須遵守下游限制承接。"
+      "reason": "第八次審閱 CA-02：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "id": "CA-03",
@@ -61,11 +62,11 @@
     },
     {
       "id": "CA-08",
-      "kind": "整條移除",
+      "kind": "整條保留",
       "targets": [
-        "rules/coding/concurrency-and-async.md#ca-08"
+        "rules/stacks/java/common/concurrency-and-async.md#java-execution-location"
       ],
-      "reason": "Java 任務及回呼的執行安排、阻塞及同一受限 executor 等待，由 ca-08 各階段執行資源與阻塞特性、執行安排等待關係的原句直接承接。"
+      "reason": "第八次審閱 CA-08：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "id": "CA-09",
@@ -77,11 +78,11 @@
     },
     {
       "id": "CA-10",
-      "kind": "整條移除",
+      "kind": "整條保留",
       "targets": [
-        "rules/coding/concurrency-and-async.md#ca-10"
+        "rules/stacks/java/common/concurrency-and-async.md#java-lock-scope"
       ],
-      "reason": "全部退出路徑及必要檢查不得移出原子範圍，由 ca-10 的完整保護必要條件、所有退出路徑釋放與不得移出保護範圍逐句承接。"
+      "reason": "第八次審閱 CA-10：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "id": "CA-11",
@@ -167,14 +168,17 @@
       "targets": [
         {
           "uri": "rules/coding/concurrency-and-async.md#ca-01"
+        },
+        {
+          "uri": "rules/coding/concurrency-and-async.md#async-result-reception"
         }
       ],
       "history_id": "CA-01",
       "removed_assertions": [
         {
           "text": "結果處置路徑",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-01",
-          "source_text": "併發與非同步工作須有明確的生命週期擁有者，依[結果接收與故障處置](#async-result-reception)追蹤結果及處理失敗，並管理取消與資源。"
+          "source_uri": "rules/coding/concurrency-and-async.md#async-result-reception",
+          "source_text": "非同步結果依[錯誤處理](error-handling.md#失敗分類與表達)區分成功、業務失敗、技術故障及取消，明訂接收路徑，不得丟棄故障。"
         },
         {
           "text": "Java 任務脫離呼叫流程時仍須有明確接手元件",
@@ -187,7 +191,7 @@
           "source_text": "不要求原請求等待所有工作完成，但獨立工作須由負責的背景元件接手。"
         }
       ],
-      "reason": "工作脫離呼叫流程的接手元件與結果處置，由 ca-01 的擁有者、責任移交及背景元件接手三句完整承接。"
+      "reason": "接手元件由 ca-01 的責任移交與背景元件接手承接；結果處置路徑另登 async-result-reception 的明訂接收路徑及不得丟棄故障原句。"
     },
     {
       "source": "依[統一管理執行資源的共通要求](../../../coding/concurrency-and-async.md#ca-02)執行。",
@@ -202,26 +206,22 @@
       "removed_assertions": [
 
       ],
-      "reason": "保留明確提供 Executor、ExecutorService 或框架提交工作的 Java API；虛擬執行緒的下游容量要求由 ca-02 不論排程或執行緒機制均須遵守下游限制承接。"
+      "reason": "第八次審閱 CA-02：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作；虛擬執行緒也須遵守下游容量。",
-      "action": "改寫",
+      "action": "保留",
       "targets": [
         {
           "uri": "rules/stacks/java/common/concurrency-and-async.md#java-execution-resources",
-          "text": "Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作。"
+          "text": "Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作；虛擬執行緒也須遵守下游容量。"
         }
       ],
       "history_id": "CA-02",
       "removed_assertions": [
-        {
-          "text": "虛擬執行緒也須遵守下游容量",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-02",
-          "source_text": "不強制全部共用同一執行資源；不論採用何種排程或執行緒機制，均須遵守資料庫連線及外部呼叫等下游限制。"
-        }
+
       ],
-      "reason": "保留明確提供 Executor、ExecutorService 或框架提交工作的 Java API；虛擬執行緒的下游容量要求由 ca-02 不論排程或執行緒機制均須遵守下游限制承接。"
+      "reason": "第八次審閱 CA-02：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "跨執行緒資料須透過具備可見性保證的方式交付，優先使用不可變資料或符合契約的隔離快照。",
@@ -386,44 +386,33 @@
     },
     {
       "source": "依[執行位置與阻塞行為的共通要求](../../../coding/concurrency-and-async.md#ca-08)執行。",
-      "action": "移除",
+      "action": "保留",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#ca-08"
+          "uri": "rules/stacks/java/common/concurrency-and-async.md#java-execution-location",
+          "text": "依[執行位置與阻塞行為的共通要求](../../../coding/concurrency-and-async.md#ca-08)執行。"
         }
       ],
       "history_id": "CA-08",
       "removed_assertions": [
-        {
-          "text": "依[執行位置與阻塞行為的共通要求](../../../coding/concurrency-and-async.md#ca-08)執行。",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-08",
-          "source_text": "非同步流程須確認各階段的執行資源與阻塞特性，避免占用受限資源等待同一資源上的工作完成。"
-        }
+
       ],
-      "reason": "此句只引用既有共通規則，要求仍由同一共通錨點承接；原連結另外保留於檔頭固定指路句，沒有改變引用範圍或增加例外。"
+      "reason": "第八次審閱 CA-08：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "Java 任務及回呼須明確安排 executor 與阻塞行為，避免占用同一受限 executor 等待其排隊工作。",
-      "action": "移除",
+      "action": "保留",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#ca-08"
+          "uri": "rules/stacks/java/common/concurrency-and-async.md#java-execution-location",
+          "text": "Java 任務及回呼須明確安排 executor 與阻塞行為，避免占用同一受限 executor 等待其排隊工作。"
         }
       ],
       "history_id": "CA-08",
       "removed_assertions": [
-        {
-          "text": "避免占用同一受限 executor 等待其排隊工作",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-08",
-          "source_text": "非同步流程須確認各階段的執行資源與阻塞特性，避免占用受限資源等待同一資源上的工作完成。"
-        },
-        {
-          "text": "Java 任務及回呼須明確安排 executor 與阻塞行為",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-08",
-          "source_text": "不強制每個階段使用不同執行緒池，但執行安排、等待關係與容量須支撐流程完成。"
-        }
+
       ],
-      "reason": "Java 任務及回呼的執行安排、阻塞及同一受限 executor 等待，由 ca-08 各階段執行資源與阻塞特性、執行安排等待關係的原句直接承接。"
+      "reason": "第八次審閱 CA-08：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "依[明確傳遞與清理脈絡的共通要求](../../../coding/concurrency-and-async.md#ca-09)執行。",
@@ -457,49 +446,33 @@
     },
     {
       "source": "依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#ca-10)執行。",
-      "action": "移除",
+      "action": "保留",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#ca-10"
+          "uri": "rules/stacks/java/common/concurrency-and-async.md#java-lock-scope",
+          "text": "依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#ca-10)執行。"
         }
       ],
       "history_id": "CA-10",
       "removed_assertions": [
-        {
-          "text": "依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#ca-10)執行。",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-10",
-          "source_text": "鎖定範圍須完整保護必要條件，避免持鎖執行不受控的阻塞、等待或回呼。"
-        }
+
       ],
-      "reason": "此句只引用既有共通規則，要求仍由同一共通錨點承接；原連結另外保留於檔頭固定指路句，沒有改變引用範圍或增加例外。"
+      "reason": "第八次審閱 CA-10：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "Java 同步與鎖的實作須涵蓋全部退出路徑，必要檢查不能為縮短持鎖而移出原子範圍。",
-      "action": "移除",
+      "action": "保留",
       "targets": [
         {
-          "uri": "rules/coding/concurrency-and-async.md#ca-10"
+          "uri": "rules/stacks/java/common/concurrency-and-async.md#java-lock-scope",
+          "text": "Java 同步與鎖的實作須涵蓋全部退出路徑，必要檢查不能為縮短持鎖而移出原子範圍。"
         }
       ],
       "history_id": "CA-10",
       "removed_assertions": [
-        {
-          "text": "Java 同步與鎖的實作須涵蓋全部退出路徑",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-10",
-          "source_text": "鎖定範圍須完整保護必要條件，避免持鎖執行不受控的阻塞、等待或回呼。"
-        },
-        {
-          "text": "Java 同步與鎖的實作須涵蓋全部退出路徑",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-10",
-          "source_text": "多鎖操作須明訂取得順序或避死鎖策略，所有退出路徑須正確釋放。"
-        },
-        {
-          "text": "必要檢查不能為縮短持鎖而移出原子範圍",
-          "source_uri": "rules/coding/concurrency-and-async.md#ca-10",
-          "source_text": "不得為縮短持鎖時間將必要檢查移出保護範圍，破壞原子性。"
-        }
+
       ],
-      "reason": "全部退出路徑及必要檢查不得移出原子範圍，由 ca-10 的完整保護必要條件、所有退出路徑釋放與不得移出保護範圍逐句承接。"
+      "reason": "第八次審閱 CA-10：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "依[受控關閉的共通要求](../../../coding/resource-lifecycle.md#ca-11)執行。",
@@ -597,10 +570,10 @@
 
       ],
       "insert": [
-        "本文件另依[ca-01](../../../coding/concurrency-and-async.md#ca-01)、[ca-04](../../../coding/concurrency-and-async.md#ca-04)、[ca-08](../../../coding/concurrency-and-async.md#ca-08)、[ca-10](../../../coding/concurrency-and-async.md#ca-10)辦理。\n",
+        "本文件另依[ca-01](../../../coding/concurrency-and-async.md#ca-01)、[ca-04](../../../coding/concurrency-and-async.md#ca-04)辦理。\n",
         "\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 9,
@@ -612,7 +585,7 @@
       "insert": [
         "<a id=\"java-execution-resources\"></a>\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 13,
@@ -622,7 +595,7 @@
       "insert": [
         "### 統一管理執行資源\n",
         "\n",
-        "依[統一管理執行資源的共通要求](../../../coding/concurrency-and-async.md#ca-02)執行。Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作。\n",
+        "依[統一管理執行資源的共通要求](../../../coding/concurrency-and-async.md#ca-02)執行。Java 可用明確提供的 `Executor`、`ExecutorService` 或框架提交工作；虛擬執行緒也須遵守下游容量。\n",
         "\n",
         "<a id=\"java-visibility-sharing\"></a>\n",
         "\n",
@@ -631,7 +604,7 @@
         "跨執行緒資料須透過具備可見性保證的方式交付，優先使用不可變資料或符合契約的隔離快照。需要共享可變狀態時，須明訂同步與原子性範圍，不得以單一 `volatile` 欄位或偶然成功的執行結果推定整個物件安全。\n",
         "\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 15,
@@ -644,7 +617,7 @@
       "insert": [
         "<a id=\"java-cancellation-propagation\"></a>\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 20,
@@ -669,7 +642,7 @@
         "依[多工作組合的完成條件的共通要求](../../../coding/concurrency-and-async.md#ca-07)執行。Java 多工作組合須驗證完成順序及剩餘任務處置，第一個完成不等於第一個成功。\n",
         "\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 22,
@@ -679,9 +652,9 @@
         "10. **鎖定範圍與取得策略**。依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#ca-10)執行。Java 同步與鎖的實作須涵蓋全部退出路徑，必要檢查不能為縮短持鎖而移出原子範圍。\n"
       ],
       "insert": [
-        "<a id=\"java-context-propagation\"></a>\n"
+        "<a id=\"java-execution-location\"></a>\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 26,
@@ -689,12 +662,24 @@
 
       ],
       "insert": [
+        "### 執行位置與阻塞行為\n",
+        "\n",
+        "依[執行位置與阻塞行為的共通要求](../../../coding/concurrency-and-async.md#ca-08)執行。Java 任務及回呼須明確安排 executor 與阻塞行為，避免占用同一受限 executor 等待其排隊工作。\n",
+        "\n",
+        "<a id=\"java-context-propagation\"></a>\n",
+        "\n",
         "### 明確傳遞與清理脈絡\n",
         "\n",
         "依[明確傳遞與清理脈絡的共通要求](../../../coding/concurrency-and-async.md#ca-09)執行。Java 不假設 `ThreadLocal` 或日誌脈絡自動沿用；共用執行緒上的脈絡須在結束時清理或還原。\n",
+        "\n",
+        "<a id=\"java-lock-scope\"></a>\n",
+        "\n",
+        "### 鎖定範圍與取得策略\n",
+        "\n",
+        "依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#ca-10)執行。Java 同步與鎖的實作須涵蓋全部退出路徑，必要檢查不能為縮短持鎖而移出原子範圍。\n",
         "\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 28,
@@ -705,7 +690,7 @@
       "insert": [
         "<a id=\"java-controlled-shutdown\"></a>\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 31,
@@ -728,7 +713,7 @@
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 47,
@@ -738,7 +723,7 @@
       "insert": [
         "- [結果接收與故障處置](../../../coding/concurrency-and-async.md#acceptance-result-reception)。\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 50,
@@ -748,7 +733,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     },
     {
       "baseline_line": 52,
@@ -760,7 +745,7 @@
         "| <a id=\"acceptance-java-visibility\"></a>[可見性與共享資料](#java-visibility-sharing) | 審查 Java 跨執行緒資料交付的可見性保證、共享資料的同步範圍及適用的鎖定方式；以受控交錯核對不變條件與共享狀態，不能只以單一 `volatile` 欄位或偶然成功推定整個物件安全。 |\n",
         "| <a id=\"acceptance-java-task-results\"></a>[結果接收與故障處置](#java-result-reception) | 沿 Java `Future`／`CompletableFuture` 的實際接收及結果鏈路徑觸發成功、失敗與取消，核對故障可追查、原始原因與分類保留，且未以替代值把失敗變成成功。 |\n"
       ],
-      "reason": "依逐句證據整理 Java 併發正文與語意錨點；保留涵蓋不直接的限制，驗收只更新定位並補核准連結。"
+      "reason": "第八次審閱逐字還原指定基準條文，其他既有語意小節、分組與驗收保持原處理；逐句去向另列。"
     }
   ],
   "acceptance_changes": [
@@ -796,11 +781,9 @@
     {
       "targets": [
         "rules/coding/concurrency-and-async.md#ca-01",
-        "rules/coding/concurrency-and-async.md#ca-04",
-        "rules/coding/concurrency-and-async.md#ca-08",
-        "rules/coding/concurrency-and-async.md#ca-10"
+        "rules/coding/concurrency-and-async.md#ca-04"
       ],
-      "text": "本文件另依[ca-01](../../../coding/concurrency-and-async.md#ca-01)、[ca-04](../../../coding/concurrency-and-async.md#ca-04)、[ca-08](../../../coding/concurrency-and-async.md#ca-08)、[ca-10](../../../coding/concurrency-and-async.md#ca-10)辦理。"
+      "text": "本文件另依[ca-01](../../../coding/concurrency-and-async.md#ca-01)、[ca-04](../../../coding/concurrency-and-async.md#ca-04)辦理。"
     }
   ]
 }

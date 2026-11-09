@@ -4,7 +4,7 @@
 
 本文件承接[型別安全](../../../coding/type-safety.md)及[規範治理](../../../workflow/rule-governance.md)，定義動態能力、特殊存取與檢查抑制的限制。手寫整合與測試程式碼適用相同要求，工具限制不構成自動例外。Java 型別要求另依[型別宣告與泛型](types-and-generics.md)，JDK 內部 API 與存取放寬另依[版本要求](version-policy.md)。
 
-本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)、[rf-06](../../../workflow/rule-governance.md#rf-06)辦理。
+本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)辦理。
 
 ## 動態能力與存取邊界
 
@@ -32,7 +32,7 @@
 
 ### 限定檢查抑制
 
-Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。
+依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。
 
 <a id="java-generated-code"></a>
 

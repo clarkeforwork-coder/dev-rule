@@ -45,12 +45,11 @@
     },
     {
       "id": "RF-06",
-      "kind": "拆分",
+      "kind": "整條保留",
       "targets": [
-        "rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression",
-        "rules/workflow/rule-governance.md#rf-06"
+        "rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression"
       ],
-      "reason": "第三節判斷為混合，純共通引用句移至引言連結；共通未直接點明 SuppressWarnings 及 raw type／unchecked 禁令，且抽掉最小範圍子句會使 Java 主詞失去謂語，故整個 Java 操作句保守原樣保留。"
+      "reason": "第八次審閱 RF-06：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
     },
     {
       "id": "RF-07",
@@ -327,21 +326,18 @@
     },
     {
       "source": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。",
-      "action": "移除",
+      "action": "保留",
       "targets": [
         {
-          "uri": "rules/workflow/rule-governance.md#rf-06"
+          "uri": "rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression",
+          "text": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。"
         }
       ],
       "history_id": "RF-06",
       "removed_assertions": [
-        {
-          "text": "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。",
-          "source_uri": "rules/workflow/rule-governance.md#rf-06",
-          "source_text": "檢查抑制須有可核對的原因，限定具體規則與最小必要範圍，不得廣泛關閉檢查掩蓋違規。"
-        }
+
       ],
-      "reason": "第三節判斷為混合，移除純共通引用句並在引言保留連結；具體 SuppressWarnings 與 raw type／unchecked 的禁止及核准要求未由共通直接點明，保守保留整個 Java 操作句。"
+      "reason": "第八次審閱 RF-06：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。",
@@ -356,7 +352,7 @@
       "removed_assertions": [
 
       ],
-      "reason": "共通限定最小抑制範圍，但未直接點明 SuppressWarnings 與 raw type／unchecked 的禁止及個別核准；抽掉前半要求會留下不完整主詞，故不另造句式而完整保留 Java 操作限制。"
+      "reason": "第八次審閱 RF-06：基準本句逐字還原於原分組的小節，所有條件與具名機制均保留。"
     },
     {
       "source": "依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#rf-07)執行。",
@@ -454,10 +450,10 @@
 
       ],
       "insert": [
-        "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)、[rf-06](../../../workflow/rule-governance.md#rf-06)辦理。\n",
+        "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)辦理。\n",
         "\n"
       ],
-      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
     },
     {
       "baseline_line": 9,
@@ -471,7 +467,7 @@
       "insert": [
         "<a id=\"java-dynamic-type-contract\"></a>\n"
       ],
-      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
     },
     {
       "baseline_line": 15,
@@ -496,7 +492,7 @@
         "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#rf-05)執行。Java 反射或動態呼叫的外層例外須保留原始原因。\n",
         "\n"
       ],
-      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
     },
     {
       "baseline_line": 17,
@@ -508,7 +504,7 @@
       "insert": [
         "<a id=\"java-warning-suppression\"></a>\n"
       ],
-      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
     },
     {
       "baseline_line": 21,
@@ -518,7 +514,7 @@
       "insert": [
         "### 限定檢查抑制\n",
         "\n",
-        "Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。\n",
+        "依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#rf-06)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。\n",
         "\n",
         "<a id=\"java-generated-code\"></a>\n",
         "\n",
@@ -537,7 +533,7 @@
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
     },
     {
       "baseline_line": 38,
@@ -547,7 +543,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
     },
     {
       "baseline_line": 40,
@@ -559,7 +555,7 @@
         "| <a id=\"acceptance-java-reflection-boundary\"></a>[明確需求與型別契約](#java-dynamic-type-contract) | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |\n",
         "| <a id=\"acceptance-java-reflective-access\"></a>[維持封裝與不變條件](#java-reflective-encapsulation) | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。對反射與動態能力核對特殊存取的必要性及受支援替代方式，經實際建立及還原路徑確認維持不變條件及封裝；例如私有欄位寫入或存取放寬亦不得繞過上述保證。 |\n"
       ],
-      "reason": "逐句登錄共通承接與 Java 增量，改用語意小標題，驗收僅更新表頭及定位而不減少內容。"
+      "reason": "第八次審閱還原 RF-06 的基準引用句，移除引言重複入口，其他已登錄處置及驗收不變。"
     }
   ],
   "acceptance_changes": [
@@ -595,10 +591,9 @@
     {
       "targets": [
         "rules/coding/type-safety.md#rf-04",
-        "rules/quality/security.md#rf-02",
-        "rules/workflow/rule-governance.md#rf-06"
+        "rules/quality/security.md#rf-02"
       ],
-      "text": "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)、[rf-06](../../../workflow/rule-governance.md#rf-06)辦理。"
+      "text": "本文件另依[rf-04](../../../coding/type-safety.md#rf-04)、[rf-02](../../../quality/security.md#rf-02)辦理。"
     }
   ]
 }
