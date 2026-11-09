@@ -56,11 +56,11 @@
         "映射失敗依[錯誤處理](../coding/error-handling.md)及[資料驗證](../coding/validation.md)區分外部不合法資料與內部缺陷；不得略過欄位或產生不完整物件掩蓋失敗，允許部分成功時保留各筆結果及來源對應。更新意圖依[空值語意](../coding/nullability.md)保留未提供、清空及設定值。來源／目標須維持[邊界隔離](boundary-objects.md)；符合契約的不可變值可共用，不強制深層複製，快照與檢視依[集合所有權](../coding/collections-and-ownership.md)。各方向映射由負責邊界的元件維護，簡單方法或專責類別依需求選擇，不強制 Mapper 介面；共用依[共用能力](shared-capabilities.md)判斷。\n"
       ],
       "insert": [
-        "映射失敗依[錯誤處理](../coding/error-handling.md)及[資料驗證](../coding/validation.md)區分外部不合法資料與內部缺陷；不得略過欄位或產生不完整物件掩蓋失敗。部分成功依[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功)。更新意圖依[空值語意](../coding/nullability.md)。隔離與共用值依[邊界隔離](boundary-objects.md)、[共用值契約](boundary-objects.md#隔離與拆分)、[值物件不可變性](../coding/domain-modeling.md#vo-03)及[集合所有權](../coding/collections-and-ownership.md)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#責任配置)、[介面用途](dependency-composition.md#介面與抽象)及[共用能力](shared-capabilities.md)。\n"
+        "映射失敗依[錯誤處理](../coding/error-handling.md)及[資料驗證](../coding/validation.md)區分外部不合法資料與內部缺陷。部分成功依[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功)。更新意圖依[空值語意](../coding/nullability.md)。隔離與共用值依[邊界隔離](boundary-objects.md)、[共用值契約](boundary-objects.md#隔離與拆分)、[值物件不可變性](../coding/domain-modeling.md#vo-03)及[集合所有權](../coding/collections-and-ownership.md)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#責任配置)、[介面用途](dependency-composition.md#介面與抽象)及[共用能力](shared-capabilities.md)。\n"
       ],
       "path": "rules/architecture/data-mapping.md",
       "decision": "一／BM-04、BM-04／CO-08、BM-05、BM-06、BM-08；七／L5",
-      "reason": "第五次審閱 M1／L4：恢復基準的失敗分類引言及不得略過欄位或產生不完整物件掩蓋失敗，部分成功仍引用原已核准主要來源，不退回其他摘要重述；Java 尚未逐字接收前不刪禁止句，整份文件引用範圍恢復。"
+      "reason": "第五次審閱 M1／L4：恢復基準的失敗分類引言及不得略過欄位或產生不完整物件掩蓋失敗，部分成功仍引用原已核准主要來源，不退回其他摘要重述；Java 尚未逐字接收前不刪禁止句，整份文件引用範圍恢復。 階段 B：已核對 BM-04 的 java-mapping-integrity 小節逐字移入禁止句，現在依選 B 刪除共通暫留的「；不得略過欄位或產生不完整物件掩蓋失敗」，摘要其他文字不動。"
     },
     {
       "baseline_line": 110,
