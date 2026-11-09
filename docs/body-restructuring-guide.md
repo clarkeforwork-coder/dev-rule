@@ -19,10 +19,10 @@
 
 不建立「自己的說明文件」。疑義寫在本份 JSON 的句子 `reason`；需要跨檔更新的連結、未決問題與測試輸出，在工作完成回報中交給協調者。樣板提交曾修改共用對照檔，那是協調者的工作，不能仿照其提交範圍。
 
-使用隔離且乾淨的工作分支，記下協調者指定的起點提交。範圍檢查包含該起點以後的提交、暫存區、工作區與未追蹤檔案；原本就有未追蹤審閱報告的 checkout 不適合作工作者範圍測試，應由協調者建立乾淨 checkout，不能自行刪報告。
+使用隔離且乾淨的工作分支，記下協調者指定的起點提交。範圍檢查包含該起點以後的提交、暫存區、工作區與未追蹤檔案（套用 Git 忽略規則）；原本就有未追蹤審閱報告的 checkout 不適合作工作者範圍測試，應由協調者建立乾淨 checkout，不能自行刪報告。
 
 ```sh
-ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 起點提交
+ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 工作者使用的起點 --expected-start 協調者保留的起點
 ```
 
 ## 作業順序
@@ -36,7 +36,7 @@ ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 起點提
 
 ## 小標題、連結與段落歸屬
 
-正式正文不用流水號，保留二級主題分組；每條使用三級小標題及獨立顯式錨點，例如：
+正式正文不用流水號，保留全部二級主題分組；每條使用三級小標題及獨立顯式錨點。小標題逐字沿用基準的粗體標題，不加限定語；小節只允許這一行標題與一行獨立錨點，不得另放以 `#` 或 `<a ` 開頭的行。15 份共 153 條全部有粗體標題，沒有需要自行命名的例外。例如：
 
 ```markdown
 <a id="java-optional-nonnull"></a>
@@ -50,7 +50,31 @@ ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 起點提
 
 **原句引用整份文件，整理後仍須保留整份連結；精確錨點只能額外補充，不能取代。** 移除純引用條文時，原整份引用須在引言或相應驗收入口繼續存在；去向證據另列最直接的條文錨點。JN-06 的整份資料驗證／錯誤處理／領域建模引用移至檔頭，接收、建立、狀態變更的證據分別列在 JSON，兩者責任不同。
 
-分組標題有入站連結時保留，不由工作者修改共用對照檔。分組尾段若只適用最後一個小節，可原文留在該小節並以 `history_id: null` 記錄原本沒有條號的來源；JN 的對外缺值尾段即如此。若尾段涵蓋整個分組，保留在獨立的同級「共同要求」小節，登錄移位及新錨點，不讓排版把適用範圍縮成最後一條。
+分組尾段一律集中在正文結尾的獨立小節，原句順序保持不變，不放在最後條文內；即使最後一條移除，也使用同一格式：
+
+```markdown
+<a id="java-closing-requirements"></a>
+
+## 補充要求
+
+型別與缺值處理另依……
+```
+
+每個尾段句的 `history_id` 為 `null`，`targets[].uri` 一律填本文件完整路徑加 `#java-closing-requirements`。檔頭句才可指向本文件一級標題；已編號條文不得用一級標題當去向。共通來源的一級標題只涵蓋引言，到第一個二級標題即止；例如空值語意的狀態要求本來位於引言，仍可作來源，不得用它涵蓋下方契約演進。
+
+分組被清空仍保留原二級標題，緊接固定指路句 `本組要求依〈來源連結〉、……辦理。`。JSON 增加 `group_routes`，每筆必填 `heading`（原標題）、`targets`（該分組全部被移除條文的去向聯集，排序去重）與 `text`（完整指路句）。連結文字用錨點本身，按 targets 排序；不得夾帶其他政策。沒有清空時填空陣列。例如集合第一組 CO-01 至 CO-03 全移除後：
+
+```markdown
+## 所有權與集合語意
+
+本組要求依[co-01](../../../coding/collections-and-ownership.md#co-01)、[co-02](../../../coding/collections-and-ownership.md#co-02)、[co-03](../../../coding/collections-and-ownership.md#co-03)辦理。
+```
+
+上述連結不是另立規則。**基準出現過的每個共通連結目標（整份或錨點）都必須留在現行文件**；分組清空時優先放指路句，其他遺失目標放引言。引言固定格式為 `本文件另依〈錨點或檔名連結〉、……辦理。`；使用 `link_retention` 每筆 `targets` 與 `text` 登錄，targets 須來自基準，無片段時標籤用不含 `.md` 的檔名。若共通來源指路已涵蓋錨點但原條文還有整份連結，整份連結仍另保留，不能以更精確連結取代。不得自行創建共通錨點。
+
+例：BM-03 移除純引用句後若保留「Java 映射可解析格式及建立專屬型別……」一句，種類填「拆分」，在該條理由說明仍保留的 Java 句子與涵蓋不直接之處；若兩句均保留則填「整條保留」。CO-09 若整條移除，最後的「邊界間的參考隔離另依……」尾段仍移到上述補充要求，不刪除或改寫。
+
+`link_exceptions` 為選填陣列（預設空）；例外每筆必填 `uri` 與至少 20 個非空白字的 `reason`，逐筆交由協調者確認。機器只確認目標確在基準及理由長度，不能判定刪除引用是否合理。
 
 ## 判斷欄與六種去向的對照
 
@@ -60,7 +84,7 @@ ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 起點提
 | --- | --- |
 | 選 B 的 CA-03、ST-01、BM-04 | 整條保留；BM-04 再登錄移入禁止句。 |
 | CA-06、CO-08 已核准提升 | 拆分，逐句對照新共通條文；具體 API、執行模型與 Java 限制保留，涵蓋不直接的也保留。 |
-| 第三節「重述」 | 整條移除；每句均登錄移除與共通承接證據，例如 JN-06。 |
+| 第三節「重述」 | 全部移除時填整條移除；保守留下部分句子填拆分，整條留下填整條保留，必須指出哪一句涵蓋不直接。 |
 | 第三節「增量」 | 保留增量；共同政策引用、Java 操作限制留下，例如 JN-08。 |
 | 第三節「混合」 | 拆分，逐一列出被刪子句及共通原文，例如 JN-09／12。 |
 | 第三節「驗收入口」 | 轉為驗收入口；所有獨立要求搬到有效驗收位置，不能隨入口一起刪，例如 JN-10。VO-10 另依下方特別注意事項。 |
@@ -97,7 +121,7 @@ ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 起點提
 }
 ```
 
-工具驗證被刪子句在基準原句內、已不在現行文件；承接原文逐字存在於共通錨點的小節。**機器仍不能證明兩句語意相關**；輸出會逐句列出實際需人工複核的 source、targets、removed_assertions、reason，不能只看 exit 0。
+工具驗證被刪子句在基準原句內、已不在該條文現行小節；另一條仍含同句不算違規。承接原文必須是共通錨點小節內的完整一句（去清單標記），不能填八字碎片。改寫句的原文扣掉申報子句後，以連結 URI 取代顯示名稱、忽略標點，逐子句核對字元順序；未被目的句承接的片段會列出並拒絕。樣板既有八處呈現改寫在工具 SAMPLE_WORDING 明列，工作者不得擴充：遇到必要文字改寫被擋，先保留原句並回報協調者，不以虛構被刪子句繞過。**機器仍不能證明兩句語意相關**；輸出會逐句列出實際需人工複核的 source、targets、removed_assertions、reason，不能只看 exit 0。
 
 現行正文的每個新句子也須被保留／改寫 target 或 imports 涵蓋；不能只重生 edits 就加入新義務。若切句讓程式碼／清單的目的內容無法準確表示，保留原文並回報，不改工具繞過。
 
@@ -122,7 +146,7 @@ target_uri 使用該工作者實際建立的小節錨點。工具核對固定基
 完成整理的表頭統一為 `| 對應要求 | 語言增量驗收 |`，並登錄於 acceptance_changes。第一欄依下列固定規則填寫，混合多條時按原次序以「、」分隔：
 
 - 有 Java 正文：連到現行 Java 語意小標題。
-- 整條移除：連到實際承接的共通規則，以其標題作連結文字；不得連回本文件驗收章節。
+- 整條移除：連到實際承接的共通規則，使用有意義且不夾帶政策的連結文字（可用標題或原先精簡名稱；例如樣板「驗證責任」指向「責任分工」）；不得連回本文件驗收章節。
 - 轉為驗收入口：填純文字 **覆蓋要求（原驗收入口）**，不做指向本節自己的連結。樣板 JN-10 已採此格式。
 
 `acceptance_changes` 每筆列 before／after（含換行）及至少 20 字理由；第二欄逐字不變。固定表頭可由舊名稱變成「對應要求」，不准任意改名。
@@ -135,7 +159,7 @@ target_uri 使用該工作者實際建立的小節錨點。工具核對固定基
 }
 ```
 
-references 以實際文字為準；對 before 套用這些替換必須恰好等於 after，其他字一概不變。「各條 Java 使用限制仍適用」沒有數字條號，不改它。新增驗收內容另由協調者在工具明列白名單；目前只允許 JN 已搬入引言及下列兩個已核准共同驗收連結，以 `acceptance_additions` 登錄：
+舊追溯檢查會先還原已登錄的條號替換再比較，因此不需改共用追溯文件。references 以實際文字為準；對 before 套用這些替換必須恰好等於 after，其他字一概不變。「各條 Java 使用限制仍適用」沒有數字條號，不改它。新增驗收內容另由協調者在工具明列白名單；目前只允許 JN 已搬入引言及下列兩個已核准共同驗收連結，以 `acceptance_additions` 登錄：
 
 concurrency（後接換行）：
 
@@ -148,7 +172,22 @@ collections（後接換行）：
 - [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。
 ```
 
-兩個連結插在「### Java 語言增量驗收」之前、共同清單的末尾；不得用白名單加入其他句子。
+兩個連結**緊接共同清單最後一項**，之後空一行再接 Java 標題。completed 的這兩份必須補上，不可自行省略。完成後例如：
+
+```markdown
+- [可控制的併發驗收](../../../quality/testing.md#acceptance-controlled-interleaving)。
+- [結果接收與故障處置](../../../coding/concurrency-and-async.md#acceptance-result-reception)。
+
+### Java 語言增量驗收
+```
+
+```markdown
+- [所有權與行為驗收](../../../coding/collections-and-ownership.md#acceptance-collection-coverage)。
+- [失敗後狀態](../../../coding/error-handling.md#acceptance-failure-state)。
+
+### Java 語言增量驗收
+```
+
 
 ## 各文件的特別注意事項
 
@@ -171,7 +210,7 @@ CA-06 與 CO-08 的核准提升優先於原第四節「是」的分類；這個�
 ruby scripts/update-body-diff.rb value-objects '本主題依逐句去向改為語意小標題，驗收內容保持原文並只更新條號定位。'
 ruby scripts/verify-body-restructuring.rb
 ruby scripts/test-body-restructuring.rb
-ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 起點提交
+ruby scripts/verify-body-worker-scope.rb --topic value-objects --start 工作者使用的起點 --expected-start 協調者保留的起點
 git diff --check
 git diff --check 350668eb14ede247af22c782323beebf940c2a5f..HEAD
 ```
@@ -180,10 +219,35 @@ git diff --check 350668eb14ede247af22c782323beebf940c2a5f..HEAD
 
 ## 協調者合併後的收尾清單
 
-1. 合併各工作者的兩個檔案，逐一驗證範圍與句子承接；不合併工作者對共用檔的修改。
+1. 使用協調者保留的起點，逐個工作者分支重跑範圍檢查（不得採用工作者自行後移的起點）。核對工具輸出的各條原判斷／實際種類與保守保留理由，再合併各工作者的兩個檔案，逐一驗證範圍與句子承接；不合併工作者對共用檔的修改。
 2. 統一更新 `docs/java-rule-migration.md`、`docs/pending-decisions.md` 的現行連結及完成狀態，保留歷史文字與原文缺失限制。
 3. 確認併發與集合的共同驗收連結已補入；確認 exceptions／equality 非表格條號已更新且其他字未動。
 4. 確認 BM-04 禁止句已逐字移入 Java，再獨立登錄並刪除共通摘要；VO-10 首句不動。
 5. 全部合併後才決定集合是否併入例外；同步全部正文、驗收列、索引、入站連結、追溯目的地及改寫清單，不由單檔工作者做。
 6. 執行常駐、負向與 diff 檢查，使用 `ruby scripts/record-body-verification.rb` 重生共用驗證紀錄；重算完成數及人工待複核清單。
-7. 74 個錨點改名、M4 驗收整合、CA-06／CO-08 重疊分工仍為後續獨立批次，不能夾在平行合併中。
+7. 併發或集合標為 completed／merged 後，對應提升提交的「單獨撤回後仍檢查通過」測試不再適用；產生器會明列 applicable=false 與理由。要實際撤回時須連同 Java 來源、連結及紀錄規劃，不得把略過當作可獨立撤回的證據。
+8. 74 個錨點改名、M4 驗收整合、CA-06／CO-08 重疊分工仍為後續獨立批次，不能夾在平行合併中。
+
+## 必須整條保留與人工複核
+
+工具固定清單共 19 條：JN-05、JN-11、VO-09、ST-01、ST-07、CL-04、CL-07、EQ-02、EQ-03、EQ-05、EQ-06、EQ-07、EQ-09、EX-05、LS-04、LS-07、CA-03、BM-04、ND-02。算法為第四節「是／可能」18 條扣除 CA-06，再加 BM-04、ND-02。BM-04 同時強制完整 imports；「整份併入他檔」只可搭配 merged。
+
+其他條文種類與原判斷並列輸出；比原判斷保守的處理須逐項人工複核，比原判斷寬鬆直接拒絕。人工清單亦包含每筆移入、分組指路、保留引用、引用例外、驗收第一欄、非表格替換與增文，不能只審改寫句。
+
+## 欄位與結構補充
+
+- 根層必填：baseline、path、status、rules、sentences、edits、acceptance_changes、imports、acceptance_text_changes、acceptance_additions。沒有項目時用空陣列。
+- rules 每筆必填 id、kind、targets、reason；各條理由寫自己的具體斷言或保守原因，不照抄同一句分類說明。
+- sentences 每筆必填 source、history_id（無條號為 null）、action、targets、removed_assertions、reason。targets 每筆必填 uri；保留／改寫必填 text；移除不填 text。removed_assertions 每筆三個欄位 text、source_uri、source_text 都必填。
+- common_sources 選填（預設空），只作補充來源索引；不代替 removed_assertions。建議填該句 removed_assertions 的 source_uri 去重集合，不能填 Java 來源。
+- group_routes、link_retention、link_exceptions 選填（預設空）；有對應調整時必填其項目。imports 所有五欄必填，整句貼在 BM-04 小節原正文末尾，補句號即可，不拆成片段。
+- acceptance_text_changes 每筆必填 before、after、reason、references；references 每筆 before／after。acceptance_additions 為固定完整字串陣列。edits 由輔助工具產生，reason 仍須人工確認。
+- 15 份基準掃描結果見[結構掃描](body-structure-survey.md)：全部條文都有粗體標題，正文沒有巢狀標題或表格；只有 types-and-generics 有一個程式碼區塊。圍欄與每一程式碼行仍依原切句逐字保留，與相鄰說明一起放補充要求；多個分組尾段按基準順序集中，不借用條號。原分組標題不刪。
+- classes-and-construction、states-and-results 亦可能清空分組，使用同一指路格式。types-and-generics 的 JT-03／06、states-and-results 的 ST-02／03 含同樣引用句，按各條小節核對，不為另一條仍在而修改來源證據。
+- 沒有遇過的結構不自行重切 source；保留原文並回報協調者。本輪未授權工作者改工具或共通檔。
+
+## 可重跑的演練
+
+`ruby scripts/test-body-rehearsals.rb` 在暫存複本演練分組清空、最後條文移除、部分保守保留、EX／EQ 非表格條號、CA／CO 清單增文、BM 移入再由協調者刪摘要、JT 重複引用、另一份文件完整結構與三工作者分支合併。夾具的承接證據供流程測試，不代表其他文件已獲准完成語意審閱。不得將暫存結果直接複製進 rules。
+
+提交前另跑 `ruby scripts/test-body-policy.rb`、`ruby scripts/test-body-worker-scope.rb`；所有案例須同時符合結束碼與預期診斷。範圍檢查無法推定協調者真正授權的起點，`--expected-start` 必須由協調者保留並在合併時重驗。

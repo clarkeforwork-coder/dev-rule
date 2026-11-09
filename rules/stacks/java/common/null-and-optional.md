@@ -70,6 +70,10 @@ Java 的參數、回傳值與欄位預設不允許 `null`；允許時須明確�
 
 Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#jn-12)落實對外契約。具體序列化配置由 Framework 規範落實。
 
+<a id="java-closing-requirements"></a>
+
+## 補充要求
+
 對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md)及[資料契約](../../../interfaces/data-contracts.md)一致。本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。
 
 ## 驗收要求

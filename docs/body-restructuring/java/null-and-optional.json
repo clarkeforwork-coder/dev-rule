@@ -9,7 +9,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-query-absence"
       ],
-      "reason": "共同政策改成具體來源連結，Java 的 Optional、標註、使用位置及表示限制保留；以逐句紀錄核對改寫及去向。"
+      "reason": "JN-01：；本句保留必須存在卻不存在的業務失敗條件及不得混為正常缺值；只把錯誤處理規範文字改成整份文件連結，原因保留與捕捉責任仍適用。"
     },
     {
       "id": "JN-02",
@@ -17,7 +17,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-optional-nonnull"
       ],
-      "reason": "共同政策改成具體來源連結，Java 的 Optional、標註、使用位置及表示限制保留；以逐句紀錄核對改寫及去向。 第五次審閱統一分類：第四節非新義務且有 removed_assertions 的條文列為拆分，沒有改變原要求。"
+      "reason": "JN-02：；本句的 Optional 正常缺值限制保留；刪除的失敗掩蓋列舉由失敗分類、捕捉處置與結果未知的三段原文分別承接，已逐一登錄原文。"
     },
     {
       "id": "JN-03",
@@ -25,7 +25,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-optional-access"
       ],
-      "reason": "共同政策改成具體來源連結，Java 的 Optional、標註、使用位置及表示限制保留；以逐句紀錄核對改寫及去向。 第五次審閱統一分類：第四節非新義務且有 removed_assertions 的條文列為拆分，沒有改變原要求。"
+      "reason": "JN-03：；本句保留替代值與缺值分支須符合業務語意，並還原不得掩蓋缺值；只將違反錯誤分類改引用共同失敗分類，沒有以掩蓋故障取代掩蓋缺值。；本句沒有刪除操作限制：方法名稱不足以證明合規、必定有值卻違約須當缺陷均保留；僅為程式缺陷字詞增加既有條文連結。"
     },
     {
       "id": "JN-04",
@@ -33,7 +33,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-optional-positions"
       ],
-      "reason": "共同政策改成具體來源連結，Java 的 Optional、標註、使用位置及表示限制保留；以逐句紀錄核對改寫及去向。"
+      "reason": "JN-04：；本句只移除未提供、清空與設定值的列舉，三種意圖由空值語意原文承接；完整狀態型別與不得以 Optional 混合表示仍在 Java。"
     },
     {
       "id": "JN-05",
@@ -41,7 +41,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-container-nulls"
       ],
-      "reason": "標為新的跨語言義務，整條保留在 Java，不抽背景；只將條號改為小標題與語意錨點。"
+      "reason": "JN-05 依第四節新義務判斷整條保留；基準全部句子逐字留在各自 Java 小節，不抽取共同背景。"
     },
     {
       "id": "JN-06",
@@ -53,7 +53,7 @@
         "rules/coding/code-design.md#cl-06",
         "rules/coding/domain-modeling.md#狀態建模"
       ],
-      "reason": "接收、建立與變更驗證由資料驗證責任分工、領域型別與錯誤處理承接；非空預設留 JN-11。整理前原文未提交，無法證明完整覆蓋。"
+      "reason": "JN-06：本句的三個整份規範引用移到檔頭，沒有縮小為單一小節；承接證據分別列接收驗證、缺陷處置及建立有效的既有原文。整理前原文未提交，無法證明完整覆蓋。；本句的接收、一般建立、專屬型別建立與狀態變更逐項登錄來源；可信內部免重查由資料驗證原句承接，未用專屬型別代替全部建立入口。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "JN-07",
@@ -61,7 +61,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-null-contract-tools"
       ],
-      "reason": "共同政策改成具體來源連結，Java 的 Optional、標註、使用位置及表示限制保留；以逐句紀錄核對改寫及去向。"
+      "reason": "JN-07：本句的工具辨識方式、非空預設、可空位置及範圍保留；可自動判斷違規納入檢查改連共同把關的工具執行原句，目的兩句合起來承接原句。；本句的標註文件行為一致及標註不能替代執行期驗證保留；工具缺口的驗證與審查移入前一句並引用共同把關，分別登錄行為測試與人工清單原文。；"
     },
     {
       "id": "JN-08",
@@ -69,7 +69,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-third-party-optional"
       ],
-      "reason": "共同政策改成具體來源連結，Java 的 Optional、標註、使用位置及表示限制保留；以逐句紀錄核對改寫及去向。"
+      "reason": "JN-08：本句只調整共同要求的連結文字及執行敘述，第三方空值的 jn-08 目的地未變；不把另一句的 Optional 轉換當作此句被刪政策。；本句保留正常查無資料才轉空 Optional；只刪契約不明或違約不得推測的後半，逐字承接依據為 jn-08 的保證不明或違反契約條款。"
     },
     {
       "id": "JN-09",
@@ -77,7 +77,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-null-contract-evolution"
       ],
-      "reason": "共同政策改成具體來源連結，Java 的 Optional、標註、使用位置及表示限制保留；以逐句紀錄核對改寫及去向。"
+      "reason": "JN-09：本句只調整同一 jn-09 連結的顯示文字，並明說評估相容性與使用端影響，沒有將下一句的同步更新義務省略。；本句保留標註、Optional 及缺值處置同步更新；刪除的簽章未變不能視為相容，由 jn-09 即使型別或方法簽章未變的明文承接。"
     },
     {
       "id": "JN-10",
@@ -85,7 +85,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#驗收要求"
       ],
-      "reason": "純正文入口移除，全部 Java 驗收列及共同引用保留；非法資料輸入句搬至驗收引言。整理前原文未提交，無法證明完整覆蓋。"
+      "reason": "JN-10：本句的規範驗證、共通測試策略及型別安全三個引用搬至驗收引言，目的兩句分別含前兩份及型別安全，未將引用範圍縮成單一小節。整理前原文未提交，無法證明完整覆蓋。；本句的 Optional、非空標註及 API 案例由覆蓋驗收最後一句承接；非法資料從允許邊界輸入搬至引言，不隨正文入口刪除。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "JN-11",
@@ -93,7 +93,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-nonnull-default"
       ],
-      "reason": "標為新的跨語言義務，整條保留在 Java，不抽背景；只將條號改為小標題與語意錨點。"
+      "reason": "JN-11 依第四節新義務判斷整條保留；基準全部句子逐字留在各自 Java 小節，不抽取共同背景。"
     },
     {
       "id": "JN-12",
@@ -101,7 +101,7 @@
       "targets": [
         "rules/stacks/java/common/null-and-optional.md#java-api-absence"
       ],
-      "reason": "共同政策改成具體來源連結，Java 的 Optional、標註、使用位置及表示限制保留；以逐句紀錄核對改寫及去向。"
+      "reason": "JN-12：本句的 API jn-12 引用保留於對外契約一句，連結目的地不變；它承接共同缺值轉換規範，而非另設 Java 對外表示政策。；本句保留 Java Optional 與內部 null 的 API 邊界轉換；不要求外露 Optional 由共同原文不直接暴露語言缺值包裝型別承接，後者較強且未放寬。；本句保留 Framework 規範落實配置；不得以預設輸出代替契約由 API jn-12 不得由框架預設序列化決定對外語意的原文承接。"
     }
   ],
   "sentences": [
@@ -735,7 +735,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-closing-requirements",
           "text": "對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md)及[資料契約](../../../interfaces/data-contracts.md)一致。"
         }
       ],
@@ -749,7 +749,7 @@
       "action": "保留",
       "targets": [
         {
-          "uri": "rules/stacks/java/common/null-and-optional.md#java-null-與-optional",
+          "uri": "rules/stacks/java/common/null-and-optional.md#java-closing-requirements",
           "text": "本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。"
         }
       ],
@@ -768,7 +768,7 @@
       "insert": [
         "本文件承接[空值語意](../../../coding/nullability.md)、[型別安全](../../../coding/type-safety.md)、[錯誤處理](../../../coding/error-handling.md)、[資料驗證](../../../coding/validation.md)與[領域建模](../../../coding/domain-modeling.md)，適用於自行撰寫的 Java 程式碼，包含測試與整合元件。語法與 API 須符合[版本要求](version-policy.md)，型別使用另依[型別宣告與泛型](types-and-generics.md)。\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     },
     {
       "baseline_line": 9,
@@ -781,7 +781,7 @@
       "insert": [
         "<a id=\"java-query-absence\"></a>\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     },
     {
       "baseline_line": 14,
@@ -812,7 +812,7 @@
         "`Optional` 主要用於方法回傳的正常缺值。參數與欄位須依業務語意設計，不全面包裝，也不全面禁止使用；採用時須確認契約及相關框架可正確處理。需要區分多種狀態時，依[空值語意](../../../coding/nullability.md#空值語意)使用能完整表達狀態的明確型別，不得以 `Optional` 混合表示。\n",
         "\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     },
     {
       "baseline_line": 16,
@@ -825,7 +825,7 @@
       "insert": [
         "<a id=\"java-container-nulls\"></a>\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     },
     {
       "baseline_line": 21,
@@ -850,7 +850,7 @@
         "依[第三方空值行為](../../../coding/nullability.md#jn-08)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。\n",
         "\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     },
     {
       "baseline_line": 23,
@@ -863,7 +863,7 @@
       "insert": [
         "<a id=\"java-null-contract-evolution\"></a>\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     },
     {
       "baseline_line": 28,
@@ -886,9 +886,13 @@
         "### API 邊界的缺值轉換\n",
         "\n",
         "Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#jn-12)落實對外契約。具體序列化配置由 Framework 規範落實。\n",
+        "\n",
+        "<a id=\"java-closing-requirements\"></a>\n",
+        "\n",
+        "## 補充要求\n",
         "\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     },
     {
       "baseline_line": 34,
@@ -899,7 +903,7 @@
         "不合法資料從允許承接它的邊界輸入；型別要求依[型別安全](../../../coding/type-safety.md)。\n",
         "\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     },
     {
       "baseline_line": 43,
@@ -909,7 +913,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     },
     {
       "baseline_line": 45,
@@ -927,7 +931,7 @@
         "| <a id=\"acceptance-java-optional-adaptation\"></a>[第三方轉換](#java-third-party-optional) | 檢查第三方回傳值轉成 `Optional` 的路徑，只有契約允許的正常缺值才能使用空的 `Optional`。 |\n",
         "| <a id=\"acceptance-java-optional-coverage\"></a>覆蓋要求（原驗收入口） | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。Optional、非空標註與實際 API 路徑均納入適用案例。 |\n"
       ],
-      "reason": "第五次審閱 M2／M3／L4：恢復不得掩蓋缺值與整份文件引用；語意小標題與原驗收內容保留，第一欄統一對應要求並避免驗收入口自我連結。"
+      "reason": "依已核准的 JN 逐句去向整理正文；尾段另設固定結尾小節，原句與驗收不變。"
     }
   ],
   "acceptance_changes": [
