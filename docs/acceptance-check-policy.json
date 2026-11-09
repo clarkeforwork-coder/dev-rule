@@ -64,7 +64,7 @@
 
       ],
       "kind": "acceptance",
-      "reason": "移除「## 介面用途驗收」驗收小節標題，該小節驗收內容與錨點搬到 rules/quality/rule-verification.md 的 acceptance-interface-purpose 列，不刪除其規範斷言。 驗收定位錨點「<a id=\"acceptance-interface-purpose\"></a>」隨下述驗收搬到新位置；不改歷史規則錨點。 介面用途規範句的能力、多型、架構用途、依賴方向、不得僅為 DI 及必要隔離，逐項搬入 rules/quality/rule-verification.md#acceptance-interface-purpose；「依本文件」的定位改為該列契約連結。"
+      "reason": "移除「## 介面用途驗收」驗收小節標題，該小節驗收內容與錨點搬到 rules/quality/rule-verification.md 的 acceptance-interface-purpose 列，不刪除其規範斷言。 驗收定位錨點「<a id=\"acceptance-interface-purpose\"></a>」隨下述驗收搬到新位置；不改歷史規則錨點。 介面用途規範句的能力、多型、架構用途、依賴方向、不得僅為 DI 及必要隔離，逐項搬入 rules/architecture/dependency-composition.md#acceptance-interface-purpose；「依本文件」的定位改為該列契約連結。"
     },
     {
       "path": "rules/coding/code-design.md",

@@ -25,9 +25,7 @@
 - 資料存取、框架設定與第三方整合以適當整合測試確認；跨模組流程也必須有適當整合驗證，不得只憑替身測試認定整體正確。
 - 工具依專案選擇，既有違規沿用漸進導入機制。
 
-| 契約 | 驗收內容 |
-| --- | --- |
-| <a id="acceptance-interface-purpose"></a>[介面與抽象](../architecture/dependency-composition.md#介面與抽象) | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 |
+介面用途的驗收見[介面用途驗收](../architecture/dependency-composition.md#acceptance-interface-purpose)。
 
 ## 錯誤處理驗證與驗收
 

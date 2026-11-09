@@ -34,7 +34,7 @@
 
 | 片段 ID | 基準原文 | 現行唯一主要來源 |
 | --- | --- | --- |
-| CL-1、8-1 | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 | [主要驗收](../rules/quality/rule-verification.md#acceptance-interface-purpose) |
+| CL-1、8-1 | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 | [主要驗收](../rules/architecture/dependency-composition.md#acceptance-interface-purpose) |
 | CL-1、8-2 | 核對實作能支援契約操作，介面拆分沒有取代授權。 | [主要驗收](../rules/coding/code-design.md#acceptance-interface-capabilities) |
 | CL-2、7-1 | 以受影響的子型別或替代實作驗證共同契約，確認輸入、結果與必要檢查未被破壞。 | [主要驗收](../rules/coding/code-design.md#acceptance-substitutability) |
 | CL-2、7-2 | 審查擴充範圍與覆寫方式； | [主要驗收](../rules/stacks/java/common/classes-and-construction.md#acceptance-java-override-safety) |

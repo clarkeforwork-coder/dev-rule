@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require_relative 'body-restructuring-lib'
+require_relative 'final-acceptance'
 Dir.chdir(ENV.fetch('BODY_ROOT',File.expand_path('..',__dir__)))
 def original(ref,path); BodyRestructuring.original(path,ref); end
 MIN_REASON_LENGTH=20
@@ -31,6 +32,7 @@ def destination(uri)
   path = Pathname.new(File.join('docs',path)).cleanpath.to_s
   return nil unless anchor && File.file?(path)
   text = File.read(path)
+  text = FinalAcceptance.trace_text(text,path) if FinalAcceptance.active?
   record_path = "docs/body-restructuring/java/#{File.basename(path,'.md')}.json"
   if File.file?(record_path)
     JSON.parse(File.read(record_path)).fetch('acceptance_text_changes',[]).each do |change|

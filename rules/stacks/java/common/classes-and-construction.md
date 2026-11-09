@@ -58,7 +58,7 @@
 
 ### 共同驗收
 
-- [介面與抽象](../../../quality/rule-verification.md#acceptance-interface-purpose)。
+- [介面與抽象](../../../architecture/dependency-composition.md#acceptance-interface-purpose)。
 - [繼承的可替代性](../../../coding/code-design.md#acceptance-substitutability)。
 - [必要資料與依賴齊備](../../../coding/resource-lifecycle.md#acceptance-initialization-readiness)。
 - [明確取得依賴](../../../architecture/dependency-composition.md#acceptance-explicit-dependencies)。

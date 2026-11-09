@@ -3,6 +3,7 @@
 require_relative 'body-restructuring-lib'
 require 'tmpdir'
 require 'fileutils'
+require_relative 'final-acceptance'
 module BodyPresentation
   START='3f68be483882d8dbfb6611bd58c40ec7446414af'.freeze
   CONFIG='docs/body-presentation.json'.freeze
@@ -137,7 +138,7 @@ module BodyPresentation
     args=['git'];args<<"--git-dir=#{ENV['BODY_GIT_DIR']}" if ENV['BODY_GIT_DIR']
     out,status=Open3.capture2(*args,'ls-tree','-r','--name-only',START,'rules');check(status.success?,'無法取得階段 C 起點');out.lines.map(&:strip)
   end
-  def self.render(config)
+  def self.render_base(config)
     key=JSON.generate(config);@render_cache ||= {}
     return Marshal.load(@render_cache[key]) if @render_cache[key]
     files={};records={}
@@ -150,6 +151,10 @@ module BodyPresentation
     end
     @render_cache[key]=Marshal.dump([files,records])
     [files,records]
+  end
+  def self.render(config)
+    files,records=render_base(config)
+    FinalAcceptance.active? ? FinalAcceptance.render(files,records) : [files,records]
   end
   def self.validate(config)
     check(config=={'start'=>START,'aliases'=>true,'layout'=>config['layout'],'index'=>config['index']}&&[true,false].include?(config['layout'])&&[true,false].include?(config['index']),'階段 C 設定或起點不符')
@@ -185,7 +190,8 @@ module BodyPresentation
     end
     %w[ca-06 co-08 existing-sources].each do |name|
       p="docs/body-restructuring/common/#{name}.json"
-      check(File.read(p)==old(p),'前階段共通追溯紀錄改動')
+      expected_common=FinalAcceptance.active? ? FinalAcceptance.common_record(p,old(p)) : old(p)
+      check(File.read(p)==expected_common,'前階段共通追溯紀錄改動')
     end
     out,status=Open3.capture2e('ruby',File.expand_path('verify-body-acceptance.rb',__dir__))
     check(status.success?,"現行驗收追溯失敗：#{out}")
@@ -235,6 +241,10 @@ module BodyPresentation
     result['manual_review_sentences'].reject!{|e|%w[group_routes link_retention].include?(e['type'])}
     render(config).last.each_value do |r|
       %w[group_routes link_retention group_endings].each{|k|r.fetch(k,[]).each{|e|result['manual_review_sentences']<<{'path'=>r['path'],'type'=>k,'record'=>e}}}
+    end
+    if FinalAcceptance.active?
+      FinalAcceptance.ops.each{|o|result['manual_review_sentences']<<{'type'=>'final_acceptance_change','record'=>o}}
+      result['final_acceptance']={'start'=>FinalAcceptance::START,'steps'=>FinalAcceptance.steps.map{|s|s['id']}}
     end
     result['manual_review_count']=result['manual_review_sentences'].size
     result['legacy_snapshot_local_links']=result.delete('local_links')

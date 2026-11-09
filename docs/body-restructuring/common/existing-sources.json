@@ -74,5 +74,33 @@
       "decision": "一／ST-01、VO-10、ST-03／VO-02",
       "reason": "ST-01 選 B，Java 第 1 條及獨立面向驗收完整保留；ST-03／VO-02 選 A，改引用狀態建模、專屬型別與資料驗證。VO-10 全覆蓋原句暫留：現行來源沒有直接承接全部值型別邊界值覆蓋及不能只測建立成功，不以概括測試策略代替。 第五次審閱 L6 補連 st-10 的轉換、必要資料與副作用驗收，VO-10 首句不變。"
     }
-  ]
+  ],
+  "final_acceptance_changes": {
+    "start": "53c26dcbecbdd31c6082ffd91f608660a2d38b0d",
+    "steps": [
+      {
+        "id": "interface",
+        "blocks": [
+          {
+            "path": "rules/quality/rule-verification.md",
+            "before": "| 契約 | 驗收內容 |\n| --- | --- |\n| <a id=\"acceptance-interface-purpose\"></a>[介面與抽象](../architecture/dependency-composition.md#介面與抽象) | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 |\n",
+            "after": "介面用途的驗收見[介面用途驗收](../architecture/dependency-composition.md#acceptance-interface-purpose)。\n",
+            "reason": "七／M4：單列驗收移回規則檔，原位置保留導向，移除空表頭。"
+          },
+          {
+            "path": "rules/architecture/dependency-composition.md",
+            "before": "| <a id=\"acceptance-explicit-dependencies\"></a>[明確取得依賴](#explicit-dependencies) | 核對服務與外部能力可從明確依賴辨識，沒有隱藏的全域查找。工廠或提供者具有明確責任，延後或按次建立的實例符合所需生命週期。 |\n",
+            "after": "| <a id=\"acceptance-explicit-dependencies\"></a>[明確取得依賴](#explicit-dependencies) | 核對服務與外部能力可從明確依賴辨識，沒有隱藏的全域查找。工廠或提供者具有明確責任，延後或按次建立的實例符合所需生命週期。 |\n| <a id=\"acceptance-interface-purpose\"></a>[介面與抽象](#介面與抽象) | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 |\n",
+            "reason": "七／M4：逐字接收驗收列，僅調整列內相對連結。"
+          }
+        ],
+        "link_moves": [
+          {
+            "from": "rules/quality/rule-verification.md#acceptance-interface-purpose",
+            "to": "rules/architecture/dependency-composition.md#acceptance-interface-purpose"
+          }
+        ]
+      }
+    ]
+  }
 }

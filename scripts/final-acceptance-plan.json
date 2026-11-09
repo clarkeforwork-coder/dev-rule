@@ -1,0 +1,154 @@
+{
+  "start": "53c26dcbecbdd31c6082ffd91f608660a2d38b0d",
+  "steps": [
+    {
+      "id": "interface",
+      "ops": [
+        {
+          "path": "rules/quality/rule-verification.md",
+          "before": "| 契約 | 驗收內容 |\n| --- | --- |\n| <a id=\"acceptance-interface-purpose\"></a>[介面與抽象](../architecture/dependency-composition.md#介面與抽象) | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 |\n",
+          "after": "介面用途的驗收見[介面用途驗收](../architecture/dependency-composition.md#acceptance-interface-purpose)。\n",
+          "reason": "七／M4：單列驗收移回規則檔，原位置保留導向，移除空表頭。"
+        },
+        {
+          "path": "rules/architecture/dependency-composition.md",
+          "before": "| <a id=\"acceptance-explicit-dependencies\"></a>[明確取得依賴](#explicit-dependencies) | 核對服務與外部能力可從明確依賴辨識，沒有隱藏的全域查找。工廠或提供者具有明確責任，延後或按次建立的實例符合所需生命週期。 |\n",
+          "after": "| <a id=\"acceptance-explicit-dependencies\"></a>[明確取得依賴](#explicit-dependencies) | 核對服務與外部能力可從明確依賴辨識，沒有隱藏的全域查找。工廠或提供者具有明確責任，延後或按次建立的實例符合所需生命週期。 |\n| <a id=\"acceptance-interface-purpose\"></a>[介面與抽象](#介面與抽象) | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 |\n",
+          "reason": "七／M4：逐字接收驗收列，僅調整列內相對連結。"
+        }
+      ],
+      "moves": [
+        {
+          "from": "rules/quality/rule-verification.md#acceptance-interface-purpose",
+          "to": "rules/architecture/dependency-composition.md#acceptance-interface-purpose"
+        }
+      ]
+    },
+    {
+      "id": "partial",
+      "ops": [
+        {
+          "path": "rules/quality/rule-verification.md",
+          "before": "| 契約 | 驗收內容 |\n| --- | --- |\n| <a id=\"acceptance-partial-operation\"></a>[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。 |\n",
+          "after": "多步驟與部分成功的驗收見[多步驟與部分成功驗收](../coding/error-handling.md#acceptance-partial-operation)。\n",
+          "reason": "七／M4：單列驗收移回規則檔，原位置保留導向，移除空表頭。"
+        },
+        {
+          "path": "rules/coding/error-handling.md",
+          "before": "| <a id=\"acceptance-failure-state\"></a>[失敗後狀態](#failure-state-guarantee) | 觸發批次修改的適用失敗路徑，核對例外後實際狀態符合約定，不以拋例外推定未修改，也不要求所有集合操作具備交易能力。 |\n",
+          "after": "| <a id=\"acceptance-failure-state\"></a>[失敗後狀態](#failure-state-guarantee) | 觸發批次修改的適用失敗路徑，核對例外後實際狀態符合約定，不以拋例外推定未修改，也不要求所有集合操作具備交易能力。 |\n| <a id=\"acceptance-partial-operation\"></a>[多步驟與部分成功](#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。 |\n",
+          "reason": "七／M4：逐字接收驗收列，僅調整列內相對連結。"
+        }
+      ],
+      "moves": [
+        {
+          "from": "rules/quality/rule-verification.md#acceptance-partial-operation",
+          "to": "rules/coding/error-handling.md#acceptance-partial-operation"
+        }
+      ]
+    },
+    {
+      "id": "division",
+      "ops": [
+        {
+          "path": "rules/coding/concurrency-and-async.md",
+          "before": "| <a id=\"acceptance-task-ownership\"></a>[明確的工作擁有者](#task-ownership) | 核對每項工作及脫離原呼叫流程後的擁有者，確認責任移交明確，結果、失敗、取消與資源均有負責元件追蹤，不留下無人接手的工作。 |\n",
+          "after": "| <a id=\"acceptance-task-ownership\"></a>[明確的工作擁有者](#task-ownership) | 核對每項工作及脫離原呼叫流程後的擁有者，確認責任移交明確，結果、失敗、取消與資源均有負責元件追蹤，不留下無人接手的工作。本列核對工作擁有者與責任移交；結果分類與接收路徑見[結果接收驗收](#acceptance-result-reception)。 |\n",
+          "reason": "CA-06／CO-08：原驗收全文保留，只補分工與相互連結。"
+        },
+        {
+          "path": "rules/coding/concurrency-and-async.md",
+          "before": "| <a id=\"acceptance-result-reception\"></a>[結果接收與故障處置](#async-result-reception) | 核對成功、業務失敗、技術故障及取消的接收路徑，確認結果分類保留且故障未被丟棄。 |\n",
+          "after": "| <a id=\"acceptance-result-reception\"></a>[結果接收與故障處置](#async-result-reception) | 核對成功、業務失敗、技術故障及取消的接收路徑，確認結果分類保留且故障未被丟棄。本列核對結果分類與接收路徑；工作擁有者與責任移交見[工作追蹤驗收](#acceptance-task-ownership)。 |\n",
+          "reason": "CA-06／CO-08：原驗收全文保留，只補分工與相互連結。"
+        },
+        {
+          "path": "rules/coding/error-handling.md",
+          "before": "| <a id=\"acceptance-failure-state\"></a>[失敗後狀態](#failure-state-guarantee) | 觸發批次修改的適用失敗路徑，核對例外後實際狀態符合約定，不以拋例外推定未修改，也不要求所有集合操作具備交易能力。 |\n",
+          "after": "| <a id=\"acceptance-failure-state\"></a>[失敗後狀態](#failure-state-guarantee) | 觸發批次修改的適用失敗路徑，核對例外後實際狀態符合約定，不以拋例外推定未修改，也不要求所有集合操作具備交易能力。本列核對例外後的實際狀態；全部或部分成功及項目對應見[多步驟與部分成功驗收](#acceptance-partial-operation)。 |\n",
+          "reason": "CA-06／CO-08：原驗收全文保留，只補分工與相互連結。"
+        },
+        {
+          "path": "rules/coding/error-handling.md",
+          "before": "| <a id=\"acceptance-partial-operation\"></a>[多步驟與部分成功](#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。 |\n",
+          "after": "| <a id=\"acceptance-partial-operation\"></a>[多步驟與部分成功](#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。本列核對全部或部分成功及項目對應；例外後的實際狀態見[失敗後狀態驗收](#acceptance-failure-state)。 |\n",
+          "reason": "CA-06／CO-08：原驗收全文保留，只補分工與相互連結。"
+        },
+        {
+          "path": "rules/quality/rule-verification.md",
+          "before": "共通主題的具體驗收見[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)及[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)。領域、映射、空值與介面等補充契約的驗收由各自主要文件維護。",
+          "after": "[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)、[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose)與[多步驟及部分成功](../coding/error-handling.md#acceptance-partial-operation)的驗收也由各自規則檔維護。本文件保留共同把關、架構檢查與可測試性、跨情境錯誤處理，以及補償、外部整合與事件、安全、資料庫、API、可觀測性、效能、設定、依賴及 Git 等主題的驗收。",
+          "reason": "七／M4：僅描述兩列歸位後的維護位置；其他主題原結構及驗收內容維持。"
+        }
+      ],
+      "moves": [
+
+      ]
+    },
+    {
+      "id": "references",
+      "ops": [
+        {
+          "path": "rules/stacks/java/common/states-and-results.md",
+          "before": "Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。",
+          "after": "Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依[本文件驗收要求](#驗收要求)與[處理完整性、封閉或允許擴充驗收](../../../coding/domain-modeling.md#acceptance-model-extensibility)驗收，並核對實際副作用。",
+          "reason": "L12／七 L2 ST-10：共同與 Java 驗收並列，使用端分支及封閉模型精確指向共通。"
+        },
+        {
+          "path": "rules/stacks/java/common/numbers-dates-text.md",
+          "before": "Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。",
+          "after": "Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依[本文件驗收要求](#驗收要求)驗收。",
+          "reason": "L12／七 L2 NT-14：整節含共同引用與 Java 實際路徑，不限只有兩列的表格。"
+        },
+        {
+          "path": "rules/stacks/java/common/collections-and-ownership.md",
+          "before": "各條 Java 使用限制仍適用。",
+          "after": "本文件保留的 Java 使用限制仍適用。",
+          "reason": "L12：明確指向現存 Java 條文，共通要求仍由原引用承接。"
+        },
+        {
+          "path": "rules/stacks/java/common/value-objects.md",
+          "before": "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依下方驗收表驗證，不機械式測試每個產生的方法。",
+          "after": "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[Java 業務保證驗收](#acceptance-java-value-method-coverage)與[共通資料還原驗收](../../../coding/domain-modeling.md#acceptance-value-restoration)驗證，不機械式測試每個產生的方法。",
+          "reason": "七／L2 VO-10：保留全部受驗對象，指向覆蓋列與詳細還原列。"
+        },
+        {
+          "path": "rules/stacks/java/common/boundary-mapping.md",
+          "before": "依下方 Java 實際映射路徑驗收拒絕、缺陷與部分成功，不以建立了目標型別就視為有效。",
+          "after": "依[Java 實際映射路徑驗收](#acceptance-java-mapping-failure)與[多步驟及部分成功驗收](../../../coding/error-handling.md#acceptance-partial-operation)驗收拒絕、缺陷與部分成功，不以建立了目標型別就視為有效。",
+          "reason": "七／L2 BM-04：拒絕與缺陷留 Java，部分成功連到共通主要列。"
+        },
+        {
+          "path": "rules/stacks/java/common/collections-and-ownership.md",
+          "before": "具體併發 API 與資源管理方式由後續 Java 主題展開。",
+          "after": "具體併發 API 與資源管理方式分別見[併發與非同步處理](concurrency-and-async.md)與[例外與資源管理](exceptions-and-resources.md)。",
+          "reason": "七／L6：主題已存在，將後續展開改為現行入口。"
+        },
+        {
+          "path": "rules/architecture/data-mapping.md",
+          "before": "## 既有共同保證的落實",
+          "after": "## 相關共通契約",
+          "reason": "七／L6：移除整理階段用語，摘要正文逐字保留。"
+        },
+        {
+          "path": "rules/quality/rule-verification.md",
+          "before": "測試程式碼同樣遵守下列型別安全要求。",
+          "after": "測試程式碼同樣遵守[型別安全要求](../coding/type-safety.md)。",
+          "reason": "七／L6：下列並非型別要求，改連實際型別安全來源。"
+        },
+        {
+          "path": "rules/stacks/java/common/boundary-mapping.md",
+          "before": "確認沒有以預設值或半成品掩蓋問題。",
+          "after": "確認沒有以預設值或半成品掩蓋問題，且未略過欄位或產生不完整物件掩蓋失敗。",
+          "reason": "L13 第二點：唯一新增核對取自 BM-04 正文「不得略過欄位或產生不完整物件掩蓋失敗」。"
+        }
+      ],
+      "moves": [
+        {
+          "from": "rules/architecture/data-mapping.md#既有共同保證的落實",
+          "to": "rules/architecture/data-mapping.md#相關共通契約"
+        }
+      ]
+    }
+  ]
+}

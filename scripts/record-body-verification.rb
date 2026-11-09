@@ -5,6 +5,8 @@ Dir.chdir(File.expand_path('..',__dir__))
 commands=[
  ['ruby','scripts/verify-body-restructuring.rb'],
  ['ruby','scripts/verify-body-sentences.rb'],
+ ['ruby','scripts/verify-final-acceptance.rb'],
+ ['ruby','scripts/test-final-acceptance.rb'],
  ['ruby','scripts/test-body-presentation.rb'],
  ['ruby','scripts/test-verify-acceptance.rb'],
  ['ruby','scripts/test-body-restructuring.rb'],
