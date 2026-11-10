@@ -14,11 +14,72 @@
 
 反射與動態呼叫須有明確需求，已知的業務能力優先透過靜態型別契約表達。必要動態能力須集中於責任明確的元件，限制影響範圍並提供具型別的內部契約，不得藉此繞過型別安全要求。框架整合、外掛或通用工具的動態名稱與未知物件不得任意散入業務流程。
 
+**違反**
+
+```java
+// 已知業務能力仍透過動態名稱呼叫。
+class Example {
+    void execute(Object service) throws ReflectiveOperationException {
+        service.getClass().getMethod("submit").invoke(service);
+    }
+}
+```
+
+**符合**
+
+```java
+// 已知業務能力以靜態型別契約表達。
+class Example {
+    interface Submission { void submit(); }
+    void execute(Submission service) {
+        service.submit();
+    }
+}
+```
+
 <a id="java-reflective-encapsulation"></a>
 
 ### 維持封裝與不變條件
 
 反射與動態能力不得繞過可見性設計、建立驗證或業務不變條件。需要特殊存取時，優先採用受支援的整合方式；必要的存取放寬須個別核准並驗證影響，不得以框架、映射或測試用途自行豁免。例如不能以直接寫入私有欄位避開正式建立規則。
+
+**違反**
+
+```java
+// 反射直接寫入私有欄位，繞過金額驗證。
+class Example {
+    static class Amount {
+        private int value;
+        Amount(int value) {
+            if (value < 0) throw new IllegalArgumentException("金額不可為負");
+            this.value = value;
+        }
+    }
+    Amount restore(int value) throws ReflectiveOperationException {
+        Amount amount = new Amount(0);
+        Amount.class.getDeclaredField("value").setInt(amount, value);
+        return amount;
+    }
+}
+```
+
+**符合**
+
+```java
+// 還原時使用正式建構子，維持金額驗證。
+class Example {
+    static class Amount {
+        private int value;
+        Amount(int value) {
+            if (value < 0) throw new IllegalArgumentException("金額不可為負");
+            this.value = value;
+        }
+    }
+    Amount restore(int value) {
+        return new Amount(value);
+    }
+}
+```
 
 <a id="java-dynamic-contract-validation"></a>
 
@@ -26,11 +87,68 @@
 
 依[使用前驗證契約的共通要求](../../../coding/type-safety.md#dynamic-contract-validation)執行。Java 動態元件須驗證能力、版本及型別，不只確認名稱存在，也不靠未驗證轉型掩蓋不相容。
 
+**違反**
+
+```java
+// 外掛註冊時直接轉型，未驗證能力、版本及型別。
+class Example {
+    interface Plugin { int version(); String render(); }
+    Plugin register(Object candidate) {
+        return (Plugin) candidate;
+    }
+}
+```
+
+**符合**
+
+```java
+// 外掛註冊先確認能力介面與型別，再驗證支援的契約版本。
+class Example {
+    interface Plugin { int version(); String render(); }
+    Plugin register(Object candidate) {
+        if (!(candidate instanceof Plugin plugin) || plugin.version() != 1) {
+            throw new IllegalArgumentException("外掛契約不相容");
+        }
+        return plugin;
+    }
+}
+```
+
 <a id="java-reflection-failure"></a>
 
 ### 區分故障與執行結果
 
 依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#dynamic-failure-classification)執行。Java 反射或動態呼叫的外層例外須保留原始原因。
+
+**違反**
+
+```java
+// 包裝反射故障時只留下訊息，遺失原始原因。
+class Example {
+    Object create(Class<?> type) {
+        try {
+            return type.getConstructor().newInstance();
+        } catch (ReflectiveOperationException failure) {
+            throw new IllegalStateException("動態建立失敗：" + type.getName());
+        }
+    }
+}
+```
+
+**符合**
+
+```java
+// 包裝時保留反射例外及其原因鏈，供呼叫端辨別故障。
+class Example {
+    Object create(Class<?> type) {
+        try {
+            return type.getConstructor().newInstance();
+        } catch (ReflectiveOperationException failure) {
+            throw new IllegalStateException("動態建立失敗：" + type.getName(), failure);
+        }
+    }
+}
+```
 
 ## 檢查抑制與產生碼
 
@@ -40,11 +158,59 @@
 
 依[限定檢查抑制的共通要求](../../../workflow/rule-governance.md#suppression-scope)執行。Java `@SuppressWarnings` 須限具體規則及最小範圍；raw type／unchecked 仍遵守型別與泛型規範的禁止事項及個別核准要求。
 
+**違反**
+
+```java
+// 僅需抑制未使用序列化的內部例外警告，卻擴及整個外層類別。
+@SuppressWarnings("serial")
+class Example {
+    static class LocalFailure extends RuntimeException {}
+    void execute() { throw new LocalFailure(); }
+}
+```
+
+**符合**
+
+```java
+// 此內部例外不作序列化；僅在該型別抑制序列化警告，使用方式改變時重查。
+class Example {
+    @SuppressWarnings("serial")
+    static class LocalFailure extends RuntimeException {}
+    void execute() { throw new LocalFailure(); }
+}
+```
+
 <a id="java-generated-code"></a>
 
 ### 產生碼不擴大豁免
 
 依[產生碼不擴大豁免的共通要求](../../../workflow/rule-governance.md#generated-code-exceptions)執行。Java 產生碼須由來源／設定重建；手寫銜接維持完整型別檢查，重建後確認例外範圍仍適用。
+
+**違反**
+
+```java
+// 手寫銜接將產生碼的未知結果直接轉型，未維持型別驗證。
+class Example {
+    interface GeneratedClient { Object read(); }
+    String read(GeneratedClient client) {
+        return (String) client.read();
+    }
+}
+```
+
+**符合**
+
+```java
+// 手寫銜接驗證產生碼的結果型別，對內提供明確契約。
+class Example {
+    interface GeneratedClient { Object read(); }
+    String read(GeneratedClient client) {
+        Object value = client.read();
+        if (value instanceof String text) return text;
+        throw new IllegalArgumentException("產生碼結果不符合字串契約");
+    }
+}
+```
 
 <a id="java-dynamic-verification"></a>
 
