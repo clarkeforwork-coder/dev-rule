@@ -12,11 +12,65 @@
 
 依[程式碼設計與公開介面](../../../coding/code-design.md#函式責任與參數)、[命名與可讀性](../../../coding/naming.md#操作與判斷)執行。Java Lambda／Stream 不強制取代迴圈；複雜或獨立責任採具名方法或清楚流程，不要求每個 Lambda 都抽方法。
 
+**違反**
+
+```java
+// 計價責任直接混入篩選條件，難以辨識判斷意圖。
+class Example {
+    List<Integer> affordable(List<Integer> prices, int budget) {
+        return prices.stream().filter((Integer price) -> {
+            int discounted = price >= 100 ? price * 9 / 10 : price;
+            int shipping = discounted >= 80 ? 0 : 10;
+            return discounted + shipping <= budget;
+        }).toList();
+    }
+}
+```
+
+**符合**
+
+```java
+// 將獨立計價責任放入具名方法，篩選條件直接表達意圖。
+class Example {
+    List<Integer> affordable(List<Integer> prices, int budget) {
+        return prices.stream()
+                .filter((Integer price) -> totalPrice(price) <= budget).toList();
+    }
+    int totalPrice(int price) {
+        int discounted = price >= 100 ? price * 9 / 10 : price;
+        int shipping = discounted >= 80 ? 0 : 10;
+        return discounted + shipping;
+    }
+}
+```
+
 <a id="java-lambda-parameter-types"></a>
 
 ### 明確的參數型別
 
 自行宣告的 Lambda 參數須明確標示型別，不使用省略型別或 `var` 取代。方法參考可在型別契約完整且意圖清楚時使用，不要求機械式改寫成 Lambda；來源集合與相關契約仍須保留泛型資訊。呼叫目標或業務意義不清楚時，使用明確的 Lambda 或具名方法。
+
+**違反**
+
+```java
+// 自行宣告的 Lambda 參數省略了型別。
+class Example {
+    List<String> nonEmpty(List<String> values) {
+        return values.stream().filter(value -> !value.isEmpty()).toList();
+    }
+}
+```
+
+**符合**
+
+```java
+// 自行宣告的 Lambda 參數明確標示 String 型別。
+class Example {
+    List<String> nonEmpty(List<String> values) {
+        return values.stream().filter((String value) -> !value.isEmpty()).toList();
+    }
+}
+```
 
 <a id="java-intermediate-side-effects"></a>
 
@@ -24,11 +78,63 @@
 
 Stream 的篩選、轉換及其他中間操作須避免隱藏業務副作用，`peek` 不得承擔必要業務操作。需要寫入或外部呼叫時，須以責任明確的執行步驟表達，並維持順序、失敗與部分成功保證；使用 `forEach` 也不免除上述責任。
 
+**違反**
+
+```java
+// 必要的取消操作藏在 peek 中，不能保證執行。
+class Example {
+    static class Order { boolean cancelled; }
+    void cancelAll(List<Order> orders) {
+        orders.stream().peek((Order order) -> order.cancelled = true).count();
+    }
+}
+```
+
+**符合**
+
+```java
+// 逐項取消以明確迴圈依序執行，沒有隱藏在中間操作。
+class Example {
+    static class Order { boolean cancelled; }
+    void cancelAll(List<Order> orders) {
+        for (Order order : orders) {
+            order.cancelled = true;
+        }
+    }
+}
+```
+
 <a id="java-result-accumulation"></a>
 
 ### 明確累積結果
 
 Lambda 與 Stream 的結果累積須使用明確的收集、歸約或流程設計，不得隱藏修改外部集合、計數器或旗標來影響元素處理。需要跨元素狀態時，須明確表達順序與管理責任，可使用清楚的迴圈或適當彙整，不為使用 Stream 而隱藏狀態。
+
+**違反**
+
+```java
+// Lambda 修改外部集合來累積結果。
+class Example {
+    List<String> nonEmpty(List<String> values) {
+        List<String> result = new ArrayList<>();
+        values.stream().filter((String value) -> !value.isEmpty())
+                .forEach((String value) -> result.add(value));
+        return result;
+    }
+}
+```
+
+**符合**
+
+```java
+// 以收集機制明確累積結果。
+class Example {
+    List<String> nonEmpty(List<String> values) {
+        return values.stream().filter((String value) -> !value.isEmpty())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+}
+```
 
 ## 執行、平行與歸約
 
@@ -37,6 +143,32 @@ Lambda 與 Stream 的結果累積須使用明確的收集、歸約或流程設�
 ### 延遲與短路範圍
 
 使用 Stream 時須確認實際執行時機、終端操作與短路範圍，不得把流程建立視為工作完成，也不得假設所有元素都會被處理。契約要求完整驗證或逐項處理時，須選用能維持該保證的明確流程，不把必要工作藏在可能提前停止的操作中。
+
+**違反**
+
+```java
+// 契約要求每筆都驗證，allMatch 卻在首筆失敗時短路。
+class Example {
+    boolean validateEveryItem(List<String> values, Predicate<String> validator) {
+        return values.stream().allMatch(validator);
+    }
+}
+```
+
+**符合**
+
+```java
+// 每筆都呼叫驗證器，累積結果時不短路。
+class Example {
+    boolean validateEveryItem(List<String> values, Predicate<String> validator) {
+        boolean valid = true;
+        for (String value : values) {
+            valid &= validator.test(value);
+        }
+        return valid;
+    }
+}
+```
 
 <a id="java-parallel-stream-adoption"></a>
 
@@ -50,6 +182,28 @@ Lambda 與 Stream 的結果累積須使用明確的收集、歸約或流程設�
 
 須明訂初始值、累積及合併規則，維持所需的結合性與結果語意。允許平行處理時，分段計算再合併也須符合契約。順序敏感的運算須採用能保留該順序的流程，例如逐步捨入不能任意改變分組。可變容器使用適當的收集機制，不以共用可變初始值造成資料互相污染。
 
+**違反**
+
+```java
+// 求和的初始值錯設為一，空資料與分段合併都會多算。
+class Example {
+    int sum(List<Integer> values) {
+        return values.stream().reduce(1, Integer::sum);
+    }
+}
+```
+
+**符合**
+
+```java
+// 求和以零作為單位元素，累積與合併均使用加法。
+class Example {
+    int sum(List<Integer> values) {
+        return values.stream().reduce(0, Integer::sum);
+    }
+}
+```
+
 ## 失敗、消費範圍與驗證
 
 <a id="java-failure-classification"></a>
@@ -58,11 +212,64 @@ Lambda 與 Stream 的結果累積須使用明確的收集、歸約或流程設�
 
 Lambda 與 Stream 中的失敗須遵循既有錯誤分類，不得為配合函式介面而吞錯、回傳替代值或默默移除失敗項目。例外傳遞受介面限制時，須明確調整流程或依邊界契約轉換，保留原始原因，不以隱藏拋出或任意轉換規避要求。允許部分成功時，保留各筆結果與對應關係；技術故障仍依既有例外契約處理。
 
+**違反**
+
+```java
+// 為配合函式介面而把讀取失敗替換成空字串，吞掉技術故障。
+class Example {
+    List<String> readAll(List<Path> paths) throws IOException {
+        return paths.stream().map((Path path) -> {
+            try { return Files.readString(path); }
+            catch (IOException error) { return ""; }
+        }).toList();
+    }
+}
+```
+
+**符合**
+
+```java
+// 改用明確迴圈，依方法契約傳遞原始 IOException。
+class Example {
+    List<String> readAll(List<Path> paths) throws IOException {
+        List<String> result = new ArrayList<>();
+        for (Path path : paths) {
+            result.add(Files.readString(path));
+        }
+        return result;
+    }
+}
+```
+
 <a id="java-stream-consumption"></a>
 
 ### 明確消費範圍
 
 Stream 須有明確的消費範圍，不得在消費後重用，也不得讓多個流程共用同一實例各自消費。需要重複處理時，須明確選擇範圍受控的快照或重新取得資料，並定義一致性與資源生命週期。提供者能重新取得 Stream 不代表結果必定相同；涉及外部資源時，仍須明訂有效期與關閉責任。
+
+**違反**
+
+```java
+// 已消費的 Stream 再次使用，第二次終端操作會失敗。
+class Example {
+    long countTwice(List<String> values) {
+        Stream<String> stream = List.copyOf(values).stream();
+        return stream.count() + stream.count();
+    }
+}
+```
+
+**符合**
+
+```java
+// 同一份不可變快照各自建立 Stream，消費範圍彼此獨立。
+class Example {
+    long countTwice(List<String> values) {
+        List<String> snapshot = List.copyOf(values);
+        return snapshot.stream().count() + snapshot.stream().count();
+    }
+}
+```
 
 <a id="java-execution-verification"></a>
 
