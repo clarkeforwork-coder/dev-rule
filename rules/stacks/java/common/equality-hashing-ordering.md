@@ -1,0 +1,96 @@
+# Java 相等性、雜湊與排序
+
+本文件只維護 Java 的具體要求；引用的共通規範同樣具有約束力。
+
+本文件延伸[專屬值型別與領域值物件](value-objects.md)的相等性要求，涵蓋 Entity、繼承關係及集合使用。型別與擴充設計另依[型別宣告與泛型](types-and-generics.md)及[類別、介面與物件建立](classes-and-construction.md)；ORM 代理等具體相容方式由 Framework 規範處理。
+
+## 相等性與雜湊
+
+<a id="java-comparison-semantics"></a>
+
+### 明訂比較語意
+
+依[明訂比較語意的共通要求](../../../coding/domain-modeling.md#identity-semantics)執行。Java `equals()` 須落實選定比較語意，不任意將 Entity 所有欄位納入比較。
+
+<a id="java-equality-hash-contract"></a>
+
+### 相等與雜湊契約
+
+自訂 `equals()` 須維持自反、對稱、遞移與一致性，並正確處理 `null`。比較依據未改變時結果須一致，與 `null` 比較須不相等。須同時設計相容的 `hashCode()`，保證相等物件具有相同雜湊值，不得反過來以雜湊值相同判定相等。
+
+<a id="java-hash-collection-stability"></a>
+
+### 雜湊集合中的穩定性
+
+物件作為雜湊集合的鍵或元素期間，影響 `equals()` 與 `hashCode()` 的資料須保持不變。優先使用不可變且穩定的鍵，例如以 `OrderId` 作為訂單映射的鍵。必要變更須先移出、再修改並重新加入，處理可能與既有項目相等的情況，不得在集合內直接改變比較依據。
+
+<a id="java-entity-identity-lifecycle"></a>
+
+### Entity 識別碼的生命週期
+
+依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#identity-lifecycle)執行。Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。
+
+<a id="java-cross-type-equality"></a>
+
+### 跨型別相等範圍
+
+允許繼承的型別須明訂跨型別的相等範圍，父子型別不得各自採用互相矛盾的比較規則。新增子型別或比較欄位時，須維持對稱性、遞移性與雜湊契約；無法維持時，應調整型別關係或限制擴充。不一律指定使用 `instanceof` 或 `getClass()`，應先依契約決定哪些具體型別可以相等。
+
+## 排序與集合判同
+
+<a id="java-ordering-choice"></a>
+
+### 自然順序與情境排序
+
+只有型別具有明確且普遍適用的自然順序時，才實作 `Comparable`；依使用情境變動的排序須使用用途明確的 `Comparator`。排序規則須明訂比較欄位、方向與必要的同值處理，不將任意情境的順序固定為型別契約，也不要求所有可排序物件都實作 `Comparable`。
+
+<a id="java-comparator-relations"></a>
+
+### 比較關係一致
+
+`Comparable` 與 `Comparator` 須維持方向一致性、遞移性及比較為零時的一致關係。同次排序使用穩定的比較依據，不隱藏外部查詢或依賴持續變動的時間、設定與狀態；需要這些資訊時，先取得本次排序使用的固定資料。數值比較不得以可能溢位或損失精度的相減方式實作。
+
+<a id="java-sorted-key-equivalence"></a>
+
+### 比較為零與相等性
+
+須明訂比較結果為零與 `equals()` 的關係。自然順序原則上應與相等性一致；情境排序可讓不同物件比較為零，但用於排序集合或映射時，須確認元素與鍵的判同語意符合契約，不得意外合併應分別保留的資料。例如僅按金額比較不同訂單，在列表排序中可合理，但用於 `TreeSet` 或 `TreeMap` 時，須確認比較為零所造成的判同效果；必要時加入穩定識別等符合契約的次要依據。
+
+<a id="java-sorted-collection-stability"></a>
+
+### 排序集合中的穩定性
+
+物件作為排序集合的元素或排序映射的鍵期間，排序依據與比較規則須保持穩定。必要變更須先移出再重新加入，或依新規則重建結構，不得假設集合會自動重新排序。比較器設定變更同樣須處理既有結構，並確認資料未因判同規則而遺失。
+
+<a id="java-relationship-coverage"></a>
+
+### 關係與集合行為驗收
+
+相等性、雜湊或排序規則新增及變更時，須驗證受影響的關係契約與實際集合行為，涵蓋適用的識別變化、跨型別比較、同值判定及修改後重新加入，不僅測試少數比較結果。不要求測試不適用的繼承或持久化情境，也不因使用工具產生方法就省略契約驗證。
+
+## 驗收要求
+
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+
+### 共同驗收
+
+- [明訂比較語意](../../../coding/domain-modeling.md#acceptance-identity-semantics)。
+- [Entity 識別碼的生命週期](../../../coding/domain-modeling.md#acceptance-identity-lifecycle)。
+
+### Java 語言增量驗收
+
+<a id="acceptance-java-relationship-coverage"></a>
+
+依[關係與集合行為驗收](#java-relationship-coverage)，核對本次驗收同時涵蓋受影響的 Java 關係契約與實際集合操作；不能只測少數成對比較，也不能因方法由工具產生就省略驗證。
+
+| 對應要求 | 語言增量驗收 |
+| --- | --- |
+| <a id="acceptance-java-equality-hash-contract"></a>[相等與雜湊契約](#java-equality-hash-contract) | 對 Java `equals()` 驗證自反、對稱、遞移、一致性及 `null` 處理，並確認相等物件具有相同 `hashCode()`；不要求不同物件雜湊必不同，也不以雜湊相同判定相等。 |
+| <a id="acceptance-java-hash-collection-stability"></a>[雜湊集合中的穩定性](#java-hash-collection-stability) | 以實際 Java 雜湊集合核對鍵或元素的查找、去重及移除；確認在集合內比較依據保持穩定。需要變更比較依據時，驗證先移出、修改再加入的結果及重複處置。 |
+| <a id="acceptance-java-cross-type-equality"></a>[跨型別相等範圍](#java-cross-type-equality) | 對允許繼承的 Java 型別，以父子型別及必要的多物件組合驗證 `equals()` 的對稱、遞移與 `hashCode()` 契約；比較涉及框架代理時，經實際代理路徑驗證。 |
+| <a id="acceptance-java-ordering-choice"></a>[自然順序與情境排序](#java-ordering-choice) | 審查 Java 型別採 `Comparable` 或用途明確的 `Comparator` 是否符合自然順序或情境排序的契約。 |
+| <a id="acceptance-java-comparator-relations"></a>[比較關係一致](#java-comparator-relations) | 驗證 Java 比較器的方向、同值與遞移關係，以及同次排序比較依據的穩定性；涵蓋適用的極端數值，確認不以相減造成溢位或精度損失及錯誤順序。 |
+| <a id="acceptance-java-sorted-key-equivalence"></a>[比較為零與相等性](#java-sorted-key-equivalence) | 核對比較為零與 `equals()` 的約定，將不同但排序值相同的資料放入實際採用的 Java 排序集合或映射，確認鍵判同及資料保留符合契約。 |
+| <a id="acceptance-java-sorted-collection-stability"></a>[排序集合中的穩定性](#java-sorted-collection-stability) | 核對 Java 排序元素、鍵及比較器設定的變更路徑；驗證移出重加或重建後的順序、查找及資料保留，不依賴既有集合自動調整。 |
+
+既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。
