@@ -10,7 +10,7 @@
 
 ### 查詢的正常缺值
 
-單筆查詢允許正常不存在時，使用 `Optional<T>`；多筆查詢無結果時使用空集合，不回傳 `null`。依業務要求必須存在卻不存在時，表達明確的業務失敗；查詢技術故障依[錯誤處理](../../../coding/error-handling.md)傳遞，不得混為正常缺值。
+單筆查詢允許正常不存在時，使用 `Optional<T>`；多筆查詢無結果時使用空集合，不回傳 `null`。依業務要求必須存在卻不存在時，表達明確的業務失敗；查詢技術故障依[錯誤處理](../../../coding/error-handling.md#失敗分類與表達)傳遞，不得混為正常缺值。
 
 <a id="java-optional-nonnull"></a>
 
@@ -42,7 +42,7 @@
 
 ### 非空驗證的位置
 
-依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。
+依[資料驗證](../../../coding/validation.md#責任分工)、[錯誤處理](../../../coding/error-handling.md#程式缺陷與不變條件)、[領域建模](../../../coding/domain-modeling.md)執行。Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。
 
 <a id="java-null-contract-tools"></a>
 
@@ -80,13 +80,13 @@ Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺
 
 ## 補充要求
 
-對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md)及[資料契約](../../../interfaces/data-contracts.md)一致。本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。
+對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md#api-absence-representation)及[資料契約](../../../interfaces/data-contracts.md)一致。本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。
 
 ## 驗收要求
 
 共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，測試層級、證據及其餘事項另依[規範驗證](../../../quality/rule-verification.md)及[共通測試策略](../../../quality/testing.md)辦理。
 
-不合法資料從允許承接它的邊界輸入；型別要求依[型別安全](../../../coding/type-safety.md)。
+不合法資料從允許承接它的邊界輸入；型別要求依[型別安全](../../../coding/type-safety.md#禁止主動繞過檢查)。
 
 ### 共同驗收
 
