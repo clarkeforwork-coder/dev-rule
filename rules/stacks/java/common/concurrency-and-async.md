@@ -22,7 +22,11 @@
 
 ## 期限、取消與結果
 
-本組由共通規範承接的要求：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。
+<a id="java-deadline-budget"></a>
+
+### 等待期限與逾時處置
+
+依[等待期限與逾時處置的共通要求](../../../coding/concurrency-and-async.md#deadline-budget)執行。Java 非同步等待的逾時不代表底層工作已停止；等待 API 須承接整體時間預算。
 
 <a id="java-cancellation-propagation"></a>
 
@@ -32,7 +36,7 @@
 
 <a id="java-result-reception"></a>
 
-### 結果接收與故障處置
+### `Future` 與 `CompletableFuture` 的結果鏈
 
 非同步任務的成功、失敗與取消結果須有明確接收及處置路徑，不得忽略回傳的工作控制物件而遺失故障。`Future`、`CompletableFuture` 等結果須由負責元件處理；結果鏈中的例外轉換須保留原因與分類，只有契約允許的恢復或降級才能轉成替代結果，不得一律以空值或預設值將失敗變為成功。
 
@@ -80,11 +84,11 @@
 
 ## 補充要求
 
-共享集合的複合操作另依[集合與資料所有權](collections-and-ownership.md)，元件生命週期依[類別、介面與物件建立](classes-and-construction.md)，平行資料處理依[Lambda 與 Stream](lambda-and-stream.md)。身分及延後執行授權依[安全規範](../../../quality/security.md)，追蹤與故障紀錄依[日誌、稽核與可觀測性](../../../quality/observability.md)。
+共享集合的複合操作另依[集合與資料所有權](collections-and-ownership.md)，元件生命週期依[類別、介面與物件建立](classes-and-construction.md)，平行資料處理依[Lambda 與 Stream](lambda-and-stream.md)。身分及延後執行授權依[安全規範](../../../quality/security.md#授權與資料範圍)，追蹤與故障紀錄依[日誌、稽核與可觀測性](../../../quality/observability.md#診斷日誌與追蹤)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響及實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響及實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
@@ -103,6 +107,6 @@
 | 對應要求 | 語言增量驗收 |
 | --- | --- |
 | <a id="acceptance-java-visibility"></a>[可見性與共享資料](#java-visibility-sharing) | 審查 Java 跨執行緒資料交付的可見性保證、共享資料的同步範圍及適用的鎖定方式；以受控交錯核對不變條件與共享狀態，不能只以單一 `volatile` 欄位或偶然成功推定整個物件安全。 |
-| <a id="acceptance-java-task-results"></a>[結果接收與故障處置](#java-result-reception) | 沿 Java `Future`／`CompletableFuture` 的實際接收及結果鏈路徑觸發成功、失敗與取消，核對故障可追查、原始原因與分類保留，且未以替代值把失敗變成成功。 |
+| <a id="acceptance-java-task-results"></a>[`Future` 與 `CompletableFuture` 的結果鏈](#java-result-reception) | 沿 Java `Future`／`CompletableFuture` 的實際接收及結果鏈路徑觸發成功、失敗與取消，核對故障可追查、原始原因與分類保留，且未以替代值把失敗變成成功。 |
 
 既有程式碼、框架限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低要求。
