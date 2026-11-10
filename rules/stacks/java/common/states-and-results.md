@@ -66,7 +66,7 @@
 
 ## 補充要求
 
-對外結果與完成程度另依[API 操作語意](../../../interfaces/api-contracts.md#操作範圍與成功保證)及[事件可靠性](../../../interfaces/events.md)；代碼與資料格式變更依[資料契約](../../../interfaces/data-contracts.md#相容性與變更)及[資料遷移](../../../data/migrations.md#新舊版本相容)。不可變資料的保護方式另見[專屬值型別與領域值物件](value-objects.md)。
+對外結果與完成程度另依[API 操作語意](../../../interfaces/api-contracts.md#操作範圍與成功保證)及[事件可靠性](../../../interfaces/events.md#event-completion-semantics)；代碼與資料格式變更依[資料契約](../../../interfaces/data-contracts.md#相容性與變更)及[資料遷移](../../../data/migrations.md#新舊版本相容)。不可變資料的保護方式另見[專屬值型別與領域值物件](value-objects.md)。
 
 ## 驗收要求
 

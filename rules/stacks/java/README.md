@@ -8,23 +8,23 @@ Java 跨版本共用要求集中於 `common/`，此處的 common 不等於跨語
 
 | 文件 | 內容 |
 | --- | --- |
-| [適用範圍與版本判定](common/version-policy.md) | 分別記錄版本資訊、建置設定落實限制、執行版本驗證、多模組版本要求、依賴版本要求、建置升級與支援範圍變更、Preview 功能、JDK 內部實作與存取限制、棄用 API、建置與驗證工具相容性、JDK 發行商與完整版本、產物與執行環境追溯 |
-| [型別宣告與泛型](common/types-and-generics.md) | 明確宣告型別、禁止 raw type 與不必要的型別抽象、輸入與輸出的型別關聯、不得以向下轉型補回業務型別、型別安全警告、業務資料結構、型別能力與約束、集合與映射的宣告型別、允許建構端使用菱形運算子、泛型回傳值、泛型參數命名 |
-| [null 與 Optional](common/null-and-optional.md) | 查詢的正常缺值、Optional 本身非空、取值與缺值處置、使用位置與狀態表達、集合內容的空值、工具可辨識的契約、第三方空值行為、空值契約變更、預設非空與明確語意、API 邊界的缺值轉換 |
-| [專屬值型別與領域值物件](common/value-objects.md) | 不可變性、值相等的條件、正規化規則、運算責任、資料還原、一般類別與 record、診斷字串與交換格式、業務保證的測試 |
-| [狀態與結果建模](common/states-and-results.md) | 明確的狀態型別、各狀態的必要資料、業務操作控制轉換、具型別的業務失敗、穩定的外部代碼、封閉或允許擴充、模型驗收 |
-| [邊界物件與資料映射](common/boundary-mapping.md) | 明確控制欄位及來源、失敗明確回報、保留更新意圖、可變參考隔離、各方向分別定義、明確維護責任、驗證實際映射路徑 |
-| [類別、介面與物件建立](common/classes-and-construction.md) | 介面的用途、建構期間的安全性、明確取得依賴、控制繼承與覆寫範圍、契約與生命週期驗收 |
-| [相等性、雜湊與排序](common/equality-hashing-ordering.md) | 明訂比較語意、相等與雜湊契約、雜湊集合中的穩定性、Entity 識別碼的生命週期、跨型別相等範圍、自然順序與情境排序、比較關係一致、比較為零與相等性、排序集合中的穩定性、關係與集合行為驗收 |
-| [集合與資料所有權](common/collections-and-ownership.md) | 明確定義修改權與參考關係、區分不可修改與不可變快照、延遲讀取的資源責任、批次修改的失敗保證、所有權與行為驗收 |
-| [例外與資源管理](common/exceptions-and-resources.md) | 明確的故障分類、Checked 與 Unchecked 的選擇、捕捉範圍與處置相符、保留中斷意圖、優先使用語言資源管理機制、保留操作與清理失敗、失敗路徑驗收 |
-| [數值、日期時間與文字處理](common/numbers-dates-text.md) | 依語意選擇數值型別、從精確來源建立、明訂捨入規則、BigDecimal 判同語意、依業務語意選擇時間型別、區分時間長度與日曆規則、可控制的時間基準、解析與輸出契約、長度與截取單位、邊界與環境差異驗收 |
-| [Lambda 與 Stream](common/lambda-and-stream.md) | 意圖與可讀性優先、明確的參數型別、中間操作不隱藏業務副作用、明確累積結果、延遲與短路範圍、平行處理的採用條件、歸約與收集契約、維持錯誤分類、明確消費範圍、執行語意驗收 |
-| [併發與非同步處理](common/concurrency-and-async.md) | 統一管理執行資源、可見性與共享資料、取消傳遞與實際停止、結果接收與故障處置、多工作組合的完成條件、執行位置與阻塞行為、明確傳遞與清理脈絡、鎖定範圍與取得策略、受控關閉、可控制的併發驗收 |
-| [反射、動態能力與檢查抑制](common/reflection-and-suppression.md) | 明確需求與型別契約、維持封裝與不變條件、區分故障與執行結果、限定檢查抑制、產生碼不擴大豁免、驗證限制實際有效 |
-| [命名、套件與文件](common/naming-packages-docs.md) | 一致的命名形式、名稱表達具體責任、套件與架構邊界、補足契約資訊、重新命名與搬移的影響、形式與語意分別驗收 |
+| [適用範圍與版本判定](common/version-policy.md) | 說明 Java 建置、API 與執行版本的相容範圍，以及 JDK 工具鏈與發布產物的驗證追溯。 |
+| [型別宣告與泛型](common/types-and-generics.md) | 說明 Java 明確型別宣告、泛型關聯與集合簽章，以及 raw type、向下轉型和型別警告的限制。 |
+| [null 與 Optional](common/null-and-optional.md) | 說明 Java 的非空預設、Optional 使用與缺值處置，以及標註、第三方 API 和序列化邊界的空值契約。 |
+| [專屬值型別與領域值物件](common/value-objects.md) | 說明 Java 專屬值型別的建立與還原，以及 final、record、相等方法和字串表示的值語意限制。 |
+| [狀態與結果建模](common/states-and-results.md) | 說明 Java 狀態與結果型別、分支完整性，以及 enum 外部代碼和 sealed 模型的契約。 |
+| [邊界物件與資料映射](common/boundary-mapping.md) | 說明 Java 欄位映射、反序列化與更新意圖，以及集合和可變元素在邊界轉換中的隔離。 |
+| [類別、介面與物件建立](common/classes-and-construction.md) | 說明 Java 類別與介面的契約、建構安全及依賴取得，以及 Builder、覆寫和共用實例的生命週期限制。 |
+| [相等性、雜湊與排序](common/equality-hashing-ordering.md) | 說明 Java equals、hashCode、Comparable 與 Comparator 的關係，以及雜湊和排序集合的穩定性。 |
+| [集合與資料所有權](common/collections-and-ownership.md) | 說明 Java 集合的參考所有權、檢視與快照，以及遍歷修改、併發操作和延遲資源的行為限制。 |
+| [例外與資源管理](common/exceptions-and-resources.md) | 說明 Java 例外分類與中斷傳遞，以及 AutoCloseable、try-with-resources 和清理失敗的資源契約。 |
+| [數值、日期時間與文字處理](common/numbers-dates-text.md) | 說明 Java 數值轉換、BigDecimal、java.time 與 Clock 的語意，以及字串長度和格式轉換的邊界。 |
+| [Lambda 與 Stream](common/lambda-and-stream.md) | 說明 Java Lambda 型別表達與 Stream 的延遲、短路、歸約和平行執行，以及副作用、失敗和消費範圍。 |
+| [併發與非同步處理](common/concurrency-and-async.md) | 說明 Java 執行資源、可見性與同步，以及 Future 結果鏈、取消、期限和執行緒脈絡的處理。 |
+| [反射、動態能力與檢查抑制](common/reflection-and-suppression.md) | 說明 Java 反射與動態元件的目標、型別及封裝限制，以及檢查抑制和產生碼的適用範圍。 |
+| [命名、套件與文件](common/naming-packages-docs.md) | 說明 Java 識別字與套件命名、Javadoc 契約，以及重新命名、動態引用和範例的驗證。 |
 
-內容欄只列各文件留存的 Java 小節，由共通承接的主題見各文件分組下的指路句與共同驗收。
+內容欄摘要各文件的 Java 增量；由共通承接的主題見各文件分組下的指路句與共同驗收。
 
 Java 8、11、17、21 的版本差異、Framework 規範及具體工具配置仍待制定。
 
