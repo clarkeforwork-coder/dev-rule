@@ -12,17 +12,77 @@
 
 單筆查詢允許正常不存在時，使用 `Optional<T>`；多筆查詢無結果時使用空集合，不回傳 `null`。依業務要求必須存在卻不存在時，表達明確的業務失敗；查詢技術故障依[錯誤處理](../../../coding/error-handling.md#失敗分類與表達)傳遞，不得混為正常缺值。
 
+**違反**
+
+```java
+// 正常查無資料卻以 null 表示單筆與多筆結果。
+class Queries {
+    String findOne() { return null; }
+    List<String> findAll() { return null; }
+}
+```
+
+**符合**
+
+```java
+// 單筆正常缺值使用 Optional，多筆無結果使用空集合。
+class Queries {
+    Optional<String> findOne() { return Optional.empty(); }
+    List<String> findAll() { return List.of(); }
+}
+```
+
 <a id="java-optional-nonnull"></a>
 
 ### Optional 本身非空
 
 宣告使用 `Optional` 的位置，`Optional` 本身不得為 `null`。空的 `Optional` 只能表示契約允許的正常缺值，不得掩蓋業務失敗、技術故障或尚未確認的結果。
 
+**違反**
+
+```java
+// 契約允許正常查無資料，卻回傳 null 作為 Optional。
+class Lookup {
+    Optional<String> find() { return null; }
+}
+```
+
+**符合**
+
+```java
+// 契約允許正常查無資料，回傳非 null 的空 Optional。
+class Lookup {
+    Optional<String> find() { return Optional.empty(); }
+}
+```
+
 <a id="java-optional-access"></a>
 
 ### 取值與缺值處置
 
 使用 `Optional` 的值前，須明確處理缺值情境，不得僅憑預期直接取值。替代值、缺值分支與失敗處理須符合業務語意，不得掩蓋缺值；替代結果與錯誤分類依[降級與替代結果](../../../coding/error-handling.md#降級與替代結果)及[失敗分類](../../../coding/error-handling.md#失敗分類與表達)。選用取值或拋出例外的方法本身不代表符合規範；若依已成立的不變條件必定有值，違反時須按[程式缺陷](../../../coding/error-handling.md#程式缺陷與不變條件)處理。
+
+**違反**
+
+```java
+// 暱稱可能缺值，卻直接取值。
+class Greeting {
+    String greet(Optional<String> nickname) {
+        return "你好，" + nickname.get();
+    }
+}
+```
+
+**符合**
+
+```java
+// 依問候契約，無暱稱時使用不帶稱呼的問候語。
+class Greeting {
+    String greet(Optional<String> nickname) {
+        return nickname.map(name -> "你好，" + name).orElse("你好");
+    }
+}
+```
 
 <a id="java-optional-positions"></a>
 
@@ -32,17 +92,81 @@
 
 ## 空值限制與整合責任
 
+**違反**
+
+```java
+// 更新需要區分保留、清空與設定，Optional 卻只能表達兩種狀態。
+record NicknameChange(Optional<String> value) {}
+```
+
+**符合**
+
+```java
+// 以明確型別分別表達保留、清空與設定暱稱。
+sealed interface NicknameChange {
+    record Keep() implements NicknameChange {}
+    record Clear() implements NicknameChange {}
+    record Set(String value) implements NicknameChange {
+        public Set { Objects.requireNonNull(value); }
+    }
+}
+```
+
 <a id="java-container-nulls"></a>
 
 ### 集合內容的空值
 
 集合與陣列元素，以及映射的鍵和值，預設不得為 `null`。必要缺值須明訂語意與處理方式，優先以明確型別表達。外部資料含有不允許的 `null` 時，須在邊界拒絕或依契約處理，不得默默移除或替換而掩蓋不合法資料。
 
+**違反**
+
+```java
+// 外部名稱清單不允許 null，卻默默移除不合法元素。
+class Names {
+    List<String> accept(List<String> input) {
+        return input.stream().filter(Objects::nonNull).toList();
+    }
+}
+```
+
+**符合**
+
+```java
+// 外部名稱清單不允許 null，依輸入契約拒絕不合法元素。
+class Names {
+    List<String> accept(List<String> input) {
+        if (input.stream().anyMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("名稱不得為空");
+        }
+        return List.copyOf(input);
+    }
+}
+```
+
 <a id="java-nonnull-validation"></a>
 
 ### 非空驗證的位置
 
 依[資料驗證](../../../coding/validation.md#責任分工)、[錯誤處理](../../../coding/error-handling.md#程式缺陷與不變條件)、[領域建模](../../../coding/domain-modeling.md)執行。Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。
+
+**違反**
+
+```java
+// 建立時未驗證非空，讓不合法狀態進入領域物件。
+record Name(String value) {
+    int length() { return value.length(); }
+}
+```
+
+**符合**
+
+```java
+// 建立時保證非空，內部使用已成立的契約而不重複檢查。
+record Name(String value) {
+    Name { Objects.requireNonNull(value); }
+    int length() { return value.length(); }
+}
+```
 
 <a id="java-null-contract-tools"></a>
 
@@ -58,6 +182,34 @@
 
 ## 契約維護與對外表示
 
+**違反**
+
+```java
+// 第三方契約保證回傳非空，卻將違約的 null 當作正常缺值。
+class Adapter {
+    interface Vendor { String load(); }
+    Optional<String> load(Vendor vendor) {
+        return Optional.ofNullable(vendor.load());
+    }
+}
+```
+
+**符合**
+
+```java
+// 第三方契約保證回傳非空，遇到違約的 null 明確回報整合故障。
+class Adapter {
+    interface Vendor { String load(); }
+    Optional<String> load(Vendor vendor) {
+        String value = vendor.load();
+        if (value == null) {
+            throw new IllegalStateException("第三方違反非空契約");
+        }
+        return Optional.of(value);
+    }
+}
+```
+
 <a id="java-null-contract-evolution"></a>
 
 ### 空值契約變更
@@ -70,11 +222,58 @@
 
 Java 的參數、回傳值與欄位預設不允許 `null`；允許時須明確標示並定義語意，不得以同一個 `null` 混合表示需要不同處理方式的狀態。查詢結果另遵循本文件的 `Optional` 與空集合要求。
 
+**違反**
+
+```java
+// 未標示可空及其語意，卻接受 null 作為停用到期時間。
+class Expiration {
+    boolean expired(Instant deadline, Instant now) {
+        return deadline != null && !now.isBefore(deadline);
+    }
+}
+```
+
+**符合**
+
+```java
+// 明確標示可空參數，並限定 null 代表永不到期。
+class Expiration {
+    /** @param deadline 可為 null，僅表示永不到期。 */
+    boolean expired(Instant deadline, Instant now) {
+        return deadline != null && !now.isBefore(deadline);
+    }
+}
+```
+
 <a id="java-api-absence"></a>
 
 ### API 邊界的缺值轉換
 
 Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺值轉換](../../../interfaces/api-contracts.md#api-absence-representation)落實對外契約。具體序列化配置由 Framework 規範落實。
+
+**違反**
+
+```java
+// 對外契約要求缺值省略 nickname 欄位，卻直接暴露 Optional。
+class Response {
+    Map<String, Object> fields(Optional<String> nickname) {
+        return Map.of("nickname", nickname);
+    }
+}
+```
+
+**符合**
+
+```java
+// 依對外契約將缺值轉為省略 nickname 欄位，有值時輸出字串。
+class Response {
+    Map<String, Object> fields(Optional<String> nickname) {
+        Map<String, Object> fields = new HashMap<>();
+        nickname.ifPresent(value -> fields.put("nickname", value));
+        return fields;
+    }
+}
+```
 
 <a id="java-closing-requirements"></a>
 
