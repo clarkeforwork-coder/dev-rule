@@ -8,6 +8,10 @@ records=Dir['docs/body-restructuring/java/*.json'].sort.map{|p|JSON.parse(File.r
 map=records.flat_map{|r|r['rules'].map{|e|[e['id'],e.merge('path'=>r['path'])]}}.to_h
 escape=->(s){s.to_s.gsub('|','\\|').gsub("\n",' ')}
 rows=->(head,data){"| #{head.join(' | ')} |\n| #{head.map{'---'}.join(' | ')} |\n"+data.map{|a|'| '+a.map{|s|escape.call(s)}.join(' | ')+' |'}.join("\n")+"\n"}
+path='docs/body-restructuring-stage-b.md'
+existing=File.read(path)
+notice=existing[/^本檔保留階段 B.*$/]
+manual_tail=existing.split(/^<!-- 人工補記 -->$/,2)[1]
 text=<<'DOC'
 # 正文整理階段 B：合併與收尾紀錄
 
@@ -26,7 +30,7 @@ manual=check['manual_review_sentences'];conservative=manual.select{|e|e['conserv
 text+="\n## 與原判斷不同的保守處置\n\n工具列 #{conservative.size} 條保守去向，其中五條是已核准整條保留的驗收入口；其餘 #{retained.size} 條如下，理由直接取目前去向 JSON（含第八次審閱還原理由）。全部依本輪決策維持，不重新刪改。\n\n"
 text+=rows.call(['歷史 ID','原判斷','實際去向','工作者理由'],retained.sort_by{|e|e['history_id']}.map{|e|e.values_at('history_id','decision','actual','reason')})
 text+="\n原階段 B 的 CO-08、RF-06、VO-07 皆採混合處理並保守保留 Java 句；第八次審閱後 CO-08、RF-06 的引用句亦還原，改整條保留。VO-07 未改。原始工作者理由保留於回報，最新種類以本表及 JSON 為準。\n"
-text+="\n## 人工複核數量\n\n常駐輸出共 #{check['manual_review_count']} 項（不同類別可能涉及同一句，不是獨立義務數）。\n\n"
+text+="\n## 人工複核數量\n\n產生時常駐工具的當前輸出共 #{check['manual_review_count']} 項（不是合併時的歷史數量；不同類別可能涉及同一句，不是獨立義務數）。\n\n"
 text+=rows.call(%w[類別 項數],manual.group_by{|e|e['type']||e['action']}.sort.map{|type,items|[type,items.size]})
 text+="\n機器核對原文、清冊、位置及結構；共通承接是否充分、增減限定是否改變要求、保守理由是否成立仍須人工逐句複核。已核准保留不代表已證明與共通完全等價。\n"
 text+="\n## 收尾確認與 BM-04\n\n共用遷移表及待決清單第三、四、六、七、八節的現行連結已更新；原判斷、歷史條號、歷史建議及整理前原文未提交的限制保留，第九節追加執行狀態。\n\n"
@@ -73,7 +77,7 @@ scan=records.map do |r|
  s=File.read(r['path']);intro=s.split(/^## /,2).first;headings=s.scan(/^### (.+)$/).flatten
  [File.basename(r['path'],'.md'),r['rules'].group_by{|e|e['kind']}.map{|k,v|"#{k} #{v.size}"}.join('、'),r.fetch('group_routes',[]).size,r.fetch('link_retention',[]).size,s.include?('## 補充要求') ? '有' : '無',headings.size,intro.lines.count]
 end
-text+=rows.call(['文件','去向分布','空分組指路筆數','引言保留連結筆數','結尾小節','三級標題數','引言行數'],scan)
+text+=rows.call(['文件','去向分布','分組指路筆數','引言保留連結筆數','結尾小節','三級標題數','引言行數'],scan)
 text+=<<'DOC'
 
 - 錨點皆採 `java-` 加語意字串，細粒度命名仍不同：版本以 declarations／verification 等行為命名，型別以 type-relation／shape 等概念命名，映射混合 fields／integrity／ownership；不統一或新增別名。
@@ -87,5 +91,7 @@ text+=<<'DOC'
 
 實際命令與完整輸出見[驗證紀錄](body-restructuring-verification-results.md)。本報告及驗證紀錄均可用各自產生器重生；驗證結果採連續兩次逐位元組比對。
 DOC
-File.write('docs/body-restructuring-stage-b.md',text)
+text.sub!("\n\n", "\n\n#{notice}\n\n") if notice
+text += "\n<!-- 人工補記 -->#{manual_tail}" if manual_tail
+File.write(path,text)
 puts "已產生 153 條總表、#{retained.size} 條保守處置、#{manual.size} 項人工複核分類與 14 組提交對照。"

@@ -24,7 +24,7 @@ text=<<~DOC
 | acceptance-interface-purpose | `rules/quality/rule-verification.md` 架構檢查與可測試性 | [框架與依賴組裝](../rules/architecture/dependency-composition.md#acceptance-interface-purpose) 補充契約驗收 |
 | acceptance-partial-operation | `rules/quality/rule-verification.md` 錯誤處理驗證與驗收 | [錯誤處理](../rules/coding/error-handling.md#acceptance-partial-operation) 補充契約驗收 |
 
-### 四列追加的分工文字
+### 四列原先追加的分工文字（第九次審閱前的歷史文字）
 
 DOC
 plan.find{|s|s['id']=='division'}['ops'].select{|o|o['before'].start_with?('|')}.each do |o|
@@ -94,12 +94,14 @@ ruby scripts/record-body-verification.rb
 #{out.strip}
 ```
 
-15 個新案例包含四個逐步正向案例，以及新增檔案、重複／刪除錨點、弱化原列、分工錯文、漏略過欄位、未核准指代、其他正文、其他主題搬動與偽造清單的十一個負向案例。全部測試與命令原始輸出見[驗證紀錄](body-restructuring-verification-results.md)。
+原有 15 個案例包含四個逐步正向案例，以及新增檔案、重複／刪除錨點、弱化原列、分工錯文、漏略過欄位、未核准指代、其他正文、其他主題搬動與偽造清單的十一個負向案例。全部測試與命令原始輸出見[驗證紀錄](body-restructuring-verification-results.md)。
 
 逐筆核准前後文字在 `scripts/final-acceptance-plan.json`，內容雜湊由工具固定；啟用步驟在 `docs/final-acceptance.json`。Java 去向紀錄的 `final_reference_changes` 與既有共通紀錄的 `final_acceptance_changes` 是追加登錄，原句的歷史證據沒有刪除。主檢查要求現行內容恰等於固定起點的核准轉換；保留／拆分的一般規則未放寬。舊驗收追溯先逆轉明列增補再比對，以免原片段的完整目的列檢查失去意義；現行增補另由精確全文及驗收錨點檢查約束。
 
 人工仍須複核指代是否符合實際語意、分工是否清楚，以及歷史移除句與共通依據的涵蓋關係；工具只能證明錨點有效、列文保留與差異恰為核准清單，不能由連結存在推出語意充分。
 DOC
+overview=plan.find{|s|s['id']=='division'}['ops'].find{|o|o['path']=='rules/quality/rule-verification.md'}
+text += "\n### 驗收入口描述的歷史變更\n\n原文：\n\n```markdown\n#{overview['before']}\n```\n\n改後（第九次審閱前）：\n\n```markdown\n#{overview['after']}\n```\n\n## 合併前第九次審閱修正\n\n此節以上保存先前處理歷史；現行四句分工與入口描述已再修正，完整逐筆前後文字、JN-02／JN-06 還原及 18 句分組指路見[第九次審閱修正紀錄](body-restructuring-review-9.md)。\n"
 p='docs/body-restructuring-stage-c.md';prefix=File.read(p).split(/^## 第二部分：/,2).first
 File.write(p,prefix.rstrip+"\n\n"+text)
 puts '階段 C 第二部分已更新，包含逐筆前後文、五組重疊盤點與實際比對輸出。'

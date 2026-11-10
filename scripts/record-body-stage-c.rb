@@ -31,7 +31,7 @@ route=records.find{|r|r['path'].include?('classes-and-construction')}['group_rou
 intro=records.flat_map{|r|r['link_retention']}.first
 tail=records.find{|r|r['path'].include?('version-policy')}['group_endings'].first
 text+="分組指路：\n\n```markdown\n#{route['text']}\n```\n\n引言保留：\n\n```markdown\n#{intro['text']}\n```\n\n分組尾段：\n\n```markdown\n<a id=\"#{tail['anchor']}\"></a>\n\n### 本組補充說明\n\n#{tail['text']}\n```\n"
-text+="\n分組指路只列該組整條移除的條文，依完整目標路徑排序去重；已拆分或保留的條文不列。引言只保留未在正文、指路或其他段落出現的基準共通目標。全站現有 #{records.sum{|r|r['group_routes'].size}} 個分組指路、#{records.sum{|r|r['link_retention'].size}} 個引言保留句；唯一引言保留句是 value-objects 的整份資料驗證入口，不能用分組內較窄的責任分工錨點取代。\n\n## 回原分組的段落\n\n"
+text+="\n分組指路只列該組整條移除的條文，依基準原條文順序排列，同條依承接來源登錄順序去重；已拆分或保留的條文不列。引言只保留未在正文、指路或其他段落出現的基準共通目標。全站現有 #{records.sum{|r|r['group_routes'].size}} 個分組指路、#{records.sum{|r|r['link_retention'].size}} 個引言保留句；唯一引言保留句是 value-objects 的整份資料驗證入口，不能用分組內較窄的責任分工錨點取代。\n\n## 回原分組的段落\n\n"
 records.each do |r|
  r.fetch('group_endings',[]).each{|e|text+="- `#{r['path']}` →「#{e['heading']}」，錨點 `#{e['anchor']}`：\n\n```text\n#{e['text']}\n```\n\n"}
 end

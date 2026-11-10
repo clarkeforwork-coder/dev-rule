@@ -443,3 +443,7 @@ CA-08、CA-10、BM-09 整條逐字還原；CA-02、VO-05、EQ-04 還原基準 Ja
 起點 `53c26dcbecbdd31c6082ffd91f608660a2d38b0d`。介面用途與部分成功驗收分別以 `7afa278`、`7c3d651` 歸位；`5365c72` 保留四列原文並補分工；`f5019a4` 修正八處指代／標題並補映射略過欄位的核對。共通逐塊變更追加在 existing-sources 的 final_acceptance_changes，Java 指代追加在各份 final_reference_changes，歷史紀錄不刪。
 
 集合文件仍有多條 Java 專屬正文，原「只剩失敗狀態提醒才合併」條件不成立，確定保留獨立文件。授權限制與不可變資料兩個入口經核對仍有效，未改；M4 第二列五組重疊只盤點，H1、H2、L7 維持。詳細前後文字與未處理理由見[階段 C 第二部分](body-restructuring-stage-c.md#第二部分驗收歸位分工與指代修正)，全案總結見[共通與 Java 分離總結](java-common-separation-summary.md)。
+
+### 合併前第九次審閱修正
+
+規則修正提交 `0c4b39b`：四句分工改為只指路；JN-02 與 JN-06 依基準還原並整條保留，JN-06 的現行位置為[非空驗證的位置](../rules/stacks/java/common/null-and-optional.md#java-nonnull-validation)。分組指路依原條文順序重生，因 JN-06 還原由 19 句減為 18 句；其他指代、相容別名與索引說明均限核准範圍。逐筆前後文字與紀錄維護方式見[第九次審閱修正紀錄](body-restructuring-review-9.md)。本節追加狀態，不改寫前面各節的歷史決策。
