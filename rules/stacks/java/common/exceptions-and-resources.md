@@ -12,11 +12,59 @@
 
 例外型別須能表達契約所需的故障分類，避免無必要的籠統宣告或拋出，例如一律使用 `throws Exception` 或沒有明確語意的 `RuntimeException`。既有標準或第三方例外足以表達且符合架構隔離時，不強制自訂例外。需要邊界轉換時，須保留原始原因，不改變故障語意，也不將預期業務失敗改用例外表示。
 
+**違反**
+
+```java
+// 已知只有讀取故障，卻以籠統的 Exception 宣告契約
+class Example {
+    String read(Path path) throws Exception {
+        return Files.readString(path);
+    }
+}
+```
+
+**符合**
+
+```java
+// 使用 IOException 明確表達讀取的技術故障
+class Example {
+    String read(Path path) throws IOException {
+        return Files.readString(path);
+    }
+}
+```
+
 <a id="java-checked-unchecked"></a>
 
 ### Checked 與 Unchecked 的選擇
 
 須依故障語意及呼叫端的處理責任選擇，同類契約維持一致慣例。需要呼叫端明確處置或向上宣告的技術故障可使用 Checked Exception；由統一入口處理的故障或程式缺陷，可使用適當的 Unchecked Exception。不得只為省略宣告或捕捉而任意轉換，也不得僅依例外是否受編譯器檢查，就判定能否恢復或重試。
+
+**違反**
+
+```java
+// 僅為省略宣告而把呼叫端須處置的讀取故障轉成未受檢查例外
+class Example {
+    String read(Path path) {
+        try {
+            return Files.readString(path);
+        } catch (IOException failure) {
+            throw new UncheckedIOException(failure);
+        }
+    }
+}
+```
+
+**符合**
+
+```java
+// 讀取契約要求呼叫端明確處置或向上宣告技術故障
+class Example {
+    String read(Path path) throws IOException {
+        return Files.readString(path);
+    }
+}
+```
 
 <a id="java-catch-scope"></a>
 
@@ -24,11 +72,77 @@
 
 優先捕捉具體例外並縮小 `try` 範圍，不得將不同來源的故障一律轉成同一業務結果。最外層入口可依責任統一處理尚未處理的例外，但仍須保留分類，不得假裝恢復成功。不得以廣泛捕捉 `Throwable` 或 `Error` 掩蓋嚴重故障並繼續操作。
 
+**違反**
+
+```java
+// 廣泛捕捉把讀取故障與格式錯誤都當成檔案不存在
+class Example {
+    Optional<Integer> read(Path path) {
+        try {
+            return Optional.of(Integer.parseInt(Files.readString(path).trim()));
+        } catch (Exception failure) {
+            return Optional.empty();
+        }
+    }
+}
+```
+
+**符合**
+
+```java
+// 僅將檔案不存在轉為缺值，其餘故障依原分類傳遞
+class Example {
+    Optional<Integer> read(Path path) throws IOException {
+        String value;
+        try {
+            value = Files.readString(path);
+        } catch (NoSuchFileException failure) {
+            return Optional.empty();
+        }
+        return Optional.of(Integer.parseInt(value.trim()));
+    }
+}
+```
+
 <a id="java-interruption"></a>
 
 ### 保留中斷意圖
 
 `InterruptedException` 須依呼叫契約向上傳遞；無法傳遞而在本層捕捉時，須恢復中斷旗標並停止或依明確取消契約處理。不得吞掉中斷後照常執行或自動重試，必要清理不得掩蓋中斷意圖。
+
+**違反**
+
+```java
+// 無法向上宣告中斷時吞掉例外並繼續工作
+class Example implements Runnable {
+    public void run() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException failure) {
+        }
+        doWork();
+    }
+    void doWork() {}
+}
+```
+
+**符合**
+
+```java
+// 無法向上宣告中斷時恢復旗標並停止工作
+class Example implements Runnable {
+    public void run() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException failure) {
+            Thread.currentThread().interrupt();
+            return;
+        }
+        doWork();
+    }
+    void doWork() {}
+}
+```
 
 ## 資源所有權與失敗清理
 
@@ -40,17 +154,111 @@
 
 由目前操作負責關閉且支援 `AutoCloseable` 的資源，優先使用 `try-with-resources`，讓使用範圍與關閉時機對應，涵蓋正常完成及例外退出。借用或框架管理的資源依所有權契約處理，不得擅自關閉。其他生命週期須明訂可靠的釋放方式，不以垃圾回收代替必要的資源管理。
 
+**違反**
+
+```java
+// 自行開啟的資源只在正常完成時關閉，讀取失敗會洩漏
+class Example {
+    int read(Path path) throws IOException {
+        InputStream input = Files.newInputStream(path);
+        int value = input.read();
+        input.close();
+        return value;
+    }
+}
+```
+
+**符合**
+
+```java
+// 使用 try-with-resources 涵蓋正常完成與例外退出的關閉
+class Example {
+    int read(Path path) throws IOException {
+        try (InputStream input = Files.newInputStream(path)) {
+            return input.read();
+        }
+    }
+}
+```
+
 <a id="java-suppressed-failures"></a>
 
 ### 保留操作與清理失敗
 
 操作與清理同時失敗時，須保留原始例外及清理例外的關係，不得覆蓋或遺失 suppressed exceptions。使用 `try-with-resources` 時須保留其記錄的清理例外，自行清理時也須維持故障關係。不得以 `finally` 中的 `return` 或其他控制流程掩蓋原結果；單獨發生的清理失敗也須依資源契約判斷完成保證與回報方式，不得默默忽略。
 
+**違反**
+
+```java
+// finally 的清理失敗覆蓋原本的操作失敗
+class Example {
+    static class Resource implements AutoCloseable {
+        public void close() throws IOException { throw new IOException("清理失敗"); }
+    }
+    void execute() throws IOException {
+        Resource resource = new Resource();
+        try {
+            throw new IOException("操作失敗");
+        } finally {
+            resource.close();
+        }
+    }
+}
+```
+
+**符合**
+
+```java
+// try-with-resources 保留操作失敗並將清理失敗列為 suppressed
+class Example {
+    static class Resource implements AutoCloseable {
+        public void close() throws IOException { throw new IOException("清理失敗"); }
+    }
+    void execute() throws IOException {
+        try (Resource resource = new Resource()) {
+            throw new IOException("操作失敗");
+        }
+    }
+}
+```
+
 <a id="java-resource-close-contract"></a>
 
 ### 有效期與關閉契約
 
 依[有效期與關閉契約的共通要求](../../../coding/resource-lifecycle.md#resource-close-contract)執行。Java `AutoCloseable` 資源不可在非同步工作仍使用時提前關閉，不無依據假設所有 `close()` 都可重複呼叫。
+
+**違反**
+
+```java
+// 非同步工作尚未完成就離開資源範圍，可能提前關閉
+class Example {
+    void read(Path path) throws IOException {
+        try (InputStream input = Files.newInputStream(path)) {
+            CompletableFuture.runAsync(() -> {
+                try { input.read(); }
+                catch (IOException failure) { throw new UncheckedIOException(failure); }
+            });
+        }
+    }
+}
+```
+
+**符合**
+
+```java
+// 等待非同步工作結束後才關閉其使用的資源
+class Example {
+    void read(Path path) throws IOException {
+        try (InputStream input = Files.newInputStream(path)) {
+            CompletableFuture.runAsync(() -> {
+                try { input.read(); }
+                catch (IOException failure) { throw new UncheckedIOException(failure); }
+            }).join();
+        }
+    }
+}
+```
 
 <a id="java-failure-coverage"></a>
 
