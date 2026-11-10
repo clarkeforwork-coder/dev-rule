@@ -62,11 +62,57 @@
 
 專案預設依賴公開且受支援的 JDK API。需要存取內部實作或放寬存取限制時，須依例外流程個別核准，記錄原因、範圍、相關依賴與替代方案，明訂後續處置，並於 JDK 升級時重新驗證。
 
+**違反**
+
+```java
+// 未經例外核准，嘗試放寬存取限制以讀取 JDK 私有欄位。
+class IntegerReader {
+    int read(Integer number) throws ReflectiveOperationException {
+        var field = Integer.class.getDeclaredField("value");
+        field.setAccessible(true);
+        return field.getInt(number);
+    }
+}
+```
+
+**符合**
+
+```java
+// 使用公開且受支援的 API 取得整數值。
+class IntegerReader {
+    int read(Integer number) {
+        return number.intValue();
+    }
+}
+```
+
 <a id="java-deprecated-api"></a>
 
 ### 棄用 API
 
 新增或修改程式須優先採用符合專案版本範圍的替代 API。既有棄用 API 依移除風險與影響安排遷移，特別檢視已標示預定移除的項目。必要的持續使用須經例外核准，記錄原因、適用範圍與重新評估條件。
+
+**違反**
+
+```java
+// 新增程式未經例外核准使用已預定移除的建構子，編譯會有警告。
+class IntegerFactory {
+    Integer create(int value) {
+        return new Integer(value);
+    }
+}
+```
+
+**符合**
+
+```java
+// 改用 Java 17 支援的替代 API。
+class IntegerFactory {
+    Integer create(int value) {
+        return Integer.valueOf(value);
+    }
+}
+```
 
 <a id="java-group-notes-dependency-versions"></a>
 
