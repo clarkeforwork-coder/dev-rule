@@ -236,7 +236,7 @@ class Expiry {
 // 示例契約只接受合法 ISO 日期，SMART 模式卻會修正非法月底日期。
 class DateParser {
     static LocalDate parse(String text) {
-        var format = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.ROOT)
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.ROOT)
                 .withResolverStyle(ResolverStyle.SMART);
         return LocalDate.parse(text, format);
     }
@@ -249,7 +249,7 @@ class DateParser {
 // 示例契約為不含時區的 ISO 日期，嚴格解析完整輸入並拒絕非法日期。
 class DateParser {
     static LocalDate parse(String text) {
-        var format = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.ROOT)
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.ROOT)
                 .withResolverStyle(ResolverStyle.STRICT);
         return LocalDate.parse(text, format);
     }

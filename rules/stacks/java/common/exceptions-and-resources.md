@@ -15,7 +15,7 @@
 **違反**
 
 ```java
-// 已知只有讀取故障，卻以籠統的 Exception 宣告契約
+// 已知只有讀取故障，卻以籠統的 Exception 宣告契約。
 class Example {
     String read(Path path) throws Exception {
         return Files.readString(path);
@@ -26,7 +26,7 @@ class Example {
 **符合**
 
 ```java
-// 使用 IOException 明確表達讀取的技術故障
+// 使用 IOException 明確表達讀取的技術故障。
 class Example {
     String read(Path path) throws IOException {
         return Files.readString(path);
@@ -43,14 +43,15 @@ class Example {
 **違反**
 
 ```java
-// 僅為省略宣告而把呼叫端須處置的讀取故障轉成未受檢查例外
+// 呼叫端須明確處置讀取故障，卻僅為省略宣告而轉成未受檢查例外。
 class Example {
     String read(Path path) {
-        try {
-            return Files.readString(path);
-        } catch (IOException failure) {
-            throw new UncheckedIOException(failure);
-        }
+        try { return Files.readString(path); }
+        catch (IOException failure) { throw new UncheckedIOException(failure); }
+    }
+    void display(Path path, Consumer<IOException> reportFailure) {
+        try { System.out.println(read(path)); }
+        catch (UncheckedIOException failure) { reportFailure.accept(failure.getCause()); }
     }
 }
 ```
@@ -58,10 +59,14 @@ class Example {
 **符合**
 
 ```java
-// 讀取契約要求呼叫端明確處置或向上宣告技術故障
+// 讀取故障維持受檢查契約，呼叫端明確捕捉並交給故障處置元件。
 class Example {
     String read(Path path) throws IOException {
         return Files.readString(path);
+    }
+    void display(Path path, Consumer<IOException> reportFailure) {
+        try { System.out.println(read(path)); }
+        catch (IOException failure) { reportFailure.accept(failure); }
     }
 }
 ```
@@ -75,7 +80,7 @@ class Example {
 **違反**
 
 ```java
-// 廣泛捕捉把讀取故障與格式錯誤都當成檔案不存在
+// 廣泛捕捉把讀取故障與格式錯誤都當成檔案不存在。
 class Example {
     Optional<Integer> read(Path path) {
         try {
@@ -90,7 +95,7 @@ class Example {
 **符合**
 
 ```java
-// 僅將檔案不存在轉為缺值，其餘故障依原分類傳遞
+// 僅將檔案不存在轉為缺值，其餘故障依原分類傳遞。
 class Example {
     Optional<Integer> read(Path path) throws IOException {
         String value;
@@ -113,7 +118,7 @@ class Example {
 **違反**
 
 ```java
-// 無法向上宣告中斷時吞掉例外並繼續工作
+// 無法向上宣告中斷時吞掉例外並繼續工作。
 class Example implements Runnable {
     public void run() {
         try {
@@ -129,7 +134,7 @@ class Example implements Runnable {
 **符合**
 
 ```java
-// 無法向上宣告中斷時恢復旗標並停止工作
+// 無法向上宣告中斷時恢復旗標並停止工作。
 class Example implements Runnable {
     public void run() {
         try {
@@ -157,7 +162,7 @@ class Example implements Runnable {
 **違反**
 
 ```java
-// 自行開啟的資源只在正常完成時關閉，讀取失敗會洩漏
+// 自行開啟的資源只在正常完成時關閉，讀取失敗會洩漏。
 class Example {
     int read(Path path) throws IOException {
         InputStream input = Files.newInputStream(path);
@@ -171,7 +176,7 @@ class Example {
 **符合**
 
 ```java
-// 使用 try-with-resources 涵蓋正常完成與例外退出的關閉
+// 使用 try-with-resources 涵蓋正常完成與例外退出的關閉。
 class Example {
     int read(Path path) throws IOException {
         try (InputStream input = Files.newInputStream(path)) {
@@ -190,7 +195,7 @@ class Example {
 **違反**
 
 ```java
-// finally 的清理失敗覆蓋原本的操作失敗
+// finally 的清理失敗覆蓋原本的操作失敗。
 class Example {
     static class Resource implements AutoCloseable {
         public void close() throws IOException { throw new IOException("清理失敗"); }
@@ -209,7 +214,7 @@ class Example {
 **符合**
 
 ```java
-// try-with-resources 保留操作失敗並將清理失敗列為 suppressed
+// try-with-resources 保留操作失敗並將清理失敗列為 suppressed。
 class Example {
     static class Resource implements AutoCloseable {
         public void close() throws IOException { throw new IOException("清理失敗"); }
@@ -231,14 +236,14 @@ class Example {
 **違反**
 
 ```java
-// 非同步工作尚未完成就離開資源範圍，可能提前關閉
+// 資源由提交方法關閉，非同步工作仍可能需要使用它。
 class Example {
-    void read(Path path) throws IOException {
+    CompletableFuture<Void> read(Path path, Executor ioExecutor) throws IOException {
         try (InputStream input = Files.newInputStream(path)) {
-            CompletableFuture.runAsync(() -> {
+            return CompletableFuture.runAsync(() -> {
                 try { input.read(); }
                 catch (IOException failure) { throw new UncheckedIOException(failure); }
-            });
+            }, ioExecutor);
         }
     }
 }
@@ -247,15 +252,16 @@ class Example {
 **符合**
 
 ```java
-// 等待非同步工作結束後才關閉其使用的資源
+// 非同步工作自行取得並關閉資源，回傳結果鏈讓呼叫端處置故障。
 class Example {
-    void read(Path path) throws IOException {
-        try (InputStream input = Files.newInputStream(path)) {
-            CompletableFuture.runAsync(() -> {
-                try { input.read(); }
-                catch (IOException failure) { throw new UncheckedIOException(failure); }
-            }).join();
-        }
+    CompletableFuture<Void> read(Path path, Executor ioExecutor) {
+        return CompletableFuture.runAsync(() -> {
+            try (InputStream input = Files.newInputStream(path)) {
+                input.read();
+            } catch (IOException failure) {
+                throw new UncheckedIOException(failure);
+            }
+        }, ioExecutor);
     }
 }
 ```

@@ -15,10 +15,11 @@
 **違反**
 
 ```java
-// 僅以集合型別暴露資料，未說明修改權與參考保留。
+// 宣稱回傳隔離快照，實際卻回傳原集合與可變元素參考。
 class Names {
     private final List<StringBuilder> values;
     Names(List<StringBuilder> values) { this.values = values; }
+    /** 回傳與來源隔離的集合及元素快照。 */
     List<StringBuilder> values() { return values; }
 }
 ```
@@ -105,7 +106,7 @@ class Copies {
 ```java
 // 以增強迴圈遍歷時直接移除來源元素，破壞遍歷契約。
 class Removal {
-    static void removeEmpty(ArrayList<String> values) {
+    static void removeEmpty(List<String> values) {
         for (String value : values) {
             if (value.isEmpty()) values.remove(value);
         }
@@ -118,7 +119,7 @@ class Removal {
 ```java
 // 使用迭代器支援的移除操作，刪除遍歷遇到的所有空字串。
 class Removal {
-    static void removeEmpty(ArrayList<String> values) {
+    static void removeEmpty(List<String> values) {
         for (Iterator<String> it = values.iterator(); it.hasNext();) {
             if (it.next().isEmpty()) it.remove();
         }
@@ -170,7 +171,7 @@ class Registry {
 // 只需排序前一百筆，卻先排序持續產生的串流而無限累積。
 class Samples {
     static List<Integer> sortedFirstHundred() {
-        return Stream.iterate(0, n -> n + 1).sorted().limit(100).toList();
+        return Stream.iterate(0, (Integer n) -> n + 1).sorted().limit(100).toList();
     }
 }
 ```
@@ -181,7 +182,7 @@ class Samples {
 // 先界定前一百筆的處理範圍，再排序，限制中間資料累積。
 class Samples {
     static List<Integer> sortedFirstHundred() {
-        return Stream.iterate(0, n -> n + 1).limit(100).sorted().toList();
+        return Stream.iterate(0, (Integer n) -> n + 1).limit(100).sorted().toList();
     }
 }
 ```
@@ -232,7 +233,7 @@ class Values {
     private List<Integer> values = new ArrayList<>(List.of(1, 0));
     /** 除以零時拋出例外，並保留呼叫前的所有值。 */
     void invert() {
-        values.replaceAll(value -> 10 / value);
+        values.replaceAll((Integer value) -> 10 / value);
     }
 }
 ```
@@ -246,7 +247,7 @@ class Values {
     /** 除以零時拋出例外，並保留呼叫前的所有值。 */
     void invert() {
         List<Integer> updated = new ArrayList<>(values);
-        updated.replaceAll(value -> 10 / value);
+        updated.replaceAll((Integer value) -> 10 / value);
         values = updated;
     }
 }

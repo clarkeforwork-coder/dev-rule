@@ -16,9 +16,14 @@
 
 ```java
 // 約定依識別碼判同，卻把狀態也納入比較。
-record Order(long id, String status) {
+final class Order {
+    enum Status { PENDING, CANCELLED }
+    private final long id;
+    private Status status = Status.PENDING;
+    Order(long id) { this.id = id; }
+    void cancel() { status = Status.CANCELLED; }
     @Override public boolean equals(Object other) {
-        return other instanceof Order o && id == o.id && Objects.equals(status, o.status);
+        return other instanceof Order o && id == o.id && status == o.status;
     }
     @Override public int hashCode() { return Objects.hash(id, status); }
 }
@@ -28,7 +33,12 @@ record Order(long id, String status) {
 
 ```java
 // 依識別碼判同，狀態差異不影響同一 Entity 的相等性。
-record Order(long id, String status) {
+final class Order {
+    enum Status { PENDING, CANCELLED }
+    private final long id;
+    private Status status = Status.PENDING;
+    Order(long id) { this.id = id; }
+    void cancel() { status = Status.CANCELLED; }
     @Override public boolean equals(Object other) {
         return other instanceof Order o && id == o.id;
     }
@@ -210,7 +220,7 @@ record Product(long id, int price) {
 ```java
 // 相減可能溢位，使比較方向錯誤。
 class Example {
-    static final Comparator<Integer> ASCENDING = (left, right) -> left - right;
+    static final Comparator<Integer> ASCENDING = (Integer left, Integer right) -> left - right;
 }
 ```
 
@@ -273,7 +283,7 @@ class Example {
 class Item {
     int rank;
     static void run() {
-        Set<Item> items = new TreeSet<>(Comparator.comparingInt(i -> i.rank));
+        Set<Item> items = new TreeSet<>(Comparator.comparingInt((Item i) -> i.rank));
         Item item = new Item();
         items.add(item);
         item.rank = 2;
@@ -288,7 +298,7 @@ class Item {
 class Item {
     int rank;
     static void run() {
-        Set<Item> items = new TreeSet<>(Comparator.comparingInt(i -> i.rank));
+        Set<Item> items = new TreeSet<>(Comparator.comparingInt((Item i) -> i.rank));
         Item item = new Item();
         items.add(item);
         items.remove(item);

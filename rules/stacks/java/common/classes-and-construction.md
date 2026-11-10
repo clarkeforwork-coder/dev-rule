@@ -29,8 +29,8 @@ class Base {
     void initialize() {}
 }
 class Child extends Base {
-    private final String name = "ready";
-    @Override void initialize() { System.out.println(name.length()); }
+    private final List<String> names = new ArrayList<>();
+    @Override void initialize() { System.out.println(names.size()); }
 }
 ```
 
@@ -43,8 +43,8 @@ class Base {
     private void initialize() {}
 }
 class Child extends Base {
-    private final String name = "ready";
-    void initialize() { System.out.println(name.length()); }
+    private final List<String> names = new ArrayList<>();
+    void showNameCount() { System.out.println(names.size()); }
 }
 ```
 
@@ -102,15 +102,16 @@ class RangeBuilder {
 **符合**
 
 ```java
-// Builder 可暫存起訖顛倒的資料，但 build 會拒絕產出無效區間。
-record Range(int start, int end) {}
+// Builder 可暫存起訖顛倒的資料，所有建立入口共用區間驗證。
+record Range(int start, int end) {
+    Range {
+        if (start > end) throw new IllegalArgumentException("Invalid range");
+    }
+}
 class RangeBuilder {
     int start = 10;
     int end = 1;
-    Range build() {
-        if (start > end) throw new IllegalStateException("Invalid range");
-        return new Range(start, end);
-    }
+    Range build() { return new Range(start, end); }
 }
 ```
 

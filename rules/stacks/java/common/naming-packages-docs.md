@@ -69,24 +69,28 @@ class OrderTotalUtils {
 **違反**
 
 ```java
-// 內部儲存結構直接公開，未以可見性隔離實作。
-class OrderRepository {
-    public final Map<String, Integer> storage = new HashMap<>();
-    public void save(String orderId, int amount) {
-        storage.put(orderId, amount);
+// 訂單套件入口 Snippet 將內部儲存實作也公開，外部可直接依賴它。
+public final class Snippet {
+    public static final class OrderStorage {
+        private final Map<String, Integer> amounts = new HashMap<>();
+        public void save(String orderId, int amount) { amounts.put(orderId, amount); }
     }
+    private final OrderStorage storage = new OrderStorage();
+    public void save(String orderId, int amount) { storage.save(orderId, amount); }
 }
 ```
 
 **符合**
 
 ```java
-// 透過公開方法提供契約，並以私有欄位隱藏內部儲存結構。
-class OrderRepository {
-    private final Map<String, Integer> storage = new HashMap<>();
-    public void save(String orderId, int amount) {
-        storage.put(orderId, amount);
+// 訂單套件只公開入口 Snippet，內部儲存實作以套件可見性限制使用。
+public final class Snippet {
+    static final class OrderStorage {
+        private final Map<String, Integer> amounts = new HashMap<>();
+        public void save(String orderId, int amount) { amounts.put(orderId, amount); }
     }
+    private final OrderStorage storage = new OrderStorage();
+    public void save(String orderId, int amount) { storage.save(orderId, amount); }
 }
 ```
 
@@ -99,6 +103,35 @@ class OrderRepository {
 ### 補足契約資訊
 
 供使用端依賴的類別與方法須記錄型別及名稱無法充分表達的契約，依責任補充前置條件、結果、失敗、副作用與適用的生命週期保證。可包含非空、資源所有權、執行緒安全或資料時效等必要資訊，不要求每個方法套用全部項目。優先以 Javadoc 就近維護，或明確引用既有權威契約，避免重複定義；不以重述名稱代替說明。
+
+**違反**
+
+```java
+// Javadoc 只重述名稱，使用端看不到前置條件與失敗契約。
+class TextReader {
+    /** 讀取文字。 */
+    public String read(Path path) throws IOException {
+        return Files.readString(path, StandardCharsets.UTF_8);
+    }
+}
+```
+
+**符合**
+
+```java
+// Javadoc 補充使用端所需的前置條件、結果與失敗契約。
+class TextReader {
+    /**
+     * 讀取整個檔案的 UTF-8 文字，並於返回前關閉自行取得的資源。
+     * @param path 非空的檔案路徑
+     * @return 檔案文字，空檔案回傳空字串
+     * @throws IOException 無法開啟或讀取檔案時
+     */
+    public String read(Path path) throws IOException {
+        return Files.readString(path, StandardCharsets.UTF_8);
+    }
+}
+```
 
 <a id="java-rename-impact"></a>
 

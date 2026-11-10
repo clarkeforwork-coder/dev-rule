@@ -68,7 +68,7 @@
 // 未經例外核准，嘗試放寬存取限制以讀取 JDK 私有欄位。
 class IntegerReader {
     int read(Integer number) throws ReflectiveOperationException {
-        var field = Integer.class.getDeclaredField("value");
+        java.lang.reflect.Field field = Integer.class.getDeclaredField("value");
         field.setAccessible(true);
         return field.getInt(number);
     }

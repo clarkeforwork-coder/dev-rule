@@ -200,7 +200,7 @@ class Example {
 // 泛型未宣告數值能力，依靠執行期轉型取值。
 class Example {
     static <T> double total(List<T> values) {
-        return values.stream().mapToDouble(v -> ((Number) v).doubleValue()).sum();
+        return values.stream().mapToDouble((T v) -> ((Number) v).doubleValue()).sum();
     }
 }
 ```

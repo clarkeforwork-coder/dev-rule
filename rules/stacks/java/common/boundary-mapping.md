@@ -104,17 +104,17 @@ class Update {
 **符合**
 
 ```java
-// 明確型別把未提供、清空與設定值一路傳遞至更新操作。
+// 明確型別保留更新意圖，此欄位契約以空字串表示已清空。
 sealed interface Change {
     record Absent() implements Change {}
     record Clear() implements Change {}
-    record Set(String value) implements Change {}
+    record Set(String value) implements Change { public Set { Objects.requireNonNull(value); } }
 }
 class Update {
     String name = "原值";
     void map(Change input) { apply(input); }
     void apply(Change change) {
-        if (change instanceof Change.Clear) name = null;
+        if (change instanceof Change.Clear) name = "";
         else if (change instanceof Change.Set set) name = set.value();
     }
 }

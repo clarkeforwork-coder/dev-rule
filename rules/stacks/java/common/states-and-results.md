@@ -15,14 +15,14 @@
 **違反**
 
 ```java
-// 互斥狀態以獨立布林值表示，可能同時成立
+// 互斥狀態以獨立布林值表示，可能同時成立。
 record Payment(boolean pending, boolean paid, boolean failed) {}
 ```
 
 **符合**
 
 ```java
-// 固定且互斥的付款狀態以列舉表示
+// 固定且互斥的付款狀態以列舉表示。
 enum PaymentState { PENDING, PAID, FAILED }
 ```
 
@@ -35,7 +35,7 @@ enum PaymentState { PENDING, PAID, FAILED }
 **違反**
 
 ```java
-// 已付款狀態仍允許缺少交易編號
+// 已付款狀態仍允許缺少交易編號。
 record Payment(State state, String transactionId) {
     enum State { PENDING, PAID }
 }
@@ -44,8 +44,8 @@ record Payment(State state, String transactionId) {
 **符合**
 
 ```java
-// 已付款型別在建立時保護必要的交易編號
-interface Payment {}
+// 已付款型別在建立時保護必要的交易編號。
+sealed interface Payment permits Pending, Paid {}
 record Pending() implements Payment {}
 record Paid(String transactionId) implements Payment {
     Paid { Objects.requireNonNull(transactionId); }
@@ -61,7 +61,7 @@ record Paid(String transactionId) implements Payment {
 **違反**
 
 ```java
-// 公開 setter 讓使用端繞過只允許待處理訂單取消的規則
+// 公開 setter 讓使用端繞過只允許待處理訂單取消的規則。
 class Order {
     enum State { PENDING, SHIPPED, CANCELLED }
     enum CancelResult { CANCELLED, INVALID_STATE }
@@ -78,7 +78,7 @@ class Order {
 **符合**
 
 ```java
-// 取消只能經由檢查來源狀態的業務操作
+// 取消只能經由檢查來源狀態的業務操作。
 class Order {
     enum State { PENDING, SHIPPED, CANCELLED }
     enum CancelResult { CANCELLED, INVALID_STATE }
@@ -104,12 +104,13 @@ class Order {
 **違反**
 
 ```java
-// 為統一結果格式而將技術故障混入一般業務失敗
+// 為統一結果格式而將技術故障混入一般業務失敗。
 class Reservation {
+    interface Stock { boolean reserve() throws IOException; }
     enum Result { ACCEPTED, SOLD_OUT, TECHNICAL_FAILURE }
-    Result reserve(Callable<Boolean> stock) {
-        try { return stock.call() ? Result.ACCEPTED : Result.SOLD_OUT; }
-        catch (Exception failure) { return Result.TECHNICAL_FAILURE; }
+    Result reserve(Stock stock) {
+        try { return stock.reserve() ? Result.ACCEPTED : Result.SOLD_OUT; }
+        catch (IOException failure) { return Result.TECHNICAL_FAILURE; }
     }
 }
 ```
@@ -117,11 +118,12 @@ class Reservation {
 **符合**
 
 ```java
-// 業務失敗以原因代碼表達，技術故障仍透過例外傳遞
+// 業務失敗以原因代碼表達，技術故障仍透過例外傳遞。
 class Reservation {
+    interface Stock { boolean reserve() throws IOException; }
     enum Result { ACCEPTED, SOLD_OUT }
-    Result reserve(Callable<Boolean> stock) throws Exception {
-        return stock.call() ? Result.ACCEPTED : Result.SOLD_OUT;
+    Result reserve(Stock stock) throws IOException {
+        return stock.reserve() ? Result.ACCEPTED : Result.SOLD_OUT;
     }
 }
 ```
@@ -135,7 +137,7 @@ class Reservation {
 **違反**
 
 ```java
-// 預設分支把未處理的待確認結果當成成功
+// 預設分支把未處理的待確認結果當成成功。
 class Display {
     enum Result { SUCCESS, REJECTED, PENDING }
     String message(Result result) {
@@ -150,7 +152,7 @@ class Display {
 **符合**
 
 ```java
-// 列舉 switch 運算式列出全部情況並接受編譯完整性檢查
+// 列舉 switch 運算式列出全部情況並接受編譯完整性檢查。
 class Display {
     enum Result { SUCCESS, REJECTED, PENDING }
     String message(Result result) {
@@ -176,7 +178,7 @@ class Display {
 **違反**
 
 ```java
-// 使用列舉位置作為外部代碼，排序變更就改變契約
+// 使用列舉位置作為外部代碼，排序變更就改變契約。
 enum State {
     PENDING, PAID;
     int externalCode() { return ordinal(); }
@@ -187,7 +189,7 @@ enum State {
 **符合**
 
 ```java
-// 外部代碼固定映射，未知代碼依此範例契約拒絕
+// 外部代碼固定映射，未知代碼依此範例契約拒絕。
 enum State {
     PENDING(10), PAID(20);
     private final int code;
@@ -212,7 +214,7 @@ enum State {
 **違反**
 
 ```java
-// 契約只允許成功或拒絕，但介面未限制其他實作
+// 契約只允許成功或拒絕，但介面未限制其他實作。
 interface Result {}
 record Success() implements Result {}
 record Rejected() implements Result {}
@@ -222,7 +224,7 @@ record Unexpected() implements Result {}
 **符合**
 
 ```java
-// 以 sealed 限制此封閉契約只允許成功或拒絕
+// 以 sealed 限制此封閉契約只允許成功或拒絕。
 sealed interface Result permits Success, Rejected {}
 record Success() implements Result {}
 record Rejected() implements Result {}

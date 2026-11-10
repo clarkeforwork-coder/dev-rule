@@ -65,9 +65,11 @@ class Lookup {
 **違反**
 
 ```java
-// 暱稱可能缺值，卻直接取值。
+// 查詢回傳的暱稱可能缺值，卻直接取值。
 class Greeting {
-    String greet(Optional<String> nickname) {
+    interface Nicknames { Optional<String> find(long userId); }
+    String greet(Nicknames nicknames, long userId) {
+        Optional<String> nickname = nicknames.find(userId);
         return "你好，" + nickname.get();
     }
 }
@@ -76,10 +78,12 @@ class Greeting {
 **符合**
 
 ```java
-// 依問候契約，無暱稱時使用不帶稱呼的問候語。
+// 依問候契約，查無暱稱時使用不帶稱呼的問候語。
 class Greeting {
-    String greet(Optional<String> nickname) {
-        return nickname.map(name -> "你好，" + name).orElse("你好");
+    interface Nicknames { Optional<String> find(long userId); }
+    String greet(Nicknames nicknames, long userId) {
+        Optional<String> nickname = nicknames.find(userId);
+        return nickname.map((String name) -> "你好，" + name).orElse("你好");
     }
 }
 ```
@@ -89,8 +93,6 @@ class Greeting {
 ### 使用位置與狀態表達
 
 `Optional` 主要用於方法回傳的正常缺值。參數與欄位須依業務語意設計，不全面包裝，也不全面禁止使用；採用時須確認契約及相關框架可正確處理。需要區分多種狀態時，依[空值語意](../../../coding/nullability.md#空值語意)使用能完整表達狀態的明確型別，不得以 `Optional` 混合表示。
-
-## 空值限制與整合責任
 
 **違反**
 
@@ -111,6 +113,8 @@ sealed interface NicknameChange {
     }
 }
 ```
+
+## 空值限制與整合責任
 
 <a id="java-container-nulls"></a>
 
@@ -180,8 +184,6 @@ record Name(String value) {
 
 依[第三方空值行為](../../../coding/nullability.md#third-party-null-contract)確認契約；第三方明訂 `null` 是正常查無資料時，才轉成空的 `Optional`。
 
-## 契約維護與對外表示
-
 **違反**
 
 ```java
@@ -197,18 +199,20 @@ class Adapter {
 **符合**
 
 ```java
-// 第三方契約保證回傳非空，遇到違約的 null 明確回報整合故障。
+// 第三方未允許正常缺值且保證非空，違約的 null 須回報整合故障。
 class Adapter {
     interface Vendor { String load(); }
-    Optional<String> load(Vendor vendor) {
+    String load(Vendor vendor) {
         String value = vendor.load();
         if (value == null) {
             throw new IllegalStateException("第三方違反非空契約");
         }
-        return Optional.of(value);
+        return value;
     }
 }
 ```
+
+## 契約維護與對外表示
 
 <a id="java-null-contract-evolution"></a>
 
@@ -236,7 +240,7 @@ class Expiration {
 **符合**
 
 ```java
-// 明確標示可空參數，並限定 null 代表永不到期。
+// 文件限定 null 代表永不到期，專案空值標註套件另依工具契約小節選定。
 class Expiration {
     /** @param deadline 可為 null，僅表示永不到期。 */
     boolean expired(Instant deadline, Instant now) {
@@ -265,11 +269,11 @@ class Response {
 **符合**
 
 ```java
-// 依對外契約將缺值轉為省略 nickname 欄位，有值時輸出字串。
+// 此為序列化欄位映射，依對外契約省略缺值欄位並將有值暱稱輸出為字串。
 class Response {
     Map<String, Object> fields(Optional<String> nickname) {
         Map<String, Object> fields = new HashMap<>();
-        nickname.ifPresent(value -> fields.put("nickname", value));
+        nickname.ifPresent((String value) -> fields.put("nickname", value));
         return fields;
     }
 }

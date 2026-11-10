@@ -17,7 +17,7 @@
 **違反**
 
 ```java
-// 業務方法自行建立執行緒，繞過統一管理的執行資源
+// 業務方法自行建立執行緒，繞過統一管理的執行資源。
 class Work {
     void submit(Runnable task) {
         new Thread(task).start();
@@ -28,7 +28,7 @@ class Work {
 **符合**
 
 ```java
-// 使用由負責元件提供及管理的執行資源提交工作
+// 使用由負責元件提供及管理的執行資源提交工作。
 class Work {
     void submit(Executor executor, Runnable task) {
         executor.execute(task);
@@ -45,7 +45,7 @@ class Work {
 **違反**
 
 ```java
-// volatile 只保證欄位可見性，不能讓遞增成為原子操作
+// volatile 只保證欄位可見性，不能讓遞增成為原子操作。
 class Counter {
     private volatile int value;
     void increment() { value++; }
@@ -56,7 +56,7 @@ class Counter {
 **符合**
 
 ```java
-// 以同一物件鎖保護全部讀寫，讓遞增具備原子性
+// 以同一物件鎖保護全部讀寫，讓遞增具備原子性。
 class Counter {
     private int value;
     synchronized void increment() { value++; }
@@ -75,7 +75,7 @@ class Counter {
 **違反**
 
 ```java
-// 每次等待重新取得完整預算，可能超過整體期限
+// 每次等待重新取得完整預算，可能超過整體期限。
 class Waiting {
     void await(Future<?> first, Future<?> second, long budgetNanos)
             throws InterruptedException, ExecutionException, TimeoutException {
@@ -88,7 +88,7 @@ class Waiting {
 **符合**
 
 ```java
-// 兩次等待共用預算，逾時交回仍持有工作控制物件的呼叫端處置
+// 兩次等待共用預算，逾時交回仍持有工作控制物件的呼叫端處置。
 class Waiting {
     void await(Future<?> first, Future<?> second, long budgetNanos)
             throws InterruptedException, ExecutionException, TimeoutException {
@@ -109,7 +109,7 @@ class Waiting {
 **違反**
 
 ```java
-// 只取消外層結果，沒有把取消要求傳給子工作
+// 只取消外層結果，沒有把取消要求傳給子工作。
 class Cancellation {
     void request(Future<?> outer, List<Future<?>> children) {
         outer.cancel(true);
@@ -120,11 +120,11 @@ class Cancellation {
 **符合**
 
 ```java
-// 對契約允許中斷的子工作傳遞取消，實際停止仍由擁有者追蹤
+// 對契約允許中斷的子工作傳遞取消，實際停止仍由擁有者追蹤。
 class Cancellation {
     void request(Future<?> outer, List<Future<?>> children) {
         outer.cancel(true);
-        children.forEach(child -> child.cancel(true));
+        children.forEach((Future<?> child) -> child.cancel(true));
     }
 }
 ```
@@ -138,10 +138,10 @@ class Cancellation {
 **違反**
 
 ```java
-// 未約定降級卻將全部失敗轉成成功的預設結果
+// 未約定降級卻將全部失敗轉成成功的預設結果。
 class Results {
     CompletableFuture<Integer> receive(CompletableFuture<Integer> work) {
-        return work.exceptionally(error -> 0);
+        return work.exceptionally((Throwable error) -> 0);
     }
 }
 ```
@@ -149,10 +149,15 @@ class Results {
 **符合**
 
 ```java
-// 將原結果交給呼叫端接收，保留成功、失敗與取消狀態
+// 負責元件記錄故障並回傳結果鏈，呼叫端仍接收原成功或失敗結果。
 class Results {
+    private final System.Logger logger = System.getLogger(Results.class.getName());
     CompletableFuture<Integer> receive(CompletableFuture<Integer> work) {
-        return work;
+        return work.whenComplete((Integer value, Throwable failure) -> {
+            if (failure != null) {
+                logger.log(System.Logger.Level.ERROR, "背景工作未成功", failure);
+            }
+        });
     }
 }
 ```
@@ -166,11 +171,11 @@ class Results {
 **違反**
 
 ```java
-// 契約要求全部成功，卻在第一個工作完成時就結束組合
+// 契約要求全部成功，卻在第一個工作完成時就結束組合。
 class Completion {
     CompletableFuture<Void> allSucceeded(
             CompletableFuture<?> first, CompletableFuture<?> second) {
-        return CompletableFuture.anyOf(first, second).thenApply(value -> null);
+        return CompletableFuture.anyOf(first, second).thenApply((Object value) -> null);
     }
 }
 ```
@@ -178,7 +183,7 @@ class Completion {
 **符合**
 
 ```java
-// 組合等待兩者完成，只有兩者都成功才回報成功
+// 組合等待兩者完成，只有兩者都成功才回報成功。
 class Completion {
     CompletableFuture<Void> allSucceeded(
             CompletableFuture<?> first, CompletableFuture<?> second) {
@@ -198,7 +203,7 @@ class Completion {
 **違反**
 
 ```java
-// 外層工作占住單執行緒資源，等待同一資源內排隊的子工作
+// 外層工作占住單執行緒資源，等待同一資源內排隊的子工作。
 class Execution {
     CompletableFuture<Integer> run(Executor singleThreadExecutor) {
         return CompletableFuture.supplyAsync(() ->
@@ -211,11 +216,11 @@ class Execution {
 **符合**
 
 ```java
-// 用結果鏈接續工作，不占用單執行緒資源等待排隊工作
+// 用結果鏈接續工作，不占用單執行緒資源等待排隊工作。
 class Execution {
     CompletableFuture<Integer> run(Executor singleThreadExecutor) {
         return CompletableFuture.supplyAsync(() -> 1, singleThreadExecutor)
-            .thenApplyAsync(value -> value + 1, singleThreadExecutor);
+            .thenApplyAsync((Integer value) -> value + 1, singleThreadExecutor);
     }
 }
 ```
@@ -229,7 +234,7 @@ class Execution {
 **違反**
 
 ```java
-// 工作結束後未清理，脈絡可能留在共用執行緒上
+// 工作結束後未清理，脈絡可能留在共用執行緒上。
 class Context {
     private final ThreadLocal<String> trace = new ThreadLocal<>();
     void run(String traceId, Runnable work) {
@@ -242,7 +247,7 @@ class Context {
 **符合**
 
 ```java
-// 明確設定傳入的脈絡，並在所有退出路徑還原原有狀態
+// 明確設定傳入的脈絡，並在所有退出路徑還原原有狀態。
 class Context {
     private final ThreadLocal<String> trace = new ThreadLocal<>();
     void run(String traceId, Runnable work) {
@@ -266,7 +271,7 @@ class Context {
 **違反**
 
 ```java
-// 提早返回時沒有釋放鎖
+// 提早返回時沒有釋放鎖。
 class Stock {
     private final Lock lock = new ReentrantLock();
     private int count;
@@ -283,7 +288,7 @@ class Stock {
 **符合**
 
 ```java
-// 檢查與扣減都在鎖內，所有退出路徑均釋放鎖
+// 檢查與扣減都在鎖內，所有退出路徑均釋放鎖。
 class Stock {
     private final Lock lock = new ReentrantLock();
     private int count;
@@ -309,7 +314,7 @@ class Stock {
 **違反**
 
 ```java
-// 將發出關閉要求誤當成已終止，提前釋放工作所需資源
+// 將發出關閉要求誤當成已終止，提前釋放工作所需資源。
 class Shutdown {
     void close(ExecutorService executor, Closeable resource) throws IOException {
         executor.shutdown();
@@ -321,7 +326,7 @@ class Shutdown {
 **符合**
 
 ```java
-// 確認終止才釋放資源，逾時或中斷交回擁有者繼續追蹤
+// 確認終止才釋放資源，逾時或中斷交回擁有者繼續追蹤。
 class Shutdown {
     void close(ExecutorService executor, Closeable resource)
             throws IOException, InterruptedException, TimeoutException {
@@ -343,7 +348,7 @@ class Shutdown {
 **違反**
 
 ```java
-// 固定睡眠不能保證背景工作已完成
+// 固定睡眠不能保證背景工作已完成。
 class Verification {
     void verify(Executor executor) throws InterruptedException {
         AtomicInteger value = new AtomicInteger();
@@ -357,7 +362,7 @@ class Verification {
 **符合**
 
 ```java
-// 使用明確的完成訊號及期限驗證結果，資料以原子型別交付
+// 使用明確的完成訊號及期限驗證結果，資料以原子型別交付。
 class Verification {
     void verify(Executor executor) throws InterruptedException {
         AtomicInteger value = new AtomicInteger();
