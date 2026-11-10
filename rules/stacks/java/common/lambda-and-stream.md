@@ -107,4 +107,4 @@ orders.stream().filter(Order::isCancellable);
 | <a id="acceptance-java-stream-consumption"></a>[明確消費範圍](#java-stream-consumption) | 核對 Stream 的建立與消費路徑，沒有重用或共用消費；重複取得資料時依契約驗證快照或最新資料語意。 |
 | <a id="acceptance-java-stream-coverage"></a>[執行語意驗收](#java-execution-verification) | 確認案例涵蓋受影響的執行語意與資源保證，平行處理有額外隔離及效能證據，不僅比對一般成功案例的最終元素內容。 |
 
-既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md#例外核准)處理，不自行放寬要求。
+既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

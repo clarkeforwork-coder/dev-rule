@@ -30,7 +30,7 @@
 
 <a id="java-mutable-isolation"></a>
 
-### Java 集合與可變元素的隔離
+### 集合與可變元素的隔離
 
 依[邊界物件](../../../architecture/boundary-objects.md#不可變性)、[程式碼設計與公開介面](../../../coding/code-design.md#可見性與狀態所有權)執行。Java 複製集合外層不一定隔離可變元素；符合契約的不可變值可共用，不要求全面深層複製。
 
@@ -82,4 +82,4 @@
 | <a id="acceptance-java-mapping-failure"></a>[失敗明確回報](#java-mapping-integrity) | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題，且未略過欄位或產生不完整物件掩蓋失敗。 |
 | <a id="acceptance-java-update-intent"></a>[保留更新意圖](#java-update-intent) | 核對 Java 欄位、預設值與反序列化路徑未合併省略、明確清空及設定值的不同意圖。 |
 
-既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md#例外核准)處理，不自行降低型別安全與邊界要求。
+既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低型別安全與邊界要求。

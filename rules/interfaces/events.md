@@ -60,6 +60,4 @@
 
 積壓指標的計算、停止回報時的判定及告警升級流程見[日誌、稽核與可觀測性](../quality/observability.md)。
 
-<a id="event-completion-semantics"></a>
-
 事件來源驗證、接受與完成的區分、逾期偵測及結果核對遵循[外部整合可靠性](external-services.md)。故障恢復驗證見[規範驗證](../quality/rule-verification.md)，例外依[規範治理](../workflow/rule-governance.md)處理。

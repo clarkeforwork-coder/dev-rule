@@ -6,19 +6,13 @@
 
 ## 介面、繼承與建立條件
 
-本組由共通規範承接的要求：[繼承的可替代性](../../../coding/code-design.md#substitutability)。
+本組由共通規範承接的要求：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。
 
 <a id="java-interface-purpose"></a>
 
 ### 介面或具體類別的契約依賴
 
 依[框架與依賴組裝](../../../architecture/dependency-composition.md#介面與抽象)、[模組責任與公開入口](../../../architecture/module-boundaries.md#公開入口)執行。Java 可依契約依賴介面或具體類別；單一實作不構成省略必要架構隔離的理由。
-
-<a id="java-initialization-readiness"></a>
-
-### 必要資料與依賴齊備
-
-依[必要資料與依賴齊備的共通要求](../../../coding/resource-lifecycle.md#initialization-readiness)執行。Java 建構完成須具備必要資料與依賴；外部連線或背景工作不必放在建構子，依明確生命週期啟動。
 
 <a id="java-construction-safety"></a>
 
@@ -50,11 +44,7 @@
 
 ## 共用範圍與驗證
 
-<a id="java-shared-lifecycle"></a>
-
-### 生命週期與可變狀態相容
-
-依[生命週期與可變狀態相容的共通要求](../../../coding/resource-lifecycle.md#shared-lifecycle)執行。Java 共用服務的實例欄位不得存放會跨操作互相覆蓋的使用者或訂單；框架注入不代表執行緒安全或生命週期正確。
+本組由共通規範承接的要求：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。
 
 <a id="java-lifecycle-verification"></a>
 
@@ -90,4 +80,4 @@
 | <a id="acceptance-java-construction-safety"></a>[建構期間的安全性](#java-construction-safety) | 審查 Java 建構路徑是否讓 `this` 外洩或呼叫可覆寫方法；以適用的註冊、回呼及背景啟動路徑確認物件完成建構且已就緒後才被使用。 |
 | <a id="acceptance-java-override-safety"></a>[`super` 呼叫與 `final` 的擴充限制](#java-override-scope) | 核對 Java 類別與方法的擴充範圍及覆寫方式，確認必要檢查不依賴子類記得呼叫 `super`。涉及代理或繼承式框架機制時，驗證實際配置仍維持原保證，不一律以加上或移除 `final` 當作修正。 |
 
-既有程式碼、框架限制與必要例外依[規範治理](../../../workflow/rule-governance.md#例外核准)處理，不自行放寬要求。
+既有程式碼、框架限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

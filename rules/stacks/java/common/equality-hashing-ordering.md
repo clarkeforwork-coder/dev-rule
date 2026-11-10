@@ -93,4 +93,4 @@
 | <a id="acceptance-java-sorted-key-equivalence"></a>[比較為零與相等性](#java-sorted-key-equivalence) | 核對比較為零與 `equals()` 的約定，將不同但排序值相同的資料放入實際採用的 Java 排序集合或映射，確認鍵判同及資料保留符合契約。 |
 | <a id="acceptance-java-sorted-collection-stability"></a>[排序集合中的穩定性](#java-sorted-collection-stability) | 核對 Java 排序元素、鍵及比較器設定的變更路徑；驗證移出重加或重建後的順序、查找及資料保留，不依賴既有集合自動調整。 |
 
-既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md#例外核准)處理，不自行放寬要求。
+既有程式碼與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

@@ -32,6 +32,8 @@
 
 ## 資源所有權與失敗清理
 
+本組由共通規範承接的要求：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)。
+
 <a id="java-resource-management"></a>
 
 ### 優先使用語言資源管理機制
@@ -43,12 +45,6 @@
 ### 保留操作與清理失敗
 
 操作與清理同時失敗時，須保留原始例外及清理例外的關係，不得覆蓋或遺失 suppressed exceptions。使用 `try-with-resources` 時須保留其記錄的清理例外，自行清理時也須維持故障關係。不得以 `finally` 中的 `return` 或其他控制流程掩蓋原結果；單獨發生的清理失敗也須依資源契約判斷完成保證與回報方式，不得默默忽略。
-
-<a id="java-partial-acquisition"></a>
-
-### 部分取得與所有權移交
-
-依[部分取得與所有權移交的共通要求](../../../coding/resource-lifecycle.md#partial-acquisition)執行。Java 多資源取得及建構失敗亦須清理；資源移交前仍由取得方負責，釋放順序遵循依賴。
 
 <a id="java-resource-close-contract"></a>
 
@@ -70,7 +66,7 @@
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響及實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#錯誤處理驗證與驗收)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響及實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
@@ -90,4 +86,4 @@
 | <a id="acceptance-java-resource-closing"></a>[優先使用語言資源管理機制](#java-resource-management) | 以正常完成、提前退出及操作失敗路徑核對 Java 自行擁有的 `AutoCloseable`／`try-with-resources` 資源確實釋放，借用或框架管理資源未被擅自關閉；非區域生命週期有明確釋放責任，不依賴垃圾回收。 |
 | <a id="acceptance-java-suppressed-failures"></a>[保留操作與清理失敗](#java-suppressed-failures) | 模擬 Java 操作與清理同時失敗，確認原始故障及 suppressed exceptions 或相應關係可追查，沒有被 `finally` 控制流程覆蓋；另驗證只有清理失敗時的完成判定與回報。 |
 
-既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md#例外核准)處理，不自行放寬要求。
+既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

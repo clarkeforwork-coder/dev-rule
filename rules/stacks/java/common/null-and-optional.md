@@ -80,11 +80,11 @@ Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺
 
 ## 補充要求
 
-對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md#api-absence-representation)及[資料契約](../../../interfaces/data-contracts.md)一致。本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。
+對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md#api-absence-representation)及[資料契約](../../../interfaces/data-contracts.md#主要定義來源)一致。本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，測試層級、證據及其餘事項另依[規範驗證](../../../quality/rule-verification.md)及[共通測試策略](../../../quality/testing.md)辦理。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，測試層級、證據及其餘事項另依[規範驗證](../../../quality/rule-verification.md#verification-coverage)及[共通測試策略](../../../quality/testing.md#層級與案例選擇)辦理。
 
 不合法資料從允許承接它的邊界輸入；型別要求依[型別安全](../../../coding/type-safety.md#禁止主動繞過檢查)。
 

@@ -6,17 +6,13 @@
 
 ## 動態能力與存取邊界
 
+本組由共通規範承接的要求：[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。
+
 <a id="java-dynamic-type-contract"></a>
 
 ### 明確需求與型別契約
 
 反射與動態呼叫須有明確需求，已知的業務能力優先透過靜態型別契約表達。必要動態能力須集中於責任明確的元件，限制影響範圍並提供具型別的內部契約，不得藉此繞過型別安全要求。框架整合、外掛或通用工具的動態名稱與未知物件不得任意散入業務流程。
-
-<a id="java-dynamic-target-authorization"></a>
-
-### 受控目標與授權
-
-依[受控目標與授權的共通要求](../../../quality/security.md#dynamic-target-authorization)執行。Java 類別、方法及建構子的動態目標須受控，不因型別符合就略過授權。
 
 <a id="java-reflective-encapsulation"></a>
 
@@ -82,4 +78,4 @@
 | <a id="acceptance-java-reflection-boundary"></a>[明確需求與型別契約](#java-dynamic-type-contract) | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |
 | <a id="acceptance-java-reflective-access"></a>[維持封裝與不變條件](#java-reflective-encapsulation) | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。對反射與動態能力核對特殊存取的必要性及受支援替代方式，經實際建立及還原路徑確認維持不變條件及封裝；例如私有欄位寫入或存取放寬亦不得繞過上述保證。 |
 
-偏離禁止事項須依[例外核准流程](../../../workflow/rule-governance.md#例外核准)取得明確決策，不因工具限制自行放寬，也不得將核准擴及其他位置。
+偏離禁止事項須依[例外核准流程](../../../workflow/rule-governance.md)取得明確決策，不因工具限制自行放寬，也不得將核准擴及其他位置。

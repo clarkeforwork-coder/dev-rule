@@ -6,7 +6,7 @@
 
 ## 工作所有權與執行資源
 
-本組由共通規範承接的要求：[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)、[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)。
+本組由共通規範承接的要求：[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)。
 
 <a id="java-execution-resources"></a>
 
