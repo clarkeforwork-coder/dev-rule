@@ -471,7 +471,7 @@
         "3. **聚焦轉換與必要驗證**。依[聚焦轉換與必要驗證的共通要求](../../../architecture/data-mapping.md#mapping-responsibility)執行。Java 映射可解析格式及建立專屬型別；需要補查資料時，由負責流程的元件先協調。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。\n"
+        "本組由共通規範承接的要求：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -643,7 +643,7 @@
         "rules/architecture/boundary-objects.md#隔離與拆分",
         "rules/architecture/data-mapping.md#mapping-responsibility"
       ],
-      "text": "本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。"
+      "text": "本組由共通規範承接的要求：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。"
     }
   ],
   "group_endings": [
@@ -662,6 +662,12 @@
       "before": "確認沒有以預設值或半成品掩蓋問題。",
       "after": "確認沒有以預設值或半成品掩蓋問題，且未略過欄位或產生不完整物件掩蓋失敗。",
       "reason": "L13 第二點：唯一新增核對取自 BM-04 正文「不得略過欄位或產生不完整物件掩蓋失敗」。"
+    },
+    {
+      "path": "rules/stacks/java/common/boundary-mapping.md",
+      "before": "本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。\n\n",
+      "after": "本組由共通規範承接的要求：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
     }
   ]
 }

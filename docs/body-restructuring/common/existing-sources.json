@@ -184,6 +184,62 @@
             "to": "rules/architecture/data-mapping.md#相關共通契約"
           }
         ]
+      },
+      {
+        "id": "review-nine",
+        "blocks": [
+          {
+            "path": "rules/coding/concurrency-and-async.md",
+            "before": "本列核對工作擁有者與責任移交；結果分類與接收路徑見[結果接收驗收](#acceptance-result-reception)。",
+            "after": "結果的分類與接收路徑另見[結果接收與故障處置驗收](#acceptance-result-reception)。",
+            "reason": "M1／L7：只指路，不概括本列；適用範圍仍完整依原驗收列。"
+          },
+          {
+            "path": "rules/coding/concurrency-and-async.md",
+            "before": "本列核對結果分類與接收路徑；工作擁有者與責任移交見[工作追蹤驗收](#acceptance-task-ownership)。",
+            "after": "工作擁有者與責任移交另見[明確的工作擁有者驗收](#acceptance-task-ownership)。",
+            "reason": "M1／L7：只指路，不概括本列；適用範圍仍完整依原驗收列。"
+          },
+          {
+            "path": "rules/coding/error-handling.md",
+            "before": "本列核對例外後的實際狀態；全部或部分成功及項目對應見[多步驟與部分成功驗收](#acceptance-partial-operation)。",
+            "after": "全部或部分成功及項目對應另見[多步驟與部分成功驗收](#acceptance-partial-operation)。",
+            "reason": "M1／L7：只指路，不概括本列；適用範圍仍完整依原驗收列。"
+          },
+          {
+            "path": "rules/coding/error-handling.md",
+            "before": "本列核對全部或部分成功及項目對應；例外後的實際狀態見[失敗後狀態驗收](#acceptance-failure-state)。",
+            "after": "批次修改拋出例外後的狀態另見[失敗後狀態驗收](#acceptance-failure-state)。",
+            "reason": "M1／L7：只指路，不概括本列；適用範圍仍完整依原驗收列。"
+          },
+          {
+            "path": "rules/quality/rule-verification.md",
+            "before": "[介面用途驗收]",
+            "after": "[介面與抽象驗收]",
+            "reason": "L7：連結文字採目標列標題加驗收。"
+          },
+          {
+            "path": "rules/quality/rule-verification.md",
+            "before": "測試程式碼同樣遵守[型別安全要求](../coding/type-safety.md)。",
+            "after": "測試程式碼同樣遵守[型別安全](../coding/type-safety.md)，具體要求見[測試程式碼](#測試程式碼)。",
+            "reason": "L5：同時連共通型別要求及測試專屬要求。"
+          },
+          {
+            "path": "rules/architecture/data-mapping.md",
+            "before": "## 相關共通契約",
+            "after": "<a id=\"既有共同保證的落實\"></a>\n\n## 相關共通契約",
+            "reason": "L4：同位置保留舊標題相容別名，不複製正文。"
+          },
+          {
+            "path": "rules/quality/rule-verification.md",
+            "before": "[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)、[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose)與[多步驟及部分成功](../coding/error-handling.md#acceptance-partial-operation)的驗收也由各自規則檔維護。本文件保留共同把關、架構檢查與可測試性、跨情境錯誤處理，以及補償、外部整合與事件、安全、資料庫、API、可觀測性、效能、設定、依賴及 Git 等主題的驗收。\n",
+            "after": "[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)、[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose)與[多步驟與部分成功](../coding/error-handling.md#acceptance-partial-operation)的驗收也由各自規則檔維護。其餘主題的驗收仍集中於本文件。\n",
+            "reason": "L6：導覽不列舉主題，避免被誤讀為完整清單；連結文字與標題一致。"
+          }
+        ],
+        "link_moves": [
+
+        ]
       }
     ]
   }

@@ -602,7 +602,7 @@
         "3. **不可變性**。依[不可變性的共通要求](../../../coding/domain-modeling.md#value-immutability)執行。Java 欄位標示 `final` 不代表內容不可變；傳入及取出可變集合或巢狀物件時，須以不可變表示、封裝或必要的防禦性複製維持隔離。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。\n"
+        "本組由共通規範承接的要求：[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)、[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -697,7 +697,7 @@
         "\n",
         "### 業務保證的測試\n",
         "\n",
-        "依[領域建模](../../../coding/domain-modeling.md)、[共通測試策略](../../../quality/testing.md)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[Java 業務保證驗收](#acceptance-java-value-method-coverage)與[共通資料還原驗收](../../../coding/domain-modeling.md#acceptance-value-restoration)驗證，不機械式測試每個產生的方法。\n",
+        "依[領域建模](../../../coding/domain-modeling.md)、[共通測試策略](../../../quality/testing.md)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[本文件驗收要求](#驗收要求)驗證，不機械式測試每個產生的方法。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
@@ -780,11 +780,11 @@
     {
       "heading": "型別責任與有效性",
       "targets": [
-        "rules/coding/code-design.md#construction-entrypoints",
         "rules/coding/domain-modeling.md#專屬型別",
-        "rules/coding/validation.md#責任分工"
+        "rules/coding/validation.md#責任分工",
+        "rules/coding/code-design.md#construction-entrypoints"
       ],
-      "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。"
+      "text": "本組由共通規範承接的要求：[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)、[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)。"
     }
   ],
   "link_retention": [
@@ -805,6 +805,18 @@
       "before": "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依下方驗收表驗證，不機械式測試每個產生的方法。",
       "after": "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[Java 業務保證驗收](#acceptance-java-value-method-coverage)與[共通資料還原驗收](../../../coding/domain-modeling.md#acceptance-value-restoration)驗證，不機械式測試每個產生的方法。",
       "reason": "七／L2 VO-10：保留全部受驗對象，指向覆蓋列與詳細還原列。"
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "before": "[Java 業務保證驗收](#acceptance-java-value-method-coverage)與[共通資料還原驗收](../../../coding/domain-modeling.md#acceptance-value-restoration)",
+      "after": "[本文件驗收要求](#驗收要求)",
+      "reason": "L3／L13：統一指向完整驗收章節，含共同引用及 Java 列。"
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "before": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。\n\n",
+      "after": "本組由共通規範承接的要求：[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)、[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
     }
   ]
 }

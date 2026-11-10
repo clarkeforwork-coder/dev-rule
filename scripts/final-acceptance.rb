@@ -3,11 +3,12 @@
 require 'json'
 require 'pathname'
 require 'digest'
+require_relative 'review-nine'
 module FinalAcceptance
   START='53c26dcbecbdd31c6082ffd91f608660a2d38b0d'.freeze
   CONFIG='docs/final-acceptance.json'.freeze
   PLAN=File.expand_path('final-acceptance-plan.json',__dir__).freeze
-  PLAN_SHA="b7646f168a5b139906725063c4dc27bcb10ea62c1e7e7b6e6a29514ab88e024c".freeze
+  PLAN_SHA='e3e63101fc8ffac23168caf496cbd648988d763b4dc269161cbc355532bbdae9'.freeze
   def self.active?;File.file?(CONFIG);end
   def self.plan
     raw=File.read(PLAN);raise '最後驗收核准清單內容變動' unless Digest::SHA256.hexdigest(raw)==PLAN_SHA
@@ -65,6 +66,7 @@ module FinalAcceptance
       prior_record=r
       r=value(r,r['path']);changes=ops.select{|o|o['path']==r['path']}
       r['final_reference_changes']=changes unless changes.empty?
+      r=ReviewNine.record(r,files) if ReviewNine.active?
       r['edits']=BodyRestructuring.edits(BodyPresentation.rename(BodyRestructuring.original(r['path']),r['path']),files[r['path']]).map{|e|e.merge('reason'=>'階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。')}
       r['edits']=prior_record['edits'] if files[r['path']]==prior_files[r['path']] && r==prior_record.merge('edits'=>r['edits'])
       [p,r]
@@ -80,12 +82,15 @@ module FinalAcceptance
     JSON.pretty_generate(r)+"\n"
   end
   def self.trace_text(text,path)
+    if ReviewNine.active?
+      steps.find{|s|s['id']=='review-nine'}['ops'].select{|o|o['path']==path}.reverse_each{|o|text=text.sub(links(o['after'],path),links(o['before'],path))}
+    end
     ops.select{|o|o['path']==path&&o['before'].start_with?('|')&&o['before'].lines.size==1&&o['after'].lines.size==1}.reverse_each do |o|
       text=text.sub(links(o['after'],path),links(o['before'],path))
     end
     # BM-04 增補位於表格內的一個片段，保留舊追溯的完整目的列比較。
     if steps.any?{|s|s['id']=='references'}&&path=='rules/stacks/java/common/boundary-mapping.md'
-      o=ops.last;text=text.sub(o['after'],o['before'])
+      o=steps.find{|s|s['id']=='references'}['ops'].last;text=text.sub(o['after'],o['before'])
     end
     text
   end

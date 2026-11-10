@@ -156,9 +156,12 @@ module BodyPresentation
     files,records=render_base(config)
     FinalAcceptance.active? ? FinalAcceptance.render(files,records) : [files,records]
   end
+  def self.alias_manifest
+    aliases+(ReviewNine.active? ? ReviewNine::ALIASES : [])
+  end
   def self.validate(config)
     check(config=={'start'=>START,'aliases'=>true,'layout'=>config['layout'],'index'=>config['index']}&&[true,false].include?(config['layout'])&&[true,false].include?(config['index']),'階段 C 設定或起點不符')
-    check(JSON.parse(File.read(ALIASES))==aliases,'別名清冊與核准第五節不符')
+    check(JSON.parse(File.read(ALIASES))==alias_manifest,'別名清冊與核准第五節不符')
     expected,records=render(config)
     java_records=Dir.glob('docs/body-restructuring/java/**/*',File::FNM_DOTMATCH).select{|p|File.file?(p)}
     check(java_records.sort==records.keys.sort,'階段 C Java 紀錄檔案清冊不符')
@@ -178,6 +181,9 @@ module BodyPresentation
     end
     # 每個別名同一位置相鄰，精確全文比對也禁止只留下空別名。
     aliases.each{|e|check(File.read(e['path']).include?(%(<a id="#{e['new']}"></a>\n<a id="#{e['old']}"></a>)),"別名位置不符 #{e['old']}")}
+    if ReviewNine.active?
+      ReviewNine::ALIASES.each{|e|check(File.read(e['path']).include?(%(<a id="#{e['old']}"></a>\n\n## #{e['new']})), '標題別名位置不符')}
+    end
     section=File.read('docs/pending-decisions.md').split(/^## 五、/,2).last.split(/^## 六、/,2).first
     listed=section.scan(/^\| \[([^\]]+)\]/).flatten
     check(listed.sort==aliases.map{|e|e['path'].delete_prefix('rules/')+'#'+e['old']}.sort,'第五節別名清冊不完整')
@@ -245,6 +251,16 @@ module BodyPresentation
     if FinalAcceptance.active?
       FinalAcceptance.ops.each{|o|result['manual_review_sentences']<<{'type'=>'final_acceptance_change','record'=>o}}
       result['final_acceptance']={'start'=>FinalAcceptance::START,'steps'=>FinalAcceptance.steps.map{|s|s['id']}}
+    end
+    if ReviewNine.active?
+      current=render(config).last.values.flat_map{|r|r['rules']}.to_h{|r|[r['id'],r]}
+      result['rule_dispositions'].each{|e|e['kind']=current.fetch(e['id'])['kind']}
+      result['manual_review_sentences'].reject!{|e|%w[JN-02 JN-06].include?(e['history_id'])}
+      %w[JN-02 JN-06].each do |id|
+        r=current.fetch(id)
+        result['manual_review_sentences']<<{'path'=>ReviewNine::JAVA,'type'=>'disposition','history_id'=>id,'decision'=>id=='JN-06' ? '重述' : '否','actual'=>r['kind'],'conservative'=>true,'targets'=>r['targets'],'reason'=>r['reason']}
+      end
+      result['presentation_title_aliases']=ReviewNine::ALIASES.size
     end
     result['manual_review_count']=result['manual_review_sentences'].size
     result['legacy_snapshot_local_links']=result.delete('local_links')

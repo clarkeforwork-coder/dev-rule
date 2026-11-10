@@ -425,7 +425,7 @@
       "insert": [
         "<a id=\"java-naming-form\"></a>\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 13,
@@ -450,7 +450,7 @@
         "套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。共用套件須有明確責任與依賴方向，不作為雜項收容處，也不得反向依賴使用它的業務模組。邊界須以可見性及適用檢查落實，不能只靠套件名稱。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 15,
@@ -461,9 +461,9 @@
         "7. **形式與語意分別驗收**。依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#document-verification)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。\n"
+        "本組由共通規範承接的要求：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 20,
@@ -494,7 +494,7 @@
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 34,
@@ -504,7 +504,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 36,
@@ -522,7 +522,7 @@
         "| <a id=\"acceptance-java-rename-paths\"></a>[重新命名與搬移的影響](#java-rename-impact) | 重新命名或搬移後，核對直接引用、設定、動態登錄、序列化或持久化引用及外部使用端等適用路徑。確認相容性與必要遷移已有處置，文件與範例同步更新。 |\n",
         "| <a id=\"acceptance-java-javadoc-examples\"></a>[形式與語意分別驗收](#java-document-verification) | 驗證受影響的連結、Javadoc 參照與適用範例，確認在支援版本下可用。 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     }
   ],
   "acceptance_changes": [
@@ -575,11 +575,19 @@
       "targets": [
         "rules/coding/code-design.md#implementation-notes"
       ],
-      "text": "本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。"
+      "text": "本組由共通規範承接的要求：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。"
     }
   ],
   "group_endings": [
 
   ],
-  "presentation_version": 1
+  "presentation_version": 1,
+  "final_reference_changes": [
+    {
+      "path": "rules/stacks/java/common/naming-packages-docs.md",
+      "before": "本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。\n\n",
+      "after": "本組由共通規範承接的要求：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    }
+  ]
 }

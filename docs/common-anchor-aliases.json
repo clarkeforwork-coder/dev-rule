@@ -368,5 +368,17 @@
     "path": "rules/workflow/rule-governance.md",
     "old": "au-05",
     "new": "precise-violation-baseline"
+  },
+  {
+    "path": "rules/architecture/data-mapping.md",
+    "old": "既有共同保證的落實",
+    "new": "相關共通契約",
+    "kind": "heading"
+  },
+  {
+    "path": "rules/quality/rule-verification.md",
+    "old": "語言與新增共通主題驗收入口",
+    "new": "語言與共通主題驗收入口",
+    "kind": "heading"
   }
 ]

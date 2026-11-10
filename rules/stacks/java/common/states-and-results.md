@@ -26,7 +26,7 @@
 
 ## 操作結果與使用端處理
 
-本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。
+本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)、[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)。
 
 <a id="java-typed-business-failures"></a>
 
@@ -36,7 +36,7 @@
 
 ## 外部代碼、擴充與結果資料
 
-本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。
+本組由共通規範承接的要求：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。
 
 <a id="java-stable-external-codes"></a>
 

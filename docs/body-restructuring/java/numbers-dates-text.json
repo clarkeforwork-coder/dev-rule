@@ -683,7 +683,7 @@
         "5. **BigDecimal 判同語意**。須明訂數值相等與小數位數的關係，依契約選擇比較及正規化方式。例如 `1.0` 與 `1.00` 是否視為相同，須確認小數位數是呈現格式或資料語意的一部分。專屬型別的相等、雜湊與排序須維持一致，不得讓格式差異意外改變業務判同或集合行為。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。\n"
+        "本組由共通規範承接的要求：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -730,7 +730,7 @@
         "10. **解析與輸出契約**。依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#temporal-parsing-formatting)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。\n"
+        "本組由共通規範承接的要求：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -776,7 +776,7 @@
         "14. **邊界與環境差異驗收**。依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。\n"
+        "本組由共通規範承接的要求：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -863,14 +863,14 @@
       "targets": [
         "rules/coding/numbers-dates-text.md#numeric-range-checks"
       ],
-      "text": "本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。"
+      "text": "本組由共通規範承接的要求：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。"
     },
     {
       "heading": "日期時間語意與來源",
       "targets": [
         "rules/coding/numbers-dates-text.md#timezone-conversion"
       ],
-      "text": "本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。"
+      "text": "本組由共通規範承接的要求：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。"
     },
     {
       "heading": "文字編碼、長度與比較",
@@ -878,7 +878,7 @@
         "rules/coding/numbers-dates-text.md#character-encoding",
         "rules/coding/numbers-dates-text.md#text-transformations"
       ],
-      "text": "本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。"
+      "text": "本組由共通規範承接的要求：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。"
     }
   ],
   "group_endings": [
@@ -891,6 +891,24 @@
       "before": "Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依下方表格驗收。",
       "after": "Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依[本文件驗收要求](#驗收要求)驗收。",
       "reason": "L12／七 L2 NT-14：整節含共同引用與 Java 實際路徑，不限只有兩列的表格。"
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "before": "本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。\n\n",
+      "after": "本組由共通規範承接的要求：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "before": "本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。\n\n",
+      "after": "本組由共通規範承接的要求：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "before": "本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。\n\n",
+      "after": "本組由共通規範承接的要求：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
     }
   ]
 }

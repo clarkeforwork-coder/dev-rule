@@ -32,7 +32,7 @@
 
 ## 資源所有權與失敗清理
 
-本組下列要求由共通規範承接：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。
+本組由共通規範承接的要求：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。
 
 <a id="java-resource-management"></a>
 

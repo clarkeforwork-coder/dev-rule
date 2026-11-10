@@ -6,7 +6,7 @@
 
 ## 動態能力與存取邊界
 
-本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。
+本組由共通規範承接的要求：[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)、[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)。
 
 <a id="java-dynamic-type-contract"></a>
 
@@ -44,7 +44,7 @@
 
 ### 驗證限制實際有效
 
-依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。
+依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。Java 實際反射、存取及重新產生路徑依[本文件驗收要求](#驗收要求)，不只確認警告消失或成功目標能執行。
 
 <a id="java-closing-requirements"></a>
 

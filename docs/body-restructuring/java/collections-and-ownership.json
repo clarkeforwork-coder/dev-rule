@@ -65,7 +65,7 @@
       "targets": [
         "rules/stacks/java/common/collections-and-ownership.md#java-batch-failure-state"
       ],
-      "reason": "第八次審閱 CO-08：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。"
+      "reason": "第八次審閱 CO-08：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "id": "CO-09",
@@ -490,7 +490,7 @@
         "3. **順序與重複資料**。依[順序與重複資料的共通要求](../../../coding/collections-and-ownership.md#order-and-duplicates)執行。Java 選用或轉換 List、Set、Map 時須維持約定順序、重複元素與重複鍵處理，不意外去重或覆蓋。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。\n"
+        "本組由共通規範承接的要求：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -522,7 +522,7 @@
         "5. **複合操作的原子性**。依[複合操作的原子性的共通要求](../../../coding/concurrency-and-async.md#compound-atomicity)執行。Java concurrent collection 的單一操作保證不能推導為多步驟或跨鍵操作原子性。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。\n"
+        "本組由共通規範承接的要求：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -535,7 +535,7 @@
         "9. **所有權與行為驗收**。依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#collection-verification)執行。Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。\n"
+        "本組由共通規範承接的要求：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -561,7 +561,7 @@
         "\n",
         "### 所有權與行為驗收\n",
         "\n",
-        "依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#collection-verification)執行。Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。\n",
+        "依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#collection-verification)執行。Java 集合的實際修改、遍歷、檢視及資源路徑依[本文件驗收要求](#驗收要求)，不重測標準函式庫本身。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
@@ -619,7 +619,7 @@
       "targets": [
         "rules/coding/collections-and-ownership.md#order-and-duplicates"
       ],
-      "text": "本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。"
+      "text": "本組由共通規範承接的要求：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。"
     },
     {
       "heading": "修改與併發",
@@ -627,14 +627,14 @@
         "rules/coding/collections-and-ownership.md#traversal-mutation",
         "rules/coding/concurrency-and-async.md#compound-atomicity"
       ],
-      "text": "本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。"
+      "text": "本組由共通規範承接的要求：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。"
     },
     {
       "heading": "資料規模、資源與批次結果",
       "targets": [
         "rules/quality/performance.md#bounded-accumulation"
       ],
-      "text": "本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。"
+      "text": "本組由共通規範承接的要求：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。"
     }
   ],
   "link_retention": [
@@ -656,6 +656,30 @@
       "before": "具體併發 API 與資源管理方式由後續 Java 主題展開。",
       "after": "具體併發 API 與資源管理方式分別見[併發與非同步處理](concurrency-and-async.md)與[例外與資源管理](exceptions-and-resources.md)。",
       "reason": "七／L6：主題已存在，將後續展開改為現行入口。"
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "before": "依下方驗收",
+      "after": "依[本文件驗收要求](#驗收要求)",
+      "reason": "L3／L13：統一指向完整驗收章節，含共同引用及 Java 列。"
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "before": "本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。\n\n",
+      "after": "本組由共通規範承接的要求：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "before": "本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。\n\n",
+      "after": "本組由共通規範承接的要求：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "before": "本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。\n\n",
+      "after": "本組由共通規範承接的要求：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
     }
   ]
 }

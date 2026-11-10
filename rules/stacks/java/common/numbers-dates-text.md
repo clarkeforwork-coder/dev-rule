@@ -6,7 +6,7 @@
 
 ## 數值表示與運算
 
-本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。
+本組由共通規範承接的要求：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。
 
 <a id="java-numeric-representation"></a>
 
@@ -34,7 +34,7 @@
 
 ## 日期時間語意與來源
 
-本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。
+本組由共通規範承接的要求：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。
 
 <a id="java-temporal-representation"></a>
 
@@ -62,7 +62,7 @@
 
 ## 文字編碼、長度與比較
 
-本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。
+本組由共通規範承接的要求：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。
 
 <a id="java-text-length-units"></a>
 

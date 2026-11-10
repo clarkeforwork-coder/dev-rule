@@ -26,7 +26,7 @@ Java 識別字須遵循一致的命名形式，並以業務概念與責任表達
 
 ## 契約文件與維護
 
-本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。
+本組由共通規範承接的要求：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。
 
 <a id="java-javadoc-contract"></a>
 

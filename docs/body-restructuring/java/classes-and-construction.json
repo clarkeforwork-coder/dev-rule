@@ -576,7 +576,7 @@
         "4. **建構期間的安全性**。建構期間不得讓 `this` 外洩至可能使用該物件的外部元件，也不得呼叫可被覆寫的方法。事件註冊、回呼發布與背景工作啟動等行為，須在物件建立完成且符合生命週期條件後執行，避免使用尚未完成初始化的物件。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。\n"
+        "本組由共通規範承接的要求：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -610,7 +610,7 @@
         "8. **介面的能力劃分**。依[介面的能力劃分的共通要求](../../../coding/code-design.md#interface-capabilities)執行。Java 介面不機械式拆成單一方法；同一責任的操作可共用契約，執行時授權仍須另外檢查。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。\n"
+        "本組由共通規範承接的要求：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -642,7 +642,7 @@
         "10. **契約與生命週期驗收**。依[契約與生命週期驗收的共通要求](../../../coding/resource-lifecycle.md#lifecycle-verification)執行。Java 建構、繼承、覆寫及框架代理須驗證實際路徑；單純值物件不必啟動完整框架。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。\n"
+        "本組由共通規範承接的要求：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -734,7 +734,7 @@
         "rules/coding/code-design.md#substitutability",
         "rules/coding/resource-lifecycle.md#initialization-readiness"
       ],
-      "text": "本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。"
+      "text": "本組由共通規範承接的要求：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。"
     },
     {
       "heading": "依賴、建立方式與擴充",
@@ -742,18 +742,38 @@
         "rules/coding/code-design.md#construction-entrypoints",
         "rules/coding/code-design.md#interface-capabilities"
       ],
-      "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。"
+      "text": "本組由共通規範承接的要求：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。"
     },
     {
       "heading": "共用範圍與驗證",
       "targets": [
         "rules/coding/resource-lifecycle.md#shared-lifecycle"
       ],
-      "text": "本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。"
+      "text": "本組由共通規範承接的要求：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。"
     }
   ],
   "group_endings": [
 
   ],
-  "presentation_version": 1
+  "presentation_version": 1,
+  "final_reference_changes": [
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "before": "本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。\n\n",
+      "after": "本組由共通規範承接的要求：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "before": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。\n\n",
+      "after": "本組由共通規範承接的要求：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "before": "本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。\n\n",
+      "after": "本組由共通規範承接的要求：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    }
+  ]
 }

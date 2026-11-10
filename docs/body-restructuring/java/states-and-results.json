@@ -582,7 +582,7 @@
         "6. **處理完整性**。依[處理完整性的共通要求](../../../coding/domain-modeling.md#exhaustive-result-handling)執行。Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。\n"
+        "本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)、[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -610,7 +610,7 @@
         "10. **模型驗收**。依[模型驗收的共通要求](../../../coding/domain-modeling.md#model-verification)執行。Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。\n"
+        "本組由共通規範承接的要求：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。\n"
       ],
       "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
@@ -705,17 +705,17 @@
     {
       "heading": "操作結果與使用端處理",
       "targets": [
-        "rules/coding/domain-modeling.md#exhaustive-result-handling",
-        "rules/coding/domain-modeling.md#operation-results"
+        "rules/coding/domain-modeling.md#operation-results",
+        "rules/coding/domain-modeling.md#exhaustive-result-handling"
       ],
-      "text": "本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。"
+      "text": "本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)、[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)。"
     },
     {
       "heading": "外部代碼、擴充與結果資料",
       "targets": [
         "rules/coding/domain-modeling.md#result-facts"
       ],
-      "text": "本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。"
+      "text": "本組由共通規範承接的要求：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。"
     }
   ],
   "link_retention": [
@@ -731,6 +731,18 @@
       "before": "Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依下方表格驗收，並核對實際副作用。",
       "after": "Java 狀態型別、使用端分支、`enum` 外部代碼及封閉模型依[本文件驗收要求](#驗收要求)與[處理完整性、封閉或允許擴充驗收](../../../coding/domain-modeling.md#acceptance-model-extensibility)驗收，並核對實際副作用。",
       "reason": "L12／七 L2 ST-10：共同與 Java 驗收並列，使用端分支及封閉模型精確指向共通。"
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "before": "本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。\n\n",
+      "after": "本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)、[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "before": "本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。\n\n",
+      "after": "本組由共通規範承接的要求：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
     }
   ]
 }

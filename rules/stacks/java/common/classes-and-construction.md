@@ -6,7 +6,7 @@
 
 ## 介面、繼承與建立條件
 
-本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。
+本組由共通規範承接的要求：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。
 
 <a id="java-interface-purpose"></a>
 
@@ -22,7 +22,7 @@
 
 ## 依賴、建立方式與擴充
 
-本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。
+本組由共通規範承接的要求：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。
 
 <a id="java-explicit-dependencies"></a>
 
@@ -38,7 +38,7 @@
 
 ## 共用範圍與驗證
 
-本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。
+本組由共通規範承接的要求：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。
 
 <a id="java-lifecycle-verification"></a>
 

@@ -25,7 +25,7 @@
 - 資料存取、框架設定與第三方整合以適當整合測試確認；跨模組流程也必須有適當整合驗證，不得只憑替身測試認定整體正確。
 - 工具依專案選擇，既有違規沿用漸進導入機制。
 
-介面用途的驗收見[介面用途驗收](../architecture/dependency-composition.md#acceptance-interface-purpose)。
+介面用途的驗收見[介面與抽象驗收](../architecture/dependency-composition.md#acceptance-interface-purpose)。
 
 ## 錯誤處理驗證與驗收
 
@@ -39,7 +39,7 @@
 
 多步驟與部分成功的驗收見[多步驟與部分成功驗收](../coding/error-handling.md#acceptance-partial-operation)。
 
-測試程式碼同樣遵守[型別安全要求](../coding/type-safety.md)。
+測試程式碼同樣遵守[型別安全](../coding/type-safety.md)，具體要求見[測試程式碼](#測試程式碼)。
 
 ## 補償流程驗收
 
@@ -177,7 +177,7 @@
 
 Java 的版本、型別、標準 API 與執行模型驗收集中於[Java 語言索引](../stacks/java/README.md#驗收入口)，不在共通文件重複維護各主題摘要。其他語言依其適用規範補足；共同要求的效力依[規範索引](../README.md#規範效力)。
 
-[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)、[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose)與[多步驟及部分成功](../coding/error-handling.md#acceptance-partial-operation)的驗收也由各自規則檔維護。本文件保留共同把關、架構檢查與可測試性、跨情境錯誤處理，以及補償、外部整合與事件、安全、資料庫、API、可觀測性、效能、設定、依賴及 Git 等主題的驗收。
+[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)、[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose)與[多步驟與部分成功](../coding/error-handling.md#acceptance-partial-operation)的驗收也由各自規則檔維護。其餘主題的驗收仍集中於本文件。
 
 ## 測試程式碼
 

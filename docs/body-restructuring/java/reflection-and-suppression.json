@@ -454,9 +454,9 @@
         "5. **區分故障與執行結果**。依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#dynamic-failure-classification)執行。Java 反射或動態呼叫的外層例外須保留原始原因，不能據此推定目標未執行而替換或重跑。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。\n"
+        "本組由共通規範承接的要求：[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)、[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 15,
@@ -483,7 +483,7 @@
         "依[區分故障與執行結果的共通要求](../../../coding/error-handling.md#dynamic-failure-classification)執行。Java 反射或動態呼叫的外層例外須保留原始原因。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 17,
@@ -495,7 +495,7 @@
       "insert": [
         "<a id=\"java-warning-suppression\"></a>\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 21,
@@ -517,14 +517,14 @@
         "\n",
         "### 驗證限制實際有效\n",
         "\n",
-        "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。\n",
+        "依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。Java 實際反射、存取及重新產生路徑依[本文件驗收要求](#驗收要求)，不只確認警告消失或成功目標能執行。\n",
         "\n",
         "<a id=\"java-closing-requirements\"></a>\n",
         "\n",
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 38,
@@ -534,7 +534,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 40,
@@ -546,7 +546,7 @@
         "| <a id=\"acceptance-java-reflection-boundary\"></a>[明確需求與型別契約](#java-dynamic-type-contract) | 審查動態能力的必要性、管理位置與內部型別契約。反射與動態呼叫均須納入，確認對內提供明確型別契約，動態名稱及未知物件沒有散入業務流程。 |\n",
         "| <a id=\"acceptance-java-reflective-access\"></a>[維持封裝與不變條件](#java-reflective-encapsulation) | 核對特殊存取的核准範圍，以及建立與還原不會繞過必要驗證或產出無效物件。對反射與動態能力核對特殊存取的必要性及受支援替代方式，經實際建立及還原路徑確認維持不變條件及封裝；例如私有欄位寫入或存取放寬亦不得繞過上述保證。 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     }
   ],
   "acceptance_changes": [
@@ -579,10 +579,10 @@
     {
       "heading": "動態能力與存取邊界",
       "targets": [
-        "rules/coding/type-safety.md#dynamic-contract-validation",
-        "rules/quality/security.md#dynamic-target-authorization"
+        "rules/quality/security.md#dynamic-target-authorization",
+        "rules/coding/type-safety.md#dynamic-contract-validation"
       ],
-      "text": "本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。"
+      "text": "本組由共通規範承接的要求：[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)、[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)。"
     }
   ],
   "link_retention": [
@@ -591,5 +591,19 @@
   "group_endings": [
 
   ],
-  "presentation_version": 1
+  "presentation_version": 1,
+  "final_reference_changes": [
+    {
+      "path": "rules/stacks/java/common/reflection-and-suppression.md",
+      "before": "依下方驗收",
+      "after": "依[本文件驗收要求](#驗收要求)",
+      "reason": "L3／L13：統一指向完整驗收章節，含共同引用及 Java 列。"
+    },
+    {
+      "path": "rules/stacks/java/common/reflection-and-suppression.md",
+      "before": "本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。\n\n",
+      "after": "本組由共通規範承接的要求：[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)、[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    }
+  ]
 }

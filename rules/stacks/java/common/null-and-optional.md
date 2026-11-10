@@ -16,7 +16,7 @@
 
 ### Optional 本身非空
 
-宣告使用 `Optional` 的位置，`Optional` 本身不得為 `null`。空的 `Optional` 只能表示契約允許的正常缺值；業務失敗、技術故障及尚未確認結果的處置依[失敗分類](../../../coding/error-handling.md#失敗分類與表達)及[結果未知](../../../coding/error-handling.md#結果未知)。
+宣告使用 `Optional` 的位置，`Optional` 本身不得為 `null`。空的 `Optional` 只能表示契約允許的正常缺值，不得掩蓋業務失敗、技術故障或尚未確認的結果。
 
 <a id="java-optional-access"></a>
 
@@ -32,13 +32,17 @@
 
 ## 空值限制與整合責任
 
-本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[狀態建模](../../../coding/domain-modeling.md#狀態建模)、[程式缺陷與不變條件](../../../coding/error-handling.md#程式缺陷與不變條件)、[責任分工](../../../coding/validation.md#責任分工)。
-
 <a id="java-container-nulls"></a>
 
 ### 集合內容的空值
 
 集合與陣列元素，以及映射的鍵和值，預設不得為 `null`。必要缺值須明訂語意與處理方式，優先以明確型別表達。外部資料含有不允許的 `null` 時，須在邊界拒絕或依契約處理，不得默默移除或替換而掩蓋不合法資料。
+
+<a id="java-nonnull-validation"></a>
+
+### 非空驗證的位置
+
+依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。
 
 <a id="java-null-contract-tools"></a>
 
@@ -99,6 +103,6 @@ Java 的 `Optional` 與內部 `null` 在 API 邊界轉換，依[API 邊界的缺
 | <a id="acceptance-java-optional-positions"></a>[使用位置](#java-optional-positions)、[集合空值](#java-container-nulls) | 審查參數與欄位採用 `Optional` 的必要性及配套。需要多狀態時分別驗證未提供、清空與設定值；集合等輸入含不允許的空值時，確認依契約處理，沒有默默丟棄或替換資料。 |
 | <a id="acceptance-java-null-contract"></a>[驗證責任](../../../coding/validation.md#責任分工)、[工具契約](#java-null-contract-tools)、[非空預設](#java-nonnull-default) | 核對非空預設、可空標註、檢查範圍及實際驗證位置。確認適用工具能偵測違反契約的使用方式；必填外部輸入缺值時依契約拒絕，且未產生不應發生的副作用。 |
 | <a id="acceptance-java-optional-adaptation"></a>[第三方轉換](#java-third-party-optional) | 檢查第三方回傳值轉成 `Optional` 的路徑，只有契約允許的正常缺值才能使用空的 `Optional`。 |
-| <a id="acceptance-java-optional-coverage"></a>覆蓋要求（原驗收入口） | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。Optional、非空標註與實際 API 路徑均納入適用案例。 |
+| <a id="acceptance-java-optional-coverage"></a>案例覆蓋 | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。Optional、非空標註與實際 API 路徑均納入適用案例。 |
 
 既有程式碼、工具限制與個別例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。

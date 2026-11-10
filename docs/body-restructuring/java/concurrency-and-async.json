@@ -572,9 +572,9 @@
         "3. **可見性與共享資料**。跨執行緒資料須透過具備可見性保證的方式交付，優先使用不可變資料或符合契約的隔離快照。需要共享可變狀態時，須明訂同步與原子性範圍，不得以單一 `volatile` 欄位或偶然成功的執行結果推定整個物件安全。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)、[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)。\n"
+        "本組由共通規範承接的要求：[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)、[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 13,
@@ -595,7 +595,7 @@
         "跨執行緒資料須透過具備可見性保證的方式交付，優先使用不可變資料或符合契約的隔離快照。需要共享可變狀態時，須明訂同步與原子性範圍，不得以單一 `volatile` 欄位或偶然成功的執行結果推定整個物件安全。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 15,
@@ -606,9 +606,9 @@
         "7. **多工作組合的完成條件**。依[多工作組合的完成條件的共通要求](../../../coding/concurrency-and-async.md#task-completion-contract)執行。Java 多工作組合須驗證完成順序及剩餘任務處置，第一個完成不等於第一個成功。\n"
       ],
       "insert": [
-        "本組下列要求由共通規範承接：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。\n"
+        "本組由共通規範承接的要求：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 20,
@@ -635,7 +635,7 @@
         "依[多工作組合的完成條件的共通要求](../../../coding/concurrency-and-async.md#task-completion-contract)執行。Java 多工作組合須驗證完成順序及剩餘任務處置，第一個完成不等於第一個成功。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 22,
@@ -647,7 +647,7 @@
       "insert": [
         "<a id=\"java-execution-location\"></a>\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 26,
@@ -672,7 +672,7 @@
         "依[鎖定範圍與取得策略的共通要求](../../../coding/concurrency-and-async.md#lock-scope)執行。Java 同步與鎖的實作須涵蓋全部退出路徑，必要檢查不能為縮短持鎖而移出原子範圍。\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 28,
@@ -683,7 +683,7 @@
       "insert": [
         "<a id=\"java-controlled-shutdown\"></a>\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 31,
@@ -706,7 +706,7 @@
         "## 補充要求\n",
         "\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 47,
@@ -716,7 +716,7 @@
       "insert": [
         "- [結果接收與故障處置](../../../coding/concurrency-and-async.md#acceptance-result-reception)。\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 50,
@@ -726,7 +726,7 @@
       "insert": [
         "| 對應要求 | 語言增量驗收 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     },
     {
       "baseline_line": 52,
@@ -738,7 +738,7 @@
         "| <a id=\"acceptance-java-visibility\"></a>[可見性與共享資料](#java-visibility-sharing) | 審查 Java 跨執行緒資料交付的可見性保證、共享資料的同步範圍及適用的鎖定方式；以受控交錯核對不變條件與共享狀態，不能只以單一 `volatile` 欄位或偶然成功推定整個物件安全。 |\n",
         "| <a id=\"acceptance-java-task-results\"></a>[結果接收與故障處置](#java-result-reception) | 沿 Java `Future`／`CompletableFuture` 的實際接收及結果鏈路徑觸發成功、失敗與取消，核對故障可追查、原始原因與分類保留，且未以替代值把失敗變成成功。 |\n"
       ],
-      "reason": "階段 C 僅正規化共通錨點、重生指路文字並移回分組尾段；條文與驗收句子逐字保留。"
+      "reason": "階段 C 核准連結與版面轉換，以及 final_reference_changes 明列的指代修正；未放寬其他正文。"
     }
   ],
   "acceptance_changes": [
@@ -771,17 +771,17 @@
     {
       "heading": "工作所有權與執行資源",
       "targets": [
-        "rules/coding/concurrency-and-async.md#async-result-reception",
-        "rules/coding/concurrency-and-async.md#task-ownership"
+        "rules/coding/concurrency-and-async.md#task-ownership",
+        "rules/coding/concurrency-and-async.md#async-result-reception"
       ],
-      "text": "本組下列要求由共通規範承接：[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)、[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)。"
+      "text": "本組由共通規範承接的要求：[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)、[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)。"
     },
     {
       "heading": "期限、取消與結果",
       "targets": [
         "rules/coding/concurrency-and-async.md#deadline-budget"
       ],
-      "text": "本組下列要求由共通規範承接：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。"
+      "text": "本組由共通規範承接的要求：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。"
     }
   ],
   "link_retention": [
@@ -790,5 +790,19 @@
   "group_endings": [
 
   ],
-  "presentation_version": 1
+  "presentation_version": 1,
+  "final_reference_changes": [
+    {
+      "path": "rules/stacks/java/common/concurrency-and-async.md",
+      "before": "本組下列要求由共通規範承接：[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)、[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)。\n\n",
+      "after": "本組由共通規範承接的要求：[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)、[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    },
+    {
+      "path": "rules/stacks/java/common/concurrency-and-async.md",
+      "before": "本組下列要求由共通規範承接：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。\n\n",
+      "after": "本組由共通規範承接的要求：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。\n\n",
+      "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+    }
+  ]
 }

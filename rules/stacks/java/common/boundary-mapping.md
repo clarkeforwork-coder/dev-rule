@@ -6,7 +6,7 @@
 
 ## 契約與映射責任
 
-本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。
+本組由共通規範承接的要求：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。
 
 <a id="java-mapping-fields"></a>
 

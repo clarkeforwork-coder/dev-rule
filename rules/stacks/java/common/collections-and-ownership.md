@@ -6,7 +6,7 @@
 
 ## 所有權與集合語意
 
-本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。
+本組由共通規範承接的要求：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。
 
 <a id="java-collection-ownership"></a>
 
@@ -22,11 +22,11 @@
 
 ## 修改與併發
 
-本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。
+本組由共通規範承接的要求：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。
 
 ## 資料規模、資源與批次結果
 
-本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。
+本組由共通規範承接的要求：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。
 
 <a id="java-lazy-resource-lifetime"></a>
 
@@ -44,7 +44,7 @@
 
 ### 所有權與行為驗收
 
-依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#collection-verification)執行。Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。
+依[所有權與行為驗收的共通要求](../../../coding/collections-and-ownership.md#collection-verification)執行。Java 集合的實際修改、遍歷、檢視及資源路徑依[本文件驗收要求](#驗收要求)，不重測標準函式庫本身。
 
 <a id="java-closing-requirements"></a>
 

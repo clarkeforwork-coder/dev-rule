@@ -32,6 +32,7 @@ b=rows(before);a=rows(actual);e=rows(expected)
 errors<<'驗收錨點清冊不同' unless b.keys.sort==a.keys.sort
 allowed=%w[acceptance-task-ownership acceptance-result-reception acceptance-failure-state acceptance-partial-operation acceptance-java-mapping-failure]
 changed=[];moved=[]
+allowed<<'acceptance-java-optional-coverage' if ReviewNine.active?
 b.each do |id,x|
  next unless a[id]
  moved<<{'anchor'=>id,'from'=>x['path'],'to'=>a[id]['path']} if x['path']!=a[id]['path']
