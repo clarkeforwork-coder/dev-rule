@@ -69,8 +69,8 @@ class OrderTotalUtils {
 **違反**
 
 ```java
-// 訂單套件入口 Snippet 將內部儲存實作也公開，外部可直接依賴它。
-public final class Snippet {
+// 訂單套件入口 OrderService 將內部儲存實作也公開，外部可直接依賴它。
+public final class OrderService {
     public static final class OrderStorage {
         private final Map<String, Integer> amounts = new HashMap<>();
         public void save(String orderId, int amount) { amounts.put(orderId, amount); }
@@ -83,8 +83,8 @@ public final class Snippet {
 **符合**
 
 ```java
-// 訂單套件只公開入口 Snippet，內部儲存實作以套件可見性限制使用。
-public final class Snippet {
+// 訂單套件只公開入口 OrderService，內部儲存實作以套件可見性限制使用。
+public final class OrderService {
     static final class OrderStorage {
         private final Map<String, Integer> amounts = new HashMap<>();
         public void save(String orderId, int amount) { amounts.put(orderId, amount); }
