@@ -32,7 +32,7 @@
 
 <a id="java-group-notes-version-declarations"></a>
 
-### 本組補充說明
+### 版本宣告與相容性補充說明
 
 例如，建置 JDK 與部署環境使用 Java 21，而產物承諾相容 Java 17 時，編譯須維持 Java 17 的語言、API 及位元碼限制，並有 Java 17 與實際部署環境的驗證依據。
 
@@ -42,7 +42,7 @@
 
 ### 依賴版本要求
 
-新增或升級依賴時，須核對直接與間接依賴的 Java 版本要求。若超出專案承諾的執行範圍，須先決定保留相容版本、替換依賴或安排專案升級，完成相容性處置後才能採用。[第三方套件與依賴管理](../../../workflow/dependencies.md)
+新增或升級依賴時，須核對直接與間接依賴的 Java 版本要求。若超出專案承諾的執行範圍，須先決定保留相容版本、替換依賴或安排專案升級，完成相容性處置後才能採用。[第三方套件與依賴管理](../../../workflow/dependencies.md#建置與變更)
 
 <a id="java-build-upgrade"></a>
 
@@ -70,7 +70,7 @@
 
 <a id="java-group-notes-dependency-versions"></a>
 
-### 本組補充說明
+### 依賴、升級與特殊功能補充說明
 
 Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rule-governance.md#例外核准)管理。既有程式碼依相同文件的漸進導入要求處理。
 
@@ -96,7 +96,7 @@ Java 版本變更須評估參與編譯、測試、分析及產物處理的工具
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級、證據與執行門檻依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)制定。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級、證據與執行門檻依[共通測試策略](../../../quality/testing.md#執行門檻與驗收)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)制定。
 
 ### 共同驗收
 
@@ -114,4 +114,4 @@ Java 版本變更須評估參與編譯、測試、分析及產物處理的工具
 | <a id="acceptance-java-toolchain-compatibility"></a>[建置與驗證工具相容性](#java-toolchain-compatibility)、[JDK 發行商與完整版本](#java-jdk-distribution) | Java 環境或工具變更後，核對必要測試與分析確實執行，避免將被略過的檢查計為通過。確認產生碼與產物仍相容，並保留發行商及完整版本變更的驗證結果。 |
 | <a id="acceptance-java-artifact-runtime"></a>[產物與執行環境追溯](#java-artifact-traceability) | 從指定發布產物查回建置環境、編譯目標、依賴與驗證紀錄，再核對部署環境中的實際產物及 Java 環境。 |
 
-無法取得某個承諾版本的執行結果時，須列為尚未驗證，明示缺少的環境或證據。審查與合併條件依[Git、PR 與程式碼審查](../../../workflow/git-pr-review.md)處理。
+無法取得某個承諾版本的執行結果時，須列為尚未驗證，明示缺少的環境或證據。審查與合併條件依[Git、PR 與程式碼審查](../../../workflow/git-pr-review.md#合併條件與分支保護)處理。
