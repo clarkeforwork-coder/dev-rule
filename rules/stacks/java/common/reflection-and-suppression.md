@@ -6,19 +6,29 @@
 
 ## 動態能力與存取邊界
 
-本組由共通規範承接的要求：[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)、[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)。
-
 <a id="java-dynamic-type-contract"></a>
 
 ### 明確需求與型別契約
 
 反射與動態呼叫須有明確需求，已知的業務能力優先透過靜態型別契約表達。必要動態能力須集中於責任明確的元件，限制影響範圍並提供具型別的內部契約，不得藉此繞過型別安全要求。框架整合、外掛或通用工具的動態名稱與未知物件不得任意散入業務流程。
 
+<a id="java-dynamic-target-authorization"></a>
+
+### 受控目標與授權
+
+依[受控目標與授權的共通要求](../../../quality/security.md#dynamic-target-authorization)執行。Java 類別、方法及建構子的動態目標須受控，不因型別符合就略過授權。
+
 <a id="java-reflective-encapsulation"></a>
 
 ### 維持封裝與不變條件
 
 反射與動態能力不得繞過可見性設計、建立驗證或業務不變條件。需要特殊存取時，優先採用受支援的整合方式；必要的存取放寬須個別核准並驗證影響，不得以框架、映射或測試用途自行豁免。例如不能以直接寫入私有欄位避開正式建立規則。
+
+<a id="java-dynamic-contract-validation"></a>
+
+### 使用前驗證契約
+
+依[使用前驗證契約的共通要求](../../../coding/type-safety.md#dynamic-contract-validation)執行。Java 動態元件須驗證能力、版本及型別，不只確認名稱存在，也不靠未驗證轉型掩蓋不相容。
 
 <a id="java-reflection-failure"></a>
 
@@ -50,11 +60,11 @@
 
 ## 補充要求
 
-目標與操作權限另依[安全規範](../../../quality/security.md)，動態呼叫的失敗傳遞依[例外與資源管理](exceptions-and-resources.md)。建立與還原仍須遵守[類別、介面與物件建立](classes-and-construction.md)及[值物件規範](value-objects.md)。
+目標與操作權限另依[安全規範](../../../quality/security.md#dynamic-target-authorization)，動態呼叫的失敗傳遞依[例外與資源管理](exceptions-and-resources.md)。建立與還原仍須遵守[類別、介面與物件建立](classes-and-construction.md)及[值物件規範](value-objects.md)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#evidence-version-validity)。
 
 ### 共同驗收
 
