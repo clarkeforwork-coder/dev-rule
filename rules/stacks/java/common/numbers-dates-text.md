@@ -12,11 +12,49 @@
 
 依[依語意選擇數值型別的共通要求](../../../coding/numbers-dates-text.md#numeric-representation)執行。Java 精確十進位語意使用 `BigDecimal` 或契約允許的最小單位整數，不以二進位浮點數作精確表示。
 
+**違反**
+
+```java
+// 契約要求精確十進位，卻以二進位浮點數表示。
+record Amount(double value) {}
+```
+
+**符合**
+
+```java
+// 契約要求精確十進位，使用 BigDecimal 表示。
+record Amount(BigDecimal value) {}
+```
+
 <a id="java-exact-numeric-sources"></a>
 
 ### 從精確來源建立
 
 依[從精確來源建立的共通要求](../../../coding/numbers-dates-text.md#exact-numeric-sources)執行。Java 精確值不可先轉浮點數再轉 `BigDecimal` 期待還原；直接從契約允許的精確來源建立後仍須驗證業務限制。
+
+**違反**
+
+```java
+// 契約允許非負整數文字，卻先轉浮點數而遺失精度。
+class AmountParser {
+    static BigDecimal parse(String text) {
+        if (!text.matches("[0-9]+")) throw new IllegalArgumentException();
+        return new BigDecimal(Double.parseDouble(text));
+    }
+}
+```
+
+**符合**
+
+```java
+// 直接從精確文字建立，並驗證契約要求的非負整數格式。
+class AmountParser {
+    static BigDecimal parse(String text) {
+        if (!text.matches("[0-9]+")) throw new IllegalArgumentException();
+        return new BigDecimal(text);
+    }
+}
+```
 
 <a id="java-rounding-policy"></a>
 
@@ -24,17 +62,87 @@
 
 依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#rounding-policy)執行。Java 數值運算依契約指定精度、捨入模式及時機，不能讓 API 預設或各呼叫端自行決定。
 
+**違反**
+
+```java
+// 示例契約要求除法當下保留兩位並四捨五入，卻讓呼叫端決定。
+class Ratio {
+    static BigDecimal calculate(BigDecimal a, BigDecimal b,
+                                int scale, RoundingMode mode) {
+        return a.divide(b, scale, mode);
+    }
+}
+```
+
+**符合**
+
+```java
+// 由負責元件統一落實示例契約的捨入時機、小數位數與模式。
+class Ratio {
+    static BigDecimal calculate(BigDecimal a, BigDecimal b) {
+        return a.divide(b, 2, RoundingMode.HALF_UP);
+    }
+}
+```
+
 <a id="java-numeric-range-checks"></a>
 
 ### 範圍與轉換檢查
 
 依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#numeric-range-checks)執行。Java 縮窄轉型、整數溢位回繞與小數捨棄須明確檢查，不能用強制轉型掩蓋超限。
 
+**違反**
+
+```java
+// 縮窄轉型會默默截去超出 int 範圍的高位元。
+class Counter {
+    static int narrow(long value) {
+        return (int) value;
+    }
+}
+```
+
+**符合**
+
+```java
+// 縮窄轉換時明確檢查 int 範圍，超限即回報。
+class Counter {
+    static int narrow(long value) {
+        return Math.toIntExact(value);
+    }
+}
+```
+
 <a id="java-decimal-equivalence"></a>
 
 ### BigDecimal 判同語意
 
 須明訂數值相等與小數位數的關係，依契約選擇比較及正規化方式。例如 `1.0` 與 `1.00` 是否視為相同，須確認小數位數是呈現格式或資料語意的一部分。專屬型別的相等、雜湊與排序須維持一致，不得讓格式差異意外改變業務判同或集合行為。
+
+**違反**
+
+```java
+// 示例契約視 1.0 與 1.00 相同，預設判同卻受小數位數影響。
+record DecimalValue(BigDecimal value) implements Comparable<DecimalValue> {
+    public int compareTo(DecimalValue other) {
+        return value.compareTo(other.value);
+    }
+}
+```
+
+**符合**
+
+```java
+// 依數值判同契約統一正規化，使相等、雜湊與排序一致。
+record DecimalValue(BigDecimal value) implements Comparable<DecimalValue> {
+    DecimalValue {
+        value = value.stripTrailingZeros();
+    }
+    public int compareTo(DecimalValue other) {
+        return value.compareTo(other.value);
+    }
+}
+```
 
 ## 日期時間語意與來源
 
@@ -46,11 +154,47 @@
 
 依[依業務語意選擇時間型別的共通要求](../../../coding/numbers-dates-text.md#temporal-representation)執行。Java 優先使用 `java.time`：日期可用 `LocalDate`，確切時點可用 `Instant`；不得以 `LocalDateTime` 冒充唯一時點，必要時保留時區或偏移。
 
+**違反**
+
+```java
+// 事件需要唯一時點，卻使用沒有時區或偏移的 LocalDateTime。
+record Event(LocalDateTime occurredAt) {}
+```
+
+**符合**
+
+```java
+// 事件以 Instant 表示唯一時點。
+record Event(Instant occurredAt) {}
+```
+
 <a id="java-durations-calendar-periods"></a>
 
 ### 區分時間長度與日曆規則
 
 依[區分時間長度與日曆規則的共通要求](../../../coding/numbers-dates-text.md#durations-and-calendar-periods)執行。Java 按語意使用 `Duration`、`Period` 或業務計算，不假設一般日曆間隔包含營業日規則。
+
+**違反**
+
+```java
+// 示例契約為下一個日曆日的同一當地時間，卻固定加上二十四小時。
+class Schedule {
+    static ZonedDateTime next(ZonedDateTime start) {
+        return start.plus(Duration.ofHours(24));
+    }
+}
+```
+
+**符合**
+
+```java
+// 示例契約為下一個日曆日，並接受時區缺口前移、重疊優先沿用原偏移。
+class Schedule {
+    static ZonedDateTime next(ZonedDateTime start) {
+        return start.plus(Period.ofDays(1));
+    }
+}
+```
 
 <a id="java-clock-source"></a>
 
@@ -58,11 +202,59 @@
 
 依[可控制的時間基準的共通要求](../../../coding/numbers-dates-text.md#time-source)執行。Java 業務目前時間優先由明確提供的 `Clock` 取得；耗時及等待期限使用適合的單調時間來源。
 
+**違反**
+
+```java
+// 業務目前時間直接讀取系統時鐘，無法由外部控制。
+class Expiry {
+    static boolean expired(Instant deadline) {
+        return !Instant.now().isBefore(deadline);
+    }
+}
+```
+
+**符合**
+
+```java
+// 業務目前時間由明確提供的 Clock 取得。
+class Expiry {
+    static boolean expired(Instant deadline, Clock clock) {
+        return !Instant.now(clock).isBefore(deadline);
+    }
+}
+```
+
 <a id="java-temporal-parsing-formatting"></a>
 
 ### 解析與輸出契約
 
 依[解析與輸出契約的共通要求](../../../coding/numbers-dates-text.md#temporal-parsing-formatting)執行。Java 解析及格式化須明訂格式、地區、時區／偏移及精度，不允許寬鬆修正非法日期或只解析前段。
+
+**違反**
+
+```java
+// 示例契約只接受合法 ISO 日期，SMART 模式卻會修正非法月底日期。
+class DateParser {
+    static LocalDate parse(String text) {
+        var format = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.ROOT)
+                .withResolverStyle(ResolverStyle.SMART);
+        return LocalDate.parse(text, format);
+    }
+}
+```
+
+**符合**
+
+```java
+// 示例契約為不含時區的 ISO 日期，嚴格解析完整輸入並拒絕非法日期。
+class DateParser {
+    static LocalDate parse(String text) {
+        var format = DateTimeFormatter.ofPattern("uuuu-MM-dd", Locale.ROOT)
+                .withResolverStyle(ResolverStyle.STRICT);
+        return LocalDate.parse(text, format);
+    }
+}
+```
 
 ## 文字編碼、長度與比較
 
@@ -73,6 +265,28 @@
 ### 長度與截取單位
 
 依[長度與截取單位的共通要求](../../../coding/numbers-dates-text.md#text-length-units)執行。Java `String.length()` 計算 UTF-16 單位，不是通用字數；截取不能切斷代理對或契約要求保留的字元組合。
+
+**違反**
+
+```java
+// 示例契約保留第一個 Unicode 碼點，截取一個 UTF-16 單位可能切斷代理對。
+class TextPrefix {
+    static String first(String text) {
+        return text.isEmpty() ? text : text.substring(0, 1);
+    }
+}
+```
+
+**符合**
+
+```java
+// 依示例契約以 Unicode 碼點截取，保留完整代理對。
+class TextPrefix {
+    static String first(String text) {
+        return text.isEmpty() ? text : text.substring(0, text.offsetByCodePoints(0, 1));
+    }
+}
+```
 
 <a id="java-boundary-verification"></a>
 
