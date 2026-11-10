@@ -16,23 +16,29 @@
 
 ### 各狀態的必要資料
 
-依[領域建模](../../../coding/domain-modeling.md)執行。Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。
+依[領域建模](../../../coding/domain-modeling.md#狀態建模)執行。Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。
 
 <a id="java-business-state-transitions"></a>
 
 ### 業務操作控制轉換
 
-依[領域建模](../../../coding/domain-modeling.md)執行。Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。
+依[領域建模](../../../coding/domain-modeling.md#狀態建模)執行。Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。
 
 ## 操作結果與使用端處理
 
-本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)、[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)。
+本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。
 
 <a id="java-typed-business-failures"></a>
 
 ### 具型別的業務失敗
 
-依[錯誤處理](../../../coding/error-handling.md)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。
+依[錯誤處理](../../../coding/error-handling.md#失敗分類與表達)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。
+
+<a id="java-exhaustive-result-handling"></a>
+
+### 處理完整性
+
+依[處理完整性的共通要求](../../../coding/domain-modeling.md#exhaustive-result-handling)執行。Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。
 
 ## 外部代碼、擴充與結果資料
 
@@ -60,11 +66,11 @@
 
 ## 補充要求
 
-對外結果與完成程度另依[API 操作語意](../../../interfaces/api-contracts.md)及[事件可靠性](../../../interfaces/events.md)；代碼與資料格式變更依[資料契約](../../../interfaces/data-contracts.md)及[資料遷移](../../../data/migrations.md)。不可變資料的保護方式另見[專屬值型別與領域值物件](value-objects.md)。
+對外結果與完成程度另依[API 操作語意](../../../interfaces/api-contracts.md#操作範圍與成功保證)及[事件可靠性](../../../interfaces/events.md)；代碼與資料格式變更依[資料契約](../../../interfaces/data-contracts.md#相容性與變更)及[資料遷移](../../../data/migrations.md#新舊版本相容)。不可變資料的保護方式另見[專屬值型別與領域值物件](value-objects.md)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的模型與呼叫端選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的模型與呼叫端選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
