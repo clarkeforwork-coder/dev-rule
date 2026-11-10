@@ -6,8 +6,6 @@
 
 ## 數值表示與運算
 
-本組由共通規範承接的要求：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。
-
 <a id="java-numeric-representation"></a>
 
 ### 依語意選擇數值型別
@@ -25,6 +23,12 @@
 ### 明訂捨入規則
 
 依[明訂捨入規則的共通要求](../../../coding/numbers-dates-text.md#rounding-policy)執行。Java 數值運算依契約指定精度、捨入模式及時機，不能讓 API 預設或各呼叫端自行決定。
+
+<a id="java-numeric-range-checks"></a>
+
+### 範圍與轉換檢查
+
+依[範圍與轉換檢查的共通要求](../../../coding/numbers-dates-text.md#numeric-range-checks)執行。Java 縮窄轉型、整數溢位回繞與小數捨棄須明確檢查，不能用強制轉型掩蓋超限。
 
 <a id="java-decimal-equivalence"></a>
 
@@ -84,7 +88,7 @@
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響契約選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
