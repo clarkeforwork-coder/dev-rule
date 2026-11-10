@@ -12,7 +12,7 @@
 
 ### 明確控制欄位及來源
 
-依[資料映射](../../../architecture/data-mapping.md)、[API 操作語意與介面設計](../../../interfaces/api-contracts.md)、[安全](../../../quality/security.md)執行。Java 映射工具不得因同名或來源新增欄位而擴大傳遞範圍；租戶與建立者等可信欄位仍依伺服器契約取得。
+依[資料映射](../../../architecture/data-mapping.md#轉換要求)、[API 操作語意與介面設計](../../../interfaces/api-contracts.md#身分與系統管理欄位)、[安全](../../../quality/security.md#授權與資料範圍)執行。Java 映射工具不得因同名或來源新增欄位而擴大傳遞範圍；租戶與建立者等可信欄位仍依伺服器契約取得。
 
 ## 轉換完整性與隔離
 
@@ -20,7 +20,7 @@
 
 ### 失敗明確回報
 
-依[錯誤處理](../../../coding/error-handling.md)、[資料驗證](../../../coding/validation.md)、[資料映射](../../../architecture/data-mapping.md)執行。依[Java 實際映射路徑驗收](#acceptance-java-mapping-failure)與[多步驟及部分成功驗收](../../../coding/error-handling.md#acceptance-partial-operation)驗收拒絕、缺陷與部分成功，不以建立了目標型別就視為有效。不得略過欄位或產生不完整物件掩蓋失敗。
+依[錯誤處理](../../../coding/error-handling.md#失敗分類與表達)、[資料驗證](../../../coding/validation.md#責任分工)、[資料映射](../../../architecture/data-mapping.md#mapping-path-verification)執行。依[Java 實際映射路徑驗收](#acceptance-java-mapping-failure)與[多步驟及部分成功驗收](../../../coding/error-handling.md#acceptance-partial-operation)驗收拒絕、缺陷與部分成功，不以建立了目標型別就視為有效。不得略過欄位或產生不完整物件掩蓋失敗。
 
 <a id="java-update-intent"></a>
 
@@ -30,9 +30,9 @@
 
 <a id="java-mutable-isolation"></a>
 
-### 可變參考隔離
+### Java 集合與可變元素的隔離
 
-依[邊界物件](../../../architecture/boundary-objects.md)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。Java 複製集合外層不一定隔離可變元素；符合契約的不可變值可共用，不要求全面深層複製。
+依[邊界物件](../../../architecture/boundary-objects.md#不可變性)、[程式碼設計與公開介面](../../../coding/code-design.md#可見性與狀態所有權)執行。Java 複製集合外層不一定隔離可變元素；符合契約的不可變值可共用，不要求全面深層複製。
 
 <a id="java-directional-mapping"></a>
 
@@ -46,7 +46,7 @@
 
 ### 明確維護責任
 
-依[資料映射](../../../architecture/data-mapping.md)、[共用能力](../../../architecture/shared-capabilities.md)、[框架與依賴組裝](../../../architecture/dependency-composition.md)執行。Java 簡單映射可使用方法，有實際責任或共用需求才建立專責類別，不強制 Mapper 介面或包裝層。
+依[資料映射](../../../architecture/data-mapping.md#責任配置)、[共用能力](../../../architecture/shared-capabilities.md#共用程式碼)、[框架與依賴組裝](../../../architecture/dependency-composition.md#介面與抽象)執行。Java 簡單映射可使用方法，有實際責任或共用需求才建立專責類別，不強制 Mapper 介面或包裝層。
 
 <a id="java-mapping-verification"></a>
 
@@ -58,11 +58,11 @@
 
 ## 補充要求
 
-型別與缺值處理另依[型別宣告與泛型](types-and-generics.md)及[null 與 Optional](null-and-optional.md)；專屬型別的建立與還原依[值物件規範](value-objects.md)。失敗分類依[錯誤處理](../../../coding/error-handling.md)，可信欄位與資料揭露依[安全規範](../../../quality/security.md)。
+型別與缺值處理另依[型別宣告與泛型](types-and-generics.md)及[null 與 Optional](null-and-optional.md)；專屬型別的建立與還原依[值物件規範](value-objects.md)。失敗分類依[錯誤處理](../../../coding/error-handling.md#失敗分類與表達)，可信欄位與資料揭露依[安全規範](../../../quality/security.md#授權與資料範圍)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響與實際邊界選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響與實際邊界選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
@@ -82,4 +82,4 @@
 | <a id="acceptance-java-mapping-failure"></a>[失敗明確回報](#java-mapping-integrity) | 透過 Java 實際映射路徑輸入不合法資料、內部必要資料缺失與轉換失敗，確認沒有以預設值或半成品掩蓋問題，且未略過欄位或產生不完整物件掩蓋失敗。 |
 | <a id="acceptance-java-update-intent"></a>[保留更新意圖](#java-update-intent) | 核對 Java 欄位、預設值與反序列化路徑未合併省略、明確清空及設定值的不同意圖。 |
 
-既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行降低型別安全與邊界要求。
+既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md#例外核准)處理，不自行降低型別安全與邊界要求。
