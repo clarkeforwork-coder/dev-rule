@@ -10,7 +10,7 @@
 
 ### 意圖與可讀性優先
 
-依[程式碼設計與公開介面](../../../coding/code-design.md)、[命名與可讀性](../../../coding/naming.md)執行。Java Lambda／Stream 不強制取代迴圈；複雜或獨立責任採具名方法或清楚流程，不要求每個 Lambda 都抽方法。
+依[程式碼設計與公開介面](../../../coding/code-design.md#函式責任與參數)、[命名與可讀性](../../../coding/naming.md#操作與判斷)執行。Java Lambda／Stream 不強制取代迴圈；複雜或獨立責任採具名方法或清楚流程，不要求每個 Lambda 都抽方法。
 
 <a id="java-lambda-parameter-types"></a>
 
@@ -83,11 +83,11 @@ orders.stream().filter(Order::isCancellable);
 
 上述片段僅示範篩選條件的表達，尚未消費結果，不代表已完成驗證或執行取消操作。
 
-數值歸約涉及精度與捨入時依[數值、日期時間與文字處理](numbers-dates-text.md)；平行處理的量測依[效能與資源使用](../../../quality/performance.md)。
+數值歸約涉及精度與捨入時依[數值、日期時間與文字處理](numbers-dates-text.md)；平行處理的量測依[效能與資源使用](../../../quality/performance.md#效能承諾與量測)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
@@ -107,4 +107,4 @@ orders.stream().filter(Order::isCancellable);
 | <a id="acceptance-java-stream-consumption"></a>[明確消費範圍](#java-stream-consumption) | 核對 Stream 的建立與消費路徑，沒有重用或共用消費；重複取得資料時依契約驗證快照或最新資料語意。 |
 | <a id="acceptance-java-stream-coverage"></a>[執行語意驗收](#java-execution-verification) | 確認案例涵蓋受影響的執行語意與資源保證，平行處理有額外隔離及效能證據，不僅比對一般成功案例的最終元素內容。 |
 
-既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md)處理，不自行放寬要求。
+既有程式碼、工具限制與必要例外依[規範治理](../../../workflow/rule-governance.md#例外核准)處理，不自行放寬要求。
