@@ -12,17 +12,83 @@
 
 Java 識別字須遵循一致的命名形式，並以業務概念與責任表達含義。類別、介面、列舉與 `record` 使用 `UpperCamelCase`；方法、欄位、參數與區域變數使用 `lowerCamelCase`；常數與列舉常數使用 `UPPER_SNAKE_CASE`；套件名稱使用小寫。團隊須統一縮寫慣例，避免同一概念大小寫不一致。不以 `final` 等修飾詞機械式判定常數，也不強制以 `I` 等名稱前綴標示介面。
 
+**違反**
+
+```java
+// 類別、常數與方法未使用各自規定的命名形式。
+class order_limit {
+    static final int maxOrders = 10;
+    boolean Accepts(int orderCount) { return orderCount <= maxOrders; }
+}
+```
+
+**符合**
+
+```java
+// 類別、常數與方法分別使用規定的命名形式。
+class OrderLimit {
+    static final int MAX_ORDERS = 10;
+    boolean accepts(int orderCount) { return orderCount <= MAX_ORDERS; }
+}
+```
+
 <a id="java-specific-responsibility"></a>
 
 ### 名稱表達具體責任
 
 依[命名與可讀性](../../../coding/naming.md#領域詞彙與上下文)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。
 
+**違反**
+
+```java
+// 日期工具的名稱與實際計算訂單總額的責任不一致。
+class DateUtils {
+    int total(List<Integer> amounts) {
+        return amounts.stream().mapToInt(Integer::intValue).sum();
+    }
+}
+```
+
+**符合**
+
+```java
+// 訂單總額工具的名稱明確表達實際責任。
+class OrderTotalUtils {
+    int total(List<Integer> amounts) {
+        return amounts.stream().mapToInt(Integer::intValue).sum();
+    }
+}
+```
+
 <a id="java-package-boundaries"></a>
 
 ### 套件與架構邊界
 
 套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。共用套件須有明確責任與依賴方向，不作為雜項收容處，也不得反向依賴使用它的業務模組。邊界須以可見性及適用檢查落實，不能只靠套件名稱。
+
+**違反**
+
+```java
+// 內部儲存結構直接公開，未以可見性隔離實作。
+class OrderRepository {
+    public final Map<String, Integer> storage = new HashMap<>();
+    public void save(String orderId, int amount) {
+        storage.put(orderId, amount);
+    }
+}
+```
+
+**符合**
+
+```java
+// 透過公開方法提供契約，並以私有欄位隱藏內部儲存結構。
+class OrderRepository {
+    private final Map<String, Integer> storage = new HashMap<>();
+    public void save(String orderId, int amount) {
+        storage.put(orderId, amount);
+    }
+}
+```
 
 ## 契約文件與維護
 
