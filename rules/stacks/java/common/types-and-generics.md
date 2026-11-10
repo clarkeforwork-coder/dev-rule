@@ -12,11 +12,53 @@
 
 參數、回傳值、欄位與區域變數須明確宣告型別，保留必要的泛型資訊，不使用 `var` 取代型別標註。
 
+**違反**
+
+```java
+// 使用 var 省略區域變數的型別標註。
+class Example {
+    void prepare() {
+        var names = List.of("Ada");
+    }
+}
+```
+
+**符合**
+
+```java
+// 區域變數明確宣告元素型別。
+class Example {
+    void prepare() {
+        List<String> names = List.of("Ada");
+    }
+}
+```
+
 <a id="java-generic-type-information"></a>
 
 ### 禁止 raw type 與不必要的型別抽象
 
 使用泛型型別時須宣告型別參數，禁止 raw type。承載業務語意的參數、回傳值與欄位須保留業務所需的型別資訊，不得以 `Object`、萬用字元或無必要的泛型隱藏已知型別。泛型與萬用字元僅在確有型別抽象需求，且能維持必要約束與關聯時使用；不僅依所在層級或是否出現 `?` 判定合理性。
+
+**違反**
+
+```java
+// 已知訂單型別卻以 Object 隱藏業務資訊。
+record Order(String id) {}
+class Example {
+    private final Object order = new Order("A1");
+}
+```
+
+**符合**
+
+```java
+// 欄位保留已知的訂單型別。
+record Order(String id) {}
+class Example {
+    private final Order order = new Order("A1");
+}
+```
 
 <a id="java-input-output-type-relation"></a>
 
@@ -24,17 +66,90 @@
 
 依[型別安全](../../../coding/type-safety.md#容器與泛型)執行。Java 泛型簽章須實際連結輸入與輸出的型別；特定業務操作直接使用其型別，不要求呼叫端轉型補回。
 
+**違反**
+
+```java
+// 回傳 Object 使集合元素與回傳型別失去關聯。
+class Example {
+    static <T> Object first(List<T> values) {
+        return values.get(0);
+    }
+}
+```
+
+**符合**
+
+```java
+// 同一型別參數連結輸入元素與回傳值。
+class Example {
+    static <T> T first(List<T> values) {
+        return values.get(0);
+    }
+}
+```
+
 <a id="java-business-type-casts"></a>
 
 ### 不得以向下轉型補回業務型別
 
 自行撰寫的程式碼不得以強制向下轉型補回遺失的業務型別資訊，應透過資料契約、泛型或多型設計保留型別。外部資料須在邊界完成驗證與明確型別轉換，不能讓型別不明的資料流入業務流程。工具或第三方 API 限制須依例外流程個別處理，不預先開放整合處例外。本項針對參考型別的向下轉型，數值轉換另依適用規範處理。
 
+**違反**
+
+```java
+// 先遺失訂單型別，再以向下轉型補回。
+record Order(String id) {}
+class Example {
+    String orderId(Object order) {
+        return ((Order) order).id();
+    }
+}
+```
+
+**符合**
+
+```java
+// 參數契約保留訂單型別，不需向下轉型。
+record Order(String id) {}
+class Example {
+    String orderId(Order order) {
+        return order.id();
+    }
+}
+```
+
 <a id="java-type-safety-warnings"></a>
 
 ### 型別安全警告
 
 新增或修改程式碼不得留下 raw type 或 unchecked 警告，須修正造成警告的契約與實作，不得以 `@SuppressWarnings` 或關閉檢查規避要求。工具限制須依例外流程個別核准，記錄影響範圍、型別安全依據與驗證方式。
+
+**違反**
+
+```java
+// 以 @SuppressWarnings 抑制 raw type 與 unchecked 警告。
+class Example {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    List<String> names() {
+        List values = new ArrayList();
+        values.add("Ada");
+        return values;
+    }
+}
+```
+
+**符合**
+
+```java
+// 修正集合契約與實作，無須抑制型別安全警告。
+class Example {
+    List<String> names() {
+        List<String> values = new ArrayList<>();
+        values.add("Ada");
+        return values;
+    }
+}
+```
 
 <a id="java-group-notes-explicit-types"></a>
 
@@ -50,11 +165,56 @@
 
 依[型別安全](../../../coding/type-safety.md#容器與泛型)執行。例如固定欄位資料不得改以 `Map<String, Object>` 或 `Object[]` 承載；真正動態的映射仍須保留明確鍵值型別。
 
+**違反**
+
+```java
+// 固定的訂單欄位以任意鍵與 Object 值承載。
+class Example {
+    Map<String, Object> order() {
+        return Map.of("id", "A1", "quantity", 2);
+    }
+}
+```
+
+**符合**
+
+```java
+// 固定欄位以具名且具明確型別的物件承載。
+record Order(String id, int quantity) {}
+class Example {
+    Order order() {
+        return new Order("A1", 2);
+    }
+}
+```
+
 <a id="java-generic-capabilities"></a>
 
 ### 型別能力與約束
 
 泛型操作所需的型別能力與關聯，須透過型別參數、上界或明確的參數契約表達，不得依賴未宣告的型別假設、執行期猜測或強制轉型。無實際通用需求時，直接使用明確型別，不為使用泛型而額外建立介面。
+
+**違反**
+
+```java
+// 泛型未宣告數值能力，依靠執行期轉型取值。
+class Example {
+    static <T> double total(List<T> values) {
+        return values.stream().mapToDouble(v -> ((Number) v).doubleValue()).sum();
+    }
+}
+```
+
+**符合**
+
+```java
+// 上界明確表達各種數值型別都需提供的能力。
+class Example {
+    static <T extends Number> double total(List<T> values) {
+        return values.stream().mapToDouble(Number::doubleValue).sum();
+    }
+}
+```
 
 <a id="java-collection-declarations"></a>
 
@@ -62,11 +222,55 @@
 
 宣告型別須表達使用端所需的操作與語意，優先使用能完整表達契約的介面；不得過度泛化而迫使使用端轉型，也不應無必要地暴露具體實作類別。可修改性、排序方式等保證須依契約另行明訂，不僅憑集合介面推定。
 
+**違反**
+
+```java
+// 使用端只需按索引讀取，卻無必要地要求具體實作。
+class Example {
+    String first(ArrayList<String> names) {
+        return names.get(0);
+    }
+}
+```
+
+**符合**
+
+```java
+// List 介面已完整表達按索引讀取的需求。
+class Example {
+    String first(List<String> names) {
+        return names.get(0);
+    }
+}
+```
+
 <a id="java-diamond-construction"></a>
 
 ### 允許建構端使用菱形運算子
 
 變數已明確宣告完整型別時，允許使用 `<>` 省略建構時重複的泛型參數；不得因此省略宣告端所需的型別資訊或改用 raw type。
+
+**違反**
+
+```java
+// 建構端使用菱形運算子，宣告端卻使用 raw type，產生警告。
+class Example {
+    void prepare() {
+        List names = new ArrayList<>();
+    }
+}
+```
+
+**符合**
+
+```java
+// 宣告端保留完整型別，建構端省略重複資訊。
+class Example {
+    void prepare() {
+        List<String> names = new ArrayList<>();
+    }
+}
+```
 
 <a id="java-generic-return-types"></a>
 
@@ -74,11 +278,57 @@
 
 回傳值須提供明確、可直接使用的型別；只有契約確實需要表達未知型別或其上下界時，才使用萬用字元，不得為預留彈性而增加使用端負擔，也不得以萬用字元取代不可變性設計。
 
+**違反**
+
+```java
+// 訂單型別已知，卻以萬用字元增加使用端負擔。
+record Order(String id) {}
+class Example {
+    List<?> orders() {
+        return List.of(new Order("A1"));
+    }
+}
+```
+
+**符合**
+
+```java
+// 回傳值明確提供可直接使用的訂單元素型別。
+record Order(String id) {}
+class Example {
+    List<Order> orders() {
+        return List.of(new Order("A1"));
+    }
+}
+```
+
 <a id="java-type-parameter-names"></a>
 
 ### 泛型參數命名
 
 名稱須能辨識用途與關聯。簡單情境可使用 `T`、`K`、`V` 等通行慣例名稱；具有不同責任或較複雜關聯時，應使用能表達角色的名稱，例如 `Source` 與 `Target`，並在必要時補充契約說明，不強制所有泛型參數使用長名稱。
+
+**違反**
+
+```java
+// 多階段契約的三種角色僅以無語意的編號區分。
+interface Pipeline<T1, T2, T3> {
+    T2 decode(T1 source);
+    T3 process(T2 decoded);
+    T1 encode(T3 result);
+}
+```
+
+**符合**
+
+```java
+// 型別參數名稱表達來源、解碼資料與結果的角色。
+interface Pipeline<Source, Decoded, Result> {
+    Decoded decode(Source source);
+    Result process(Decoded decoded);
+    Source encode(Result result);
+}
+```
 
 <a id="java-closing-requirements"></a>
 
