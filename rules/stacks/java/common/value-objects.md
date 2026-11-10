@@ -8,7 +8,17 @@
 
 ## 型別責任與有效性
 
-本組由共通規範承接的要求：[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)、[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)。
+<a id="java-dedicated-value-types"></a>
+
+### 建立專屬型別的條件
+
+依[領域建模](../../../coding/domain-modeling.md#專屬型別)執行。Java 的 `OrderId` 與 `CustomerId` 須維持不同業務型別；一般描述性資料不要求機械式包裝。
+
+<a id="java-value-construction-invariants"></a>
+
+### 建立時保護不變條件
+
+依[領域建模](../../../coding/domain-modeling.md#專屬型別)、[資料驗證](../../../coding/validation.md#責任分工)執行。Java 建構子或工廠維持一致驗證；合法 `OrderId` 不代表訂單存在或已取得存取權。
 
 <a id="java-value-immutability"></a>
 
@@ -60,17 +70,17 @@
 
 ### 業務保證的測試
 
-依[領域建模](../../../coding/domain-modeling.md)、[共通測試策略](../../../quality/testing.md)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[本文件驗收要求](#驗收要求)驗證，不機械式測試每個產生的方法。
+依[領域建模](../../../coding/domain-modeling.md#模型驗證與還原)、[共通測試策略](../../../quality/testing.md#層級與案例選擇)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[本文件驗收要求](#驗收要求)驗證，不機械式測試每個產生的方法。
 
 <a id="java-closing-requirements"></a>
 
 ## 補充要求
 
-映射與歷史資料處理另見[資料映射](../../../architecture/data-mapping.md)及[資料遷移](../../../data/migrations.md)；敏感資料與診斷輸出依[安全規範](../../../quality/security.md)及[日誌、稽核與可觀測性](../../../quality/observability.md)。
+映射與歷史資料處理另見[資料映射](../../../architecture/data-mapping.md#轉換要求)及[資料遷移](../../../data/migrations.md#新舊版本相容)；敏感資料與診斷輸出依[安全規範](../../../quality/security.md#敏感資料與副本)及[日誌、稽核與可觀測性](../../../quality/observability.md#診斷日誌與追蹤)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的值型別與實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的值型別與實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#evidence-version-validity)。
 
 ### 共同驗收
 
