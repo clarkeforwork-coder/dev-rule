@@ -19,7 +19,7 @@
       "status": "completed",
       "id": "JN-02",
       "decision": "保留條文／否",
-      "kind": "拆分"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -47,7 +47,7 @@
       "status": "completed",
       "id": "JN-06",
       "decision": "重述",
-      "kind": "整條移除"
+      "kind": "整條保留"
     },
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -1126,7 +1126,7 @@
   "pending": 0,
   "body_sentences": 437,
   "preserved_acceptance_rows": 86,
-  "manual_review_count": 367,
+  "manual_review_count": 396,
   "manual_review_sentences": [
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -1140,19 +1140,6 @@
         "rules/stacks/java/common/null-and-optional.md#java-query-absence"
       ],
       "reason": "JN-01：；本句保留必須存在卻不存在的業務失敗條件及不得混為正常缺值；只把錯誤處理規範文字改成整份文件連結，原因保留與捕捉責任仍適用。"
-    },
-    {
-      "path": "rules/stacks/java/common/null-and-optional.md",
-      "type": "去向種類",
-      "history_id": "JN-02",
-      "decision": "保留條文／否",
-      "expected": "拆分",
-      "actual": "拆分",
-      "conservative": false,
-      "targets": [
-        "rules/stacks/java/common/null-and-optional.md#java-optional-nonnull"
-      ],
-      "reason": "JN-02：；本句的 Optional 正常缺值限制保留；刪除的失敗掩蓋列舉由失敗分類、捕捉處置與結果未知的三段原文分別承接，已逐一登錄原文。"
     },
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -1192,23 +1179,6 @@
         "rules/stacks/java/common/null-and-optional.md#java-container-nulls"
       ],
       "reason": "JN-05 依第四節新義務判斷整條保留；基準全部句子逐字留在各自 Java 小節，不抽取共同背景。"
-    },
-    {
-      "path": "rules/stacks/java/common/null-and-optional.md",
-      "type": "去向種類",
-      "history_id": "JN-06",
-      "decision": "重述",
-      "expected": "整條移除",
-      "actual": "整條移除",
-      "conservative": false,
-      "targets": [
-        "rules/coding/validation.md#責任分工",
-        "rules/coding/error-handling.md#程式缺陷與不變條件",
-        "rules/coding/domain-modeling.md#專屬型別",
-        "rules/coding/code-design.md#construction-entrypoints",
-        "rules/coding/domain-modeling.md#狀態建模"
-      ],
-      "reason": "JN-06：本句的三個整份規範引用移到檔頭，沒有縮小為單一小節；承接證據分別列接收驗證、缺陷處置及建立有效的既有原文。整理前原文未提交，無法證明完整覆蓋。；本句的接收、一般建立、專屬型別建立與狀態變更逐項登錄來源；可信內部免重查由資料驗證原句承接，未用專屬型別代替全部建立入口。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -1302,15 +1272,6 @@
       "type": "刪除完整性",
       "history_id": "JN-01",
       "source": "依業務要求必須存在卻不存在時，表達明確的業務失敗；查詢技術故障另依錯誤處理規範傳遞，不得混為正常缺值。",
-      "unreported_fragments": [
-
-      ]
-    },
-    {
-      "path": "rules/stacks/java/common/null-and-optional.md",
-      "type": "刪除完整性",
-      "history_id": "JN-02",
-      "source": "空的 `Optional` 只能表示契約允許的正常缺值，不得掩蓋業務失敗、技術故障或尚未確認的結果。",
       "unreported_fragments": [
 
       ]
@@ -1536,37 +1497,6 @@
     },
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
-      "sentence": 6,
-      "history_id": "JN-02",
-      "action": "改寫",
-      "source": "空的 `Optional` 只能表示契約允許的正常缺值，不得掩蓋業務失敗、技術故障或尚未確認的結果。",
-      "targets": [
-        {
-          "uri": "rules/stacks/java/common/null-and-optional.md#java-optional-nonnull",
-          "text": "空的 `Optional` 只能表示契約允許的正常缺值；業務失敗、技術故障及尚未確認結果的處置依[失敗分類](../../../coding/error-handling.md#失敗分類與表達)及[結果未知](../../../coding/error-handling.md#結果未知)。"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "不得掩蓋業務失敗、技術故障或尚未確認的結果",
-          "source_uri": "rules/coding/error-handling.md#失敗分類與表達",
-          "source_text": "呼叫端必須處理結果，不解析錯誤文字，也不得以空值或單純 `false` 隱藏原因。"
-        },
-        {
-          "text": "不得掩蓋業務失敗、技術故障或尚未確認的結果",
-          "source_uri": "rules/coding/error-handling.md#捕捉與處置責任",
-          "source_text": "不得捕捉後忽略錯誤、假裝成功，或無依據地回傳空值與預設值。"
-        },
-        {
-          "text": "不得掩蓋業務失敗、技術故障或尚未確認的結果",
-          "source_uri": "rules/coding/error-handling.md#結果未知",
-          "source_text": "逾時或連線中斷只表示未取得結果，不代表對方未執行；必須區分確定失敗與結果未知，不得直接當作成功或業務失敗。"
-        }
-      ],
-      "reason": "本句的 Optional 正常缺值限制保留；刪除的失敗掩蓋列舉由失敗分類、捕捉處置與結果未知的三段原文分別承接，已逐一登錄原文。"
-    },
-    {
-      "path": "rules/stacks/java/common/null-and-optional.md",
       "sentence": 8,
       "history_id": "JN-03",
       "action": "改寫",
@@ -1623,91 +1553,6 @@
         }
       ],
       "reason": "本句只移除未提供、清空與設定值的列舉，三種意圖由空值語意原文承接；完整狀態型別與不得以 Optional 混合表示仍在 Java。"
-    },
-    {
-      "path": "rules/stacks/java/common/null-and-optional.md",
-      "sentence": 16,
-      "history_id": "JN-06",
-      "action": "移除",
-      "source": "依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。",
-      "targets": [
-        {
-          "uri": "rules/coding/validation.md#責任分工"
-        },
-        {
-          "uri": "rules/coding/error-handling.md#程式缺陷與不變條件"
-        },
-        {
-          "uri": "rules/coding/domain-modeling.md#專屬型別"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。",
-          "source_uri": "rules/coding/validation.md#責任分工",
-          "source_text": "接收邊界負責結構與格式驗證，例如必填欄位、資料型別、日期格式與支援的狀態值。"
-        },
-        {
-          "text": "依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。",
-          "source_uri": "rules/coding/error-handling.md#程式缺陷與不變條件",
-          "source_text": "發現程式缺陷或內部不變條件遭破壞時，必須停止受影響操作，不得以預設值修補後繼續。"
-        },
-        {
-          "text": "依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。",
-          "source_uri": "rules/coding/domain-modeling.md#專屬型別",
-          "source_text": "建立時必須驗證該值的格式與適用限制，建立後不得透過任意修改破壞有效性。"
-        }
-      ],
-      "reason": "本句的三個整份規範引用移到檔頭，沒有縮小為單一小節；承接證據分別列接收驗證、缺陷處置及建立有效的既有原文。整理前原文未提交，無法證明完整覆蓋。"
-    },
-    {
-      "path": "rules/stacks/java/common/null-and-optional.md",
-      "sentence": 17,
-      "history_id": "JN-06",
-      "action": "移除",
-      "source": "Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。",
-      "targets": [
-        {
-          "uri": "rules/coding/validation.md#責任分工"
-        },
-        {
-          "uri": "rules/coding/code-design.md#construction-entrypoints"
-        },
-        {
-          "uri": "rules/coding/domain-modeling.md#狀態建模"
-        },
-        {
-          "uri": "rules/coding/domain-modeling.md#專屬型別"
-        }
-      ],
-      "removed_assertions": [
-        {
-          "text": "Java 接收、建立及狀態變更位置依上述非空保證驗證",
-          "source_uri": "rules/coding/validation.md#責任分工",
-          "source_text": "接收邊界負責結構與格式驗證，例如必填欄位、資料型別、日期格式與支援的狀態值。"
-        },
-        {
-          "text": "Java 接收、建立及狀態變更位置依上述非空保證驗證",
-          "source_uri": "rules/coding/code-design.md#construction-entrypoints",
-          "source_text": "所有建立入口須一致保護必要條件，避免各自維護不一致的驗證。"
-        },
-        {
-          "text": "Java 接收、建立及狀態變更位置依上述非空保證驗證",
-          "source_uri": "rules/coding/domain-modeling.md#狀態建模",
-          "source_text": "狀態轉換必須透過明確業務操作，執行必要檢查，不得任意修改狀態欄位繞過規則。"
-        },
-        {
-          "text": "Java 接收、建立及狀態變更位置依上述非空保證驗證",
-          "source_uri": "rules/coding/domain-modeling.md#專屬型別",
-          "source_text": "建立時必須驗證該值的格式與適用限制，建立後不得透過任意修改破壞有效性。"
-        },
-        {
-          "text": "內部可靠契約已成立時不逐層重複檢查",
-          "source_uri": "rules/coding/validation.md#責任分工",
-          "source_text": "已驗證的資料在可信內部流程傳遞時，不必每層重複檢查相同格式；業務操作仍須確認當下條件。"
-        }
-      ],
-      "reason": "本句的接收、一般建立、專屬型別建立與狀態變更逐項登錄來源；可信內部免重查由資料驗證原句承接，未用專屬型別代替全部建立入口。整理前原文未提交，無法證明完整覆蓋。"
     },
     {
       "path": "rules/stacks/java/common/null-and-optional.md",
@@ -5826,7 +5671,7 @@
           "rules/architecture/boundary-objects.md#隔離與拆分",
           "rules/architecture/data-mapping.md#mapping-responsibility"
         ],
-        "text": "本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。"
+        "text": "本組由共通規範承接的要求：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。"
       }
     },
     {
@@ -5838,7 +5683,7 @@
           "rules/coding/code-design.md#substitutability",
           "rules/coding/resource-lifecycle.md#initialization-readiness"
         ],
-        "text": "本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。"
+        "text": "本組由共通規範承接的要求：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。"
       }
     },
     {
@@ -5850,7 +5695,7 @@
           "rules/coding/code-design.md#construction-entrypoints",
           "rules/coding/code-design.md#interface-capabilities"
         ],
-        "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。"
+        "text": "本組由共通規範承接的要求：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。"
       }
     },
     {
@@ -5861,7 +5706,7 @@
         "targets": [
           "rules/coding/resource-lifecycle.md#shared-lifecycle"
         ],
-        "text": "本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。"
+        "text": "本組由共通規範承接的要求：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。"
       }
     },
     {
@@ -5872,7 +5717,7 @@
         "targets": [
           "rules/coding/collections-and-ownership.md#order-and-duplicates"
         ],
-        "text": "本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。"
+        "text": "本組由共通規範承接的要求：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。"
       }
     },
     {
@@ -5884,7 +5729,7 @@
           "rules/coding/collections-and-ownership.md#traversal-mutation",
           "rules/coding/concurrency-and-async.md#compound-atomicity"
         ],
-        "text": "本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。"
+        "text": "本組由共通規範承接的要求：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。"
       }
     },
     {
@@ -5895,7 +5740,7 @@
         "targets": [
           "rules/quality/performance.md#bounded-accumulation"
         ],
-        "text": "本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。"
+        "text": "本組由共通規範承接的要求：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。"
       }
     },
     {
@@ -5904,10 +5749,10 @@
       "record": {
         "heading": "工作所有權與執行資源",
         "targets": [
-          "rules/coding/concurrency-and-async.md#async-result-reception",
-          "rules/coding/concurrency-and-async.md#task-ownership"
+          "rules/coding/concurrency-and-async.md#task-ownership",
+          "rules/coding/concurrency-and-async.md#async-result-reception"
         ],
-        "text": "本組下列要求由共通規範承接：[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)、[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)。"
+        "text": "本組由共通規範承接的要求：[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)、[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)。"
       }
     },
     {
@@ -5918,7 +5763,7 @@
         "targets": [
           "rules/coding/concurrency-and-async.md#deadline-budget"
         ],
-        "text": "本組下列要求由共通規範承接：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。"
+        "text": "本組由共通規範承接的要求：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。"
       }
     },
     {
@@ -5930,7 +5775,7 @@
           "rules/coding/resource-lifecycle.md#partial-acquisition",
           "rules/coding/resource-lifecycle.md#resource-close-contract"
         ],
-        "text": "本組下列要求由共通規範承接：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。"
+        "text": "本組由共通規範承接的要求：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。"
       }
     },
     {
@@ -5941,22 +5786,7 @@
         "targets": [
           "rules/coding/code-design.md#implementation-notes"
         ],
-        "text": "本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。"
-      }
-    },
-    {
-      "path": "rules/stacks/java/common/null-and-optional.md",
-      "type": "group_routes",
-      "record": {
-        "heading": "空值限制與整合責任",
-        "targets": [
-          "rules/coding/code-design.md#construction-entrypoints",
-          "rules/coding/domain-modeling.md#專屬型別",
-          "rules/coding/domain-modeling.md#狀態建模",
-          "rules/coding/error-handling.md#程式缺陷與不變條件",
-          "rules/coding/validation.md#責任分工"
-        ],
-        "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[狀態建模](../../../coding/domain-modeling.md#狀態建模)、[程式缺陷與不變條件](../../../coding/error-handling.md#程式缺陷與不變條件)、[責任分工](../../../coding/validation.md#責任分工)。"
+        "text": "本組由共通規範承接的要求：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。"
       }
     },
     {
@@ -5967,7 +5797,7 @@
         "targets": [
           "rules/coding/numbers-dates-text.md#numeric-range-checks"
         ],
-        "text": "本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。"
+        "text": "本組由共通規範承接的要求：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。"
       }
     },
     {
@@ -5978,7 +5808,7 @@
         "targets": [
           "rules/coding/numbers-dates-text.md#timezone-conversion"
         ],
-        "text": "本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。"
+        "text": "本組由共通規範承接的要求：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。"
       }
     },
     {
@@ -5990,7 +5820,7 @@
           "rules/coding/numbers-dates-text.md#character-encoding",
           "rules/coding/numbers-dates-text.md#text-transformations"
         ],
-        "text": "本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。"
+        "text": "本組由共通規範承接的要求：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。"
       }
     },
     {
@@ -5999,10 +5829,10 @@
       "record": {
         "heading": "動態能力與存取邊界",
         "targets": [
-          "rules/coding/type-safety.md#dynamic-contract-validation",
-          "rules/quality/security.md#dynamic-target-authorization"
+          "rules/quality/security.md#dynamic-target-authorization",
+          "rules/coding/type-safety.md#dynamic-contract-validation"
         ],
-        "text": "本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。"
+        "text": "本組由共通規範承接的要求：[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)、[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)。"
       }
     },
     {
@@ -6011,10 +5841,10 @@
       "record": {
         "heading": "操作結果與使用端處理",
         "targets": [
-          "rules/coding/domain-modeling.md#exhaustive-result-handling",
-          "rules/coding/domain-modeling.md#operation-results"
+          "rules/coding/domain-modeling.md#operation-results",
+          "rules/coding/domain-modeling.md#exhaustive-result-handling"
         ],
-        "text": "本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。"
+        "text": "本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)、[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)。"
       }
     },
     {
@@ -6025,7 +5855,7 @@
         "targets": [
           "rules/coding/domain-modeling.md#result-facts"
         ],
-        "text": "本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。"
+        "text": "本組由共通規範承接的要求：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。"
       }
     },
     {
@@ -6043,11 +5873,11 @@
       "record": {
         "heading": "型別責任與有效性",
         "targets": [
-          "rules/coding/code-design.md#construction-entrypoints",
           "rules/coding/domain-modeling.md#專屬型別",
-          "rules/coding/validation.md#責任分工"
+          "rules/coding/validation.md#責任分工",
+          "rules/coding/code-design.md#construction-entrypoints"
         ],
-        "text": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。"
+        "text": "本組由共通規範承接的要求：[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)、[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)。"
       }
     },
     {
@@ -6239,6 +6069,336 @@
         "after": "確認沒有以預設值或半成品掩蓋問題，且未略過欄位或產生不完整物件掩蓋失敗。",
         "reason": "L13 第二點：唯一新增核對取自 BM-04 正文「不得略過欄位或產生不完整物件掩蓋失敗」。"
       }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/coding/concurrency-and-async.md",
+        "before": "本列核對工作擁有者與責任移交；結果分類與接收路徑見[結果接收驗收](#acceptance-result-reception)。",
+        "after": "結果的分類與接收路徑另見[結果接收與故障處置驗收](#acceptance-result-reception)。",
+        "reason": "M1／L7：只指路，不概括本列；適用範圍仍完整依原驗收列。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/coding/concurrency-and-async.md",
+        "before": "本列核對結果分類與接收路徑；工作擁有者與責任移交見[工作追蹤驗收](#acceptance-task-ownership)。",
+        "after": "工作擁有者與責任移交另見[明確的工作擁有者驗收](#acceptance-task-ownership)。",
+        "reason": "M1／L7：只指路，不概括本列；適用範圍仍完整依原驗收列。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/coding/error-handling.md",
+        "before": "本列核對例外後的實際狀態；全部或部分成功及項目對應見[多步驟與部分成功驗收](#acceptance-partial-operation)。",
+        "after": "全部或部分成功及項目對應另見[多步驟與部分成功驗收](#acceptance-partial-operation)。",
+        "reason": "M1／L7：只指路，不概括本列；適用範圍仍完整依原驗收列。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/coding/error-handling.md",
+        "before": "本列核對全部或部分成功及項目對應；例外後的實際狀態見[失敗後狀態驗收](#acceptance-failure-state)。",
+        "after": "批次修改拋出例外後的狀態另見[失敗後狀態驗收](#acceptance-failure-state)。",
+        "reason": "M1／L7：只指路，不概括本列；適用範圍仍完整依原驗收列。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/quality/rule-verification.md",
+        "before": "[介面用途驗收]",
+        "after": "[介面與抽象驗收]",
+        "reason": "L7：連結文字採目標列標題加驗收。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/null-and-optional.md",
+        "before": "覆蓋要求（原驗收入口）",
+        "after": "案例覆蓋",
+        "reason": "L1：驗收第一欄移除過程用語，核對內容不變。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/null-and-optional.md",
+        "before": "空的 `Optional` 只能表示契約允許的正常缺值；業務失敗、技術故障及尚未確認結果的處置依[失敗分類](../../../coding/error-handling.md#失敗分類與表達)及[結果未知](../../../coding/error-handling.md#結果未知)。",
+        "after": "空的 `Optional` 只能表示契約允許的正常缺值，不得掩蓋業務失敗、技術故障或尚未確認的結果。",
+        "reason": "L8：逐字還原正文基準 JN-02 的明示禁止。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/null-and-optional.md",
+        "before": "<a id=\"java-null-contract-tools\"></a>",
+        "after": "<a id=\"java-nonnull-validation\"></a>\n\n### 非空驗證的位置\n\n依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。\n\n<a id=\"java-null-contract-tools\"></a>",
+        "reason": "L9：JN-06 引用句及 Java 句逐字還原，放在原第 5、7 條之間。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/value-objects.md",
+        "before": "[Java 業務保證驗收](#acceptance-java-value-method-coverage)與[共通資料還原驗收](../../../coding/domain-modeling.md#acceptance-value-restoration)",
+        "after": "[本文件驗收要求](#驗收要求)",
+        "reason": "L3／L13：統一指向完整驗收章節，含共同引用及 Java 列。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/collections-and-ownership.md",
+        "before": "依下方驗收",
+        "after": "依[本文件驗收要求](#驗收要求)",
+        "reason": "L3／L13：統一指向完整驗收章節，含共同引用及 Java 列。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/reflection-and-suppression.md",
+        "before": "依下方驗收",
+        "after": "依[本文件驗收要求](#驗收要求)",
+        "reason": "L3／L13：統一指向完整驗收章節，含共同引用及 Java 列。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/quality/rule-verification.md",
+        "before": "測試程式碼同樣遵守[型別安全要求](../coding/type-safety.md)。",
+        "after": "測試程式碼同樣遵守[型別安全](../coding/type-safety.md)，具體要求見[測試程式碼](#測試程式碼)。",
+        "reason": "L5：同時連共通型別要求及測試專屬要求。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/architecture/data-mapping.md",
+        "before": "## 相關共通契約",
+        "after": "<a id=\"既有共同保證的落實\"></a>\n\n## 相關共通契約",
+        "reason": "L4：同位置保留舊標題相容別名，不複製正文。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/quality/rule-verification.md",
+        "before": "[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)、[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose)與[多步驟及部分成功](../coding/error-handling.md#acceptance-partial-operation)的驗收也由各自規則檔維護。本文件保留共同把關、架構檢查與可測試性、跨情境錯誤處理，以及補償、外部整合與事件、安全、資料庫、API、可觀測性、效能、設定、依賴及 Git 等主題的驗收。\n",
+        "after": "[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)、[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose)與[多步驟與部分成功](../coding/error-handling.md#acceptance-partial-operation)的驗收也由各自規則檔維護。其餘主題的驗收仍集中於本文件。\n",
+        "reason": "L6：導覽不列舉主題，避免被誤讀為完整清單；連結文字與標題一致。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/README.md",
+        "before": "Java 8、11、17、21 的版本差異",
+        "after": "內容欄只列各文件留存的 Java 小節，由共通承接的主題見各文件分組下的指路句與共同驗收。\n\nJava 8、11、17、21 的版本差異",
+        "reason": "L10：索引描述留存小節與共通主題的查找方式，不新增義務。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/null-and-optional.md",
+        "before": "## 空值限制與整合責任\n\n本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[狀態建模](../../../coding/domain-modeling.md#狀態建模)、[程式缺陷與不變條件](../../../coding/error-handling.md#程式缺陷與不變條件)、[責任分工](../../../coding/validation.md#責任分工)。\n\n",
+        "after": "## 空值限制與整合責任\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/classes-and-construction.md",
+        "before": "本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。\n\n",
+        "after": "本組由共通規範承接的要求：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/classes-and-construction.md",
+        "before": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。\n\n",
+        "after": "本組由共通規範承接的要求：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/classes-and-construction.md",
+        "before": "本組下列要求由共通規範承接：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。\n\n",
+        "after": "本組由共通規範承接的要求：[生命週期與可變狀態相容](../../../coding/resource-lifecycle.md#shared-lifecycle)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/numbers-dates-text.md",
+        "before": "本組下列要求由共通規範承接：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。\n\n",
+        "after": "本組由共通規範承接的要求：[範圍與轉換檢查](../../../coding/numbers-dates-text.md#numeric-range-checks)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/numbers-dates-text.md",
+        "before": "本組下列要求由共通規範承接：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。\n\n",
+        "after": "本組由共通規範承接的要求：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/numbers-dates-text.md",
+        "before": "本組下列要求由共通規範承接：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。\n\n",
+        "after": "本組由共通規範承接的要求：[明確指定字元編碼](../../../coding/numbers-dates-text.md#character-encoding)、[用途明確的文字轉換](../../../coding/numbers-dates-text.md#text-transformations)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/exceptions-and-resources.md",
+        "before": "本組下列要求由共通規範承接：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。\n\n",
+        "after": "本組由共通規範承接的要求：[部分取得與所有權移交](../../../coding/resource-lifecycle.md#partial-acquisition)、[有效期與關閉契約](../../../coding/resource-lifecycle.md#resource-close-contract)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/states-and-results.md",
+        "before": "本組下列要求由共通規範承接：[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)、[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。\n\n",
+        "after": "本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)、[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/states-and-results.md",
+        "before": "本組下列要求由共通規範承接：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。\n\n",
+        "after": "本組由共通規範承接的要求：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/concurrency-and-async.md",
+        "before": "本組下列要求由共通規範承接：[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)、[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)。\n\n",
+        "after": "本組由共通規範承接的要求：[明確的工作擁有者](../../../coding/concurrency-and-async.md#task-ownership)、[結果接收與故障處置](../../../coding/concurrency-and-async.md#async-result-reception)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/concurrency-and-async.md",
+        "before": "本組下列要求由共通規範承接：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。\n\n",
+        "after": "本組由共通規範承接的要求：[等待期限與逾時處置](../../../coding/concurrency-and-async.md#deadline-budget)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/collections-and-ownership.md",
+        "before": "本組下列要求由共通規範承接：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。\n\n",
+        "after": "本組由共通規範承接的要求：[順序與重複資料](../../../coding/collections-and-ownership.md#order-and-duplicates)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/collections-and-ownership.md",
+        "before": "本組下列要求由共通規範承接：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。\n\n",
+        "after": "本組由共通規範承接的要求：[遍歷期間的修改](../../../coding/collections-and-ownership.md#traversal-mutation)、[複合操作的原子性](../../../coding/concurrency-and-async.md#compound-atomicity)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/collections-and-ownership.md",
+        "before": "本組下列要求由共通規範承接：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。\n\n",
+        "after": "本組由共通規範承接的要求：[限制資料累積](../../../quality/performance.md#bounded-accumulation)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/boundary-mapping.md",
+        "before": "本組下列要求由共通規範承接：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。\n\n",
+        "after": "本組由共通規範承接的要求：[隔離與拆分](../../../architecture/boundary-objects.md#隔離與拆分)、[聚焦轉換與必要驗證](../../../architecture/data-mapping.md#mapping-responsibility)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/value-objects.md",
+        "before": "本組下列要求由共通規範承接：[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)、[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)。\n\n",
+        "after": "本組由共通規範承接的要求：[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[責任分工](../../../coding/validation.md#責任分工)、[依需求選擇建立方式](../../../coding/code-design.md#construction-entrypoints)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/naming-packages-docs.md",
+        "before": "本組下列要求由共通規範承接：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。\n\n",
+        "after": "本組由共通規範承接的要求：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "type": "final_acceptance_change",
+      "record": {
+        "path": "rules/stacks/java/common/reflection-and-suppression.md",
+        "before": "本組下列要求由共通規範承接：[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)、[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)。\n\n",
+        "after": "本組由共通規範承接的要求：[受控目標與授權](../../../quality/security.md#dynamic-target-authorization)、[使用前驗證契約](../../../coding/type-safety.md#dynamic-contract-validation)。\n\n",
+        "reason": "L2／L13：按原條文順序與每條主要來源次序重生指路；JN-06 還原後該分組不再需指路。"
+      }
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "type": "disposition",
+      "history_id": "JN-02",
+      "decision": "否",
+      "actual": "整條保留",
+      "conservative": true,
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#java-optional-nonnull"
+      ],
+      "reason": "第九次審閱 L8：涵蓋不夠直接，依 350668e 原句逐字還原；整條保留於 Java。"
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "type": "disposition",
+      "history_id": "JN-06",
+      "decision": "重述",
+      "actual": "整條保留",
+      "conservative": true,
+      "targets": [
+        "rules/stacks/java/common/null-and-optional.md#java-nonnull-validation"
+      ],
+      "reason": "第九次審閱 L9：涵蓋不夠直接，依 350668e 原句逐字還原；整條保留於 Java。整理前原文未提交，無法證明完整覆蓋。"
     }
   ],
   "manual_limitations": [
@@ -6251,11 +6411,13 @@
       "interface",
       "partial",
       "division",
-      "references"
+      "references",
+      "review-nine"
     ]
   },
+  "presentation_title_aliases": 2,
   "legacy_snapshot_local_links": 2587,
-  "current_local_links": 2705,
+  "current_local_links": 2708,
   "presentation": {
     "start": "3f68be483882d8dbfb6611bd58c40ec7446414af",
     "aliases": 74,
@@ -6265,7 +6427,7 @@
     "guarantee": "現行全文與紀錄逐字等於起點的核准連結及版面轉換；逐句語意／驗收仍由起點檢查承接；第二部分只追加 final_acceptance 中固定步驟的逐筆指代、驗收搬移與增補，不放寬其餘內容"
   },
   "legacy_snapshot_common_change_blocks": 13,
-  "final_common_change_blocks": 11
+  "final_common_change_blocks": 19
 }
 exit=0
 ```
@@ -6292,13 +6454,14 @@ exit=0
   "start": "53c26dcbecbdd31c6082ffd91f608660a2d38b0d",
   "acceptance_anchors": 126,
   "unique": true,
-  "unchanged_after_link_normalization": 121,
+  "unchanged_after_link_normalization": 120,
   "registered_additions": [
     "acceptance-task-ownership",
     "acceptance-result-reception",
     "acceptance-failure-state",
     "acceptance-partial-operation",
-    "acceptance-java-mapping-failure"
+    "acceptance-java-mapping-failure",
+    "acceptance-java-optional-coverage"
   ],
   "moved": [
     {
@@ -6313,6 +6476,198 @@ exit=0
     }
   ],
   "all_other_rules_exact": true
+}
+exit=0
+```
+
+## `ruby scripts/verify-review-nine.rb`
+
+```text
+{
+  "start": "b033bed93f7d1f80cfdabada48b294544330a05a",
+  "files": 55,
+  "registered_blocks": 34,
+  "all_changes_registered": true,
+  "restored_verbatim": [
+    "空的 `Optional` 只能表示契約允許的正常缺值，不得掩蓋業務失敗、技術故障或尚未確認的結果。",
+    "依[資料驗證](../../../coding/validation.md)、[錯誤處理](../../../coding/error-handling.md)、[領域建模](../../../coding/domain-modeling.md)執行。",
+    "Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。"
+  ],
+  "sentence_differences": [
+    {
+      "path": "rules/coding/concurrency-and-async.md",
+      "before": [
+        "本列核對工作擁有者與責任移交；結果分類與接收路徑見[結果接收驗收](連結目標)。",
+        "本列核對結果分類與接收路徑；工作擁有者與責任移交見[工作追蹤驗收](連結目標)。"
+      ],
+      "after": [
+        "結果的分類與接收路徑另見[結果接收與故障處置驗收](連結目標)。",
+        "工作擁有者與責任移交另見[明確的工作擁有者驗收](連結目標)。"
+      ]
+    },
+    {
+      "path": "rules/coding/error-handling.md",
+      "before": [
+        "本列核對例外後的實際狀態；全部或部分成功及項目對應見[多步驟與部分成功驗收](連結目標)。",
+        "本列核對全部或部分成功及項目對應；例外後的實際狀態見[失敗後狀態驗收](連結目標)。"
+      ],
+      "after": [
+        "全部或部分成功及項目對應另見[多步驟與部分成功驗收](連結目標)。",
+        "批次修改拋出例外後的狀態另見[失敗後狀態驗收](連結目標)。"
+      ]
+    },
+    {
+      "path": "rules/quality/rule-verification.md",
+      "before": [
+        "介面用途的驗收見[介面用途驗收](連結目標)。",
+        "測試程式碼同樣遵守[型別安全要求](連結目標)。",
+        "[集合與資料所有權](連結目標)、[資源生命週期](連結目標)、[併發與非同步](連結目標)、[數值、日期時間與文字](連結目標)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](連結目標)與[多步驟及部分成功](連結目標)的驗收也由各自規則檔維護。",
+        "本文件保留共同把關、架構檢查與可測試性、跨情境錯誤處理，以及補償、外部整合與事件、安全、資料庫、API、可觀測性、效能、設定、依賴及 Git 等主題的驗收。"
+      ],
+      "after": [
+        "介面用途的驗收見[介面與抽象驗收](連結目標)。",
+        "測試程式碼同樣遵守[型別安全](連結目標)，具體要求見[測試程式碼](連結目標)。",
+        "[集合與資料所有權](連結目標)、[資源生命週期](連結目標)、[併發與非同步](連結目標)、[數值、日期時間與文字](連結目標)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](連結目標)與[多步驟與部分成功](連結目標)的驗收也由各自規則檔維護。",
+        "其餘主題的驗收仍集中於本文件。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/README.md",
+      "before": [
+
+      ],
+      "after": [
+        "內容欄只列各文件留存的 Java 小節，由共通承接的主題見各文件分組下的指路句與共同驗收。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/boundary-mapping.md",
+      "before": [
+        "本組下列要求由共通規範承接：[隔離與拆分](連結目標)、[聚焦轉換與必要驗證](連結目標)。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[隔離與拆分](連結目標)、[聚焦轉換與必要驗證](連結目標)。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/classes-and-construction.md",
+      "before": [
+        "本組下列要求由共通規範承接：[繼承的可替代性](連結目標)、[必要資料與依賴齊備](連結目標)。",
+        "本組下列要求由共通規範承接：[依需求選擇建立方式](連結目標)、[介面的能力劃分](連結目標)。",
+        "本組下列要求由共通規範承接：[生命週期與可變狀態相容](連結目標)。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[繼承的可替代性](連結目標)、[必要資料與依賴齊備](連結目標)。",
+        "本組由共通規範承接的要求：[依需求選擇建立方式](連結目標)、[介面的能力劃分](連結目標)。",
+        "本組由共通規範承接的要求：[生命週期與可變狀態相容](連結目標)。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/collections-and-ownership.md",
+      "before": [
+        "本組下列要求由共通規範承接：[順序與重複資料](連結目標)。",
+        "本組下列要求由共通規範承接：[遍歷期間的修改](連結目標)、[複合操作的原子性](連結目標)。",
+        "本組下列要求由共通規範承接：[限制資料累積](連結目標)。",
+        "Java 集合的實際修改、遍歷、檢視及資源路徑依下方驗收，不重測標準函式庫本身。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[順序與重複資料](連結目標)。",
+        "本組由共通規範承接的要求：[遍歷期間的修改](連結目標)、[複合操作的原子性](連結目標)。",
+        "本組由共通規範承接的要求：[限制資料累積](連結目標)。",
+        "Java 集合的實際修改、遍歷、檢視及資源路徑依[本文件驗收要求](連結目標)，不重測標準函式庫本身。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/concurrency-and-async.md",
+      "before": [
+        "本組下列要求由共通規範承接：[結果接收與故障處置](連結目標)、[明確的工作擁有者](連結目標)。",
+        "本組下列要求由共通規範承接：[等待期限與逾時處置](連結目標)。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[明確的工作擁有者](連結目標)、[結果接收與故障處置](連結目標)。",
+        "本組由共通規範承接的要求：[等待期限與逾時處置](連結目標)。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/exceptions-and-resources.md",
+      "before": [
+        "本組下列要求由共通規範承接：[部分取得與所有權移交](連結目標)、[有效期與關閉契約](連結目標)。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[部分取得與所有權移交](連結目標)、[有效期與關閉契約](連結目標)。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/naming-packages-docs.md",
+      "before": [
+        "本組下列要求由共通規範承接：[實作註解與暫時處理](連結目標)。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[實作註解與暫時處理](連結目標)。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/null-and-optional.md",
+      "before": [
+        "空的 `Optional` 只能表示契約允許的正常缺值；業務失敗、技術故障及尚未確認結果的處置依[失敗分類](連結目標)及[結果未知](連結目標)。",
+        "本組下列要求由共通規範承接：[依需求選擇建立方式](連結目標)、[專屬型別](連結目標)、[狀態建模](連結目標)、[程式缺陷與不變條件](連結目標)、[責任分工](連結目標)。",
+        "| <a id=\"acceptance-java-optional-coverage\"></a>覆蓋要求（原驗收入口） | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。"
+      ],
+      "after": [
+        "空的 `Optional` 只能表示契約允許的正常缺值，不得掩蓋業務失敗、技術故障或尚未確認的結果。",
+        "### 非空驗證的位置",
+        "依[資料驗證](連結目標)、[錯誤處理](連結目標)、[領域建模](連結目標)執行。",
+        "Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。",
+        "| <a id=\"acceptance-java-optional-coverage\"></a>案例覆蓋 | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/numbers-dates-text.md",
+      "before": [
+        "本組下列要求由共通規範承接：[範圍與轉換檢查](連結目標)。",
+        "本組下列要求由共通規範承接：[明確的時區轉換](連結目標)。",
+        "本組下列要求由共通規範承接：[明確指定字元編碼](連結目標)、[用途明確的文字轉換](連結目標)。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[範圍與轉換檢查](連結目標)。",
+        "本組由共通規範承接的要求：[明確的時區轉換](連結目標)。",
+        "本組由共通規範承接的要求：[明確指定字元編碼](連結目標)、[用途明確的文字轉換](連結目標)。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/reflection-and-suppression.md",
+      "before": [
+        "本組下列要求由共通規範承接：[使用前驗證契約](連結目標)、[受控目標與授權](連結目標)。",
+        "Java 實際反射、存取及重新產生路徑依下方驗收，不只確認警告消失或成功目標能執行。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[受控目標與授權](連結目標)、[使用前驗證契約](連結目標)。",
+        "Java 實際反射、存取及重新產生路徑依[本文件驗收要求](連結目標)，不只確認警告消失或成功目標能執行。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/states-and-results.md",
+      "before": [
+        "本組下列要求由共通規範承接：[處理完整性](連結目標)、[結果與目前狀態分開表達](連結目標)。",
+        "本組下列要求由共通規範承接：[結果保留當時事實](連結目標)。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[結果與目前狀態分開表達](連結目標)、[處理完整性](連結目標)。",
+        "本組由共通規範承接的要求：[結果保留當時事實](連結目標)。"
+      ]
+    },
+    {
+      "path": "rules/stacks/java/common/value-objects.md",
+      "before": [
+        "本組下列要求由共通規範承接：[依需求選擇建立方式](連結目標)、[專屬型別](連結目標)、[責任分工](連結目標)。",
+        "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[Java 業務保證驗收](連結目標)與[共通資料還原驗收](連結目標)驗證，不機械式測試每個產生的方法。"
+      ],
+      "after": [
+        "本組由共通規範承接的要求：[專屬型別](連結目標)、[責任分工](連結目標)、[依需求選擇建立方式](連結目標)。",
+        "Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[本文件驗收要求](連結目標)驗證，不機械式測試每個產生的方法。"
+      ]
+    }
+  ]
 }
 exit=0
 ```
@@ -6341,6 +6696,12 @@ exit=0
   },
   {
     "test": "核准步驟 interface+partial+division+references",
+    "exit": 0,
+    "matched": true,
+    "diagnostic": "核准搬移、增補及其餘全文一致"
+  },
+  {
+    "test": "核准步驟 interface+partial+division+references+review-nine",
     "exit": 0,
     "matched": true,
     "diagnostic": "核准搬移、增補及其餘全文一致"
@@ -6379,7 +6740,7 @@ exit=0
     "test": "分工必須逐字符合核准",
     "exit": 1,
     "matched": true,
-    "diagnostic": "未核准驗收增補 acceptance-failure-state"
+    "diagnostic": "未核准驗收增補 acceptance-partial-operation"
   },
   {
     "test": "略過欄位必須核對",
@@ -6409,7 +6770,55 @@ exit=0
     "test": "不能偽造核准清單",
     "exit": 1,
     "matched": true,
-    "diagnostic": "/private<暫存複本>/scripts/final-acceptance.rb:13:in `plan': 最後驗收核准清單內容變動 (RuntimeError)"
+    "diagnostic": "/private<暫存複本>/scripts/final-acceptance.rb:14:in `plan': 最後驗收核准清單內容變動 (RuntimeError)"
+  },
+  {
+    "test": "JN-02 不得弱化",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "非登錄改動 rules/stacks/java/common/null-and-optional.md"
+  },
+  {
+    "test": "JN-06 不得刪除還原句",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "非登錄改動 rules/stacks/java/common/null-and-optional.md"
+  },
+  {
+    "test": "指路順序不得倒置",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "非登錄改動 rules/stacks/java/common/concurrency-and-async.md"
+  },
+  {
+    "test": "不能恢復下列指路句",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "非登錄改動 rules/stacks/java/common/concurrency-and-async.md"
+  },
+  {
+    "test": "相容標題不得刪除",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "非登錄改動 rules/architecture/data-mapping.md"
+  },
+  {
+    "test": "案例覆蓋不可換回整理用語",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "非登錄改動 rules/stacks/java/common/null-and-optional.md"
+  },
+  {
+    "test": "索引說明不可刪",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "非登錄改動 rules/stacks/java/README.md"
+  },
+  {
+    "test": "分工不得概括較窄範圍",
+    "exit": 1,
+    "matched": true,
+    "diagnostic": "未核准驗收增補 acceptance-task-ownership"
   }
 ]
 exit=0

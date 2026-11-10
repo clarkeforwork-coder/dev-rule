@@ -1,6 +1,8 @@
 # 共通規則錨點相容別名
 
-起點：`3f68be483882d8dbfb6611bd58c40ec7446414af`。以下 74 筆逐一採用待決清單第五節建議，無名稱調整；舊錨點緊接在新錨點下一行，同一正文不複製。現行引用使用新名；將來移除別名須依本清冊逐筆處理，不能僅按歷史代號樣式搜尋刪除。機器清冊為 `docs/common-anchor-aliases.json`。
+本檔由 `scripts/record-anchor-aliases.rb` 產生。74 筆歷史規則錨點逐一採用待決清單第五節建議，無名稱調整；另集中登錄兩筆標題別名。新舊錨點在同一位置，正文不複製。現行引用使用新名。別名維持保留，待儲存庫外引用確認清除後一次移除；屆時依本清冊逐筆處理，不能僅按代號樣式刪除。機器清冊為 `docs/common-anchor-aliases.json`。
+
+## 歷史規則錨點（74 筆）
 
 | 檔案 | 舊錨點（相容） | 新錨點（現行） |
 | --- | --- | --- |
@@ -78,3 +80,12 @@
 | rules/workflow/rule-governance.md | `rf-06` | [suppression-scope](../rules/workflow/rule-governance.md#suppression-scope) |
 | rules/workflow/rule-governance.md | `rf-07` | [generated-code-exceptions](../rules/workflow/rule-governance.md#generated-code-exceptions) |
 | rules/workflow/rule-governance.md | `au-05` | [precise-violation-baseline](../rules/workflow/rule-governance.md#precise-violation-baseline) |
+
+## 標題相容別名（2 筆）
+
+資料映射的舊標題別名在第九次審閱後補入；規範驗證的別名原已存在，這次補登集中清冊。
+
+| 檔案 | 舊錨點（相容） | 新錨點（現行） |
+| --- | --- | --- |
+| rules/architecture/data-mapping.md | `既有共同保證的落實` | [相關共通契約](../rules/architecture/data-mapping.md#相關共通契約) |
+| rules/quality/rule-verification.md | `語言與新增共通主題驗收入口` | [語言與共通主題驗收入口](../rules/quality/rule-verification.md#語言與共通主題驗收入口) |

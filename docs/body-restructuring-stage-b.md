@@ -89,11 +89,11 @@
 | EX-08 | 重述 | 整條移除 | rules/coding/resource-lifecycle.md#resource-close-contract |
 | EX-09 | 保留條文／否 | 保留增量 | rules/stacks/java/common/exceptions-and-resources.md#java-failure-coverage |
 | JN-01 | 保留條文／否 | 保留增量 | rules/stacks/java/common/null-and-optional.md#java-query-absence |
-| JN-02 | 保留條文／否 | 拆分 | rules/stacks/java/common/null-and-optional.md#java-optional-nonnull |
+| JN-02 | 保留條文／否 | 整條保留 | rules/stacks/java/common/null-and-optional.md#java-optional-nonnull |
 | JN-03 | 保留條文／否 | 拆分 | rules/stacks/java/common/null-and-optional.md#java-optional-access |
 | JN-04 | 保留條文／否 | 拆分 | rules/stacks/java/common/null-and-optional.md#java-optional-positions |
 | JN-05 | 保留條文／是 | 整條保留 | rules/stacks/java/common/null-and-optional.md#java-container-nulls |
-| JN-06 | 重述 | 整條移除 | rules/coding/validation.md#責任分工、rules/coding/error-handling.md#程式缺陷與不變條件、rules/coding/domain-modeling.md#專屬型別、rules/coding/code-design.md#construction-entrypoints、rules/coding/domain-modeling.md#狀態建模 |
+| JN-06 | 重述 | 整條保留 | rules/stacks/java/common/null-and-optional.md#java-nonnull-validation |
 | JN-07 | 保留條文／否 | 拆分 | rules/stacks/java/common/null-and-optional.md#java-null-contract-tools |
 | JN-08 | 增量 | 保留增量 | rules/stacks/java/common/null-and-optional.md#java-third-party-optional |
 | JN-09 | 混合 | 拆分 | rules/stacks/java/common/null-and-optional.md#java-null-contract-evolution |
@@ -185,7 +185,7 @@
 
 ## 與原判斷不同的保守處置
 
-工具列 37 條保守去向，其中五條是已核准整條保留的驗收入口；其餘 32 條如下，理由直接取目前去向 JSON（含第八次審閱還原理由）。全部依本輪決策維持，不重新刪改。
+工具列 39 條保守去向，其中五條是已核准整條保留的驗收入口；其餘 34 條如下，理由直接取目前去向 JSON（含第八次審閱還原理由）。全部依本輪決策維持，不重新刪改。
 
 | 歷史 ID | 原判斷 | 實際去向 | 工作者理由 |
 | --- | --- | --- | --- |
@@ -210,6 +210,8 @@
 | CO-08 | 待確認 | 整條保留 | 第八次審閱 CO-08：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
 | CO-09 | 重述 | 整條保留 | 第八次審閱 CO-09：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
 | EQ-04 | 混合 | 整條保留 | 第八次審閱 EQ-04：依核准還原基準完整引用與 Java 原句，避免涵蓋不直接或引用移離小節；不再登記任何移除斷言。 |
+| JN-02 | 否 | 整條保留 | 第九次審閱 L8：涵蓋不夠直接，依 350668e 原句逐字還原；整條保留於 Java。 |
+| JN-06 | 重述 | 整條保留 | 第九次審閱 L9：涵蓋不夠直接，依 350668e 原句逐字還原；整條保留於 Java。整理前原文未提交，無法證明完整覆蓋。 |
 | JT-03 | 重述 | 整條保留 | 共通容器與泛型允許真實關係或解析驗證機制，未直接要求 Java 泛型簽章實際連結輸入輸出及特定業務操作不要求呼叫端轉型補回，故整條保留。整理前原文未提交，無法證明完整覆蓋。 |
 | JT-06 | 重述 | 整條保留 | 共通容器與泛型禁止以任意鍵值容器替代固定結構，未直接列出 Object[] 陣列承載的禁止事項，無法確認直接涵蓋，故連同 Map 反例及動態映射明確鍵值要求整條保留。整理前原文未提交，無法證明完整覆蓋。 |
 | LS-01 | 重述 | 整條保留 | 第三節判斷重述，但共通函式責任與命名原文未直接明訂 Stream 不強制取代迴圈、複雜邏輯採具名方法或清楚流程及不要求每個 Lambda 抽方法，故整條保守保留含原引用。整理前原文未提交，無法證明完整覆蓋。 |
@@ -226,20 +228,23 @@
 
 ## 人工複核數量
 
-常駐輸出共 337 項（不同類別可能涉及同一句，不是獨立義務數）。
+產生時常駐工具的當前輸出共 396 項（不是合併時的歷史數量；不同類別可能涉及同一句，不是獨立義務數）。
 
 | 類別 | 項數 |
 | --- | --- |
 | acceptance_additions | 3 |
 | acceptance_changes | 72 |
 | acceptance_text_changes | 2 |
-| group_routes | 1 |
+| disposition | 2 |
+| final_acceptance_change | 52 |
+| group_endings | 3 |
+| group_routes | 18 |
 | imports | 1 |
-| link_retention | 10 |
-| 刪除完整性 | 19 |
-| 去向種類 | 153 |
-| 改寫 | 19 |
-| 移除 | 57 |
+| link_retention | 1 |
+| 刪除完整性 | 18 |
+| 去向種類 | 151 |
+| 改寫 | 18 |
+| 移除 | 55 |
 
 機器核對原文、清冊、位置及結構；共通承接是否充分、增減限定是否改變要求、保守理由是否成立仍須人工逐句複核。已核准保留不代表已證明與共通完全等價。
 
@@ -296,23 +301,23 @@ R7-M4：演練使用固定分派前提交的完整 rules／docs 暫存快照與�
 
 ## 一致性掃描（只列出，不修改）
 
-| 文件 | 去向分布 | 空分組指路筆數 | 引言保留連結筆數 | 結尾小節 | 三級標題數 | 引言行數 |
+| 文件 | 去向分布 | 分組指路筆數 | 引言保留連結筆數 | 結尾小節 | 三級標題數 | 引言行數 |
 | --- | --- | --- | --- | --- | --- | --- |
-| boundary-mapping | 整條移除 2、整條保留 6、保留增量 1 | 0 | 1 | 有 | 9 | 8 |
-| classes-and-construction | 整條保留 5、整條移除 5 | 0 | 1 | 有 | 7 | 8 |
-| collections-and-ownership | 整條保留 5、整條移除 4 | 1 | 1 | 有 | 7 | 8 |
-| concurrency-and-async | 整條移除 2、整條保留 8、保留增量 2 | 0 | 1 | 有 | 12 | 8 |
+| boundary-mapping | 整條移除 2、整條保留 6、保留增量 1 | 1 | 0 | 有 | 9 | 6 |
+| classes-and-construction | 整條保留 5、整條移除 5 | 3 | 0 | 有 | 7 | 6 |
+| collections-and-ownership | 整條保留 5、整條移除 4 | 3 | 0 | 有 | 7 | 6 |
+| concurrency-and-async | 整條移除 2、整條保留 8、保留增量 2 | 2 | 0 | 有 | 12 | 6 |
 | equality-hashing-ordering | 保留增量 3、整條保留 7 | 0 | 0 | 無 | 12 | 6 |
-| exceptions-and-resources | 保留增量 6、整條保留 1、整條移除 2 | 0 | 1 | 有 | 9 | 8 |
+| exceptions-and-resources | 保留增量 6、整條保留 1、整條移除 2 | 1 | 0 | 有 | 9 | 6 |
 | lambda-and-stream | 整條保留 3、保留增量 7 | 0 | 0 | 有 | 12 | 6 |
-| naming-packages-docs | 保留增量 5、整條保留 1、整條移除 1 | 0 | 1 | 有 | 8 | 8 |
-| null-and-optional | 保留增量 2、拆分 6、整條保留 2、整條移除 1、轉為驗收入口 1 | 0 | 0 | 有 | 12 | 6 |
-| numbers-dates-text | 保留增量 7、整條保留 3、整條移除 4 | 0 | 1 | 有 | 12 | 8 |
-| reflection-and-suppression | 保留增量 2、整條移除 2、拆分 1、整條保留 3 | 0 | 1 | 有 | 8 | 8 |
-| states-and-results | 整條保留 6、整條移除 3、保留增量 1 | 0 | 1 | 有 | 9 | 8 |
-| types-and-generics | 保留增量 9、整條保留 2 | 0 | 0 | 有 | 13 | 6 |
-| value-objects | 整條移除 2、保留增量 3、整條保留 3、拆分 2 | 0 | 1 | 有 | 10 | 8 |
-| version-policy | 保留增量 12 | 0 | 0 | 有 | 14 | 6 |
+| naming-packages-docs | 保留增量 5、整條保留 1、整條移除 1 | 1 | 0 | 有 | 8 | 6 |
+| null-and-optional | 保留增量 2、整條保留 4、拆分 5、轉為驗收入口 1 | 0 | 0 | 有 | 13 | 6 |
+| numbers-dates-text | 保留增量 7、整條保留 3、整條移除 4 | 3 | 0 | 有 | 12 | 6 |
+| reflection-and-suppression | 保留增量 2、整條移除 2、拆分 1、整條保留 3 | 1 | 0 | 有 | 8 | 6 |
+| states-and-results | 整條保留 6、整條移除 3、保留增量 1 | 2 | 0 | 有 | 9 | 6 |
+| types-and-generics | 保留增量 9、整條保留 2 | 0 | 0 | 有 | 14 | 6 |
+| value-objects | 整條移除 2、保留增量 3、整條保留 3、拆分 2 | 1 | 1 | 有 | 10 | 8 |
+| version-policy | 保留增量 12 | 0 | 0 | 無 | 16 | 6 |
 
 - 錨點皆採 `java-` 加語意字串，細粒度命名仍不同：版本以 declarations／verification 等行為命名，型別以 type-relation／shape 等概念命名，映射混合 fields／integrity／ownership；不統一或新增別名。
 - 同為「重述」有整條移除、拆分、整條保留三種結果，差異由上表與保守理由說明；第四節「否」大多保留增量而原文不動，樣板部分拆分。種類名稱不能單獨代表實際刪改幅度。

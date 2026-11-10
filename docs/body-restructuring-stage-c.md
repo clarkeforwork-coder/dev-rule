@@ -21,7 +21,7 @@
 分組指路：
 
 ```markdown
-本組下列要求由共通規範承接：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。
+本組由共通規範承接的要求：[繼承的可替代性](../../../coding/code-design.md#substitutability)、[必要資料與依賴齊備](../../../coding/resource-lifecycle.md#initialization-readiness)。
 ```
 
 引言保留：
@@ -40,7 +40,7 @@
 例如，建置 JDK 與部署環境使用 Java 21，而產物承諾相容 Java 17 時，編譯須維持 Java 17 的語言、API 及位元碼限制，並有 Java 17 與實際部署環境的驗證依據。
 ```
 
-分組指路只列該組整條移除的條文，依完整目標路徑排序去重；已拆分或保留的條文不列。引言只保留未在正文、指路或其他段落出現的基準共通目標。全站現有 19 個分組指路、1 個引言保留句；唯一引言保留句是 value-objects 的整份資料驗證入口，不能用分組內較窄的責任分工錨點取代。
+分組指路只列該組整條移除的條文，依基準原條文順序排列，同條依承接來源登錄順序去重；已拆分或保留的條文不列。引言只保留未在正文、指路或其他段落出現的基準共通目標。全站現有 18 個分組指路、1 個引言保留句；唯一引言保留句是 value-objects 的整份資料驗證入口，不能用分組內較窄的責任分工錨點取代。
 
 ## 回原分組的段落
 
@@ -73,7 +73,8 @@ Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rul
   "nonblank_units": 1999,
   "sentence_multisets_equal": true,
   "method": "正規化連結別名，排除空白、錨點行、固定指路句與固定補充標題；保留重複數及程式碼行",
-  "excluded": "rules/stacks/java/README.md"
+  "excluded": "rules/stacks/java/README.md",
+  "registered_final_changes_reversed": true
 }
 ```
 
@@ -113,7 +114,7 @@ Java 小節錨點未改，包含先前指出的 `java-specific-responsibility`�
 | acceptance-interface-purpose | `rules/quality/rule-verification.md` 架構檢查與可測試性 | [框架與依賴組裝](../rules/architecture/dependency-composition.md#acceptance-interface-purpose) 補充契約驗收 |
 | acceptance-partial-operation | `rules/quality/rule-verification.md` 錯誤處理驗證與驗收 | [錯誤處理](../rules/coding/error-handling.md#acceptance-partial-operation) 補充契約驗收 |
 
-### 四列追加的分工文字
+### 四列原先追加的分工文字（第九次審閱前的歷史文字）
 
 `acceptance-task-ownership`：
 
@@ -386,13 +387,14 @@ ruby scripts/record-body-verification.rb
   "start": "53c26dcbecbdd31c6082ffd91f608660a2d38b0d",
   "acceptance_anchors": 126,
   "unique": true,
-  "unchanged_after_link_normalization": 121,
+  "unchanged_after_link_normalization": 120,
   "registered_additions": [
     "acceptance-task-ownership",
     "acceptance-result-reception",
     "acceptance-failure-state",
     "acceptance-partial-operation",
-    "acceptance-java-mapping-failure"
+    "acceptance-java-mapping-failure",
+    "acceptance-java-optional-coverage"
   ],
   "moved": [
     {
@@ -410,8 +412,26 @@ ruby scripts/record-body-verification.rb
 }
 ```
 
-15 個新案例包含四個逐步正向案例，以及新增檔案、重複／刪除錨點、弱化原列、分工錯文、漏略過欄位、未核准指代、其他正文、其他主題搬動與偽造清單的十一個負向案例。全部測試與命令原始輸出見[驗證紀錄](body-restructuring-verification-results.md)。
+原有 15 個案例包含四個逐步正向案例，以及新增檔案、重複／刪除錨點、弱化原列、分工錯文、漏略過欄位、未核准指代、其他正文、其他主題搬動與偽造清單的十一個負向案例。全部測試與命令原始輸出見[驗證紀錄](body-restructuring-verification-results.md)。
 
 逐筆核准前後文字在 `scripts/final-acceptance-plan.json`，內容雜湊由工具固定；啟用步驟在 `docs/final-acceptance.json`。Java 去向紀錄的 `final_reference_changes` 與既有共通紀錄的 `final_acceptance_changes` 是追加登錄，原句的歷史證據沒有刪除。主檢查要求現行內容恰等於固定起點的核准轉換；保留／拆分的一般規則未放寬。舊驗收追溯先逆轉明列增補再比對，以免原片段的完整目的列檢查失去意義；現行增補另由精確全文及驗收錨點檢查約束。
 
 人工仍須複核指代是否符合實際語意、分工是否清楚，以及歷史移除句與共通依據的涵蓋關係；工具只能證明錨點有效、列文保留與差異恰為核准清單，不能由連結存在推出語意充分。
+
+### 驗收入口描述的歷史變更
+
+原文：
+
+```markdown
+共通主題的具體驗收見[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)及[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)。領域、映射、空值與介面等補充契約的驗收由各自主要文件維護。
+```
+
+改後（第九次審閱前）：
+
+```markdown
+[集合與資料所有權](../coding/collections-and-ownership.md#驗收要求)、[資源生命週期](../coding/resource-lifecycle.md#驗收要求)、[併發與非同步](../coding/concurrency-and-async.md#驗收要求)、[數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求)，以及領域、映射、空值等補充契約的驗收由各自主要文件維護；[介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose)與[多步驟及部分成功](../coding/error-handling.md#acceptance-partial-operation)的驗收也由各自規則檔維護。本文件保留共同把關、架構檢查與可測試性、跨情境錯誤處理，以及補償、外部整合與事件、安全、資料庫、API、可觀測性、效能、設定、依賴及 Git 等主題的驗收。
+```
+
+## 合併前第九次審閱修正
+
+此節以上保存先前處理歷史；現行四句分工與入口描述已再修正，完整逐筆前後文字、JN-02／JN-06 還原及 18 句分組指路見[第九次審閱修正紀錄](body-restructuring-review-9.md)。
