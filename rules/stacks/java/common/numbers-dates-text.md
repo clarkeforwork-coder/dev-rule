@@ -26,6 +26,22 @@ record Amount(double value) {}
 record Amount(BigDecimal value) {}
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 record（Java 16 正式發布），以一般類別儲存 `BigDecimal` 維持精確十進位的同一保證；仍須依契約選擇數值型別（[JEP 395](https://openjdk.org/jeps/395)）。
+- Java 17 起：可用 record 承載數值；仍須使用 `BigDecimal` 或契約允許的最小單位整數，record 不會讓浮點數變成精確十進位（[JEP 395](https://openjdk.org/jeps/395)）。
+
+**符合（Java 8）**
+
+```java
+// 契約要求精確十進位，以一般類別承載 BigDecimal。
+final class Amount {
+    private final java.math.BigDecimal value;
+    Amount(java.math.BigDecimal value) { this.value = value; }
+    java.math.BigDecimal value() { return value; }
+}
+```
+
 <a id="java-exact-numeric-sources"></a>
 
 ### 從精確來源建立
@@ -113,6 +129,21 @@ class Counter {
 }
 ```
 
+**版本差異**
+
+- Java 21 起：`Math.clamp` 自 Java 21 起提供，超界時回傳邊界值，會掩蓋超限；要求拒絕超限時不得用它取代主範例的 `Math.toIntExact`，仍須明確檢查並回報超限（[`Math.clamp` API `@since 21`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Math.html#clamp(long,int,int))）。
+
+**違反（Java 21）**
+
+```java
+// 契約要求超限回報，卻把超界數值靜默改成 int 邊界。
+class Counter {
+    static int narrow(long value) {
+        return Math.clamp(value, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+}
+```
+
 <a id="java-decimal-equivalence"></a>
 
 ### BigDecimal 判同語意
@@ -144,6 +175,27 @@ record DecimalValue(BigDecimal value) implements Comparable<DecimalValue> {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 record（Java 16 正式發布），以一般類別在建構時正規化，並自行實作 `equals`、`hashCode` 與 `compareTo` 維持同一保證；仍須讓三者遵守相同判同契約（[JEP 395](https://openjdk.org/jeps/395)）。
+- Java 17 起：可用 record 的精簡建構子統一正規化，配合自動產生的 `equals`、`hashCode`；仍須讓自訂排序與正規化後的判同一致（[JEP 395](https://openjdk.org/jeps/395)）。
+
+**符合（Java 8）**
+
+```java
+// 依數值判同契約正規化，讓相等、雜湊與排序一致。
+final class DecimalValue implements Comparable<DecimalValue> {
+    private final java.math.BigDecimal value;
+    DecimalValue(java.math.BigDecimal value) { this.value = value.stripTrailingZeros(); }
+    java.math.BigDecimal value() { return value; }
+    public boolean equals(Object other) {
+        return other instanceof DecimalValue && value.equals(((DecimalValue) other).value);
+    }
+    public int hashCode() { return value.hashCode(); }
+    public int compareTo(DecimalValue other) { return value.compareTo(other.value); }
+}
+```
+
 ## 日期時間語意與來源
 
 本組由共通規範承接的要求：[明確的時區轉換](../../../coding/numbers-dates-text.md#timezone-conversion)。
@@ -166,6 +218,22 @@ record Event(LocalDateTime occurredAt) {}
 ```java
 // 事件以 Instant 表示唯一時點。
 record Event(Instant occurredAt) {}
+```
+
+**版本差異**
+
+- Java 8／11：沒有 record（Java 16 正式發布），以一般類別承載 `Instant` 維持唯一時點的同一保證；仍須依業務語意選擇時間型別（[JEP 395](https://openjdk.org/jeps/395)）。
+- Java 17 起：可用 record 承載 `Instant`；仍須以唯一時點型別表達事件，record 不會為 `LocalDateTime` 補上時區或偏移（[JEP 395](https://openjdk.org/jeps/395)）。
+
+**符合（Java 8）**
+
+```java
+// 事件仍以 Instant 表示唯一時點，改由一般類別承載。
+final class Event {
+    private final java.time.Instant occurredAt;
+    Event(java.time.Instant occurredAt) { this.occurredAt = occurredAt; }
+    java.time.Instant occurredAt() { return occurredAt; }
+}
 ```
 
 <a id="java-durations-calendar-periods"></a>
@@ -224,6 +292,22 @@ class Expiry {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 `InstantSource`，以主範例注入 `Clock` 維持可控制時間基準的同一保證；仍須經由注入來源取得業務目前時間（[`InstantSource` API `@since 17`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/InstantSource.html)）。
+- Java 17 起：可用自 Java 17 起提供的 `InstantSource` 注入只需時點的來源；仍須由外部控制，耗時與等待期限仍使用適合的單調時間來源（[`InstantSource` API `@since 17`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/InstantSource.html)）。
+
+**符合（Java 17）**
+
+```java
+// 業務目前時間由明確提供且可替換的 InstantSource 取得。
+class Expiry {
+    static boolean expired(java.time.Instant deadline, java.time.InstantSource source) {
+        return !source.instant().isBefore(deadline);
+    }
+}
+```
+
 <a id="java-temporal-parsing-formatting"></a>
 
 ### 解析與輸出契約
@@ -255,6 +339,11 @@ class DateParser {
     }
 }
 ```
+
+**版本差異**
+
+- Java 11：JDK 自 Java 9 起預設優先使用 CLDR 地區資料，地區化日期格式可能不同於 Java 8；不得把相同 `Locale` 當成跨版本相同輸出的保證，仍須明訂格式並核對既有輸入與輸出契約；執行期差異，範例不驗證（[JEP 252](https://openjdk.org/jeps/252)）。
+- Java 17 起：CLDR 地區資料仍可能隨 JDK 更新而改變文字格式，不得僅用同版本產生的文字證明舊資料可解析；仍須核對契約格式及既有資料，機器用 ISO 日期可沿用主範例的明確格式與嚴格解析；執行期差異，範例不驗證（[JEP 252](https://openjdk.org/jeps/252)）。
 
 ## 文字編碼、長度與比較
 
@@ -293,6 +382,10 @@ class TextPrefix {
 ### 邊界與環境差異驗收
 
 依[邊界與環境差異驗收的共通要求](../../../coding/numbers-dates-text.md#data-boundary-verification)執行。Java `BigDecimal`、`java.time`、`Clock` 及字串轉換的實際路徑依[本文件驗收要求](#驗收要求)驗收。
+
+**版本差異**
+
+- Java 21 起：JDK 自 Java 18 起將預設字元集改為 UTF-8（主控台 I/O 除外），舊版依環境決定；依賴預設解碼可能改變既有資料的讀取結果，不得只測試新版產生的檔案，仍須依明確編碼契約驗證既有資料與實際字串轉換路徑；執行期差異，範例不驗證（[JEP 400](https://openjdk.org/jeps/400)）。
 
 <a id="java-closing-requirements"></a>
 
