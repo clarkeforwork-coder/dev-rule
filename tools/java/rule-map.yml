@@ -736,7 +736,7 @@
   status: partial
   false_positive_risk: low
   note: >-
-    只比對 Lambda 參數的 \(\s*var\s+；不再比對區域變數 var。無型別的 value -> 仍無法由 regex 判斷；規範 Java 11 var 範例與合成正反例可重跑。 來源：inventory-inv-claude-a.yml 第 34 筆（JV-LS-003）。
+    只比對同一行以 var 起始且括號後接 -> 的 Lambda 參數；排除 enhanced-for 與區域變數 var；跨行參數仍可能漏報。無型別的 value -> 仍無法由 regex 判斷；規範 Java 11 var 範例與合成正反例可重跑。 來源：inventory-inv-claude-a.yml 第 34 筆（JV-LS-003）。
   source:
   - inv-claude-a
 - id: JV-LS-004
@@ -4347,7 +4347,7 @@
   tool: pmd
   check: custom:NarrowingPrimitiveCast
   xpath: >-
-    //CastExpression[not(*[2][@CompileTimeConstant = true()])][not(PrimitiveType[@Kind='char'])][not(PrimitiveType[@Kind='byte'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=255]])][not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')]
+    //CastExpression[not(*[2][@CompileTimeConstant = true()])][not(PrimitiveType[@Kind='char'])][not((PrimitiveType[@Kind='byte'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=255]]) or (PrimitiveType[@Kind='short'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=65535]]))][not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')]
     and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double')
     or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')]) or (PrimitiveType[@Kind='float']
     and *[2][pmd-java:typeIs('double')])] | //MethodCall[@MethodName='clamp'][TypeExpression/ClassType[@SimpleName='Math']][ArgumentList/FieldAccess[@Name='MIN_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]][ArgumentList/FieldAccess[@Name='MAX_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]]
@@ -4360,7 +4360,7 @@
   false_positive_risk: high
   note: >-
     原 XPath 僅偵測縮窄轉型；新增 Math.clamp 且引數含 Integer.MIN_VALUE／MAX_VALUE 的語法分支，涵蓋 Java 21 規範反例，Math.toIntExact 符合例仍乾淨。無法推論是否允許飽和截斷的業務契約，合法 clamp 與位元／影像轉型仍可能誤報，風險
-    high；經核准逐處抑制，不全面排除。hashCode 內縮窄轉型維持排除。 排除編譯期常數、char 轉換及 byte 的 0xFF 遮罩慣用式；補 double→float。 來源：inventory-inv-claude-b.yml 第 84 筆（JV-ND-009）。
+    high；經核准逐處抑制，不全面排除。hashCode 內縮窄轉型維持排除。 排除編譯期常數、char 轉換及 byte 的 0xFF 與 short 的 0xFFFF 遮罩慣用式；補 double→float。 來源：inventory-inv-claude-b.yml 第 84 筆（JV-ND-009）。
   source:
   - inv-claude-b
 - id: JV-ND-010
@@ -4827,7 +4827,7 @@
   tool: pmd
   check: custom:NoUnmanagedThread
   xpath: >-
-    //ConstructorCall[pmd-java:typeIs('java.lang.Thread')][not(parent::ArgumentList/parent::MethodCall[@MethodName='addShutdownHook'][*[1][pmd-java:typeIs('java.lang.Runtime')]])][not(ancestor::MethodDeclaration[@Name='newThread'][ancestor::ClassDeclaration[pmd-java:typeIs('java.util.concurrent.ThreadFactory')]])]
+    //ConstructorCall[pmd-java:typeIs('java.lang.Thread')][not(parent::ArgumentList/parent::MethodCall[@MethodName='addShutdownHook'][*[1][pmd-java:typeIs('java.lang.Runtime')]])][not(ancestor::MethodDeclaration[@Name='newThread'][parent::ClassBody/parent::*[self::ClassDeclaration or self::AnonymousClassDeclaration][pmd-java:typeIs('java.util.concurrent.ThreadFactory')]])][not(ancestor::LambdaExpression[pmd-java:typeIs('java.util.concurrent.ThreadFactory')])]
   versions:
   - 8
   - 11
@@ -4837,7 +4837,7 @@
   false_positive_risk: medium
   note: >-
     採用：限定非資源管理元件；ThreadFactory、測試基礎設施及核准擁有者需精確例外；不涵蓋 Thread.ofVirtual().start 等其他建立 API，也不證明容量管理；實證：bad-17=1, good-17=0, good-21=0；原盤點 PMD 結果（未隨庫保存）；；實證版本：17、21。
-    排除 Runtime.addShutdownHook 與 ThreadFactory.newThread；核准的資源管理元件、測試基礎設施仍可能誤報，故 warn＋partial。 來源：inventory-inv-codex-b.yml 第 42／48 筆（JV-CA-002）。
+    排除 Runtime.addShutdownHook、具名／匿名 ThreadFactory 的 newThread 與型別為 ThreadFactory 的 Lambda 建立點；核准的資源管理元件、測試基礎設施仍可能誤報，故 warn＋partial。 來源：inventory-inv-codex-b.yml 第 42／48 筆（JV-CA-002）。
   source:
   - inv-codex-b
 - id: JV-CA-003

@@ -839,7 +839,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks | verified |
 
 ```xpath
-//CastExpression[not(*[2][@CompileTimeConstant = true()])][not(PrimitiveType[@Kind='char'])][not(PrimitiveType[@Kind='byte'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=255]])][not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')] and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')]) or (PrimitiveType[@Kind='float'] and *[2][pmd-java:typeIs('double')])] | //MethodCall[@MethodName='clamp'][TypeExpression/ClassType[@SimpleName='Math']][ArgumentList/FieldAccess[@Name='MIN_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]][ArgumentList/FieldAccess[@Name='MAX_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]]
+//CastExpression[not(*[2][@CompileTimeConstant = true()])][not(PrimitiveType[@Kind='char'])][not((PrimitiveType[@Kind='byte'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=255]]) or (PrimitiveType[@Kind='short'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=65535]]))][not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')] and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')]) or (PrimitiveType[@Kind='float'] and *[2][pmd-java:typeIs('double')])] | //MethodCall[@MethodName='clamp'][TypeExpression/ClassType[@SimpleName='Math']][ArgumentList/FieldAccess[@Name='MIN_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]][ArgumentList/FieldAccess[@Name='MAX_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]]
 ```
 
 ### custom:BigDecimalRecordWithoutNormalization
@@ -923,7 +923,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | rules/stacks/java/common/concurrency-and-async.md#java-execution-resources | partial |
 
 ```xpath
-//ConstructorCall[pmd-java:typeIs('java.lang.Thread')][not(parent::ArgumentList/parent::MethodCall[@MethodName='addShutdownHook'][*[1][pmd-java:typeIs('java.lang.Runtime')]])][not(ancestor::MethodDeclaration[@Name='newThread'][ancestor::ClassDeclaration[pmd-java:typeIs('java.util.concurrent.ThreadFactory')]])]
+//ConstructorCall[pmd-java:typeIs('java.lang.Thread')][not(parent::ArgumentList/parent::MethodCall[@MethodName='addShutdownHook'][*[1][pmd-java:typeIs('java.lang.Runtime')]])][not(ancestor::MethodDeclaration[@Name='newThread'][parent::ClassBody/parent::*[self::ClassDeclaration or self::AnonymousClassDeclaration][pmd-java:typeIs('java.util.concurrent.ThreadFactory')]])][not(ancestor::LambdaExpression[pmd-java:typeIs('java.util.concurrent.ThreadFactory')])]
 ```
 
 ### custom:NoFixedSleepInConcurrencyTest

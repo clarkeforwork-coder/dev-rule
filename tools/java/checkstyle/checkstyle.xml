@@ -53,11 +53,11 @@
       <property name="max" value="3"/>
       <message key="maxLen.lambdaBody" value="[JV-LS-001] 意圖與可讀性優先 → rules/stacks/java/common/lambda-and-stream.md#java-intent-readability"/>
     </module>
-    <!-- JV-LS-003：partial；只涵蓋 (var value) -> 形式（違反（Java 11）範例抓到）；主範例省略型別的 value -> 純文字無法判斷，抓不到；Regexp 已限縮為 Lambda 的括號後 var；；實證版本：17、11、8；設定：(id=NoVar)。 -->
+    <!-- JV-LS-003：partial；只涵蓋 (var value) -> 形式（違反（Java 11）範例抓到）；主範例省略型別的 value -> 純文字無法判斷，抓不到；Regexp 限定同一行括號後接箭頭的 var 參數，排除 enhanced-for；跨行參數可能漏報；；實證版本：17、11、8；設定：(id=NoVar)。 -->
     <module name="RegexpSinglelineJava">
       <property name="id" value="JV-LS-003"/>
       <property name="severity" value="error"/>
-      <property name="format" value="\(\s*var\s+"/>
+      <property name="format" value="\(\s*var\s+[^():;]*\)\s*-&gt;"/>
       <property name="message" value="[JV-LS-003] 明確的參數型別 → rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types"/>
       <property name="maximum" value="0"/>
       <property name="ignoreComments" value="true"/>
