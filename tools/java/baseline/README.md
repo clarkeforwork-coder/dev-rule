@@ -37,6 +37,21 @@ tool  rule  file  sha256  level  count  owner  due  message
 
 v2 納入前後非空行，能區分不同上下文的同一違規行，但三行完全相同的重複區塊仍可能混淆；這是局部指紋而非 AST 語意定位。修改相鄰內容會視為新鍵，需審查後更新基準；上方插入空行不改鍵。v1 基準明確拒絕，升級時須重新產生完整報告、審查差異並建立 v2，不得直接改表頭或用重新 create 吸收新增問題。
 
+## 碰到既有違規相鄰行時的處理
+
+修改前後非空行可能讓既有違規變成「新增＋已清償」。先重新產生完整報告，執行 `check`，核對新增診斷的 `sha256`、已清償指紋及來源 diff；確認違規行本身未改、只是相鄰上下文位移，再執行：
+
+```sh
+sh vendor/dev-rule/tools/java/baseline/run.sh rekey \
+  --baseline dev-rule-baseline.tsv \
+  --pmd target/pmd.xml --checkstyle target/checkstyle-result.xml
+# 隨後用相同報告執行 check，審查並提交基準 diff 與來源變更。
+```
+
+`rekey` 以工具＋檔名＋規則分組，只接受恰好一個完整消失的舊鍵和一個全新鍵，且等級與 count 相等；僅更新指紋，保留其餘欄位，包括負責人、期限與訊息。仍命中的舊鍵不動。部分次數清償、次數增加、不同等級、多個候選或單邊新增／清償均列出待配對指紋，退出 1，整份基準保持原樣；全部配對成功才原子寫入，退出 0，沒有差異時不寫檔。輸入錯誤仍退出 2。
+
+`rekey` 不會吸收額外的真正新違規，配對不成立就拒絕，warn 也必須配對；不可重新 create 來繞過拒絕。但 v2 只保存上下文雜湊，沒有舊行原文，無法自動證明違規行未改，也無法辨識恰好同組等量的「一修一增」。所以必須先 `check` → 人工審查 → `rekey` → 再 `check` → 提交基準，不能把 `rekey` 放入 CI 自動刷新。真正修好的項目應使用 `prune`，新的違規應修正。
+
 ## 清償與 PR 門檻
 
 修正後重新產生全部報告，再執行同樣參數的 `prune`：
@@ -72,7 +87,7 @@ java -cp /tmp/baseline-classes Baseline check --baseline dev-rule-baseline.tsv -
 JAVA_HOME=/path/to/jdk17 JAVA8_HOME=/path/to/jdk8 tools/java/tests/run-baseline.sh
 ```
 
-測試使用暫存來源與 XML，驗證建立、既有違規、新增、重複、行號位移、清償、復發、warning、工具錯誤、外部實體與缺報告。測試端使用 Ruby，消費端不需要；`run-all.sh` 已串接本階段。JDK 8 未提供時會明確顯示矩陣缺口。
+測試使用暫存來源與 XML，驗證建立、既有違規、新增、重複、行號位移、相鄰行 rekey、拒絕額外新違規與不等量配對、清償、復發、warning、工具錯誤、外部實體與缺報告。測試端使用 Ruby，消費端不需要；`run-all.sh` 已串接本階段。JDK 8 未提供時會明確顯示矩陣缺口。
 
 實際 Maven／Gradle 最小專案回歸（缺基準失敗、建立後舊違規通過、再新增違規失敗）：
 

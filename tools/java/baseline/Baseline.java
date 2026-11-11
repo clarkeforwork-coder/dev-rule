@@ -18,6 +18,7 @@ public final class Baseline {
         String tool, rule, file, hash, level, owner, due, message;
         int count = 1, line;
         String key() { return tool + "\t" + rule + "\t" + file + "\t" + hash + "\t" + level; }
+        String group() { return tool + "\t" + rule + "\t" + file; }
         String row() { return key() + "\t" + count + "\t" + owner + "\t" + due + "\t" + message; }
     }
     private static void require(boolean ok, String message) {
@@ -131,7 +132,7 @@ public final class Baseline {
         catch (Exception e) { System.err.println("基準工具錯誤：" + e.getMessage()); System.exit(2); }
     }
     private static int run(String[] args) throws Exception {
-        require(args.length>0 && Arrays.asList("create", "check", "prune").contains(args[0]), "用法：create|check|prune --baseline 檔 --pmd 報告／--checkstyle 報告 [--root 專案根] [--owner 負責人 --due YYYY-MM-DD]");
+        require(args.length>0 && Arrays.asList("create", "check", "prune", "rekey").contains(args[0]), "用法：create|check|prune|rekey --baseline 檔 --pmd 報告／--checkstyle 報告 [--root 專案根] [--owner 負責人 --due YYYY-MM-DD]");
         Map<String,String> options = new HashMap<String,String>();
         List<String[]> reports = new ArrayList<String[]>();
         boolean allowStale=false;
@@ -170,10 +171,11 @@ public final class Baseline {
             else aggregate.count++;
             Entry previous=old.get(e.key());
             if (!create && (previous==null || aggregate.count>previous.count)) {
-                System.out.println(e.file + ":" + e.line + " " + e.message + (e.level.equals("warn") ? " (warn)" : ""));
+                System.out.println(e.file + ":" + e.line + " " + e.message + " sha256=" + e.hash + (e.level.equals("warn") ? " (warn)" : ""));
                 if (e.level.equals("error")) errors++; else warnings++;
             }
         }
+        if (args[0].equals("rekey")) return rekey(baseline, old, now);
         Map<String,Entry> retained=new TreeMap<String,Entry>();
         for (Entry e : old.values()) {
             Entry n=now.get(e.key()); int remaining=n==null ? 0 : Math.min(e.count,n.count);
@@ -190,5 +192,58 @@ public final class Baseline {
             System.out.println("新增 error：" + errors + "；新增 warn：" + warnings + "；已清償：" + resolved + " 筆");
         }
         return errors>0 || (args[0].equals("check") && resolved>0 && !allowStale) ? 1 : 0;
+    }
+
+    private static int rekey(Path baseline, Map<String,Entry> old, Map<String,Entry> now) throws Exception {
+        Map<String,List<Entry>> removed=new TreeMap<String,List<Entry>>();
+        Map<String,List<Entry>> added=new TreeMap<String,List<Entry>>();
+        for (Entry e : old.values()) {
+            Entry n=now.get(e.key());
+            if (n==null || n.count<e.count) group(removed,e);
+        }
+        for (Entry e : now.values()) {
+            Entry o=old.get(e.key());
+            if (o==null || o.count<e.count) group(added,e);
+        }
+        Set<String> groups=new TreeSet<String>();
+        groups.addAll(removed.keySet()); groups.addAll(added.keySet());
+        Map<String,Entry> updated=new TreeMap<String,Entry>(old);
+        boolean rejected=false;
+        int moved=0;
+        for (String key : groups) {
+            List<Entry> from=removed.get(key), to=added.get(key);
+            Entry o=from!=null && from.size()==1 ? from.get(0) : null;
+            Entry n=to!=null && to.size()==1 ? to.get(0) : null;
+            // 只搬移完整舊鍵；次數增減、等級變動及多解配對一律拒絕。
+            if (o==null || n==null || now.containsKey(o.key()) || old.containsKey(n.key())
+                    || o.count!=n.count || !o.level.equals(n.level)) {
+                rejected=true;
+                System.out.println("無法重新定鍵：" + key + "（須唯一完整舊鍵與新鍵、同等級且等量）");
+                if (from!=null) for (Entry e : from) System.out.println("待配對已清償：" + e.key() + " × " + e.count);
+                if (to!=null) for (Entry e : to) System.out.println("待配對新增：" + e.key() + " × " + e.count);
+                continue;
+            }
+            updated.remove(o.key());
+            Entry replacement=new Entry();
+            replacement.tool=o.tool; replacement.rule=o.rule; replacement.file=o.file;
+            replacement.hash=n.hash; replacement.level=o.level; replacement.count=o.count;
+            replacement.owner=o.owner; replacement.due=o.due; replacement.message=o.message;
+            updated.put(replacement.key(),replacement);
+            moved+=o.count;
+            System.out.println("重新定鍵配對：" + o.file + " " + o.rule + " " + o.hash + " → " + n.hash + " × " + o.count);
+        }
+        if (rejected) {
+            System.out.println("rekey 拒絕：存在無法配對項目，基準未修改");
+            return 1;
+        }
+        if (moved>0) write(baseline,updated.values(),false);
+        System.out.println("已重新定鍵：" + moved + " 筆（保留負責人與期限）");
+        return 0;
+    }
+
+    private static void group(Map<String,List<Entry>> groups, Entry e) {
+        List<Entry> entries=groups.get(e.group());
+        if (entries==null) { entries=new ArrayList<Entry>(); groups.put(e.group(),entries); }
+        entries.add(e);
     }
 }

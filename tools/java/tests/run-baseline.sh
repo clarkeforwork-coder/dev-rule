@@ -46,6 +46,28 @@ homes.each do |jdk|
     shifted = [ '', '', '' ] + lines
     write.call(shifted, [5], [[7, 'error']])
     call.call('上方插入三行', 'check', 0)
+    adjacent = shifted.dup.insert(5, '  // 相鄰行新增註解')
+    write.call(adjacent, [5], [[8, 'error']])
+    output = call.call('相鄰行插入須審查', 'check', 1)
+    abort '新增診斷未印指紋' unless output.match?(/sha256=[0-9a-f]{64}/)
+    call.call('相鄰行插入後 rekey 成功', 'rekey', 0)
+    rekeyed = File.read(baseline)
+    abort 'rekey 未只更新指紋' unless original.lines.zip(rekeyed.lines).all? { |a,b| a.start_with?('#') ? a == b : a.split("\t").values_at(0,1,2,4,5,6,7,8) == b.split("\t").values_at(0,1,2,4,5,6,7,8) }
+    abort 'rekey 未改變指紋' if rekeyed == original
+    call.call('rekey 後 check 通過', 'check', 0)
+    call.call('rekey 無變動可重跑', 'rekey', 0)
+    File.write(baseline, original)
+    real_added = adjacent.dup.insert(9, '  java.util.List fresh;')
+    write.call(real_added, [5, 10], [[8, 'error']])
+    call.call('同檔同規則新增真違規 rekey 拒絕', 'rekey', 1)
+    abort '拒絕的 rekey 修改基準' unless File.read(baseline) == original
+    write.call(adjacent, [5, 5], [[8, 'error']])
+    call.call('rekey 次數不等拒絕', 'rekey', 1)
+    abort '次數不等修改基準' unless File.read(baseline) == original
+    write.call(shifted, [5], [[7, 'error']])
+    File.write(cs, File.read(cs).sub('severity="error"', 'severity="warning"'))
+    call.call('rekey 同規則等級改變拒絕', 'rekey', 1)
+    abort '等級改變修改基準' unless File.read(baseline) == original
     added = shifted.dup.insert(8, '  java.util.List fresh;')
     write.call(added, [5, 9], [[7, 'error']])
     output = call.call('只列新增違規', 'check', 1)
