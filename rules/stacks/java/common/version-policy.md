@@ -215,7 +215,103 @@ Java 版本變更須評估參與編譯、測試、分析及產物處理的工具
 
 | 主題檔 | 小節 | 版本 | 摘要 |
 | --- | --- | --- | --- |
+| version-policy.md | [建置設定落實限制](version-policy.md#java-build-compatibility) | 8、11、17、21 | 舊工具鏈以目標平台類別限制 API，新工具鏈使用 --release。 |
+| version-policy.md | [執行版本驗證](version-policy.md#java-runtime-verification) | 8、11、17、21 | 依預設 GC、CMS 移除與分代 ZGC 驗證實際執行行為。 |
+| version-policy.md | [多模組版本要求](version-policy.md#java-module-versions) | 8、11、17、21 | 依 classpath、JPMS 與 Multi-Release JAR 的實際選取路徑驗證相容性。 |
+| version-policy.md | [依賴版本要求](version-policy.md#java-dependency-versions) | 11、17、21 | JDK 移除的 JAXB、JAX-WS、CORBA 模組由相容外部依賴或替代實作承接。 |
+| version-policy.md | [Preview 功能](version-policy.md#java-preview-features) | 8、11、17、21 | 精確區別各版 Preview 狀態，規範範例使用正式功能，專案採用仍依核准流程。 |
+| version-policy.md | [JDK 內部實作與存取限制](version-policy.md#java-jdk-internals) | 8、11、17、21 | JDK 強封裝改變反射存取能力，存取成功與合規判定分屬不同層次。 |
+| version-policy.md | [棄用 API](version-policy.md#java-deprecated-api) | 8、11、17、21 | 依 forRemoval 與 Integer 建構子的棄用階段辨識遷移風險。 |
+| version-policy.md | [建置與驗證工具相容性](version-policy.md#java-toolchain-compatibility) | 11、17、21 | 驗證統一 GC 日誌解析與動態 agent 工具的實際執行。 |
+| version-policy.md | [JDK 發行商與完整版本](version-policy.md#java-jdk-distribution) | 8、11、17、21 | 預設字元集改變時核對完整環境設定與外部交換流程。 |
+| types-and-generics.md | [明確宣告型別](types-and-generics.md#java-explicit-types) | 8、11 | Java 8 以 singletonList 建立清單，各版範例沿用明確型別宣告。 |
+| types-and-generics.md | [禁止 raw type 與不必要的型別抽象](types-and-generics.md#java-generic-type-information) | 8、11 | 以具名一般類別替代 record，欄位保留已知業務型別。 |
+| types-and-generics.md | [不得以向下轉型補回業務型別](types-and-generics.md#java-business-type-casts) | 8、11、17、21 | 舊版以一般類別保留參數契約，型別模式只簡化檢查與轉型語法。 |
+| types-and-generics.md | [業務資料結構](types-and-generics.md#java-business-data-shape) | 8、11 | 一般類別以明確型別的固定欄位替代 record。 |
+| types-and-generics.md | [集合與映射的宣告型別](types-and-generics.md#java-collection-declarations) | 21 | Sequenced 介面可表達順序及首尾操作，索引及可修改性契約另行維持。 |
+| types-and-generics.md | [允許建構端使用菱形運算子](types-and-generics.md#java-diamond-construction) | 8、11 | Java 8 匿名類別明寫建構型別參數，Java 9 起可依限制使用菱形。 |
+| types-and-generics.md | [泛型回傳值](types-and-generics.md#java-generic-return-types) | 8、11 | 以一般類別及各版清單工廠保留明確 List<Order> 回傳型別。 |
+| null-and-optional.md | [查詢的正常缺值](null-and-optional.md#java-query-absence) | 8、11 | 以 emptyList 或 List.of 表達多筆正常缺值，單筆仍回傳 Optional。 |
+| null-and-optional.md | [取值與缺值處置](null-and-optional.md#java-optional-access) | 8、11 | 依 API 版本選用缺值分支與組合方法，維持業務語意及失敗分類。 |
+| null-and-optional.md | [使用位置與狀態表達](null-and-optional.md#java-optional-positions) | 8、11、17、21 | 以封閉的普通類別階層或 sealed／record 分別表達三種更新狀態。 |
+| null-and-optional.md | [集合內容的空值](null-and-optional.md#java-container-nulls) | 8、11、17、21 | 舊版先驗證再複製，集合工廠與 toList 的 null 行為不同。 |
+| null-and-optional.md | [非空驗證的位置](null-and-optional.md#java-nonnull-validation) | 8、11、17、21 | 依版本在一般建構子或 record 緊湊建構子建立非空保證。 |
+| value-objects.md | [建立專屬型別的條件](value-objects.md#java-dedicated-value-types) | 8、11、17、21 | 以不同一般類別或 record 保留訂單與客戶識別碼的型別區別。 |
+| value-objects.md | [建立時保護不變條件](value-objects.md#java-value-construction-invariants) | 8、11、17、21 | 以一般或緊湊建構子集中驗證，工廠共用建立入口。 |
+| value-objects.md | [不可變性](value-objects.md#java-value-immutability) | 8、11、17、21 | 依版本複製並包裝集合或使用 copyOf，record 與 reversed 檢視不自動隔離可變內容。 |
+| value-objects.md | [值相等的條件](value-objects.md#java-value-equality) | 8、11、17、21 | 手寫或採 record 產生的相等方法，維持同型別的業務值語意與一致雜湊。 |
+| value-objects.md | [正規化規則](value-objects.md#java-value-normalization) | 8、11、17、21 | 以一般或緊湊建構子統一正規化，再依正規化值判等。 |
+| value-objects.md | [運算責任](value-objects.md#java-value-operations) | 8、11、17、21 | 一般類別與 record 都由領域元件協調外部匯率政策。 |
+| value-objects.md | [資料還原](value-objects.md#java-value-restoration) | 8、11、17、21 | 區分一般類別與 record 的原生反序列化驗證入口，保證不外推到所有框架。 |
+| value-objects.md | [一般類別與 record](value-objects.md#java-value-implementation) | 8、11、17、21 | 一般類別與 record 的值語意實作及預設字串表示有所不同。 |
+| value-objects.md | [診斷字串與交換格式](value-objects.md#java-diagnostic-representation) | 8、11、17、21 | 一般類別與 record 都透過明確編碼維持交換格式，不依賴 toString。 |
+| states-and-results.md | [各狀態的必要資料](states-and-results.md#java-required-state-data) | 8、11、17、21 | 依版本以封閉巢狀類別或 sealed 與 record 保護狀態必要資料。 |
 | states-and-results.md | [處理完整性](states-and-results.md#java-exhaustive-result-handling) | 8、11、17、21 | 依版本以列舉分支、switch 運算式或 sealed 搭配 pattern switch 落實完整處理。 |
+| states-and-results.md | [穩定的外部代碼](states-and-results.md#java-stable-external-codes) | 8、11、17、21 | 依版本使用 switch 敘述或運算式維持固定代碼映射並拒絕未知值。 |
+| states-and-results.md | [封閉或允許擴充](states-and-results.md#java-model-extensibility) | 8、11、17、21 | 依版本以私有基底建構子與巢狀 final 子類別或 sealed／permits 保護封閉契約。 |
+| boundary-mapping.md | [明確控制欄位及來源](boundary-mapping.md#java-mapping-fields) | 8、11 | 替代：final 類別取代 record，明列欄位與可信來源。 |
+| boundary-mapping.md | [失敗明確回報](boundary-mapping.md#java-mapping-integrity) | 8、11 | 替代：final 類別取代 record，轉換失敗仍明確拋出。 |
+| boundary-mapping.md | [保留更新意圖](boundary-mapping.md#java-update-intent) | 8、11、17、21 | 依版本以封閉巢狀類別、record／sealed 或 record pattern 與 pattern switch 表達更新意圖。 |
+| boundary-mapping.md | [集合與可變元素的隔離](boundary-mapping.md#java-mutable-isolation) | 8、11、17、21 | 依版本逐一複製並包裝、使用 copyOf 或 toList；reversed 仍是共享檢視。 |
+| boundary-mapping.md | [各方向分別定義](boundary-mapping.md#java-directional-mapping) | 8、11 | 替代：不同 final 類別維持輸入與輸出契約分離。 |
+| boundary-mapping.md | [明確維護責任](boundary-mapping.md#java-mapping-ownership) | 8、11 | 替代：final 類別搭配方法完成簡單映射，不強制 Mapper 層。 |
+| boundary-mapping.md | [驗證實際映射路徑](boundary-mapping.md#java-mapping-verification) | 8、11 | 替代：final 結果類別與存取方法，測試仍走實際映射。 |
+| classes-and-construction.md | [建構期間的安全性](classes-and-construction.md#java-construction-safety) | 21 | 建置 JDK 21 可用 this-escape 輔助檢查，仍審查所有建構路徑。 |
+| classes-and-construction.md | [依需求選擇建立方式](classes-and-construction.md#java-construction-entrypoints) | 8、11、17、21 | 以一般類別建構子或 record 標準建構子集中驗證所有建立入口。 |
+| classes-and-construction.md | [`super` 呼叫與 `final` 的擴充限制](classes-and-construction.md#java-override-scope) | 8、11、17、21 | 依版本以可見性與審查或 sealed 限制繼承，仍以固定入口保留必要檢查。 |
+| equality-hashing-ordering.md | [明訂比較語意](equality-hashing-ordering.md#java-comparison-semantics) | 8、11、17、21 | 依版本採傳統轉型或 instanceof 型別模式，維持識別碼比較語意。 |
+| equality-hashing-ordering.md | [相等與雜湊契約](equality-hashing-ordering.md#java-equality-hash-contract) | 8、11、17、21 | 以一般類別手寫或 record 產生相等與雜湊，確認元件比較符合契約。 |
+| equality-hashing-ordering.md | [雜湊集合中的穩定性](equality-hashing-ordering.md#java-hash-collection-stability) | 8、11、17、21 | 依版本以複製後封裝、集合工廠或防禦複製的 record 保持鍵穩定。 |
+| equality-hashing-ordering.md | [跨型別相等範圍](equality-hashing-ordering.md#java-cross-type-equality) | 8、11、17、21 | 依版本以建構子可見性或 sealed 限制擴充，仍明訂跨型別相等範圍。 |
+| equality-hashing-ordering.md | [自然順序與情境排序](equality-hashing-ordering.md#java-ordering-choice) | 8、11、17、21 | 一般類別與 record 均可實作自然順序，情境順序由 Comparator 表達。 |
+| equality-hashing-ordering.md | [比較為零與相等性](equality-hashing-ordering.md#java-sorted-key-equivalence) | 8、11、17、21 | 一般類別與 record 的排序集合均以比較為零判同。 |
+| collections-and-ownership.md | [明確定義修改權與參考關係](collections-and-ownership.md#java-collection-ownership) | 21 | 反向檢視與來源共享資料，其修改行為取決於來源集合。 |
+| collections-and-ownership.md | [區分不可修改與不可變快照](collections-and-ownership.md#java-snapshots-and-views) | 8、11、17、21 | 舊版先複製再包裝，新版可收集不可修改結果，反向檢視並非隔離快照。 |
+| collections-and-ownership.md | [順序與重複資料](collections-and-ownership.md#java-order-and-duplicates) | 11、21 | 工廠 Set／Map 不保證順序，SequencedCollection 表達順序而不決定重複值契約。 |
+| collections-and-ownership.md | [限制資料累積](collections-and-ownership.md#java-bounded-accumulation) | 8、11、17、21 | 依版本用 limit 或有界產生器限制來源，再排序並收集不可修改結果。 |
+| collections-and-ownership.md | [延遲讀取的資源責任](collections-and-ownership.md#java-lazy-resource-lifetime) | 8、11、17、21 | 依版本採 collect 包裝或 toList，皆在資源範圍內完成終端操作。 |
+| collections-and-ownership.md | [批次修改的失敗保證](collections-and-ownership.md#java-batch-failure-state) | 8、11 | 依版本用 Arrays.asList 或 List.of 初始化，維持副本成功後才替換的失敗保證。 |
+| exceptions-and-resources.md | [明確的故障分類](exceptions-and-resources.md#java-exception-classification) | 8 | 以讀取位元組及嚴格 UTF-8 解碼保留 IOException 故障分類。 |
+| exceptions-and-resources.md | [Checked 與 Unchecked 的選擇](exceptions-and-resources.md#java-checked-unchecked) | 8 | 替代 readString 時保留受檢查契約及呼叫端處置責任。 |
+| exceptions-and-resources.md | [捕捉範圍與處置相符](exceptions-and-resources.md#java-catch-scope) | 8 | 舊版讀取與解碼仍只將檔案不存在轉成缺值。 |
+| exceptions-and-resources.md | [優先使用語言資源管理機制](exceptions-and-resources.md#java-resource-management) | 8、11、21 | 依版本採資源別名、既有變數 TWR 及 executor／HTTP client 的 AutoCloseable。 |
+| exceptions-and-resources.md | [保留操作與清理失敗](exceptions-and-resources.md#java-suppressed-failures) | 8、11 | 別名與既有變數 TWR 均保留 suppressed 清理失敗。 |
+| exceptions-and-resources.md | [有效期與關閉契約](exceptions-and-resources.md#java-resource-close-contract) | 8、11、21 | 舊版由擁有者安排關閉，新版 close 的等待行為與期限契約相關。 |
+| numbers-dates-text.md | [依語意選擇數值型別](numbers-dates-text.md#java-numeric-representation) | 8、11、17、21 | 依版本以一般類別或 record 承載精確十進位。 |
+| numbers-dates-text.md | [範圍與轉換檢查](numbers-dates-text.md#java-numeric-range-checks) | 21 | clamp 將值限制在區間內，與回報超限的契約語意不同。 |
+| numbers-dates-text.md | [BigDecimal 判同語意](numbers-dates-text.md#java-decimal-equivalence) | 8、11、17、21 | 一般類別手寫判同、雜湊與排序，record 的元件相等仍受 BigDecimal 正規化影響。 |
+| numbers-dates-text.md | [依業務語意選擇時間型別](numbers-dates-text.md#java-temporal-representation) | 8、11、17、21 | 一般類別或 record 均以 Instant 表示唯一時點。 |
+| numbers-dates-text.md | [可控制的時間基準](numbers-dates-text.md#java-clock-source) | 8、11、17、21 | Clock 維持舊版注入；17 起可選 InstantSource。 |
+| numbers-dates-text.md | [解析與輸出契約](numbers-dates-text.md#java-temporal-parsing-formatting) | 11、17、21 | CLDR 預設與更新可能改變既有輸入解析及輸出格式。 |
+| numbers-dates-text.md | [邊界與環境差異驗收](numbers-dates-text.md#java-boundary-verification) | 21 | UTF-8 預設變更影響既有資料的編碼相容性驗證。 |
+| lambda-and-stream.md | [意圖與可讀性優先](lambda-and-stream.md#java-intent-readability) | 8、11 | 以收集及不可修改包裝取代 toList，保留具名計價責任。 |
+| lambda-and-stream.md | [明確的參數型別](lambda-and-stream.md#java-lambda-parameter-types) | 8、11 | 舊版收集保留結果保證，Java 11 的 Lambda var 不改變既有明確型別寫法。 |
+| lambda-and-stream.md | [明確累積結果](lambda-and-stream.md#java-result-accumulation) | 17、21 | toList 只供不可修改結果，需可修改結果時保留 toCollection。 |
+| lambda-and-stream.md | [延遲與短路範圍](lambda-and-stream.md#java-lazy-short-circuit) | 11 | 前綴與有限產生 API 改變消費範圍，短路仍可能略過後續資料。 |
+| lambda-and-stream.md | [平行處理的採用條件](lambda-and-stream.md#java-parallel-stream-adoption) | 21 | 虛擬執行緒不消除平行 Stream 的 common pool 資源評估與量測責任。 |
+| lambda-and-stream.md | [維持錯誤分類](lambda-and-stream.md#java-failure-classification) | 8 | 以讀取位元組及嚴格解碼取代 readString，保留 IOException 契約。 |
+| lambda-and-stream.md | [明確消費範圍](lambda-and-stream.md#java-stream-consumption) | 8 | 防禦性複製及不可修改包裝維持快照，各自建立 Stream。 |
+| concurrency-and-async.md | [統一管理執行資源](concurrency-and-async.md#java-execution-resources) | 21 | 虛擬執行緒逐工作建立，仍由擁有者管理並以共用 Semaphore 限制下游容量。 |
+| concurrency-and-async.md | [等待期限與逾時處置](concurrency-and-async.md#java-deadline-budget) | 8、11 | 舊版以 Future.get 承接預算，較新版逾時結果 API 不會自動停止底層工作。 |
+| concurrency-and-async.md | [取消傳遞與實際停止](concurrency-and-async.md#java-cancellation-propagation) | 21 | StructuredTaskScope 為 Preview，仍沿工作控制物件傳遞取消並追蹤停止。 |
+| concurrency-and-async.md | [`Future` 與 `CompletableFuture` 的結果鏈](concurrency-and-async.md#java-result-reception) | 8 | 改用 java.util.logging 記錄故障，保留原結果鏈。 |
+| concurrency-and-async.md | [多工作組合的完成條件](concurrency-and-async.md#java-task-completion) | 21 | StructuredTaskScope 為 Preview，仍以正式結果組合 API 落實完成契約。 |
+| concurrency-and-async.md | [執行位置與阻塞行為](concurrency-and-async.md#java-execution-location) | 21 | Java 21 虛擬執行緒持 monitor 阻塞時可能釘住載體執行緒。 |
+| concurrency-and-async.md | [明確傳遞與清理脈絡](concurrency-and-async.md#java-context-propagation) | 21 | ScopedValue 為 Preview，正式功能範例沿用明確傳值及 ThreadLocal 清理或還原。 |
+| concurrency-and-async.md | [鎖定範圍與取得策略](concurrency-and-async.md#java-lock-scope) | 21 | 避免長阻塞釘住時仍保留完整原子範圍及所有退出路徑的解鎖。 |
+| concurrency-and-async.md | [受控關閉](concurrency-and-async.md#java-controlled-shutdown) | 21 | close 無期限等待，有期限契約仍使用 shutdown 與 awaitTermination。 |
+| concurrency-and-async.md | [可控制的併發驗收](concurrency-and-async.md#java-controlled-verification) | 21 | join(Duration) 提供限時終止確認，仍檢查布林結果與工作結果。 |
+| reflection-and-suppression.md | [維持封裝與不變條件](reflection-and-suppression.md#java-reflective-encapsulation) | 8、11、17、21 | 依版本審查特殊存取、JDK 強封裝與 record final 欄位限制，維持正式建立流程。 |
+| reflection-and-suppression.md | [使用前驗證契約](reflection-and-suppression.md#java-dynamic-contract-validation) | 8、11、17、21 | 舊版先檢查型別再轉型，新版可用型別模式，均驗證契約版本。 |
+| reflection-and-suppression.md | [區分故障與執行結果](reflection-and-suppression.md#java-reflection-failure) | 11、17、21 | 區分存取檢查與放寬失敗，強封裝下仍保留故障原因。 |
+| reflection-and-suppression.md | [限定檢查抑制](reflection-and-suppression.md#java-warning-suppression) | 8、11、21 | 區分 deprecation、removal 及 this-escape，將抑制限定在具體規則與最小範圍。 |
+| reflection-and-suppression.md | [產生碼不擴大豁免](reflection-and-suppression.md#java-generated-code) | 8、11、17、21 | 調整 Generated 註解與型別驗證語法，維持手寫銜接的型別檢查。 |
+| reflection-and-suppression.md | [驗證限制實際有效](reflection-and-suppression.md#java-dynamic-verification) | 11、17、21 | 依版本使用封裝設定實測允許及拒絕路徑，不以編譯成功替代執行驗證。 |
+| naming-packages-docs.md | [一致的命名形式](naming-packages-docs.md#java-naming-form) | 8、11、17、21 | 核對底線與受限型別名稱，保留有意義命名及合法的 yield 限定呼叫。 |
+| naming-packages-docs.md | [套件與架構邊界](naming-packages-docs.md#java-package-boundaries) | 8、11 | 以套件可見性及依賴檢查維持邊界，採用 JPMS 時區分 exports 與 opens。 |
+| naming-packages-docs.md | [補足契約資訊](naming-packages-docs.md#java-javadoc-contract) | 8、11、21 | 舊版以嚴格解碼實作整檔讀取，新版以 readString 與 snippet 保留契約說明。 |
+| naming-packages-docs.md | [重新命名與搬移的影響](naming-packages-docs.md#java-rename-impact) | 11、17、21 | 搬移時核對模組與服務配置，遷移 yield 呼叫仍維持名稱相容性。 |
+| naming-packages-docs.md | [形式與語意分別驗收](naming-packages-docs.md#java-document-verification) | 8、11、17、21 | code 與 snippet 的文件產生結果不等同範例的編譯與語意驗證。 |
 
 ## 驗收要求
 
