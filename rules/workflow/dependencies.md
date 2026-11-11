@@ -46,7 +46,6 @@
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
 
 <a id="dependency-management-acceptance"></a>
-<a id="依賴管理驗收"></a>
 ### 依賴管理驗收
 
 依第三方套件與依賴管理，按變更類型核對下列結果。

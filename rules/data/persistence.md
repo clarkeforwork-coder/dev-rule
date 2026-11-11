@@ -47,8 +47,6 @@
 
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
 
-<a id="資料庫行為與遷移驗證"></a>
-
 涉及資料約束與查詢、[交易與鎖定](../data/transactions.md#isolation-and-locking)的保證，必須以與正式環境相容的實際資料庫行為驗證，不能只靠 Mock 或記憶體替代品判定正確，不要求連線正式資料庫。
 
 - 驗證唯一性等約束、交易回滾與錯誤轉換。
