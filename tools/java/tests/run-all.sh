@@ -30,6 +30,7 @@ run ruby "${base}/tests/run-synthetic.rb"
 run /bin/bash "${base}/tests/run-version-parser.sh"
 run /bin/bash "${base}/tests/run-hook-failure.sh"
 run /bin/sh "${base}/tests/run-baseline.sh"
+run ruby "${base}/tests/run-compiler-regressions.rb"
 run ruby "${base}/tests/run-ci-tools.rb"
 run /bin/bash "${base}/tests/run-build-layer.sh"
 if [ "$("${java_bin}" -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d . -f 1)" = 17 ]; then

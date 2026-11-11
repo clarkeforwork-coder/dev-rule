@@ -1,7 +1,7 @@
 # JDK 17／Error Prone 2.42.0；詳 README.md。
 -XepDisableAllChecks
 # [JV-TG-012] 型別安全警告 → rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings
--Xep:SuppressWarningsWithoutExplanation:ERROR
+# JDK 17 未命中規範範例；此版不啟用 SuppressWarningsWithoutExplanation。
 # [JV-TG-021] 集合與映射的宣告型別 → rules/stacks/java/common/types-and-generics.md#java-collection-declarations
 -Xep:NonApiType:WARN
 # [JV-LS-006] 中間操作不隱藏業務副作用 → rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects

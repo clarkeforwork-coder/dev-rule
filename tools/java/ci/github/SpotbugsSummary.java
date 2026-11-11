@@ -19,16 +19,20 @@ public final class SpotbugsSummary {
         org.w3c.dom.Document document = factory.newDocumentBuilder().parse(Paths.get(args[0]).toFile());
         if (!"BugCollection".equals(document.getDocumentElement().getTagName())) throw new IllegalArgumentException("非 SpotBugs 報告");
         NodeList bugs = document.getElementsByTagName("BugInstance");
+        boolean errors = false;
         for (int i = 0; i < bugs.getLength(); i++) {
             Element bug = (Element) bugs.item(i);
             String pattern = bug.getAttribute("type");
             String diagnostic = mapping.getProperty(pattern);
             if (diagnostic == null || !diagnostic.contains("[JV-") || !diagnostic.contains(" → rules/")) throw new IllegalArgumentException("未映射 SpotBugs pattern: " + pattern);
-            System.out.println(diagnostic + " (" + pattern + ")");
+            String level = mapping.getProperty(pattern + ".level");
+            if (!"error".equals(level) && !"warn".equals(level)) throw new IllegalArgumentException("缺少 SpotBugs 等級：" + pattern);
+            errors |= "error".equals(level);
+            System.out.println(diagnostic + " (" + pattern + ", " + level + ")");
         }
         if (document.getElementsByTagName("Error").getLength() > 0 || document.getElementsByTagName("MissingClass").getLength() > 0) {
             throw new IllegalStateException("SpotBugs 分析不完整");
         }
-        if (bugs.getLength() > 0) System.exit(1);
+        if (errors) System.exit(1);
     }
 }

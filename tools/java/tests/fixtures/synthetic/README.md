@@ -13,3 +13,5 @@
 - `NoUnmanagedThread`：匿名 ThreadFactory、表達式與區塊 Lambda 建立點不命中；非 ThreadFactory 的匿名物件／Supplier Lambda、具名工廠內的其他方法仍命中。此規則不證明完整資源管理，狀態維持 partial。
 
 符合樣本僅針對對應規則成立，例如 enhanced-for 的 var 仍應由 JV-TG-001 回報。
+
+已知邊界：`NarrowingPrimitiveCast` 對 `(short)(longValue & 0xFFFF)` 的遮罩排除不看運算元型別；`NoUnmanagedThread` 對 ThreadFactory Lambda 內另建執行緒並 `start()` 的情況仍有漏報。JV-ND-009 的 verified 僅保證原範例形狀，JV-CA-002 維持 partial；上述邊界必須人工檢視，不以零診斷認定符合。CI partial 中原範例 0/N 的項目同樣不計涵蓋率；error 表示工具實際命中時的處置等級，不表示已完整驗證條文。

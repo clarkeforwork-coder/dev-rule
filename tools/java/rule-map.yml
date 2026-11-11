@@ -8,7 +8,8 @@
 # check: 正式規則 ID 或 custom:<PascalCase>；同模組不同設定以 [屬性=值] 區分；none 表示人工。
 # xpath: 僅 PMD 自訂規則；逐字保留來源 custom_xpath 的字串值。
 # versions: 適用 Java 版本，不代表逐版實證；實證版本另載於 note。
-# status: verified 正反例成功；partial 局部成功或已知漏報；candidate 未實證或失敗；manual 人工／待實作測試。
+# status: verified 只保證本庫規範正反例形狀成功，語意仍由人工審查補足；partial 局部成功或已知漏報；candidate 未實證或失敗；manual 人工／待實作測試。
+# partial 的等級是命中後處置，不是涵蓋率承諾；原範例 0/N 仍須人工驗收，不能以零診斷宣告符合。
 # false_positive_risk: low / medium / high；note: 審查、例外、設定與證據限制。
 # source: 來源盤點 ID 的陣列；合併時保留全部來源。
 # 縮寫表：
@@ -262,9 +263,9 @@
   - 11
   - 17
   - 21
-  status: verified
+  status: partial
   false_positive_risk: low
-  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：預設關閉，需 -Xep:SuppressWarningsWithoutExplanation:WARN；語意較弱（只要求附說明，不禁止），適合作為已核准例外的「必須附核准理由」檢查；；實證版本：17。  來源：inventory-inv-claude-a.yml 第 14 筆（JV-TG-012）。"
+  note: "形狀巧合：只要求抑制附解釋，不能判斷是否規避條文；JDK 17 未命中，因此停用該版旗標。 本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：預設關閉，需 -Xep:SuppressWarningsWithoutExplanation:WARN；語意較弱（只要求附說明，不禁止），適合作為已核准例外的「必須附核准理由」檢查；；實證版本：17。  來源：inventory-inv-claude-a.yml 第 14 筆（JV-TG-012）。"
   source:
   - inv-claude-a
 - id: JV-TG-013
@@ -778,9 +779,9 @@
   - 11
   - 17
   - 21
-  status: verified
+  status: partial
   false_positive_risk: low
-  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：預設開啟（ERROR）；違反範例的 .count() 結果被丟棄（只為觸發 peek 副作用而消費）被抓：「Return value of 'count' must be used」；只涵蓋「用終端操作當副作用觸發器」這種形狀；；實證版本：17。  來源：inventory-inv-claude-a.yml 第 37 筆（JV-LS-006）。"
+  note: "形狀巧合：命中的是 count 回傳值未使用，不能判定 peek 的副作用。 本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：預設開啟（ERROR）；違反範例的 .count() 結果被丟棄（只為觸發 peek 副作用而消費）被抓：「Return value of 'count' must be used」；只涵蓋「用終端操作當副作用觸發器」這種形狀；；實證版本：17。  來源：inventory-inv-claude-a.yml 第 37 筆（JV-LS-006）。"
   source:
   - inv-claude-a
 - id: JV-LS-007
@@ -1514,9 +1515,9 @@
   - 11
   - 17
   - 21
-  status: verified
+  status: partial
   false_positive_risk: low
-  note: 前期研究（歷史）：規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order
+  note: 形狀巧合：只按 Storage 名稱尾綴判定可見性，換名即不涵蓋。 前期研究（歷史）：規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order
     反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
     FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。  來源：inventory-inv-claude-a.yml
     第 59 筆（JV-NP-024）。 第 3 期：tests/run-build-layer.sh 直接抽取 java-package-boundaries
@@ -4300,7 +4301,7 @@
   false_positive_risk: high
   note: >-
     原 XPath 僅偵測縮窄轉型；新增 Math.clamp 且引數含 Integer.MIN_VALUE／MAX_VALUE 的語法分支，涵蓋 Java 21 規範反例，Math.toIntExact 符合例仍乾淨。無法推論是否允許飽和截斷的業務契約，合法 clamp 與位元／影像轉型仍可能誤報，風險
-    high；經核准逐處抑制，不全面排除。hashCode 內縮窄轉型維持排除。 排除編譯期常數、char 轉換及 byte 的 0xFF 與 short 的 0xFFFF 遮罩慣用式；補 double→float。 來源：inventory-inv-claude-b.yml 第 84 筆（JV-ND-009）。
+    high；經核准逐處抑制，不全面排除。hashCode 內縮窄轉型維持排除。 已知漏報：(short)(longValue & 0xFFFF) 未檢查運算元型別，需人工檢查。 排除編譯期常數、char 轉換及 byte 的 0xFF 與 short 的 0xFFFF 遮罩慣用式；補 double→float。 來源：inventory-inv-claude-b.yml 第 84 筆（JV-ND-009）。
   source:
   - inv-claude-b
 - id: JV-ND-010
@@ -4773,7 +4774,7 @@
   false_positive_risk: medium
   note: >-
     採用：限定非資源管理元件；ThreadFactory、測試基礎設施及核准擁有者需精確例外；不涵蓋 Thread.ofVirtual().start 等其他建立 API，也不證明容量管理；實證：bad-17=1, good-17=0, good-21=0；原盤點 PMD 結果（未隨庫保存）；；實證版本：17、21。
-    排除 Runtime.addShutdownHook、具名／匿名 ThreadFactory 的 newThread 與型別為 ThreadFactory 的 Lambda 建立點；核准的資源管理元件、測試基礎設施仍可能誤報，故 warn＋partial。 來源：inventory-inv-codex-b.yml 第 42／48 筆（JV-CA-002）。
+    已知漏報：ThreadFactory Lambda 區塊內額外 new Thread(r).start() 仍被排除，需人工審查建立與啟動點。 排除 Runtime.addShutdownHook、具名／匿名 ThreadFactory 的 newThread 與型別為 ThreadFactory 的 Lambda 建立點；核准的資源管理元件、測試基礎設施仍可能誤報，故 warn＋partial。 來源：inventory-inv-codex-b.yml 第 42／48 筆（JV-CA-002）。
   source:
   - inv-codex-b
 - id: JV-CA-003

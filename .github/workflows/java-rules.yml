@@ -8,7 +8,11 @@ on:
       build-tool:
         type: string
         required: true
+      project-directory:
+        type: string
+        default: '.'
       dev-rule-ref:
+        description: 建議用 commit SHA 或不可移動的 tag
         type: string
         required: true
 permissions:
@@ -37,15 +41,25 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ inputs.java-version }}
+      - name: 安裝固定 Maven
+        run: |
+          archive="$RUNNER_TEMP/maven.tar.gz"
+          curl -fsSL https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz -o "$archive"
+          echo "7a9cdf674fc1703d6382f5f330b3d110ea1b512b51f1652846d9e4e8a588d766  $archive" | sha256sum -c -
+          tar -xzf "$archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/apache-maven-3.9.9/bin" >> "$GITHUB_PATH"
       - name: 編譯、靜態分析、架構及基準
         env:
           BUILD_TOOL: ${{ inputs.build-tool }}
           JAVA_VERSION: ${{ inputs.java-version }}
-        run: sh vendor/dev-rule/tools/java/ci/github/run.sh
+        working-directory: ${{ inputs.project-directory }}
+        run: sh "$GITHUB_WORKSPACE/vendor/dev-rule/tools/java/ci/github/run.sh"
       - name: 規範摘要與人工審查
         if: always()
+        env:
+          PROJECT_DIRECTORY: ${{ inputs.project-directory }}
         run: |
-          if test -f .java-rules/summary.md; then cat .java-rules/summary.md >> "$GITHUB_STEP_SUMMARY"; fi
+          if test -f "$PROJECT_DIRECTORY/java-rules-reports/summary.md"; then cat "$PROJECT_DIRECTORY/java-rules-reports/summary.md" >> "$GITHUB_STEP_SUMMARY"; fi
           if test -f vendor/dev-rule/tools/java/coverage/coverage.md; then
             awk '/^## .*人工/{show=1} show {print}' vendor/dev-rule/tools/java/coverage/coverage.md >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -54,5 +68,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: java-rules-reports
-          path: .java-rules/
+          path: ${{ inputs.project-directory }}/java-rules-reports/
+          include-hidden-files: true
           if-no-files-found: error

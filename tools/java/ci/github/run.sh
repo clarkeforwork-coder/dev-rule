@@ -2,21 +2,22 @@
 # 正式片段即是本機與 Actions 的共同門檻；消費端不用 Ruby／Python。
 set -eu
 base=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
-mkdir -p .java-rules
-summary=.java-rules/summary.md
+mkdir -p java-rules-reports
+summary=java-rules-reports/summary.md
 printf '# Java 規範檢查\n\n' > "$summary"
 result=0
 run() {
     name=$1; shift
     code=0
-    "$@" >".java-rules/$name.log" 2>&1 || code=$?
-    cat ".java-rules/$name.log"
+    "$@" >"java-rules-reports/$name.log" 2>&1 || code=$?
+    cat "java-rules-reports/$name.log"
     printf '* %s：退出碼 %s\n' "$name" "$code" >> "$summary"
-    grep '\[JV-' ".java-rules/$name.log" >> "$summary" || :
+    grep '\[JV-' "java-rules-reports/$name.log" >> "$summary" || :
     if [ "$code" -ne 0 ]; then result=1; fi
 }
 case "$JAVA_VERSION" in 8|11|17|21) ;; *) echo '不支援的 Java 版本' >&2; exit 2;; esac
-[ -s "$base/javac/lint-jdk${JAVA_VERSION}.txt" ] && [ -s "$base/errorprone/flags-jdk${JAVA_VERSION}.txt" ]
+[ -s "$base/javac/lint-jdk${JAVA_VERSION}.txt" ] || exit 2
+[ -s "$base/errorprone/flags-jdk${JAVA_VERSION}.txt" ] || exit 2
 case "$BUILD_TOOL" in
 maven)
     run verify mvn -B -Pdev-rule-baseline clean verify
@@ -34,7 +35,7 @@ esac
 for report in $reports; do
     if [ -f "$report" ]; then
         target=$(printf '%s' "$report" | tr '/' '_')
-        cp "$report" ".java-rules/$target"
+        cp "$report" "java-rules-reports/$target"
     fi
 done
 exit "$result"

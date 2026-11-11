@@ -42,12 +42,26 @@ public final class PolicyCompiler {
         }
         command.addAll(flags("javac/lint-jdk" + version + ".txt"));
         command.add("-Xplugin:ErrorProne " + String.join(" ", flags("errorprone/flags-jdk" + version + ".txt")));
-        Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+        // -J 選項由 launcher 處理，不能放在 javac argfile；其餘參數全部寫檔。
+        List<String> launch = new ArrayList<String>();
+        launch.add(command.get(0));
+        List<String> arguments = new ArrayList<String>();
+        for (String argument : command.subList(1, command.size())) {
+            if (argument.startsWith("-J")) launch.add(argument);
+            else arguments.add("\"" + argument.replace("\\", "\\\\").replace("\"", "\\\"")
+                .replace("\n", "\\n").replace("\r", "\\r") + "\"");
+        }
+        Path argfile = Files.createTempFile("dev-rule-javac-", ".args");
+        argfile.toFile().deleteOnExit();
+        Files.write(argfile, arguments, StandardCharsets.UTF_8);
+        launch.add("@" + argfile);
+        Process process = new ProcessBuilder(launch).redirectErrorStream(true).start();
         StringBuilder log = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
         String line;
         while ((line = reader.readLine()) != null) { log.append(line).append('\n'); }
         int code = process.waitFor();
+        Files.deleteIfExists(argfile);
         Map<String, String> row = new HashMap<String, String>();
         boolean violation = false;
         for (String item : Files.readAllLines(base.resolve("rule-map.yml"), StandardCharsets.UTF_8)) {
@@ -73,11 +87,14 @@ public final class PolicyCompiler {
         if (!hit || "candidate".equals(row.get("status"))) return false;
         String diagnostic = "[" + row.get("id") + "] " + row.get("title") + " → " + row.get("rule");
         // Maven 的 fork parser 會捨棄無位置的自由文字；附在原診斷位置後保留映射。
+        output.setLength(0);
         for (String line : log.split("\n")) {
             boolean matching = "errorprone".equals(row.get("tool")) && line.contains("[" + check + "]");
             if ("javac".equals(row.get("tool")))
                 for (String category : check.substring(7).split("[ ,]")) matching |= line.contains("[" + category + "]");
-            if (matching) { output.insert(output.indexOf(line) + line.length(), " " + diagnostic); break; }
+            output.append(line);
+            if (matching) output.append(" ").append(diagnostic);
+            output.append('\n');
         }
         return "error".equals(row.get("level"));
     }

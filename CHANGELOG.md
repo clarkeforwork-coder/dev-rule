@@ -4,9 +4,13 @@
 
 ## [Unreleased]
 
+### 修正
+
+- Java CI 審閱修正：SpotBugs 低優先門檻與 error／warn 分流、基準 v2 上下文指紋及嚴格清償檢查、PMD 抑制相容、每行編譯診斷與 argfile 傳遞、固定 Maven 的可重用 workflow 與零違規示範專案；3 筆形狀巧合降 partial，明示剩餘漏報與人工審查界線。
+
 ### 新增
 
-- 完成 Java CI 層：四版 javac／Error Prone、SpotBugs、ArchUnit、jdeps／jdeprscan、Enforcer／Gradle 依賴限制、整合 Maven／Gradle 片段與固定 revision 的可重用 workflow；新增精確 PMD／Checkstyle 基準、可重跑正反例與端到端驗收，涵蓋率提升至 49／143 小節（34.27%）。
+- 完成 Java CI 層：四版 javac／Error Prone、SpotBugs、ArchUnit、jdeps／jdeprscan、Enforcer／Gradle 依賴限制、整合 Maven／Gradle 片段與固定 revision 的可重用 workflow；新增精確 PMD／Checkstyle 基準、可重跑正反例與端到端驗收，涵蓋率提升至 48／143 小節（33.57%）。
 
 - 加入 Java 自動檢查工具的 pre-commit 層（`tools/java/`）：規則對照表 `rule-map.yml`（每條工具規則對一個規範錨點）、PMD 7.29.0 規則集與自訂 XPath 規則、Checkstyle 10.26.1／9.3 設定、純 shell pre-commit hook（只檢查暫存的 `.java`、只阻擋新增違規、依 JDK 8／11／17／21 選工具）、`install.sh`、`.pre-commit-hooks.yaml`、Maven／Gradle 接入片段，以及以規範範例驗證工具的測試；CI 新增 `java-tools` job（#10）。
 

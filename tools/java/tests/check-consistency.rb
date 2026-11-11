@@ -83,8 +83,12 @@ end
 expected = rows.select { |r| r['tool'] == 'spotbugs' }.group_by { |r| r['check'] }.transform_values do |group|
   group.map { |r| "[#{r['id']}] #{r['title']} → #{r['rule']}" }.join('；')
 end
+rows.select { |r| r['tool'] == 'spotbugs' }.group_by { |r| r['check'] }.each { |name, group| expected[name + '.level'] = group.any? { |r| r['level'] == 'error' } ? 'error' : 'warn' }
 check.call(mapping == expected && mapping.size == properties.size, 'SpotBugs pattern-map 缺漏、重複或訊息不符')
 [8, 11, 17, 21].each do |jdk|
+  lint = File.readlines(File.join(root, "tools/java/javac/lint-jdk#{jdk}.txt")).grep(/^-Xlint:/).flat_map { |line| line.strip.delete_prefix('-Xlint:').split(',') }
+  mapped_lint = rows.select { |r| r['tool'] == 'javac' && r['versions'].include?(jdk) && r['check'].start_with?('-Xlint:') }.flat_map { |r| r['check'].delete_prefix('-Xlint:').split(/[ ,]/) }
+  check.call((lint - mapped_lint).empty?, "javac JDK #{jdk} 啟用未映射類別")
   content = File.read(File.join(root, "tools/java/errorprone/flags-jdk#{jdk}.txt"))
   active = content.lines.map(&:strip).reject { |s| s.empty? || s.start_with?('#') }
   check.call(active.first == '-XepDisableAllChecks' && active.uniq == active, "Error Prone JDK #{jdk} 預設檢查未關閉或重複參數")
@@ -94,6 +98,7 @@ check.call(mapping == expected && mapping.size == properties.size, 'SpotBugs pat
     severity = group.any? { |r| r['level'] == 'error' } ? 'ERROR' : 'WARN'
     flag = "-Xep:#{name}:#{severity}"
     unavailable = jdk <= 11 && %w[NonApiType IdentifierName].include?(name)
+    unavailable ||= jdk == 17 && name == 'SuppressWarningsWithoutExplanation'
     enabled = !unavailable && group.any? { |r| %w[partial verified].include?(r['status']) }
     check.call(enabled ? active.include?(flag) : !active.any? { |f| f.start_with?("-Xep:#{name}:") }, "Error Prone #{jdk}/#{name} 候選隔離、版本或等級不符")
   end
@@ -129,9 +134,20 @@ caller = YAML.load_file(File.join(root, 'tools/java/ci/github/caller.yml'))
 events = workflow['on'] || workflow[true] # Psych YAML 1.1 將 on 視為 boolean。
 inputs = events.fetch('workflow_call').fetch('inputs')
 provided = caller.fetch('jobs').fetch('java-rules').fetch('with')
-check.call(provided.keys.sort == inputs.keys.sort, '五行 caller 與 workflow inputs 不符')
+check.call((provided.keys - inputs.keys).empty? && inputs.select { |_, v| v['required'] }.keys.all? { |key| provided.key?(key) }, '五行 caller 與 workflow inputs 不符')
 check.call(caller['jobs']['java-rules']['uses'].include?('/.github/workflows/java-rules.yml@'), 'caller 未引用正式 workflow')
-check.call(workflow['jobs']['rules']['steps'].any? { |step| step['run'] == 'sh vendor/dev-rule/tools/java/ci/github/run.sh' }, 'workflow 未使用正式 runner')
+check.call(workflow['jobs']['rules']['steps'].any? { |step| step['run'].to_s.include?('vendor/dev-rule/tools/java/ci/github/run.sh') }, 'workflow 未使用正式 runner')
+upload = workflow['jobs']['rules']['steps'].find { |step| step['uses'].to_s.start_with?('actions/upload-artifact@') }.fetch('with')
+check.call(upload['include-hidden-files'] == true && upload['path'].include?('/java-rules-reports/'), 'workflow artifact 未使用可見報告路徑與隱藏檔保護')
+demo = File.join(root, 'tools/java/tests/demo-maven')
+fragment = File.read(File.join(root, 'tools/java/ci/maven/pom-fragment.xml')).sub('${maven.multiModuleProjectDirectory}/vendor/dev-rule', '${project.basedir}/../../../..')
+check.call(File.read(File.join(demo, 'pom.xml')) == fragment, '示範 POM 與正式片段不同步')
+check.call(File.read(File.join(demo, 'src/test/java/com/example/RulesTemplate.java')) == "package com.example;\n" + File.read(File.join(root, 'tools/java/archunit/RulesTemplate.java')), '示範架構範本不同步')
+demo_job = YAML.load_file(File.join(root, '.github/workflows/rules-check.yml')).fetch('jobs').fetch('java-demo')
+check.call(demo_job['uses'] == './.github/workflows/java-rules.yml' && demo_job.fetch('with') == {
+  'build-tool' => 'maven', 'java-version' => '17', 'dev-rule-ref' => '${{ github.sha }}',
+  'project-directory' => 'tools/java/tests/demo-maven'
+}, '本庫示範 caller 未引用同一提交的正式 workflow')
 puts 'Workflow：正式 YAML、最小五行 caller 與輸入契約通過。'
 puts errors.empty? ? '一致性：零問題（雙向映射、候選隔離、訊息、等級、內嵌 XPath）。' : errors.join("\n")
 exit(errors.empty? ? 0 : 1)

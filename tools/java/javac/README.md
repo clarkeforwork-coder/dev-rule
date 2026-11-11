@@ -8,19 +8,11 @@ javac --release 17 @vendor/dev-rule/tools/java/javac/lint-jdk17.txt -d target/li
 
 JDK 8 本機改為 `-source 8 -target 8`；跨編譯應使用 `--release`，不能只靠 source／target 防止誤用新版 API。來源檔名與 classpath 由消費專案建置系統提供。
 
-## 阻擋工作
+## 正式門檻
 
-先清理基線，再在**獨立編譯工作**啟用已核准的型別安全與明確錯誤類別：
+使用 [Maven 正式片段](../ci/maven/pom-fragment.xml) 或 [Gradle 正式片段](../ci/gradle/rules.gradle.kts)，由共用 PolicyCompiler 讀取本版 lint 清單，再依 rule-map 等級阻擋，不使用全域 `-Werror`。每個診斷行都附上全部相關 ID 與錨點。
 
-```sh
-javac --release 17 \
-  -Xlint:rawtypes,unchecked,varargs,overrides,finally,divzero,empty,removal,synchronization \
-  -Werror -d target/lint-gate @sources.txt
-```
-
-不要在指定類別前加入 `-Xlint:none`：本次四版驗證發現它會壓掉後續指定類別的警告。
-
-8 不開 removal／synchronization，11 不開 synchronization，21 可經基線審查加入 this-escape／lossy-conversions。`-Werror` 是全域選項，會將本次編譯的**所有警告**升為錯誤，包括註解處理器與非 lint 警告；沒有 `-Werror:rawtypes`。不可把 `-Xlint:all -Werror` 當成只阻擋指定類別。較廣的 `-Xlint:all` 另作報告工作；deprecation、serial、try、cast 等先供審查。Preview 預設不加 `--enable-preview`，核准與否仍須人工確認。
+8 不開 removal；11／17 加 removal；21 預設再加 this-escape。varargs、overrides、divzero、empty、synchronization、lossy-conversions 尚無對應 ID，僅列為可選註解，不進正式門檻。`-Xlint:all` 可另作人工審查報告；Preview 預設不啟用。
 
 javac 原生訊息不能覆寫；CI 摘要以 rule-map 的 check 對照 `[ID] 標題 → rule`，同一類別對多個小節時全部保留，不得任意取第一筆。`-Xdoclint` 檢查文件形式，不能證明契約內容充分；`--release` 是建置限制，不等於某條 lint 診斷。`Integer(int)` 在 8 未棄用、11 為 deprecation、17／21 為 removal，測試明確使用實際目標平台。
 

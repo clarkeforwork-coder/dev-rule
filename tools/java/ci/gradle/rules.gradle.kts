@@ -98,7 +98,12 @@ tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
         options.annotationProcessorPath?.let { if (!it.isEmpty) arguments.addAll(listOf("-processorpath", it.asPath)) }
         arguments.addAll(options.compilerArgs)
         arguments.addAll(source.files.map { it.absolutePath })
-        project.exec { commandLine(arguments) }
+        val argfile = temporaryDir.resolve("javac.args")
+        argfile.writeText(arguments.drop(2).joinToString("\n") {
+            "\"" + it.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r") + "\""
+        }, Charsets.UTF_8)
+        try { project.exec { commandLine(arguments.take(2) + "@${argfile.absolutePath}") } }
+        finally { argfile.delete() }
     }
 }
 val spotbugsRuntime = configurations.create("devRuleSpotbugs")
@@ -117,7 +122,7 @@ val spotbugsTasks = javaSources.map { sources ->
             devRuleRoot.resolve("tools/java/spotbugs/include.xml"), devRuleRoot.resolve("tools/java/spotbugs/exclude.xml"))
         doFirst {
             report.get().asFile.parentFile.mkdirs()
-            args("-effort:max", "-xml:withMessages", "-output", report.get().asFile.absolutePath,
+            args("-effort:max", "-low", "-xml:withMessages", "-output", report.get().asFile.absolutePath,
                 "-include", devRuleRoot.resolve("tools/java/spotbugs/include.xml").absolutePath,
                 "-exclude", devRuleRoot.resolve("tools/java/spotbugs/exclude.xml").absolutePath,
                 "-auxclasspath", sources.runtimeClasspath.asPath)

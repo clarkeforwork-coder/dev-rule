@@ -6,6 +6,8 @@
 
 消費端不依賴 Ruby／Python。支援標準目錄的單 Java 模組，包含 main 與 test 原始碼；多模組／自訂 source sets 須擴充產物清單並逐模組驗證。JDK 8 無 jdeprscan；jdeps 限專案 class，不將 ArchUnit 等相依 JAR 的實作混入專案門檻。jdeprscan 仍使用完整相依 classpath。
 
-各階段退出碼及 ID／錨點寫入 `.java-rules/summary.md`，報告、原始輸出上傳 artifact。加入 `.java-rules/` 與 `.java-rules-classpath` 到專案 ignore。CI 不會自動建立、刷新或裁剪基準。
+各階段退出碼及 ID／錨點寫入 `java-rules-reports/summary.md`，報告、原始輸出上傳 artifact。加入 `java-rules-reports/` 與 `.java-rules-classpath` 到專案 ignore。CI 不會自動建立、刷新或裁剪基準。
 
 語法驗證：`ruby -ryaml` 載入 workflow 與 caller，核對 `workflow_call.inputs` 和 caller 的 `with`；本機端到端使用相同 runner。沒有遠端 GitHub 執行證據，不將 YAML 載入當成完整 Actions 平台驗收。
+
+Maven 固定 3.9.9 並驗 SHA-256；dev-rule-ref 建議用 commit SHA 或不可移動的 tag。`project-directory` 預設為 `.`，本庫 caller 指向 `tools/java/tests/demo-maven`，以相同提交的正式片段與零違規基準驗收。artifact 同時開啟 include-hidden-files。遠端結果須在推送後確認。

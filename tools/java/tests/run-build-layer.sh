@@ -48,6 +48,11 @@ if [ -x "$JAVA_HOME/bin/jdeprscan" ]; then
     expect 0 'jdeprscan 規範棄用正例' "$base/build/jdeprscan.sh" --release "$release" "$work/java-deprecated-api-1"
     if [ "$release" -ge 17 ]; then expect 1 'jdeprscan 預定移除負例' "$base/build/jdeprscan.sh" --release "$release" --for-removal "$work/java-deprecated-api-0"; fi
     expect 2 'jdeprscan 錯誤 release 拒絕' "$base/build/jdeprscan.sh" --release invalid "$work/good"
+    mkdir -p "$work/exception-name"
+    printf 'class NamedException { int year(java.util.Date date) { return date.getYear(); } }\n' > "$work/exception-name/NamedException.java"
+    javac -d "$work/exception-name" "$work/exception-name/NamedException.java" 2>"$work/compile"
+    expect 1 'jdeprscan 類別名含 Exception 仍分類為違規' "$base/build/jdeprscan.sh" --release "$release" "$work/exception-name"
+    grep -q '\[JV-VP-021\]' "$work/result"
 else echo 'SKIP jdeprscan：JDK 8 無此工具'; fi
 # 使用真正 Enforcer 外掛與完整正反 POM。
 ruby - "$base" "$work" <<'RUBY'
@@ -161,8 +166,9 @@ printf '\ndependencies { implementation("org.hamcrest:hamcrest-core:1.1") }\n' >
 expect 1 'Gradle 版本衝突負例' "$gradle_bin" --no-daemon -q -p "$work/gradle" compileJava
 grep -qi 'conflict' "$work/result"
 # CI 摘要器：正例、實際 pattern 映射、壞報告都必須可區分。
-javac -encoding UTF-8 -d "$work/runner" "$base/ci/github/SpotbugsSummary.java" "$base/ci/github/LintSummary.java"
+javac -encoding UTF-8 -d "$work/runner" "$base/ci/github/SpotbugsSummary.java"
 printf 'TEST=[JV-VP-021] 棄用 API → rules/stacks/java/common/version-policy.md#java-deprecated-api\n' > "$work/patterns.properties"
+printf 'TEST.level=error\n' >> "$work/patterns.properties"
 printf '<BugCollection/>\n' > "$work/spot-good.xml"
 printf '<BugCollection><BugInstance type="TEST"/></BugCollection>\n' > "$work/spot-bad.xml"
 printf '<BugCollection><MissingClass>missing.Type</MissingClass></BugCollection>\n' > "$work/spot-incomplete.xml"
@@ -170,9 +176,9 @@ expect 0 'SpotBugs 摘要乾淨報告' java -cp "$work/runner" SpotbugsSummary "
 expect 1 'SpotBugs 摘要違規報告' java -cp "$work/runner" SpotbugsSummary "$work/spot-bad.xml" "$work/patterns.properties"
 grep -q '\[JV-VP-021\]' "$work/result"
 expect 1 'SpotBugs 摘要不完整報告拒絕' java -cp "$work/runner" SpotbugsSummary "$work/spot-incomplete.xml" "$work/patterns.properties"
-printf 'warning: [rawtypes] found raw type\n' > "$work/lint.log"
-expect 0 'javac 診斷映射' java -cp "$work/runner" LintSummary "$work/lint.log" "$base/rule-map.yml"
-grep -q '\[JV-' "$work/result"
+printf 'TEST.level=warn\n' >> "$work/patterns.properties"
+expect 0 'SpotBugs warn 不阻擋' java -cp "$work/runner" SpotbugsSummary "$work/spot-bad.xml" "$work/patterns.properties"
+grep -q '\[JV-VP-021\]' "$work/result"
 printf '# test\n-Xlint:none\n-Xlint:rawtypes\n-Xlint:unchecked\n' > "$work/lint.txt"
 test "$(sh "$base/ci/github/lint-argument.sh" "$work/lint.txt")" = '-Xlint:rawtypes,unchecked'
 echo 'PASS Maven lint 類別轉換（不含 -Xlint:none）'

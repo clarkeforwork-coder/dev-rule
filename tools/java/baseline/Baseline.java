@@ -11,7 +11,8 @@ import org.w3c.dom.*;
 
 /** 無第三方依賴；以 Java 8 編譯與執行。 */
 public final class Baseline {
-    private static final String HEADER = "# dev-rule-baseline-v1\n# tool\trule\tfile\tsha256\tlevel\tcount\towner\tdue\tmessage\n";
+    private static final String HEADER = "# dev-rule-baseline-v2\n# tool\trule\tfile\tsha256\tlevel\tcount\towner\tdue\tmessage\n";
+    private static int suppressed;
     private static final Pattern ID = Pattern.compile("\\[(JV-[A-Z]+-[0-9]{3})\\]");
     private static final class Entry {
         String tool, rule, file, hash, level, owner, due, message;
@@ -34,7 +35,7 @@ public final class Baseline {
     }
     private static Map<String, Entry> read(Path path) throws Exception {
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-        require(!lines.isEmpty() && lines.get(0).equals("# dev-rule-baseline-v1"), "不支援的基準版本");
+        require(!lines.isEmpty() && lines.get(0).equals("# dev-rule-baseline-v2"), "不支援的基準版本");
         Map<String, Entry> result = new TreeMap<String, Entry>();
         for (String line : lines) {
             if (line.startsWith("#") || line.isEmpty()) continue;
@@ -83,12 +84,15 @@ public final class Baseline {
         for (int i=0; i<files.getLength(); i++) {
             if (!(files.item(i) instanceof Element)) continue;
             Element file = (Element) files.item(i);
+            if (tool.equals("pmd") && file.getTagName().equals("suppressedviolation")) { suppressed++; continue; }
             require(file.getTagName().equals("file"), "報告含工具錯誤或未知元素：" + file.getTagName());
             String name = file.getAttribute("name");
             require(!name.isEmpty(), "報告缺少檔名");
             Path source = root.resolve(name).toRealPath();
             require(source.startsWith(root), "來源不在專案根目錄：" + name);
-            List<String> content = Files.readAllLines(source, StandardCharsets.UTF_8);
+            List<String> content;
+            try { content = Files.readAllLines(source, StandardCharsets.UTF_8); }
+            catch (IOException e) { throw new IOException("無法讀取 UTF-8 來源：" + source + "：" + e.getMessage(), e); }
             NodeList violations = file.getChildNodes();
             for (int j=0; j<violations.getLength(); j++) {
                 if (!(violations.item(j) instanceof Element)) continue;
@@ -112,7 +116,11 @@ public final class Baseline {
                     e.level=severity.equals("error") ? "error" : "warn";
                 }
                 // 只修剪行首尾；保留字串常值與行內空白，避免改變語意後仍命中。
-                e.hash=digest(content.get(e.line-1).trim());
+                int before=e.line-2, after=e.line;
+                while (before>=0 && content.get(before).trim().isEmpty()) before--;
+                while (after<content.size() && content.get(after).trim().isEmpty()) after++;
+                e.hash=digest((before>=0 ? content.get(before).trim() : "") + "\n"
+                    + content.get(e.line-1).trim() + "\n" + (after<content.size() ? content.get(after).trim() : ""));
                 result.add(e);
             }
         }
@@ -126,7 +134,9 @@ public final class Baseline {
         require(args.length>0 && Arrays.asList("create", "check", "prune").contains(args[0]), "用法：create|check|prune --baseline 檔 --pmd 報告／--checkstyle 報告 [--root 專案根] [--owner 負責人 --due YYYY-MM-DD]");
         Map<String,String> options = new HashMap<String,String>();
         List<String[]> reports = new ArrayList<String[]>();
+        boolean allowStale=false;
         for (int i=1; i<args.length; i+=2) {
+            if (args[i].equals("--allow-stale")) { require(args[0].equals("check") && !allowStale, "--allow-stale 僅適用 check 且不可重複"); allowStale=true; i--; continue; }
             require(i+1<args.length, "選項缺少值");
             String flag=args[i];
             require(Arrays.asList("--baseline","--root","--owner","--due","--pmd","--checkstyle").contains(flag), "未知選項：" + flag);
@@ -150,6 +160,7 @@ public final class Baseline {
             require(seen.add(path), "重複報告：" + path);
             covered.add(r[0]); current.addAll(report(r[0], path, root));
         }
+        System.out.println("略過 PMD 已抑制診斷：" + suppressed + " 筆");
         for (Entry e : old.values()) require(covered.contains(e.tool), "未提供基準中工具的完整報告：" + e.tool);
         Map<String,Entry> now=new TreeMap<String,Entry>();
         int errors=0, warnings=0, resolved=0;
@@ -167,6 +178,9 @@ public final class Baseline {
         for (Entry e : old.values()) {
             Entry n=now.get(e.key()); int remaining=n==null ? 0 : Math.min(e.count,n.count);
             resolved+=e.count-remaining;
+            if (e.count>remaining) System.out.println("已清償：" + e.file + " " + e.rule + " " + e.hash + " × " + (e.count-remaining));
+            if (args[0].equals("check") && LocalDate.parse(e.due).isBefore(LocalDate.now()))
+                System.out.println("基準已逾期：" + e.file + " " + e.rule + " owner=" + e.owner + " due=" + e.due);
             if (remaining>0) { e.count=remaining; retained.put(e.key(),e); }
         }
         if (create) { write(baseline,now.values(),true); System.out.println("已建立基準：" + current.size() + " 筆"); }
@@ -175,6 +189,6 @@ public final class Baseline {
             if (args[0].equals("prune") && errors==0) write(baseline,retained.values(),false);
             System.out.println("新增 error：" + errors + "；新增 warn：" + warnings + "；已清償：" + resolved + " 筆");
         }
-        return errors>0 ? 1 : 0;
+        return errors>0 || (args[0].equals("check") && resolved>0 && !allowStale) ? 1 : 0;
     }
 }

@@ -5,6 +5,7 @@ require 'tmpdir'
 require 'fileutils'
 require 'open3'
 require 'shellwords'
+require 'rexml/document'
 ROOT = File.expand_path('../../..', __dir__)
 OUT = File.expand_path(ARGV.fetch(0))
 FileUtils.mkdir_p(OUT)
@@ -21,6 +22,7 @@ def run(dir, name, command, expected: 0, id: nil)
   puts output.lines.grep(/\[JV-|BUILD SUCCESS|BUILD FAILED|新增|基準/).uniq
   puts output unless valid
   raise "#{name} 失敗：#{OUT}/#{name}.log" unless valid
+  output
 end
 Dir.mktmpdir('java-ci-integration-') do |dir|
   FileUtils.mkdir_p("#{dir}/vendor")
@@ -62,11 +64,15 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     compile = tool == 'maven' ? %w[clean test-compile] : %w[clean testClasses]
     run(dir, "#{tool}-good", cmd + full)
     {
-      'javac'=>['final class Hidden { java.util.List raw; }', 'JV-TG-024'],
+      'javac'=>["final class Hidden {\n java.util.List first;\n java.util.List second;\n java.util.List third;\n}", 'JV-TG-024'],
       'errorprone'=>['final class Hidden { void probe(String text) { text.trim(); } }', 'JV-LS-006']
     }.each do |name, (code, id)|
       File.write("#{src}/Hidden.java", "package com.example.internal;\n#{code}\n")
-      run(dir, "#{tool}-#{name}", cmd + compile, expected: 1, id: id)
+      output = run(dir, "#{tool}-#{name}", cmd + compile, expected: 1, id: id)
+      if name == 'javac'
+        diagnostics = output.lines.grep(/\[rawtypes\]/).uniq
+        raise '三個 raw type 診斷未各帶 ID' unless diagnostics.size >= 3 && diagnostics.all? { |line| line.include?('[JV-TG-024]') }
+      end
     end
     File.write("#{src}/Hidden.java", good.sub('final class', 'public final class'))
     test = tool == 'maven' ? %w[clean test -Dtest=RulesTemplateTest] : %w[clean test --tests *RulesTemplateTest]
@@ -77,6 +83,18 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     File.write("#{src}/Hidden.java", "package com.example.internal;\nfinal class Hidden { private volatile int value; void increment() { value++; } }\n")
     spot = tool == 'maven' ? %w[clean test-compile dependency:build-classpath -Dmdep.outputFile=target/dev-rule-classpath spotbugs:spotbugs exec:exec@dev-rule-bytecode] : %w[clean devRuleBytecode]
     run(dir, "#{tool}-spotbugs", cmd + spot, expected: 1, id: 'JV-CA-004')
+    File.write("#{src}/Hidden.java", "package com.example.internal;\nfinal class Hidden { void BadName() {} }\n")
+    classes = tool == 'maven' ? 'target/classes' : 'build/classes/java/main'
+    run(dir, "#{tool}-priority3-compile", ["#{JDK}/bin/javac", '-d', classes, "#{src}/Hidden.java"])
+    scan = tool == 'maven' ? %w[spotbugs:spotbugs exec:exec@dev-rule-bytecode] : %w[devRuleBytecode -x compileJava -x compileTestJava]
+    run(dir, "#{tool}-spotbugs-priority3", cmd + scan, expected: 1, id: 'JV-NP-020')
+    xml = tool == 'maven' ? 'target/spotbugsXml.xml' : 'build/reports/spotbugs/main.xml'
+    report = REXML::Document.new(File.read("#{dir}/#{xml}"))
+    raise '未實際掃出 priority 3' unless REXML::XPath.first(report, '//BugInstance[@type="NM_METHOD_NAMING_CONVENTION"]/@priority').to_s == '3'
+    File.write("#{src}/Hidden.java", "package com.example.internal;\nfinal class Hidden { java.util.Optional<Integer> read(java.nio.file.Path path) { try { return java.util.Optional.of(Integer.parseInt(new String(java.nio.file.Files.readAllBytes(path), java.nio.charset.StandardCharsets.UTF_8).trim())); } catch (Exception failure) { return java.util.Optional.empty(); } } }\n")
+    run(dir, "#{tool}-warn-compile", ["#{JDK}/bin/javac", '-d', classes, "#{src}/Hidden.java"])
+    run(dir, "#{tool}-spotbugs-warn", cmd + scan, id: 'JV-ER-011')
+    File.write("#{src}/Hidden.java", good)
     File.write(test_file, test_source.sub("    /** 驗證已核准的內部套件可見性。 */\n", ''))
     run(dir, "#{tool}-checkstyle", cmd + (tool == 'maven' ? %w[checkstyle:check] : %w[checkstyleTest]), expected: 1, id: 'JV-NP-031')
     File.write(test_file, test_source)

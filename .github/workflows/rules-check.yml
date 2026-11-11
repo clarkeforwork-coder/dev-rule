@@ -51,3 +51,11 @@ jobs:
         run: gem install rexml --no-document
       - name: 驗證 Java 工具與規範範例
         run: tools/java/tests/run-all.sh
+
+  java-demo:
+    uses: ./.github/workflows/java-rules.yml
+    with:
+      build-tool: maven
+      java-version: '17'
+      dev-rule-ref: ${{ github.sha }}
+      project-directory: tools/java/tests/demo-maven

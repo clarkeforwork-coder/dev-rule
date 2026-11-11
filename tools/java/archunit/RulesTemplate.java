@@ -1,10 +1,11 @@
-import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
+import com.tngtech.archunit.lang.CompositeArchRule;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
-/** 把 com.example 換成專案根套件；在 JUnit 測試呼叫 check(classes)。 */
+/** 把 com.example 換成專案根套件；在 JUnit 測試執行已選定的規則。 */
 public final class RulesTemplate {
     private static String reason(String id) {
         return "[" + id + "] 套件與架構邊界 → rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries";
@@ -24,10 +25,13 @@ public final class RulesTemplate {
         .because(reason("JV-NP-023"));
     public static final ArchRule CYCLES = slices().matching("com.example.(*)..")
         .should().beFreeOfCycles().because(reason("JV-NP-023"));
-    public static void check(JavaClasses classes) {
-        for (ArchRule rule : new ArchRule[]{INTERNAL, STORAGE, SHARED, LAYERS, CORE, CYCLES}) rule.check(classes);
-    }
+    public static final ArchRule ALL = CompositeArchRule.of(INTERNAL).and(STORAGE).and(SHARED)
+        .and(LAYERS).and(CORE).and(CYCLES);
+    /** 從指定的編譯產物執行架構檢查。
+     * @param paths 編譯產物目錄
+     */
     public static void main(String[] paths) {
-        check(new ClassFileImporter().importPaths(paths));
+        ClassFileImporter importer = new ClassFileImporter();
+        ALL.check(importer.importPaths(paths));
     }
 }

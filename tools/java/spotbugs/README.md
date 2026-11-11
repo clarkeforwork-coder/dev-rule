@@ -26,11 +26,11 @@ java -jar /path/to/spotbugs-4.8.6/lib/spotbugs.jar -textui -effort:max -low \
 
 `-low` 必須保留，否則 REC／THROWS 等低優先模式可能不輸出。不要只用退出碼判斷沒有違規：未加 `-exitcode` 時成功產出報告可仍有 BugInstance。CI 應讀取 XML，檢查 Errors／MissingClass，依 rule-map 的 error／warn 決定阻擋；若使用 `-exitcode`，其 bitmask 同時包含違規、缺失類別與分析錯誤，不能把非零一律視為業務違規。
 
-Maven 可透過 SpotBugs plugin 的 `includeFilterFile`／`excludeFilterFile` 接入，並明確鎖定 core 4.8.6；Gradle 透過既有 SpotBugs plugin 的 `toolVersion`、`includeFilter`、`excludeFilter` 接入。外掛本身版本須由專案固定並驗證，不讓外掛預設版本悄悄覆蓋上述 core。ZIP 可用 JDK `jar xf` 展開；消費端不需要 Ruby／Python。
+使用 [Maven 正式片段](../ci/maven/pom-fragment.xml) 的 threshold=Low／effort=Max，或 [Gradle 正式片段](../ci/gradle/rules.gradle.kts) 的 JavaExec（-low／-effort:max）；Gradle 不使用額外 SpotBugs plugin。兩者固定 core 4.8.6，經 SpotbugsSummary 依 pattern-map 的 `.level` 判定：warn 只列出，error 才阻擋。消費端不需要 Ruby／Python。
 
 ## 規範診斷
 
-SpotBugs 原生訊息不能覆寫。`pattern-map.properties` 將 pattern 對應到 `[JV-…] 標題 → rules/…#錨點`，可由 Java `Properties.load(InputStream)` 直接載入；非 ASCII 字元使用標準 Unicode escape。XML 每個 BugInstance 的 `type` 作為 key；同 pattern 對多錨點以「；」保留全部，避免重複 properties key 覆蓋資料。對照表包含候選，但預設 include 不啟用候選；摘要須同時參照 rule-map 狀態與等級。
+SpotBugs 原生訊息不能覆寫。`pattern-map.properties` 將 pattern 對應到 `[JV-…] 標題 → rules/…#錨點`，可由 Java `Properties.load(InputStream)` 直接載入；非 ASCII 字元使用標準 Unicode escape。XML 每個 BugInstance 的 `type` 作為 key；同 pattern 對多錨點以「；」保留全部，避免重複 properties key 覆蓋資料。對照表包含候選，但預設 include 不啟用候選；`.level` 保存規範等級並由一致性檢查與 rule-map 比對。
 
 ## 實證界線
 

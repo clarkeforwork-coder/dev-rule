@@ -9,8 +9,8 @@
 | 文件數 | 15 |
 | 小節數 | 143 |
 | 映射筆數 | 308 |
-| status：verified（筆） | 81 |
-| status：partial（筆） | 52 |
+| status：verified（筆） | 78 |
+| status：partial（筆） | 55 |
 | status：candidate（筆） | 35 |
 | status：manual（筆） | 140 |
 | tier：pre-commit（筆） | 111 |
@@ -31,9 +31,9 @@
 | tool：maven-enforcer（筆） | 4 |
 | tool：gradle（筆） | 2 |
 | tool：none（筆） | 140 |
-| 本庫 PMD／Checkstyle／CI 工具 verified 小節數 | 49 |
-| CI 層未 verified（映射筆數；不計涵蓋率） | 38 |
-| 涵蓋率（verified 小節／全部小節） | 49／143 = 34.27% |
+| 本庫 PMD／Checkstyle／CI 工具 verified 小節數 | 48 |
+| CI 層未 verified（映射筆數；不計涵蓋率） | 41 |
+| 涵蓋率（verified 小節／全部小節） | 48／143 = 33.57% |
 
 每小節只要有一筆本庫可重跑的 PMD／Checkstyle／CI 工具 verified 即計入分子，同小節多規則不重複計數；status／tier／tool 欄則按映射筆數計算。partial、candidate、manual 均不計分子；verified 不代表整個小節、所有版本或所有合法例外都已自動驗證。
 
@@ -185,7 +185,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 明確的參數型別 | java-lambda-parameter-types | error | pre-commit | checkstyle：RegexpSinglelineJava（JV-LS-003） | partial | — |
 | 明確的參數型別 | java-lambda-parameter-types | error | pre-commit | pmd：custom:NoInferredLambdaParameterType（JV-LS-004） | verified | — |
 | 明確的參數型別 | java-lambda-parameter-types | error | manual | none：none（JV-LS-005） | manual | — |
-| 中間操作不隱藏業務副作用 | java-intermediate-side-effects | error | ci-compile | errorprone：ReturnValueIgnored（JV-LS-006） | verified | 否（本庫已重跑） |
+| 中間操作不隱藏業務副作用 | java-intermediate-side-effects | error | ci-compile | errorprone：ReturnValueIgnored（JV-LS-006） | partial | 是（未達 verified） |
 | 中間操作不隱藏業務副作用 | java-intermediate-side-effects | error | pre-commit | pmd：custom:StreamPeekUsage（JV-LS-007） | verified | — |
 | 中間操作不隱藏業務副作用 | java-intermediate-side-effects | error | manual | none：none（JV-LS-008） | manual | — |
 | 明確累積結果 | java-result-accumulation | error | pre-commit | pmd：custom:ForEachAccumulatesExternalState（JV-LS-009） | verified | — |
@@ -228,7 +228,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 一致的命名形式 | java-naming-form | error | manual | none：none（JV-NP-021） | manual | — |
 | 名稱表達具體責任 | java-specific-responsibility | error | manual | none：none（JV-NP-022） | manual | — |
 | 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:InternalPackageNotPublic（JV-NP-023） | partial | 是（未達 verified） |
-| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:NestedStorageNotPublic（JV-NP-024） | verified | 否（本庫已重跑） |
+| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:NestedStorageNotPublic（JV-NP-024） | partial | 是（未達 verified） |
 | 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:SharedPackageNoBusinessDependency（JV-NP-025） | partial | 是（未達 verified） |
 | 套件與架構邊界 | java-package-boundaries | error | ci-build | jdeps：--check（JV-NP-026） | candidate | 是（未達 verified） |
 | 套件與架構邊界 | java-package-boundaries | error | ci-build | jdeps：-jdkinternals（JV-NP-027） | candidate | 是（未達 verified） |
@@ -347,7 +347,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 不得以向下轉型補回業務型別 | java-business-type-casts | error | pre-commit | pmd：custom:DowncastFromObject（JV-TG-009） | verified | — |
 | 不得以向下轉型補回業務型別 | java-business-type-casts | error | manual | none：none（JV-TG-010） | manual | — |
 | 型別安全警告 | java-type-safety-warnings | error | pre-commit | checkstyle：SuppressWarnings（JV-TG-011） | verified | — |
-| 型別安全警告 | java-type-safety-warnings | error | ci-compile | errorprone：SuppressWarningsWithoutExplanation（JV-TG-012） | verified | 否（本庫已重跑） |
+| 型別安全警告 | java-type-safety-warnings | error | ci-compile | errorprone：SuppressWarningsWithoutExplanation（JV-TG-012） | partial | 是（未達 verified） |
 | 型別安全警告 | java-type-safety-warnings | error | ci-compile | javac：-Xlint:rawtypes,unchecked -Werror（JV-TG-013） | partial | 是（未達 verified） |
 | 型別安全警告 | java-type-safety-warnings | error | pre-commit | pmd：custom:NoSuppressTypeSafetyWarnings（JV-TG-014） | verified | — |
 | 型別安全警告 | java-type-safety-warnings | error | manual | none：none（JV-TG-015） | manual | — |
@@ -616,7 +616,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 
 | 來源小節 | status |
 | --- | --- |
-| rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries | verified |
+| rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries | partial |
 
 ### custom:SharedPackageNoBusinessDependency
 

@@ -11,75 +11,11 @@
 
 `flags-jdk*.txt` 每條註解包含 ID／錨點；先關閉全部預設檢查，再啟用登錄的非 candidate 規則。相同 check 對多錨點時只有一個執行參數，但保留所有映射。候選或版本缺少的 check 留在註解，不傳入編譯器。EqualsGetClass 與允許 getClass 的相等契約衝突，禁止啟用。partial 只補強特定模式，無法取代人工審查。
 
-## Maven
+## 正式接入
 
-將設定合併到消費專案的 maven-compiler-plugin（固定 3.14.1），依**執行 JDK**選上表版本；不要修改專案原本的 annotation processors。以下為 JDK 17／21 的接法：
+使用 [Maven 正式片段](../ci/maven/pom-fragment.xml)（compiler 3.13.0）或 [Gradle 正式片段](../ci/gradle/rules.gradle.kts)，不要另建 annotationProcessorPaths 或重複加入外掛。兩者都透過 `ci/compiler/javac.sh` 校驗 JAR 並保留既有 processor path；最終編譯參數寫入暫存 argfile，避免大量來源檔超過系統 argv 上限。
 
-```xml
-<configuration>
-  <fork>true</fork>
-  <release>17</release>
-  <annotationProcessorPaths>
-    <path>
-      <groupId>com.google.errorprone</groupId>
-      <artifactId>error_prone_core</artifactId>
-      <version>${errorprone.version}</version>
-    </path>
-  </annotationProcessorPaths>
-  <compilerArgs>
-    <arg>-XDcompilePolicy=simple</arg>
-    <arg>--should-stop=ifError=FLOW</arg>
-    <arg>-XDaddTypeAnnotationsToSymbol=true</arg>
-    <!-- 同一 arg：把 flags-jdkN.txt 的非註解內容以空白接在 ErrorProne 後面 -->
-    <arg>-Xplugin:ErrorProne -XepDisableAllChecks -Xep:NonApiType:WARN</arg>
-  </compilerArgs>
-</configuration>
-```
-
-上例只示範一條檢查；完整政策必須使用該 JDK flags 的全部非註解行。fork 模式另將下列每個 JVM 參數作為 compilerArgs 的獨立 `<arg>`（非 fork 則去掉 `-J` 放入 `.mvn/jvm.config`）：
-
-```text
--J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
--J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
--J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED
--J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED
--J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
--J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED
--J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
--J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
--J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
--J--add-exports=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED
--J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
--J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED
-```
-
-JDK 11 使用 2.10.0、同樣 exports／opens，省略 FLOW 與 addTypeAnnotationsToSymbol。JDK 8 使用 2.10.0、`source/target=8`，移除 release／exports／opens／FLOW／addTypeAnnotationsToSymbol；以 `-J-Xbootclasspath/p:/絕對路徑/javac-9+181-r4173-1.jar` 載入 profiles 鎖定的 javac。JAR 須先按固定 URL 取得並校驗，不能只放一般 classpath。此舊版組合只為維持既有專案，非新版規則支援承諾。
-
-## Gradle
-
-可使用原生 JavaCompile 的 fork／annotationProcessorPath，無須額外 Error Prone Gradle 外掛。建置 Gradle 的 JDK 與 fork 編譯器 JDK 分開設定；舊 JDK 專案可由新版 Gradle 執行，再 fork 對應編譯器。
-
-```kotlin
-val errorprone by configurations.creating
-val compilerJdk = 17 // 必須與實際 fork compiler 一致
-val epVersion = "2.42.0"
-dependencies { errorprone("com.google.errorprone:error_prone_core:$epVersion") }
-tasks.withType<JavaCompile>().configureEach {
-    javaCompiler.set(javaToolchains.compilerFor { languageVersion.set(JavaLanguageVersion.of(compilerJdk)) })
-    options.isFork = true
-    options.annotationProcessorPath = configurations.annotationProcessor.get() + errorprone
-    val policy = file("vendor/dev-rule/tools/java/errorprone/flags-jdk$compilerJdk.txt")
-        .readLines().map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }
-    options.compilerArgs.addAll(listOf("-XDcompilePolicy=simple", "--should-stop=ifError=FLOW",
-        "-XDaddTypeAnnotationsToSymbol=true", "-Xplugin:ErrorProne " + policy.joinToString(" ")))
-    options.forkOptions.jvmArgs =
-        listOf("api", "file", "main", "model", "parser", "processing", "tree", "util", "code", "comp")
-            .map { "--add-exports=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" } +
-        listOf("code", "comp").map { "--add-opens=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
-}
-```
-
-JDK 8／11 按 Maven 段相同版本差異調整；8 的 forkOptions.jvmArgs 改成 `-Xbootclasspath/p:...`。既有處理器應合併，不可覆蓋遺失。以上是整合片段，專案須用自身完整 classpath 執行建置驗證。
+`JAVA_HOME` 必須與實際編譯器相同；Gradle 的 `devRuleCompiler` 必須等於執行 Gradle 的 JDK，`devRuleRelease` 可指定較舊 API。JDK 8 bridge、其他版本 exports／opens 由共用入口管理。JDK 17 的 SuppressWarningsWithoutExplanation 未命中原範例，因此不啟用；JDK 21 仍為 partial，不代表可以靠補註解豁免條文。
 
 ## 診斷與實證
 
