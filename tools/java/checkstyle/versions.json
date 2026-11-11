@@ -1,0 +1,12 @@
+{
+  "10.26.1": {
+    "url": "https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.26.1/checkstyle-10.26.1-all.jar",
+    "sha256": "e41c24433723ba310a30e41da4f449c105ad47cab2ae9e6be5e06606a647dbca",
+    "runtime": 17
+  },
+  "9.3": {
+    "url": "https://github.com/checkstyle/checkstyle/releases/download/checkstyle-9.3/checkstyle-9.3-all.jar",
+    "sha256": "02ad3307e46059a7c4f8af6c5f61f477bc5fd910e56afb145c45904c95d213ac",
+    "runtime": 8
+  }
+}
