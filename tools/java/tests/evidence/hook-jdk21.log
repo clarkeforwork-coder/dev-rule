@@ -1,0 +1,50 @@
+
+案例：沒有 Java；預期結束碼 0
+real 0.08
+user 0.02
+sys 0.03
+通過：結束碼 0
+
+案例：新增違規阻擋；預期結束碼 1
+Bad.java:1 [JV-NP-013] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+Bad.java:1 [JV-NP-015] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+real 1.94
+user 2.55
+sys 0.26
+通過：結束碼 1
+
+案例：staged 違反、工作目錄符合仍擋；預期結束碼 1
+Bad.java:1 [JV-NP-013] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+Bad.java:1 [JV-NP-015] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+real 2.21
+user 3.22
+sys 0.30
+通過：結束碼 1
+
+案例：staged 符合、工作目錄違反仍通過；預期結束碼 0
+real 1.92
+user 2.55
+sys 0.25
+通過：結束碼 0
+
+案例：既有違規不擋新增乾淨行；預期結束碼 0
+real 1.76
+user 2.50
+sys 0.24
+通過：結束碼 0
+
+案例：整檔模式仍擋既有違規；預期結束碼 1
+Old.java:1 [JV-NP-013] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+Old.java:1 [JV-NP-015] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+real 1.89
+user 2.57
+sys 0.26
+通過：結束碼 1
+
+案例：只有非 Java 檔；預期結束碼 0
+real 0.07
+user 0.02
+sys 0.03
+通過：結束碼 0
+
+正式設定 hook 案例全部通過。

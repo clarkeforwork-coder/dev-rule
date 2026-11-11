@@ -4,7 +4,7 @@
 # level: error / warn（條文要求，非工具預設或啟用門檻）。
 # tier: pre-commit / ci-compile / ci-bytecode / ci-arch / ci-build / test / manual。
 # tool: pmd / checkstyle / javac / errorprone / spotbugs / archunit / jdeps / jdeprscan / maven-enforcer / gradle / none。
-# check: 正式規則 ID 或 custom:<PascalCase>；設定與例外在 note；none 表示人工。
+# check: 正式規則 ID 或 custom:<PascalCase>；同模組不同設定以 [屬性=值] 區分；none 表示人工。
 # xpath: 僅 PMD 自訂規則；逐字保留來源 custom_xpath 的字串值。
 # versions: 適用 Java 版本，不代表逐版實證；實證版本另載於 note。
 # status: verified 正反例成功；partial 局部成功或已知漏報；candidate 未實證或失敗；manual 人工／待實作測試。
@@ -904,17 +904,18 @@
   - 11
   - 17
   - 21
-  status: verified
+  status: partial
   false_positive_risk: medium
   note: 本小節沒有規範範例，以合成範例實證（parallelStream() 與 stream().parallel() 各抓到一次，stream().count()
     乾淨）；所有平行處理都會被報，已核准者須 @SuppressWarnings("PMD.ParallelStreamUsage") 並附量測依據，這正是條文要求的例外流程；；實證版本：17。
+    無規範正反例，以自製 parallelStream／stream 樣本實證；不計 verified。
   source:
   - inv-claude-a
 - id: JV-LS-014
   rule: rules/stacks/java/common/lambda-and-stream.md#java-parallel-stream-adoption
   title: 平行處理的採用條件
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -931,7 +932,7 @@
   rule: rules/stacks/java/common/lambda-and-stream.md#java-reduction-collection
   title: 歸約與收集契約
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -1024,7 +1025,7 @@
   rule: rules/stacks/java/common/lambda-and-stream.md#java-execution-verification
   title: 執行語意驗收
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -1705,7 +1706,7 @@
   rule: rules/stacks/java/common/naming-packages-docs.md#java-document-verification
   title: 形式與語意分別驗收
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -1847,7 +1848,7 @@
   rule: rules/stacks/java/common/classes-and-construction.md#java-construction-entrypoints
   title: 依需求選擇建立方式
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -1920,7 +1921,7 @@
   rule: rules/stacks/java/common/classes-and-construction.md#java-lifecycle-verification
   title: 契約與生命週期驗收
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2161,7 +2162,7 @@
   rule: rules/stacks/java/common/null-and-optional.md#java-api-absence
   title: API 邊界的缺值轉換
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2195,7 +2196,7 @@
   rule: rules/stacks/java/common/value-objects.md#java-value-construction-invariants
   title: 建立時保護不變條件
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2246,7 +2247,7 @@
   rule: rules/stacks/java/common/value-objects.md#java-value-immutability
   title: 不可變性
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2280,7 +2281,7 @@
   rule: rules/stacks/java/common/value-objects.md#java-value-equality
   title: 值相等的條件
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2298,7 +2299,7 @@
   rule: rules/stacks/java/common/value-objects.md#java-value-normalization
   title: 正規化規則
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2332,7 +2333,7 @@
   rule: rules/stacks/java/common/value-objects.md#java-value-restoration
   title: 資料還原
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2383,7 +2384,7 @@
   rule: rules/stacks/java/common/value-objects.md#java-value-test-coverage
   title: 業務保證的測試
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2608,7 +2609,7 @@
   rule: rules/stacks/java/common/states-and-results.md#java-model-acceptance
   title: 模型驗收
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2642,7 +2643,7 @@
   rule: rules/stacks/java/common/boundary-mapping.md#java-mapping-integrity
   title: 失敗明確回報
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2659,7 +2660,7 @@
   rule: rules/stacks/java/common/boundary-mapping.md#java-update-intent
   title: 保留更新意圖
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2710,7 +2711,7 @@
   rule: rules/stacks/java/common/boundary-mapping.md#java-mutable-isolation
   title: 集合與可變元素的隔離
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -2761,7 +2762,7 @@
   rule: rules/stacks/java/common/boundary-mapping.md#java-mapping-verification
   title: 驗證實際映射路徑
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -3088,7 +3089,7 @@
   rule: rules/stacks/java/common/collections-and-ownership.md#java-collection-verification
   title: 所有權與行為驗收
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -3235,7 +3236,25 @@
   level: error
   tier: pre-commit
   tool: checkstyle
-  check: IllegalCatch
+  check: IllegalCatch[illegalClassNames=Throwable,Error]
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: high
+  note: 不得捕捉 Throwable／Error；規範反例只有 Exception，Throwable／Error 以 tests 的自製正反樣本實證，不計
+    verified。設定亦包含 java.lang 全名；入口層若需保留原故障並重新拋出，須經例外核准，以 SuppressionFilter 的精確 id、檔案及行號抑制。
+  source:
+  - inv-claude-b
+- id: JV-ER-031
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope
+  title: 捕捉範圍與處置相符
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: IllegalCatch[illegalClassNames=Exception,RuntimeException]
   versions:
   - 8
   - 11
@@ -3243,13 +3262,8 @@
   - 21
   status: verified
   false_positive_risk: high
-  note: 條文對 Exception 是「優先捕捉具體例外」→ warn；對 Throwable／Error 是「不得」→ 另一筆 error；預設 illegalClassNames
-    含 Error, Exception, RuntimeException, Throwable 及 java.lang.*，建議拆成兩個 IllegalCatch
-    實例設不同 severity；；誤報風險說明：框架入口層、排程、執行緒邊界依條文「最外層入口可統一處理」本就允許 catch (Exception)；須以
-    SuppressionFilter／SuppressionXpathFilter 排除入口層 package，或在入口類別以 @SuppressWarnings("checkstyle:IllegalCatch")
-    註明；；實證版本：17、8；設定：[illegalClassNames=Exception,RuntimeException]；規範違反範例只 catch
-    Exception，Throwable／Error 以自製樣本實證；；誤報風險說明：執行緒／執行器最外層記錄後重新拋出的 catch (Throwable)
-    需抑制；；實證版本：17、8；補充實證：samples/SubClauses.java:16,19 caught；設定：[illegalClassNames=Throwable,Error,java.lang.Throwable,java.lang.Error]。
+  note: 條文「優先捕捉具體例外」為建議；規範違反範例 catch Exception 命中，符合範例乾淨。設定亦包含 java.lang 全名；最外層入口統一處理須核准後以
+    SuppressionFilter 的本筆 id、入口檔案及行號精確抑制，不啟用任意 @SuppressWarnings。
   source:
   - inv-claude-b
 - id: JV-ER-009
@@ -3642,7 +3656,7 @@
   rule: rules/stacks/java/common/exceptions-and-resources.md#java-failure-coverage
   title: 失敗路徑驗收
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -3751,7 +3765,7 @@
   rule: rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract
   title: 相等與雜湊契約
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -4047,7 +4061,7 @@
   rule: rules/stacks/java/common/equality-hashing-ordering.md#java-relationship-coverage
   title: 關係與集合行為驗收
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -4221,7 +4235,8 @@
   xpath: "//CastExpression[not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')]
     and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')])
     or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')])
-    or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')])]"
+    or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')])]
+    | //MethodCall[@MethodName='clamp'][TypeExpression/ClassType[@SimpleName='Math']][ArgumentList/FieldAccess[@Name='MIN_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]][ArgumentList/FieldAccess[@Name='MAX_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]]"
   versions:
   - 8
   - 11
@@ -4229,8 +4244,9 @@
   - 21
   status: verified
   false_positive_risk: high
-  note: 條文「須明確檢查」字面為 error，但實務誤報高；Java 21 違反範例 Math.clamp 屬語意（clamp 本身是合法 API），不報；；誤報風險說明：位元運算、序列化、影像／音訊處理等大量合法縮窄轉型會被報；已排除
-    hashCode 方法內（樣本 53 行不報）；建議先以 warn 導入並允許逐處抑制，或限縮為 long→int；；實證版本：17、21。
+  note: 原 XPath 僅偵測縮窄轉型；新增 Math.clamp 且引數含 Integer.MIN_VALUE／MAX_VALUE 的語法分支，涵蓋 Java
+    21 規範反例，Math.toIntExact 符合例仍乾淨。無法推論是否允許飽和截斷的業務契約，合法 clamp 與位元／影像轉型仍可能誤報，風險 high；經核准逐處抑制，不全面排除。hashCode
+    內縮窄轉型維持排除。
   source:
   - inv-claude-b
 - id: JV-ND-010
@@ -4639,7 +4655,7 @@
   rule: rules/stacks/java/common/numbers-dates-text.md#java-boundary-verification
   title: 邊界與環境差異驗收
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -4744,7 +4760,7 @@
   rule: rules/stacks/java/common/concurrency-and-async.md#java-deadline-budget
   title: 等待期限與逾時處置
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -4761,7 +4777,7 @@
   rule: rules/stacks/java/common/concurrency-and-async.md#java-cancellation-propagation
   title: 取消傳遞與實際停止
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -4795,7 +4811,7 @@
   rule: rules/stacks/java/common/concurrency-and-async.md#java-task-completion
   title: 多工作組合的完成條件
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -4812,7 +4828,7 @@
   rule: rules/stacks/java/common/concurrency-and-async.md#java-execution-location
   title: 執行位置與阻塞行為
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -4830,7 +4846,7 @@
   rule: rules/stacks/java/common/concurrency-and-async.md#java-context-propagation
   title: 明確傳遞與清理脈絡
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -4882,7 +4898,7 @@
   rule: rules/stacks/java/common/concurrency-and-async.md#java-controlled-shutdown
   title: 受控關閉
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -4989,7 +5005,7 @@
   rule: rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-contract-validation
   title: 使用前驗證契約
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -5114,7 +5130,7 @@
   rule: rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-verification
   title: 驗證限制實際有效
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -5220,7 +5236,7 @@
   rule: rules/stacks/java/common/version-policy.md#java-runtime-verification
   title: 執行版本驗證
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -5237,7 +5253,7 @@
   rule: rules/stacks/java/common/version-policy.md#java-module-versions
   title: 多模組版本要求
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:
@@ -5531,7 +5547,7 @@
   rule: rules/stacks/java/common/version-policy.md#java-toolchain-compatibility
   title: 建置與驗證工具相容性
   level: error
-  tier: manual
+  tier: test
   tool: none
   check: none
   versions:

@@ -22,7 +22,7 @@ version, status = Open3.capture2e(options[:pmd], '--version')
 abort "無法執行 PMD：#{version}" unless status.success? && version.match?(/PMD 7\.29\.0\b/)
 puts "工具：#{version.lines.find { |line| line.include?('PMD ') }&.strip}"
 puts "範例與原始報告：#{File.expand_path(options[:output])}"
-manifest = JavaExamples.extract(options[:output])
+manifest = ENV['JAVA_EXAMPLES_DIR'] ? JSON.parse(File.read(File.join(ENV['JAVA_EXAMPLES_DIR'], 'manifest.json'))) : JavaExamples.extract(options[:output])
 puts "抽取：#{manifest.size} 個範例，#{manifest.map { |e| e['file'] }.uniq.size} 份文件"
 rows = YAML.load_file(File.join(JavaExamples::ROOT, 'tools/java/rule-map.yml')).select do |row|
   row['tool'] == 'pmd' && %w[verified partial].include?(row['status'])

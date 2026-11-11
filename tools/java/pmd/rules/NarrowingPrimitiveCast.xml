@@ -5,10 +5,10 @@
   <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
   <!-- JV-ND-009 -->
   <rule name="NarrowingPrimitiveCast" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-009] 範圍與轉換檢查 → rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks">
-    <description>條文「須明確檢查」字面為 error，但實務誤報高；Java 21 違反範例 Math.clamp 屬語意（clamp 本身是合法 API），不報；；誤報風險說明：位元運算、序列化、影像／音訊處理等大量合法縮窄轉型會被報；已排除 hashCode 方法內（樣本 53 行不報）；建議先以 warn 導入並允許逐處抑制，或限縮為 long→int；；實證版本：17、21。</description>
+    <description>原 XPath 僅偵測縮窄轉型；新增 Math.clamp 且引數含 Integer.MIN_VALUE／MAX_VALUE 的語法分支，涵蓋 Java 21 規範反例，Math.toIntExact 符合例仍乾淨。無法推論是否允許飽和截斷的業務契約，合法 clamp 與位元／影像轉型仍可能誤報，風險 high；經核准逐處抑制，不全面排除。hashCode 內縮窄轉型維持排除。</description>
     <priority>1</priority>
     <properties>
-      <property name="xpath"><value><![CDATA[//CastExpression[not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')] and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')])]]]></value></property>
+      <property name="xpath"><value><![CDATA[//CastExpression[not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')] and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')])] | //MethodCall[@MethodName='clamp'][TypeExpression/ClassType[@SimpleName='Math']][ArgumentList/FieldAccess[@Name='MIN_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]][ArgumentList/FieldAccess[@Name='MAX_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]]]]></value></property>
     </properties>
   </rule>
 </ruleset>

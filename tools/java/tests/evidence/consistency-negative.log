@@ -1,0 +1,32 @@
+錯誤訊息錨點：退出 1
+pmd/ruleset.xml：65 規則，65 映射
+pmd/ruleset-candidates.xml：10 規則，10 映射
+checkstyle/checkstyle.xml：22 規則，22 映射
+checkstyle/candidates.xml：14 規則，14 映射
+JV-NP-002 訊息 ID／錨點錯誤
+未知規則 ID：退出 1
+pmd/ruleset.xml：65 規則，65 映射
+pmd/ruleset-candidates.xml：10 規則，10 映射
+checkstyle/checkstyle.xml：22 規則，22 映射
+checkstyle/candidates.xml：14 規則，14 映射
+checkstyle/checkstyle.xml 未登錄或集合錯誤：JV-ER-999
+checkstyle/checkstyle.xml 缺少或重複映射：["JV-ER-031"]
+候選混入正式集合：退出 1
+pmd/ruleset.xml：65 規則，65 映射
+pmd/ruleset-candidates.xml：10 規則，10 映射
+checkstyle/checkstyle.xml：22 規則，22 映射
+checkstyle/candidates.xml：14 規則，14 映射
+checkstyle/checkstyle.xml 未登錄或集合錯誤：JV-TG-028
+checkstyle/checkstyle.xml 缺少或重複映射：["JV-ER-031"]
+缺少正式模組：退出 1
+pmd/ruleset.xml：65 規則，65 映射
+pmd/ruleset-candidates.xml：10 規則，10 映射
+checkstyle/checkstyle.xml：21 規則，22 映射
+checkstyle/candidates.xml：14 規則，14 映射
+checkstyle/checkstyle.xml 缺少或重複映射：["JV-ER-031"]
+捕捉類別漂移：退出 1
+pmd/ruleset.xml：65 規則，65 映射
+pmd/ruleset-candidates.xml：10 規則，10 映射
+checkstyle/checkstyle.xml：22 規則，22 映射
+checkstyle/candidates.xml：14 規則，14 映射
+JV-ER-031 捕捉類別設定錯誤

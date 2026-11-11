@@ -20,7 +20,7 @@ ruby tools/java/tests/run-pmd.rb --output /你的/暫存目錄/examples
 
 每筆 verified 對照都要求該小節至少有違反及符合範例，並逐一核對命中；版本增量範例也計入，不因 mapping 的版本清單省略舊版符合例。partial 僅報告，不計語意失敗；執行、解析或設定錯誤一律使驗收失敗。為減少啟動成本，依四個語法版本批次執行完整預設集合，再用實際規則名稱核對各筆範例，不將其他規則的命中算為成功。
 
-目前嚴格驗收 **47 通過、2 失敗**；詳 [完整驗收紀錄](validation.md)。缺少規範案例不以合成案例冒充，已知不涵蓋的 Java 21 違反例也不略過。
+收尾後嚴格驗收 **48 通過、0 失敗**（17 partial 僅報告）；詳 [最新完整驗收紀錄](../tests/validation.md)，原 [validation.md](validation.md) 保留歷史。缺少規範案例不以合成案例冒充，已知不涵蓋的 Java 21 違反例也不略過。
 
 ## 規則來源與重建
 
@@ -28,7 +28,7 @@ ruby tools/java/tests/run-pmd.rb --output /你的/暫存目錄/examples
 ruby tools/java/pmd/build-rulesets.rb
 ```
 
-唯一來源是 [rule-map.yml](../rule-map.yml)。40 個自訂定義的 XPath 逐字保留；PMD 7 的 XPathRule 使用 XPath 3.1，不設定舊版的 `version` 屬性。每筆引用各自帶有規範 ID、標題、錨點、外部連結，以及 error→1／warn→3 的優先序。相同 PMD 規則對應多筆映射時，引用名稱加上 `_JV_XX_NNN`，避免 PMD 僅保留最後一份設定而丟失條文與優先序；例如 `UseTryWithResources_JV_ER_018` 為 3，`UseTryWithResources_JV_ER_024` 為 1。這些別名會各自報告，也要各自精確抑制。
+唯一來源是 [rule-map.yml](../rule-map.yml)。40 個自訂定義的 XPath 與 rule-map 逐字一致；NarrowingPrimitiveCast 已依收尾裁決擴充 Math.clamp 分支；PMD 7 的 XPathRule 使用 XPath 3.1，不設定舊版的 `version` 屬性。每筆引用各自帶有規範 ID、標題、錨點、外部連結，以及 error→1／warn→3 的優先序。相同 PMD 規則對應多筆映射時，引用名稱加上 `_JV_XX_NNN`，避免 PMD 僅保留最後一份設定而丟失條文與優先序；例如 `UseTryWithResources_JV_ER_018` 為 3，`UseTryWithResources_JV_ER_024` 為 1。這些別名會各自報告，也要各自精確抑制。
 
 自訂檔仍採原規則名，引用以別名覆寫其訊息／URL；直接載入自訂檔可用原名抑制。相同 XPath 不複製成不同實作。內建屬性保留預設：note 的「可用 allowedTypes 放寬」等只是可選的專案例外，沒有已核准的型別清單可套用。
 

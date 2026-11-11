@@ -22,3 +22,22 @@ jobs:
           java-version: '21'
       - name: 檢查規範
         run: ruby scripts/check-rules.rb
+  java-tools:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['21', '8']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - name: 安裝 XML 標準函式庫
+        run: gem install rexml --no-document
+      - name: 驗證 Java 工具與規範範例
+        run: tools/java/tests/run-all.sh

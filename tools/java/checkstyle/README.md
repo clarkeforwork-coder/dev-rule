@@ -1,12 +1,12 @@
 # Java Checkstyle 設定與驗證
 
-此設定對應 rule-map 的 35 筆 Checkstyle 映射：正式 `checkstyle.xml` 含 21 個檢查實例（17 verified、4 partial），`candidates.xml` 保留 14 個 candidate 實例供評估，不接入預設提交阻擋。相同模組可對應不同 ID；合計 28 種模組名稱（不含 Checker、TreeWalker、SuppressionFilter）。候選包括不宜直接啟用的 DesignForExtension；候選成功載入不等於正反例已驗證。兩份設定皆供 10.26.1 與 9.3 共用，並非依版本分叉。
+此設定對應 rule-map 的 36 筆 Checkstyle 映射：正式 `checkstyle.xml` 含 22 個檢查實例（17 verified、5 partial），`candidates.xml` 保留 14 個 candidate 實例供評估，不接入預設提交阻擋。相同模組可對應不同 ID；合計 28 種模組名稱（不含 Checker、TreeWalker、SuppressionFilter）。候選包括不宜直接啟用的 DesignForExtension；候選成功載入不等於正反例已驗證。兩份設定皆供 10.26.1 與 9.3 共用，並非依版本分叉。
 
 每個實例以映射 ID 識別、以原 level 設定 severity（warn 對應 warning），診斷以前綴 `[JV-XX-NNN] 條文標題 → 規範路徑#錨點` 呈現。Regexp 使用 `message` 屬性；內建模組不提供通用 `message` 屬性，改用 Checkstyle 的 `<message key="..." value="..."/>` 覆寫診斷。XML 的 source 會是指定的 ID；測試先核對 ID 與模組名稱，再用 source 與訊息前綴確認命中。
 
 ## 重現
 
-只需 Ruby 標準函式庫、curl、JDK 17；如有 JDK 8 會用它執行 9.3。可設定 `JAVA17_HOME`、`JAVA8_HOME`，macOS 也會透過 `java_home -F` 嚴格尋找版本。執行期版本會另外檢查，避免系統默默回退到其他 JDK。
+需要 Ruby（含 REXML）、curl 及相容 JDK；設定 JAVA_HOME 時優先使用該執行期，10.26.1 需 JDK 11+。未設定時尋找 JDK 17，9.3 優先尋找 JDK 8。可設定 `JAVA17_HOME`、`JAVA8_HOME`，macOS 也會透過 `java_home -F` 嚴格尋找版本。執行期版本會另外檢查，避免系統默默回退到其他 JDK。
 
 ```sh
 ruby tools/java/tests/run-checkstyle.rb
@@ -33,8 +33,6 @@ ruby tools/java/tests/run-checkstyle.rb 9.3
 
 partial 的 EqualsHashCode、MissingJavadocMethod、IllegalType 僅檢查 rule-map 記載子句，不代表語意全覆蓋。重複映射的 RegexpSinglelineJava、EqualsHashCode 可能針對同一行輸出不同 ID，保留追溯而非把它們合為一筆。
 
-## 已知驗收衝突
+## 收尾裁決與驗證
 
-JV-ER-008 是唯一不符：rule-map 的 error 子句與最後設定限定 Throwable／Error，但小節原違反範例只有 Exception。依嚴重故障子句配置後兩版都是零命中；若加入 Exception 並沿用 error，會把條文「優先」及合法最外層入口升級成全面禁止。原 note 也要求 Exception 使用 warning，然而該映射只有一個 error level。本次保留 error 子句設定與原始失敗，未改 rule-map、未跳過測試、未以合成樣本頂替。需由整併者拆分 Exception 的 warning 映射，或更正 verified 的證據與狀態後重驗。
-
-截至本次驗證，兩版均為 16/17 筆通過、43/44 範例通過；「所有 verified 通過」尚未達成，腳本回傳 1。完整輸出與環境見 [validation.md](validation.md)。例外原則與範本見 [suppressions.md](suppressions.md)。
+JV-ER-008 限定 Throwable／Error、error、partial，以自製樣本實證；新增 JV-ER-031 限定 Exception／RuntimeException、warning、verified，以原規範正反例驗證。兩版現均 17 筆／44 範例全數通過，最新輸出見 [收尾驗證](../tests/validation.md)。原 [validation.md](validation.md) 保留修正前歷史；例外規則見 [suppressions.md](suppressions.md)。

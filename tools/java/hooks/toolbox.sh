@@ -40,7 +40,8 @@ case "${1:-}" in
         if [ -n "${DEV_RULE_ROOT:-}" ]; then suppressions=$DEV_RULE_ROOT/tools/java/checkstyle/suppressions.xml; fi
         exec "$java_bin" -Dfile.encoding=UTF-8 -Dcheckstyle.suppressions.file="$suppressions" -jar "$file" "$@"
         ;;
-    pmd)
+    pmd|pmd-cli)
+        mode=$1
         shift
         dir=$cache/pmd-$PMD_VERSION
         # 直接取得固定的 JAR，執行時不需要 unzip、jar、Maven 或 Python。
@@ -52,7 +53,8 @@ case "${1:-}" in
             fetch "$file" "$url" "$sha"
             classpath=${classpath:+$classpath:}$file
         done < "$base/profiles/$PMD_LOCK"
-        exec "$java_bin" -Dfile.encoding=UTF-8 -cp "$classpath" net.sourceforge.pmd.cli.PmdCli check --use-version "$PMD_LANGUAGE" "$@"
+        if [ "$mode" = pmd ]; then set -- check --use-version "$PMD_LANGUAGE" "$@"; fi
+        exec "$java_bin" -Dfile.encoding=UTF-8 -cp "$classpath" net.sourceforge.pmd.cli.PmdCli "$@"
         ;;
-    *) fail '用法：toolbox.sh {pmd|checkstyle} [工具參數…]' ;;
+    *) fail '用法：toolbox.sh {pmd|pmd-cli|checkstyle} [工具參數…]' ;;
 esac

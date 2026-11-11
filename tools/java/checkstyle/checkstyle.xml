@@ -111,12 +111,19 @@
       <property name="illegalClassNames" value="Exception,Throwable,java.lang.Exception,java.lang.Throwable"/>
       <message key="illegal.throw" value="[JV-ER-001] 明確的故障分類 → rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification"/>
     </module>
-    <!-- JV-ER-008：verified；條文對 Exception 是「優先捕捉具體例外」→ warn；對 Throwable／Error 是「不得」→ 另一筆 error；預設 illegalClassNames 含 Error, Exception, RuntimeException, Throwable 及 java.lang.*，建議拆成兩個 IllegalCatch 實例設不同 severity；；誤報風險說明：框架入口層、排程、執行緒邊界依條文「最外層入口可統一處理」本就允許 catch (Exception)；須以 SuppressionFilter／SuppressionXpathFilter 排除入口層 package，或在入口類別以 @SuppressWarnings("checkstyle:IllegalCatch") 註明；；實證版本：17、8；設定：[illegalClassNames=Exception,RuntimeException]；規範違反範例只 catch Exception，Throwable／Error 以自製樣本實證；；誤報風險說明：執行緒／執行器最外層記錄後重新拋出的 catch (Throwable) 需抑制；；實證版本：17、8；補充實證：samples/SubClauses.java:16,19 caught；設定：[illegalClassNames=Throwable,Error,java.lang.Throwable,java.lang.Error]。 -->
+    <!-- JV-ER-008：partial；Throwable／Error 以自製樣本實證。 -->
     <module name="IllegalCatch">
       <property name="id" value="JV-ER-008"/>
       <property name="severity" value="error"/>
       <property name="illegalClassNames" value="Throwable,Error,java.lang.Throwable,java.lang.Error"/>
       <message key="illegal.catch" value="[JV-ER-008] 捕捉範圍與處置相符 → rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope"/>
+    </module>
+    <!-- JV-ER-031：verified；優先捕捉具體例外，入口層須精確核准抑制。 -->
+    <module name="IllegalCatch">
+      <property name="id" value="JV-ER-031"/>
+      <property name="severity" value="warning"/>
+      <property name="illegalClassNames" value="Exception,RuntimeException,java.lang.Exception,java.lang.RuntimeException"/>
+      <message key="illegal.catch" value="[JV-ER-031] 捕捉範圍與處置相符 → rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope"/>
     </module>
     <!-- JV-EH-002：partial；同 PMD OverrideBothEqualsAndHashcode；；實證版本：17、8；補充實證：samples/SubClauses3.java:15 與 SubClauses.java:53（只覆寫 hashCode）caught。 -->
     <module name="EqualsHashCode">

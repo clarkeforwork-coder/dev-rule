@@ -64,7 +64,7 @@ rows.each_with_index do |r,i|
   needs_xpath = r['tool']=='pmd' && check.start_with?('custom:')
   errors << "#{id} XPath 欄位不符" unless needs_xpath ? r['xpath'].is_a?(String) && !r['xpath'].empty? : !r.key?('xpath')
   if r['status']=='manual' || r['tool']=='none' || r['tier']=='manual'
-    errors << "#{id} 人工欄位不一致" unless r.values_at('status','tool','tier','check') == %w[manual none manual none]
+    errors << "#{id} 人工欄位不一致" unless r.values_at('status','tool','check') == %w[manual none none] && %w[manual test].include?(r['tier'])
   end
   keys << r.values_at('rule','tool','check')
 end
@@ -99,8 +99,10 @@ rows.select { |r| r['check'].start_with?('custom:') }.group_by { |r| [r['tool'],
   table(lines,%w[來源小節 status],group.map { |r| [r['rule'],r['status']] })
   lines += ['```xpath',group.first['xpath'],'```',''] if group.first['xpath']
 end
-lines += ['## 工具未涵蓋的必要內容清單（人工審查）', '', '以下列出全部 manual 小節及尚待建立的測試責任；即使同小節有 verified 規則，這些責任仍不可省略。', '']
-table(lines,%w[小節 錨點 等級 審查／測試內容], rows.select { |r| r['status']=='manual' }.map { |r| [r['title'],r['rule'],r['level'],r['note']] })
+{'test' => '測試驗收', 'manual' => '人工審查'}.each do |tier, label|
+  lines += ["## 工具未涵蓋的必要內容清單（#{label}）", '', '即使同小節有 verified，這些責任仍不可省略；test 表待實作驗收，不表示已有可執行測試。', '']
+  table(lines,%w[小節 錨點 等級 審查／測試內容], rows.select { |r| r['status']=='manual' && r['tier']==tier }.map { |r| [r['title'],r['rule'],r['level'],r['note']] })
+end
 content = lines.join("\n").rstrip+"\n"
 if ARGV == ['--check']
   abort 'coverage.md 已過期；請重新產生' unless OUTPUT.exist? && OUTPUT.read == content
