@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <!-- [JV-VO-003] 不可變性 → rules/stacks/java/common/value-objects.md#java-value-immutability -->
+  <!-- [JV-BM-004] 集合與可變元素的隔離 → rules/stacks/java/common/boundary-mapping.md#java-mutable-isolation -->
+  <Match><Bug pattern="EI_EXPOSE_REP"/></Match>
+  <!-- [JV-VO-004] 不可變性 → rules/stacks/java/common/value-objects.md#java-value-immutability -->
+  <!-- [JV-BM-005] 集合與可變元素的隔離 → rules/stacks/java/common/boundary-mapping.md#java-mutable-isolation -->
+  <Match><Bug pattern="EI_EXPOSE_REP2"/></Match>
+</FindBugsFilter>
