@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<!-- 預設不授予專案例外；核准後依 suppressions.md 的精確範本新增。 -->
+<suppressions>
+</suppressions>
