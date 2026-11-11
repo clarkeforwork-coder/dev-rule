@@ -12,11 +12,69 @@
 
 依[明訂比較語意的共通要求](../../../coding/domain-modeling.md#identity-semantics)執行。Java `equals()` 須落實選定比較語意，不任意將 Entity 所有欄位納入比較。
 
+**違反**
+
+```java
+// 約定依識別碼判同，卻把狀態也納入比較。
+final class Order {
+    enum Status { PENDING, CANCELLED }
+    private final long id;
+    private Status status = Status.PENDING;
+    Order(long id) { this.id = id; }
+    void cancel() { status = Status.CANCELLED; }
+    @Override public boolean equals(Object other) {
+        return other instanceof Order o && id == o.id && status == o.status;
+    }
+    @Override public int hashCode() { return Objects.hash(id, status); }
+}
+```
+
+**符合**
+
+```java
+// 依識別碼判同，狀態差異不影響同一 Entity 的相等性。
+final class Order {
+    enum Status { PENDING, CANCELLED }
+    private final long id;
+    private Status status = Status.PENDING;
+    Order(long id) { this.id = id; }
+    void cancel() { status = Status.CANCELLED; }
+    @Override public boolean equals(Object other) {
+        return other instanceof Order o && id == o.id;
+    }
+    @Override public int hashCode() { return Long.hashCode(id); }
+}
+```
+
 <a id="java-equality-hash-contract"></a>
 
 ### 相等與雜湊契約
 
 自訂 `equals()` 須維持自反、對稱、遞移與一致性，並正確處理 `null`。比較依據未改變時結果須一致，與 `null` 比較須不相等。須同時設計相容的 `hashCode()`，保證相等物件具有相同雜湊值，不得反過來以雜湊值相同判定相等。
+
+**違反**
+
+```java
+// 雜湊碰撞不代表兩個值相等。
+record Code(String value) {
+    @Override public boolean equals(Object other) {
+        return other instanceof Code c && hashCode() == c.hashCode();
+    }
+    @Override public int hashCode() { return Objects.hashCode(value); }
+}
+```
+
+**符合**
+
+```java
+// 直接比較值並由相同的值計算雜湊。
+record Code(String value) {
+    @Override public boolean equals(Object other) {
+        return other instanceof Code c && Objects.equals(value, c.value);
+    }
+    @Override public int hashCode() { return Objects.hashCode(value); }
+}
+```
 
 <a id="java-hash-collection-stability"></a>
 
@@ -24,17 +82,102 @@
 
 物件作為雜湊集合的鍵或元素期間，影響 `equals()` 與 `hashCode()` 的資料須保持不變。優先使用不可變且穩定的鍵，例如以 `OrderId` 作為訂單映射的鍵。必要變更須先移出、再修改並重新加入，處理可能與既有項目相等的情況，不得在集合內直接改變比較依據。
 
+**違反**
+
+```java
+// 清單作為雜湊集合元素時，仍直接修改影響判同的內容。
+class Example {
+    void run() {
+        List<Integer> key = new ArrayList<>(List.of(1));
+        Set<List<Integer>> keys = new HashSet<>();
+        keys.add(key);
+        key.set(0, 2);
+    }
+}
+```
+
+**符合**
+
+```java
+// 使用不可變清單，集合內元素的比較依據保持穩定。
+class Example {
+    void run() {
+        List<Integer> key = List.of(1);
+        Set<List<Integer>> keys = new HashSet<>();
+        keys.add(key);
+    }
+}
+```
+
 <a id="java-entity-identity-lifecycle"></a>
 
 ### Entity 識別碼的生命週期
 
 依[Entity 識別碼的生命週期的共通要求](../../../coding/domain-modeling.md#identity-lifecycle)執行。Java 沒有跨實例相等需求時不強制覆寫 `equals()`；識別碼變化不得破壞雜湊或排序集合契約。
 
+**違反**
+
+```java
+// 配發識別碼時改變集合內 Entity 的雜湊值。
+class Entity {
+    Long id;
+    @Override public boolean equals(Object other) { return this == other; }
+    @Override public int hashCode() { return Objects.hashCode(id); }
+    static void run() {
+        Entity entity = new Entity();
+        Set<Entity> entities = new HashSet<>();
+        entities.add(entity);
+        entity.id = 1L;
+    }
+}
+```
+
+**符合**
+
+```java
+// 無跨實例判同需求，保留物件身分語意以承受識別碼配發。
+class Entity {
+    Long id;
+    static void run() {
+        Entity entity = new Entity();
+        Set<Entity> entities = new HashSet<>();
+        entities.add(entity);
+        entity.id = 1L;
+    }
+}
+```
+
 <a id="java-cross-type-equality"></a>
 
 ### 跨型別相等範圍
 
 允許繼承的型別須明訂跨型別的相等範圍，父子型別不得各自採用互相矛盾的比較規則。新增子型別或比較欄位時，須維持對稱性、遞移性與雜湊契約；無法維持時，應調整型別關係或限制擴充。不一律指定使用 `instanceof` 或 `getClass()`，應先依契約決定哪些具體型別可以相等。
+
+**違反**
+
+```java
+// 父型別接受子型別，子型別卻拒絕父型別，破壞對稱性。
+class Base {
+    @Override public boolean equals(Object other) { return other instanceof Base; }
+    @Override public int hashCode() { return 0; }
+}
+class Child extends Base {
+    @Override public boolean equals(Object other) { return other instanceof Child; }
+}
+```
+
+**符合**
+
+```java
+// 約定僅同一具體型別相等，且子型別沿用同一比較規則。
+class Base {
+    @Override public final boolean equals(Object other) {
+        return other != null && getClass() == other.getClass();
+    }
+    @Override public final int hashCode() { return getClass().hashCode(); }
+}
+class Child extends Base {}
+```
 
 ## 排序與集合判同
 
@@ -44,11 +187,51 @@
 
 只有型別具有明確且普遍適用的自然順序時，才實作 `Comparable`；依使用情境變動的排序須使用用途明確的 `Comparator`。排序規則須明訂比較欄位、方向與必要的同值處理，不將任意情境的順序固定為型別契約，也不要求所有可排序物件都實作 `Comparable`。
 
+**違反**
+
+```java
+// 將促銷頁專用的價格排序固定成產品的自然順序。
+record Product(long id, int price) implements Comparable<Product> {
+    @Override public int compareTo(Product other) {
+        return Comparator.comparingInt(Product::price)
+                .thenComparingLong(Product::id).compare(this, other);
+    }
+}
+```
+
+**符合**
+
+```java
+// 促銷頁以用途明確的比較器按價格升冪，同價按識別碼升冪。
+record Product(long id, int price) {
+    static final Comparator<Product> PROMOTION_ORDER =
+            Comparator.comparingInt(Product::price).thenComparingLong(Product::id);
+}
+```
+
 <a id="java-comparator-relations"></a>
 
 ### 比較關係一致
 
 `Comparable` 與 `Comparator` 須維持方向一致性、遞移性及比較為零時的一致關係。同次排序使用穩定的比較依據，不隱藏外部查詢或依賴持續變動的時間、設定與狀態；需要這些資訊時，先取得本次排序使用的固定資料。數值比較不得以可能溢位或損失精度的相減方式實作。
+
+**違反**
+
+```java
+// 相減可能溢位，使比較方向錯誤。
+class Example {
+    static final Comparator<Integer> ASCENDING = (Integer left, Integer right) -> left - right;
+}
+```
+
+**符合**
+
+```java
+// 使用整數比較方法，極端值也能維持正確方向。
+class Example {
+    static final Comparator<Integer> ASCENDING = Integer::compare;
+}
+```
 
 <a id="java-sorted-key-equivalence"></a>
 
@@ -56,11 +239,74 @@
 
 須明訂比較結果為零與 `equals()` 的關係。自然順序原則上應與相等性一致；情境排序可讓不同物件比較為零，但用於排序集合或映射時，須確認元素與鍵的判同語意符合契約，不得意外合併應分別保留的資料。例如僅按金額比較不同訂單，在列表排序中可合理，但用於 `TreeSet` 或 `TreeMap` 時，須確認比較為零所造成的判同效果；必要時加入穩定識別等符合契約的次要依據。
 
+**違反**
+
+```java
+// 集合須保留不同訂單，卻讓同金額的訂單判為同一元素。
+record Order(long id, int amount) {}
+class Example {
+    Set<Order> orders() {
+        Set<Order> orders = new TreeSet<>(Comparator.comparingInt(Order::amount));
+        orders.add(new Order(1, 100));
+        orders.add(new Order(2, 100));
+        return orders;
+    }
+}
+```
+
+**符合**
+
+```java
+// 同金額時再按識別碼比較，保留不同訂單且比較為零與相等一致。
+record Order(long id, int amount) {}
+class Example {
+    Set<Order> orders() {
+        Set<Order> orders = new TreeSet<>(Comparator.comparingInt(Order::amount)
+                .thenComparingLong(Order::id));
+        orders.add(new Order(1, 100));
+        orders.add(new Order(2, 100));
+        return orders;
+    }
+}
+```
+
 <a id="java-sorted-collection-stability"></a>
 
 ### 排序集合中的穩定性
 
 物件作為排序集合的元素或排序映射的鍵期間，排序依據與比較規則須保持穩定。必要變更須先移出再重新加入，或依新規則重建結構，不得假設集合會自動重新排序。比較器設定變更同樣須處理既有結構，並確認資料未因判同規則而遺失。
+
+**違反**
+
+```java
+// 直接修改排序集合內的排序依據，不會觸發自動重排。
+class Item {
+    int rank;
+    static void run() {
+        Set<Item> items = new TreeSet<>(Comparator.comparingInt((Item i) -> i.rank));
+        Item item = new Item();
+        items.add(item);
+        item.rank = 2;
+    }
+}
+```
+
+**符合**
+
+```java
+// 先移出再修改排序依據，重新加入時明確處理判同衝突。
+class Item {
+    int rank;
+    static void run() {
+        Set<Item> items = new TreeSet<>(Comparator.comparingInt((Item i) -> i.rank));
+        Item item = new Item();
+        items.add(item);
+        items.remove(item);
+        item.rank = 2;
+        if (!items.add(item)) throw new IllegalStateException("排序值已存在");
+    }
+}
+```
 
 <a id="java-relationship-coverage"></a>
 
@@ -70,7 +316,7 @@
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 

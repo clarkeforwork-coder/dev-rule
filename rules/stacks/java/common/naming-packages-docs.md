@@ -12,17 +12,87 @@
 
 Java 識別字須遵循一致的命名形式，並以業務概念與責任表達含義。類別、介面、列舉與 `record` 使用 `UpperCamelCase`；方法、欄位、參數與區域變數使用 `lowerCamelCase`；常數與列舉常數使用 `UPPER_SNAKE_CASE`；套件名稱使用小寫。團隊須統一縮寫慣例，避免同一概念大小寫不一致。不以 `final` 等修飾詞機械式判定常數，也不強制以 `I` 等名稱前綴標示介面。
 
+**違反**
+
+```java
+// 類別、常數與方法未使用各自規定的命名形式。
+class order_limit {
+    static final int maxOrders = 10;
+    boolean Accepts(int orderCount) { return orderCount <= maxOrders; }
+}
+```
+
+**符合**
+
+```java
+// 類別、常數與方法分別使用規定的命名形式。
+class OrderLimit {
+    static final int MAX_ORDERS = 10;
+    boolean accepts(int orderCount) { return orderCount <= MAX_ORDERS; }
+}
+```
+
 <a id="java-specific-responsibility"></a>
 
 ### 名稱表達具體責任
 
-依[命名與可讀性](../../../coding/naming.md)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。
+依[命名與可讀性](../../../coding/naming.md#domain-vocabulary-and-context)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。
+
+**違反**
+
+```java
+// 日期工具的名稱與實際計算訂單總額的責任不一致。
+class DateUtils {
+    int total(List<Integer> amounts) {
+        return amounts.stream().mapToInt(Integer::intValue).sum();
+    }
+}
+```
+
+**符合**
+
+```java
+// 訂單總額工具的名稱明確表達實際責任。
+class OrderTotalUtils {
+    int total(List<Integer> amounts) {
+        return amounts.stream().mapToInt(Integer::intValue).sum();
+    }
+}
+```
 
 <a id="java-package-boundaries"></a>
 
 ### 套件與架構邊界
 
 套件須依業務或技術責任及專案架構組織，明確區分公開契約與內部實作，不強制固定目錄排列。共用套件須有明確責任與依賴方向，不作為雜項收容處，也不得反向依賴使用它的業務模組。邊界須以可見性及適用檢查落實，不能只靠套件名稱。
+
+**違反**
+
+```java
+// 訂單套件入口 OrderService 將內部儲存實作也公開，外部可直接依賴它。
+public final class OrderService {
+    public static final class OrderStorage {
+        private final Map<String, Integer> amounts = new HashMap<>();
+        public void save(String orderId, int amount) { amounts.put(orderId, amount); }
+    }
+    private final OrderStorage storage = new OrderStorage();
+    public void save(String orderId, int amount) { storage.save(orderId, amount); }
+}
+```
+
+**符合**
+
+```java
+// 訂單套件只公開入口 OrderService，內部儲存實作以套件可見性限制使用。
+public final class OrderService {
+    static final class OrderStorage {
+        private final Map<String, Integer> amounts = new HashMap<>();
+        public void save(String orderId, int amount) { amounts.put(orderId, amount); }
+    }
+    private final OrderStorage storage = new OrderStorage();
+    public void save(String orderId, int amount) { storage.save(orderId, amount); }
+}
+```
 
 ## 契約文件與維護
 
@@ -33,6 +103,35 @@ Java 識別字須遵循一致的命名形式，並以業務概念與責任表達
 ### 補足契約資訊
 
 供使用端依賴的類別與方法須記錄型別及名稱無法充分表達的契約，依責任補充前置條件、結果、失敗、副作用與適用的生命週期保證。可包含非空、資源所有權、執行緒安全或資料時效等必要資訊，不要求每個方法套用全部項目。優先以 Javadoc 就近維護，或明確引用既有權威契約，避免重複定義；不以重述名稱代替說明。
+
+**違反**
+
+```java
+// Javadoc 只重述名稱，使用端看不到前置條件與失敗契約。
+class TextReader {
+    /** 讀取文字。 */
+    public String read(Path path) throws IOException {
+        return Files.readString(path, StandardCharsets.UTF_8);
+    }
+}
+```
+
+**符合**
+
+```java
+// Javadoc 補充使用端所需的前置條件、結果與失敗契約。
+class TextReader {
+    /**
+     * 讀取整個檔案的 UTF-8 文字，並於返回前關閉自行取得的資源。
+     * @param path 非空的檔案路徑
+     * @return 檔案文字，空檔案回傳空字串
+     * @throws IOException 無法開啟或讀取檔案時
+     */
+    public String read(Path path) throws IOException {
+        return Files.readString(path, StandardCharsets.UTF_8);
+    }
+}
+```
 
 <a id="java-rename-impact"></a>
 
@@ -50,17 +149,17 @@ Java 識別字須遵循一致的命名形式，並以業務概念與責任表達
 
 ## 補充要求
 
-共用責任與依賴另依[共通機制與程式碼共用](../../../architecture/shared-capabilities.md)，泛型參數命名依[型別宣告與泛型](types-and-generics.md)。動態引用的核對依[反射、動態能力與檢查抑制](reflection-and-suppression.md)，名稱成為外部值時另依[相等性、雜湊與排序](equality-hashing-ordering.md)及[狀態與結果建模](states-and-results.md)的契約要求。
+共用責任與依賴另依[共通機制與程式碼共用](../../../architecture/shared-capabilities.md#shared-code)，泛型參數命名依[型別宣告與泛型](types-and-generics.md)。動態引用的核對依[反射、動態能力與檢查抑制](reflection-and-suppression.md)，名稱成為外部值時另依[相等性、雜湊與排序](equality-hashing-ordering.md)及[狀態與結果建模](states-and-results.md)的契約要求。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇檢查，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
 - [註解與公開文件、實作註解與暫時處理](../../../coding/code-design.md#acceptance-document-contract)。
 - [形式與語意分別驗收](../../../quality/rule-verification.md#acceptance-document-verification)。
-- [審查清單](../../../quality/rule-verification.md#審查清單)。
+- [審查清單](../../../quality/rule-verification.md#review-checklist)。
 
 ### Java 語言增量驗收
 

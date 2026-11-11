@@ -4,6 +4,7 @@
 
 相關共同要求：[資源與元件生命週期](resource-lifecycle.md)、[錯誤處理](error-handling.md)、[效能與資源使用](../quality/performance.md)、[安全](../quality/security.md)、[日誌、稽核與可觀測性](../quality/observability.md)。必要例外依[規範治理](../workflow/rule-governance.md)處理。
 
+<a id="contract-requirements"></a>
 ## 契約要求
 
 <a id="compound-atomicity"></a>
@@ -24,7 +25,7 @@
 
 ### 結果接收與故障處置
 
-非同步結果依[錯誤處理](error-handling.md#失敗分類與表達)區分成功、業務失敗、技術故障及取消，明訂接收路徑，不得丟棄故障。
+非同步結果依[錯誤處理](error-handling.md#failure-classification)區分成功、業務失敗、技術故障及取消，明訂接收路徑，不得丟棄故障。
 
 <a id="execution-resources"></a>
 <a id="ca-02"></a>
@@ -32,6 +33,13 @@
 ### 統一管理執行資源
 
 執行緒與任務執行資源須由明確元件統一配置及管理生命週期，不得在業務程式各處任意建立。透過明確提供的任務執行能力提交工作，依負載與隔離需求定義容量、排隊、拒絕及關閉策略。不強制全部共用同一執行資源；不論採用何種排程或執行緒機制，均須遵守資料庫連線及外部呼叫等下游限制。具體執行 API 由語言或框架規範落實。
+
+<a id="execution-resource-lifecycle"></a>
+<a id="共同生命週期"></a>
+<a id="執行資源的生命週期"></a>
+### 執行資源與結果責任
+
+元件就緒、依賴生命週期及受控關閉由[資源生命週期](resource-lifecycle.md#contract-requirements)維護；結果接收及完成責任依[結果接收與故障處置](#async-result-reception)及[明確的工作擁有者](#task-ownership)。
 
 <a id="deadline-budget"></a>
 <a id="ca-04"></a>
@@ -75,9 +83,14 @@
 
 鎖定範圍須完整保護必要條件，避免持鎖執行不受控的阻塞、等待或回呼。多鎖操作須明訂取得順序或避死鎖策略，所有退出路徑須正確釋放。不得為縮短持鎖時間將必要檢查移出保護範圍，破壞原子性。
 
-## 驗收要求
+<a id="acceptance"></a>
+<a id="驗收要求"></a>
+## 驗收
 
-依變更影響及實際採用能力驗證，測試層級與案例維護依[共通測試策略](../quality/testing.md)；不要求每個操作涵蓋全部情境，也不重測語言標準函式庫本身。
+驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
+
+<a id="supplementary-contract-acceptance"></a>
+### 補充契約驗收
 
 | 契約 | 驗收內容 |
 | --- | --- |
@@ -89,7 +102,3 @@
 | <a id="acceptance-task-composition"></a>[多工作組合的完成條件](#task-completion-contract) | 以不同完成順序及子工作失敗驗證全部成功、部分成功或競速等適用契約。核對每項結果與來源對應，剩餘工作持續受到管理，未將最快失敗當成第一個成功。 |
 | <a id="acceptance-context-isolation"></a>[明確傳遞與清理脈絡](#context-propagation) | 在共用執行資源上交錯執行不同租戶或身分的工作，驗證脈絡正確傳遞，成功、失敗與取消後均清理或還原，沒有跨工作污染。核對延後執行的授權仍依契約確認。 |
 | <a id="acceptance-lock-scope"></a>[鎖定範圍與取得策略](#lock-scope) | 以受控交錯核對鎖定範圍完整保護必要條件；檢查多鎖取得策略、所有退出路徑的釋放及持鎖期間的阻塞或外部回呼，不以偶然成功代替鎖定設計依據。 |
-
-## 共同生命週期
-
-元件就緒、依賴生命週期及受控關閉由[資源生命週期](resource-lifecycle.md)維護；結果接收及完成責任依[結果接收與故障處置](#async-result-reception)及[明確的工作擁有者](#task-ownership)。

@@ -12,27 +12,158 @@
 
 互斥的業務狀態須使用明確型別；僅需區分固定狀態名稱時，可使用 `enum`。不得以多個獨立布林值表達互斥狀態。不同業務面向須分別建模，不得強行合併，例如付款與配送狀態可各自表達，再明訂兩者之間的限制。
 
+**違反**
+
+```java
+// 互斥狀態以獨立布林值表示，可能同時成立。
+record Payment(boolean pending, boolean paid, boolean failed) {}
+```
+
+**符合**
+
+```java
+// 固定且互斥的付款狀態以列舉表示。
+enum PaymentState { PENDING, PAID, FAILED }
+```
+
 <a id="java-required-state-data"></a>
 
 ### 各狀態的必要資料
 
-依[領域建模](../../../coding/domain-modeling.md)執行。Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。
+依[領域建模](../../../coding/domain-modeling.md#state-modeling)執行。Java 應以對應狀態型別保護必要資料，不只用狀態碼搭配多個可空欄位讓使用端推測。
+
+**違反**
+
+```java
+// 已付款狀態仍允許缺少交易編號。
+record Payment(State state, String transactionId) {
+    enum State { PENDING, PAID }
+}
+```
+
+**符合**
+
+```java
+// 已付款型別在建立時保護必要的交易編號。
+sealed interface Payment permits Pending, Paid {}
+record Pending() implements Payment {}
+record Paid(String transactionId) implements Payment {
+    Paid { Objects.requireNonNull(transactionId); }
+}
+```
 
 <a id="java-business-state-transitions"></a>
 
 ### 業務操作控制轉換
 
-依[領域建模](../../../coding/domain-modeling.md)執行。Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。
+依[領域建模](../../../coding/domain-modeling.md#state-modeling)執行。Java 公開狀態 setter 不得成為繞過業務操作的入口；修改既有物件或產生新狀態物件由模型決定。
+
+**違反**
+
+```java
+// 公開 setter 讓使用端繞過只允許待處理訂單取消的規則。
+class Order {
+    enum State { PENDING, SHIPPED, CANCELLED }
+    enum CancelResult { CANCELLED, INVALID_STATE }
+    private State state = State.PENDING;
+    public void setState(State state) { this.state = state; }
+    public CancelResult cancel() {
+        if (state != State.PENDING) return CancelResult.INVALID_STATE;
+        state = State.CANCELLED;
+        return CancelResult.CANCELLED;
+    }
+}
+```
+
+**符合**
+
+```java
+// 取消只能經由檢查來源狀態的業務操作。
+class Order {
+    enum State { PENDING, SHIPPED, CANCELLED }
+    enum CancelResult { CANCELLED, INVALID_STATE }
+    private State state = State.PENDING;
+    public CancelResult cancel() {
+        if (state != State.PENDING) return CancelResult.INVALID_STATE;
+        state = State.CANCELLED;
+        return CancelResult.CANCELLED;
+    }
+}
+```
 
 ## 操作結果與使用端處理
 
-本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)、[處理完整性](../../../coding/domain-modeling.md#exhaustive-result-handling)。
+本組由共通規範承接的要求：[結果與目前狀態分開表達](../../../coding/domain-modeling.md#operation-results)。
 
 <a id="java-typed-business-failures"></a>
 
 ### 具型別的業務失敗
 
-依[錯誤處理](../../../coding/error-handling.md)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。
+依[錯誤處理](../../../coding/error-handling.md#failure-classification)執行。Java 可用不同失敗型別或具型別原因代碼；技術故障仍透過例外，不為統一格式混入一般業務失敗。
+
+**違反**
+
+```java
+// 為統一結果格式而將技術故障混入一般業務失敗。
+class Reservation {
+    interface Stock { boolean reserve() throws IOException; }
+    enum Result { ACCEPTED, SOLD_OUT, TECHNICAL_FAILURE }
+    Result reserve(Stock stock) {
+        try { return stock.reserve() ? Result.ACCEPTED : Result.SOLD_OUT; }
+        catch (IOException failure) { return Result.TECHNICAL_FAILURE; }
+    }
+}
+```
+
+**符合**
+
+```java
+// 業務失敗以原因代碼表達，技術故障仍透過例外傳遞。
+class Reservation {
+    interface Stock { boolean reserve() throws IOException; }
+    enum Result { ACCEPTED, SOLD_OUT }
+    Result reserve(Stock stock) throws IOException {
+        return stock.reserve() ? Result.ACCEPTED : Result.SOLD_OUT;
+    }
+}
+```
+
+<a id="java-exhaustive-result-handling"></a>
+
+### 處理完整性
+
+依[處理完整性的共通要求](../../../coding/domain-modeling.md#exhaustive-result-handling)執行。Java 優先利用適用版本的編譯檢查；工具無法涵蓋的分支由測試及審查補足，不以 `default` 將未知狀態當成功。
+
+**違反**
+
+```java
+// 預設分支把未處理的待確認結果當成成功。
+class Display {
+    enum Result { SUCCESS, REJECTED, PENDING }
+    String message(Result result) {
+        return switch (result) {
+            case REJECTED -> "拒絕";
+            default -> "成功";
+        };
+    }
+}
+```
+
+**符合**
+
+```java
+// 列舉 switch 運算式列出全部情況並接受編譯完整性檢查。
+class Display {
+    enum Result { SUCCESS, REJECTED, PENDING }
+    String message(Result result) {
+        return switch (result) {
+            case SUCCESS -> "成功";
+            case REJECTED -> "拒絕";
+            case PENDING -> "待確認";
+        };
+    }
+}
+```
 
 ## 外部代碼、擴充與結果資料
 
@@ -44,11 +175,60 @@
 
 持久化或跨邊界傳遞狀態時，須明訂穩定的外部代碼與映射，不得使用 `ordinal()` 作為業務契約。若採用列舉名稱作為外部值，須將名稱納入相容性管理，重新命名不能僅視為內部整理。未知代碼依契約處理，不得默默映射成任意既有狀態。不強制額外建立轉換類別，但映射與影響須可辨識。
 
+**違反**
+
+```java
+// 使用列舉位置作為外部代碼，排序變更就改變契約。
+enum State {
+    PENDING, PAID;
+    int externalCode() { return ordinal(); }
+    static State fromCode(int code) { return values()[code]; }
+}
+```
+
+**符合**
+
+```java
+// 外部代碼固定映射，未知代碼依此範例契約拒絕。
+enum State {
+    PENDING(10), PAID(20);
+    private final int code;
+    State(int code) { this.code = code; }
+    int externalCode() { return code; }
+    static State fromCode(int code) {
+        return switch (code) {
+            case 10 -> PENDING;
+            case 20 -> PAID;
+            default -> throw new IllegalArgumentException("未知狀態代碼");
+        };
+    }
+}
+```
+
 <a id="java-model-extensibility"></a>
 
 ### 封閉或允許擴充
 
 依[封閉或允許擴充的共通要求](../../../coding/domain-modeling.md#model-extensibility)執行。支援 `sealed` 的 Java 版本可用其限制實作；其他版本以可見性、建立入口及檢查維持封閉契約，不強制同一語法。
+
+**違反**
+
+```java
+// 契約只允許成功或拒絕，但介面未限制其他實作。
+interface Result {}
+record Success() implements Result {}
+record Rejected() implements Result {}
+record Unexpected() implements Result {}
+```
+
+**符合**
+
+```java
+// 以 sealed 限制此封閉契約只允許成功或拒絕。
+sealed interface Result permits Success, Rejected {}
+record Success() implements Result {}
+record Rejected() implements Result {}
+```
 
 <a id="java-model-acceptance"></a>
 
@@ -60,11 +240,11 @@
 
 ## 補充要求
 
-對外結果與完成程度另依[API 操作語意](../../../interfaces/api-contracts.md)及[事件可靠性](../../../interfaces/events.md)；代碼與資料格式變更依[資料契約](../../../interfaces/data-contracts.md)及[資料遷移](../../../data/migrations.md)。不可變資料的保護方式另見[專屬值型別與領域值物件](value-objects.md)。
+對外結果與完成程度另依[API 操作語意](../../../interfaces/api-contracts.md#operation-scope-and-success)及[事件可靠性](../../../interfaces/events.md#recoverable-publication)；代碼與資料格式變更依[資料契約](../../../interfaces/data-contracts.md#compatibility-and-changes)及[資料遷移](../../../data/migrations.md#version-compatibility)。不可變資料的保護方式另見[專屬值型別與領域值物件](value-objects.md)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的模型與呼叫端選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md)與[規範驗證](../../../quality/rule-verification.md)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的模型與呼叫端選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 

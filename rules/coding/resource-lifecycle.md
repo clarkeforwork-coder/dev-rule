@@ -4,6 +4,7 @@
 
 相關共同要求：[框架與依賴組裝](../architecture/dependency-composition.md)、[錯誤處理](error-handling.md)、[併發與非同步](concurrency-and-async.md)。必要例外依[規範治理](../workflow/rule-governance.md)處理。
 
+<a id="contract-requirements"></a>
 ## 契約要求
 
 <a id="initialization-readiness"></a>
@@ -19,13 +20,6 @@
 ### 生命週期與可變狀態相容
 
 物件的共用範圍、可變狀態與依賴生命週期須相容，不得讓單次操作資料洩漏到其他操作。例如共用服務不得以實例欄位存放會互相覆蓋的目前使用者或訂單。共享可變狀態須有明確的管理與併發保護；長期元件使用短期依賴時須採生命週期相容的取得方式。由框架建立或注入，不代表自動具備執行緒安全與生命週期正確性。
-
-<a id="lifecycle-verification"></a>
-<a id="cl-10"></a>
-
-### 契約與生命週期驗收
-
-類別、介面或建立流程變更時，須依影響驗證建立條件、替代契約、必要檢查與生命週期。涉及框架組裝、代理或共用狀態時，須驗證實際配置及隔離效果，不僅確認物件可建立或依賴可注入；不能只靠手動建立的測試推定框架行為正確。單純值物件不必為此啟動整個框架。
 
 <a id="lazy-resource-lifetime"></a>
 <a id="co-07"></a>
@@ -55,9 +49,27 @@
 
 執行元件關閉須明訂停止受理、排隊與執行中工作的處置、等待期限及資源釋放順序。已受理工作依契約等待完成、取消或交由可恢復機制接手；未完成或結果未知的工作須可追蹤並有後續責任。不得將開始關閉或發出停止要求視為全部工作已結束，也不得提前釋放仍在執行工作所需的資源。
 
-## 驗收要求
+<a id="shared-component-responsibility"></a>
+### 共用元件的責任
 
-依變更影響及實際採用能力驗證，測試層級與案例維護依[共通測試策略](../quality/testing.md)；不要求每個操作涵蓋全部情境，也不重測語言標準函式庫本身。
+委派及非同步的有效期依[有效期與關閉契約](#resource-close-contract)及其[驗收](#acceptance-close-contract)。工作提交、取消與整體結果依[併發與非同步](concurrency-and-async.md#contract-requirements)；操作與清理失敗依[清理與補償失敗](error-handling.md#cleanup-and-compensation-failure)。
+
+<a id="acceptance"></a>
+<a id="驗收要求"></a>
+## 驗收
+
+驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
+
+<a id="lifecycle-verification"></a>
+<a id="cl-10"></a>
+<a id="契約與生命週期驗收"></a>
+
+### 契約與生命週期驗收
+
+類別、介面或建立流程變更時，須依影響驗證建立條件、替代契約、必要檢查與生命週期。涉及框架組裝、代理或共用狀態時，須驗證實際配置及隔離效果，不僅確認物件可建立或依賴可注入；不能只靠手動建立的測試推定框架行為正確。單純值物件不必為此啟動整個框架。
+
+<a id="supplementary-contract-acceptance"></a>
+### 補充契約驗收
 
 | 契約 | 驗收內容 |
 | --- | --- |
@@ -68,7 +80,3 @@
 | <a id="acceptance-partial-acquisition"></a>[部分取得與所有權移交](#partial-acquisition) | 在後續資源取得或初始化步驟製造失敗，確認先前已取得的資源依正確順序釋放。核對所有權移交前後的責任，避免洩漏或不當重複關閉。 |
 | <a id="acceptance-close-contract"></a>[有效期與關閉契約](#resource-close-contract) | 驗證實際使用期間資源持續有效，尤其是委派及非同步路徑；核對關閉後操作與重複關閉依契約處理，不假設可繼續使用或重複關閉必定安全。 |
 | <a id="acceptance-controlled-shutdown"></a>[受控關閉](#controlled-shutdown) | 在排隊及執行中仍有工作時啟動關閉，核對停止受理、等待期限、取消或接手安排與資源釋放順序。期限後未完成或未知結果仍可追蹤，不被當成已結束。 |
-
-## 共用元件的責任
-
-委派及非同步的有效期依[有效期與關閉契約](#resource-close-contract)及其[驗收](#acceptance-close-contract)。工作提交、取消與整體結果依[併發與非同步](concurrency-and-async.md)；操作與清理失敗依[清理與補償失敗](error-handling.md#清理與補償失敗)。
