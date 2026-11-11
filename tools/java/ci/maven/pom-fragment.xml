@@ -18,6 +18,35 @@
       <id>dev-rule-jdk8</id><activation><jdk>[1.8,1.9)</jdk></activation>
       <properties><checkstyle.version>9.3</checkstyle.version></properties>
     </profile>
+    <!-- 明確啟用：mvn -Pdev-rule-baseline verify；只替換 PMD／Checkstyle 違規門檻。 -->
+    <profile>
+      <id>dev-rule-baseline</id>
+      <build><plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId><artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration><failOnViolation>false</failOnViolation></configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId><artifactId>maven-pmd-plugin</artifactId>
+          <configuration><failOnViolation>false</failOnViolation></configuration>
+        </plugin>
+        <!-- 合併後位於既有報告外掛之後，在 verify 內最後檢查。 -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId><artifactId>exec-maven-plugin</artifactId><version>3.5.0</version>
+          <executions><execution><id>dev-rule-baseline</id><phase>verify</phase><goals><goal>exec</goal></goals>
+            <configuration>
+              <executable>sh</executable><workingDirectory>${project.basedir}</workingDirectory>
+              <arguments>
+                <argument>${dev-rule.root}/tools/java/baseline/run.sh</argument><argument>check</argument>
+                <argument>--baseline</argument><argument>${project.basedir}/dev-rule-baseline.tsv</argument>
+                <argument>--pmd</argument><argument>${project.build.directory}/pmd.xml</argument>
+                <argument>--checkstyle</argument><argument>${project.build.directory}/checkstyle-result.xml</argument>
+              </arguments>
+            </configuration>
+          </execution></executions>
+        </plugin>
+      </plugins></build>
+    </profile>
   </profiles>
   <build><plugins>
     <plugin>
