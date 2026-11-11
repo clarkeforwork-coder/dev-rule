@@ -1512,10 +1512,11 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order 反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter
-    + ArchRuleDefinition）實證：違反版三條規則 FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml 第 59 筆（JV-NP-023）。
+  note: 前期研究（歷史）：規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order
+    反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
+    FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。  來源：inventory-inv-claude-a.yml
+    第 59 筆（JV-NP-023）。 第 3 期：tests/run-build-layer.sh 可重跑 ArchUnit 1.4.1 internal
+    可見性、分層、核心技術依賴與循環合成正反例（JDK 8／17）；套件與方向須依專案設定，仍非完整規範涵蓋。
   source:
   - inv-claude-a
 - id: JV-NP-024
@@ -1530,12 +1531,14 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order 反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter
-    + ArchRuleDefinition）實證：違反版三條規則 FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml 第 59 筆（JV-NP-024）。
+  note: 前期研究（歷史）：規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order
+    反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
+    FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。  來源：inventory-inv-claude-a.yml
+    第 59 筆（JV-NP-024）。 第 3 期：tests/run-build-layer.sh 直接抽取 java-package-boundaries
+    的 OrderService／OrderStorage 正反例，ArchUnit RulesTemplate.STORAGE 在 JDK 8／17 命中公開巢狀
+    Storage、符合例不誤報；不代表全部架構子句已驗證。
   source:
   - inv-claude-a
 - id: JV-NP-025
@@ -1552,10 +1555,11 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order 反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter
-    + ArchRuleDefinition）實證：違反版三條規則 FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml 第 59 筆（JV-NP-025）。
+  note: 前期研究（歷史）：規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order
+    反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
+    FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。  來源：inventory-inv-claude-a.yml
+    第 59 筆（JV-NP-025）。 第 3 期：tests/run-build-layer.sh 在 JDK 8／17 可重跑共用套件反向依賴合成正反例；業務與共用套件清單須依專案設定，未把合成資料計為完整規範
+    verified。
   source:
   - inv-claude-a
 - id: JV-NP-026
@@ -1571,9 +1575,10 @@
   - 21
   status: candidate
   false_positive_risk: low
-  note: >-
-    unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens 與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與
-    Enforcer。 來源：inventory-inv-claude-a.yml 第 60 筆（JV-NP-026）。
+  note: 前期研究（歷史）：unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens
+    與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與 Enforcer。 來源：inventory-inv-claude-a.yml
+    第 60 筆（JV-NP-026）。 第 3 期：build/jdeps.sh 只實作內部 API 掃描，未實作 JPMS --check 方向判定；不得以
+    Unsafe 測試宣稱本筆已驗證。
   source:
   - inv-claude-a
 - id: JV-NP-027
@@ -1587,9 +1592,10 @@
   - 8
   status: candidate
   false_positive_risk: low
-  note: >-
-    unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens 與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與
-    Enforcer。 來源：inventory-inv-claude-a.yml 第 60 筆（JV-NP-027）。
+  note: 前期研究（歷史）：unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens
+    與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與 Enforcer。 來源：inventory-inv-claude-a.yml
+    第 60 筆（JV-NP-027）。 第 3 期：JDK 8 Unsafe 控制案例可重跑，但 -jdkinternals 不證明專案套件／模組邊界；本筆保持
+    candidate，內部 API 證據歸 JV-VP-016。
   source:
   - inv-claude-a
 - id: JV-NP-028
@@ -1604,11 +1610,12 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: low
-  note: >-
-    unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens 與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與
-    Enforcer。 來源：inventory-inv-claude-a.yml 第 59／60／61 筆（小節對照）（JV-NP-028）。
+  note: 前期研究（歷史）：unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens
+    與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與 Enforcer。 來源：inventory-inv-claude-a.yml
+    第 59／60／61 筆（小節對照）（JV-NP-028）。 第 3 期：tests/run-build-layer.sh 在 JDK 8／17 以獨立 dev-rule-boundaries
+    execution 實測 bannedDependencies 正反建置；合成依賴用於驗證機制，實際模組禁止方向須專案明訂。
   source:
   - inv-claude-a
 - id: JV-NP-029
@@ -5295,9 +5302,12 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: unverified：無建置範例與專案 POM，本次僅查官方規則；限制執行 Maven 的 JDK 範圍，不保證 toolchain compiler、產物目標或部署版本。 來源：inventory-inv-codex-b.yml 第 58 筆（JV-VP-001）。
+  note: 前期研究（歷史）：unverified：無建置範例與專案 POM，本次僅查官方規則；限制執行 Maven 的 JDK 範圍，不保證 toolchain
+    compiler、產物目標或部署版本。 來源：inventory-inv-codex-b.yml 第 58 筆（JV-VP-001）。 第 3 期：tests/run-build-layer.sh
+    可重跑 Maven Enforcer 3.5.0 的允許 JDK 與 [99,) 拒絕案例（JDK 8／17）；僅限制 Maven JVM，不能證明文件、compiler
+    toolchain 或部署版本完整。
   source:
   - inv-codex-b
 - id: JV-VP-002
@@ -5329,11 +5339,13 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: >-
-    unverified：無 Gradle 專案，未實跑 Gradle；固定 toolchain 與 options.release，release 使用支援該旗標的 compiler；以新版 compiler 產生 Java 8 目標也適用。 來源：inventory-inv-codex-b.yml
-    第 61 筆（JV-VP-003）。
+  note: 前期研究（歷史）：unverified：無 Gradle 專案，未實跑 Gradle；固定 toolchain 與 options.release，release
+    使用支援該旗標的 compiler；以新版 compiler 產生 Java 8 目標也適用。 來源：inventory-inv-codex-b.yml 第
+    61 筆（JV-VP-003）。 第 3 期：tests/run-build-layer.sh 在 Gradle 8.14.3、JDK 8／17 實跑正例及
+    List.of 超出 Java 8 API 負例；17 用 options.release=8，8 用原生平台 source/target；原規範無建置範例，仍標
+    partial。
   source:
   - inv-codex-b
 - id: JV-VP-004
@@ -5434,11 +5446,11 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: >-
-    unverified：無 Gradle 建置範例；搭配版本 constraints／reject 及 dependency locking；failOnVersionConflict 並非 Java 最低版本驗證。 來源：inventory-inv-codex-b.yml 第
-    62 筆（JV-VP-009）。
+  note: 前期研究（歷史）：unverified：無 Gradle 建置範例；搭配版本 constraints／reject 及 dependency locking；failOnVersionConflict
+    並非 Java 最低版本驗證。 來源：inventory-inv-codex-b.yml 第 62 筆（JV-VP-009）。 第 3 期：tests/run-build-layer.sh
+    在 Gradle 8.14.3、JDK 8／17 實跑允許依賴、禁用依賴與 hamcrest 衝突；不自動推斷最低 JDK，版本範圍與依賴鎖由專案補充。
   source:
   - inv-codex-b
 - id: JV-VP-010
@@ -5453,9 +5465,11 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: unverified：無依賴建置範例；可對已知不相容 GAV／版本區間禁用，searchTransitive=true；不能自動推導所有套件最低 JDK。 來源：inventory-inv-codex-b.yml 第 59／60 筆（JV-VP-010）。
+  note: 前期研究（歷史）：unverified：無依賴建置範例；可對已知不相容 GAV／版本區間禁用，searchTransitive=true；不能自動推導所有套件最低
+    JDK。 來源：inventory-inv-codex-b.yml 第 59／60 筆（JV-VP-010）。 第 3 期：tests/run-build-layer.sh
+    可重跑 Maven Enforcer 3.5.0 允許／禁用 junit 依賴（JDK 8／17）；GAV 清單須人工評估最低 JDK，相容性語意仍未全覆蓋。
   source:
   - inv-codex-b
 - id: JV-VP-011
@@ -5470,9 +5484,11 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: unverified：無依賴建置範例；檢查同一依賴的版本路徑收斂，僅輔助依賴治理，不證明相容最低 JDK。 來源：inventory-inv-codex-b.yml 第 59／60 筆（JV-VP-011）。
+  note: 前期研究（歷史）：unverified：無依賴建置範例；檢查同一依賴的版本路徑收斂，僅輔助依賴治理，不證明相容最低 JDK。 來源：inventory-inv-codex-b.yml
+    第 59／60 筆（JV-VP-011）。 第 3 期：tests/run-build-layer.sh 在 JDK 8／17 以 junit 間接 hamcrest
+    1.3 與直接 1.1 實證 convergence／upper-bound 拒絕，無衝突正例通過；不證明第三方最低 JDK 相容。
   source:
   - inv-codex-b
 - id: JV-VP-012
@@ -5557,9 +5573,10 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    已驗證不涵蓋本節反射範例：違反與符合皆無輸出；8 使用 -jdkinternals，11+ 使用 --jdk-internals；額外 sun.misc.Unsafe 欄位控制案例四版均偵測靜態內部依賴，該控制案例不計規範涵蓋率；須搭配反射與啟動選項審查；；實證版本：8、11、17、21。
-    來源：inventory-inv-codex-b.yml 第 55 筆（JV-VP-016）。
+  note: 前期研究（歷史）：已驗證不涵蓋本節反射範例：違反與符合皆無輸出；8 使用 -jdkinternals，11+ 使用 --jdk-internals；額外
+    sun.misc.Unsafe 欄位控制案例四版均偵測靜態內部依賴，該控制案例不計規範涵蓋率；須搭配反射與啟動選項審查；；實證版本：8、11、17、21。
+    來源：inventory-inv-codex-b.yml 第 55 筆（JV-VP-016）。 第 3 期：tests/run-build-layer.sh
+    在 JDK 8／17 重現規範反射正反例均無診斷的漏報，另以 Unsafe 控制正反例驗證 wrapper 退出碼 1／0，錯誤路徑為 2；維持 partial。
   source:
   - inv-codex-b
 - id: JV-VP-017
@@ -5646,11 +5663,13 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    各 JDK 對其本版 bytecode 掃描：11 偵測 deprecated，17／21 多出 forRemoval=true；符合例無棄用使用；只掃 Java SE API；第三方棄用 API 不涵蓋；此工具回傳 0 不等於無違規，CI 必須檢查報告；；實證版本：11、17、21。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-codex-b.yml 第 54 筆（JV-VP-021）。
+  note: 前期研究（歷史）：各 JDK 對其本版 bytecode 掃描：11 偵測 deprecated，17／21 多出 forRemoval=true；符合例無棄用使用；只掃
+    Java SE API；第三方棄用 API 不涵蓋；此工具回傳 0 不等於無違規，CI 必須檢查報告；；實證版本：11、17、21。  來源：inventory-inv-codex-b.yml
+    第 54 筆（JV-VP-021）。 第 3 期：tests/run-build-layer.sh 直接抽取規範 IntegerFactory 正反例，在
+    JDK 17 --release 17 與 --for-removal 命中 new Integer，Integer.valueOf 不誤報；無效 release
+    為工具錯誤；8 明確跳過。僅 Java SE API，不含第三方 API 或遷移安排。
   source:
   - inv-codex-b
 - id: JV-VP-022
