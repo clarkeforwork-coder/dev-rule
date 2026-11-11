@@ -36,6 +36,6 @@ partial 的 EqualsHashCode、MissingJavadocMethod、IllegalType 僅檢查 rule-m
 
 ## 收尾裁決與驗證
 
-JV-ER-008 限定 Throwable／Error、error、partial，以自製樣本實證；新增 JV-ER-031 限定 Exception／RuntimeException、warning、verified，以原規範正反例驗證。兩版現均 17 筆／44 範例全數通過，最新輸出見 [收尾驗證](../tests/validation.md)。原 [validation.md](validation.md) 保留修正前歷史；例外規則見 [suppressions.md](suppressions.md)。
+JV-ER-008 限定 Throwable／Error、error、partial，以自製樣本實證；新增 JV-ER-031 限定 Exception／RuntimeException、warning、verified，以原規範正反例驗證。兩版現均 17 筆／44 範例全數通過，以 `tools/java/tests/run-checkstyle.rb` 執行即可重現；例外規則見 [suppressions.md](suppressions.md)。
 
 測試與 hook 共用 toolbox 的 SHA-256 校驗快取，不再另建測試下載目錄；`toolbox.sh checkstyle-path [9.3|10.26.1]` 可取得指定版本的已驗證 jar 路徑。

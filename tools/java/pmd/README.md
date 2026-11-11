@@ -20,7 +20,7 @@ ruby tools/java/tests/run-pmd.rb --output /你的/暫存目錄/examples
 
 每筆 verified 對照都要求該小節至少有違反及符合範例，並逐一核對命中；版本增量範例也計入，不因 mapping 的版本清單省略舊版符合例。partial 僅報告，不計語意失敗；執行、解析或設定錯誤一律使驗收失敗。為減少啟動成本，依四個語法版本批次執行完整預設集合，再用實際規則名稱核對各筆範例，不將其他規則的命中算為成功。
 
-收尾後嚴格驗收 **45 通過、0 失敗**（21 partial 僅報告）；詳 [最新完整驗收紀錄](../tests/validation.md)，原 [validation.md](validation.md) 保留歷史。缺少規範案例不以合成案例冒充，已知不涵蓋的 Java 21 違反例也不略過。
+嚴格驗收以 `tools/java/tests/run-pmd.rb` 執行即可重現（目前 verified 全數通過，partial 僅報告）。缺少規範案例不以合成案例冒充，已知不涵蓋的 Java 21 違反例也不略過。
 
 ## 規則來源與重建
 
