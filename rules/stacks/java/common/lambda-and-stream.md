@@ -44,6 +44,29 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 Java 16 引入的 `Stream.toList()`，以收集後包裝為不可修改清單維持同一結果保證；仍須保留具名計價方法與清楚的篩選意圖。（[Stream.toList API @since 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#toList())）
+
+**符合（Java 8）**
+
+```java
+// 收集後封裝結果，仍以具名方法表達計價責任。
+class Example {
+    List<Integer> affordable(List<Integer> prices, int budget) {
+        List<Integer> result = prices.stream()
+                .filter((Integer price) -> totalPrice(price) <= budget)
+                .collect(Collectors.toCollection(ArrayList::new));
+        return Collections.unmodifiableList(result);
+    }
+    int totalPrice(int price) {
+        int discounted = price >= 100 ? price * 9 / 10 : price;
+        int shipping = discounted >= 80 ? 0 : 10;
+        return discounted + shipping;
+    }
+}
+```
+
 <a id="java-lambda-parameter-types"></a>
 
 ### 明確的參數型別
@@ -68,6 +91,39 @@ class Example {
 class Example {
     List<String> nonEmpty(List<String> values) {
         return values.stream().filter((String value) -> !value.isEmpty()).toList();
+    }
+}
+```
+
+**版本差異**
+
+- Java 8：沒有 Java 16 引入的 `Stream.toList()`，以收集及不可修改包裝維持同一結果保證；Lambda 參數仍須明確寫出 `String`。（[Stream.toList API @since 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#toList())）
+- Java 11：Lambda 參數自 Java 11 起可寫 `var`，會隱藏本小節要求的明確型別，不得以它取代 `String`；仍須使用明確型別，結果收集沿用 Java 8 寫法。（[JEP 323](https://openjdk.org/jeps/323)）
+
+**符合（Java 8）**
+
+```java
+// 明確標示參數型別，收集後保留不可修改結果。
+class Example {
+    List<String> nonEmpty(List<String> values) {
+        List<String> result = values.stream()
+                .filter((String value) -> !value.isEmpty())
+                .collect(Collectors.toCollection(ArrayList::new));
+        return Collections.unmodifiableList(result);
+    }
+}
+```
+
+**違反（Java 11）**
+
+```java
+// var 雖可編譯，仍未明確寫出 Lambda 參數的 String 型別。
+class Example {
+    List<String> nonEmpty(List<String> values) {
+        List<String> result = values.stream()
+                .filter((var value) -> !value.isEmpty())
+                .collect(Collectors.toCollection(ArrayList::new));
+        return Collections.unmodifiableList(result);
     }
 }
 ```
@@ -136,6 +192,21 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 17 起：可用 Java 16 引入的 `Stream.toList()` 明確累積不可修改結果；仍須符合結果的可變性契約，需要可修改清單時保留主範例的 `toCollection(ArrayList::new)`，不得直接替換。（[Stream.toList API @since 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#toList())）
+
+**符合（Java 17）**
+
+```java
+// 結果契約為不可修改清單時，以 toList 明確累積。
+class Example {
+    List<String> nonEmpty(List<String> values) {
+        return values.stream().filter((String value) -> !value.isEmpty()).toList();
+    }
+}
+```
+
 ## 執行、平行與歸約
 
 <a id="java-lazy-short-circuit"></a>
@@ -170,11 +241,30 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 11：自 Java 9 起可用 `takeWhile` 取得有序 Stream 的符合條件前綴、`dropWhile` 捨棄該前綴，或以三參數 `iterate` 限定產生範圍；仍須確認實際處理範圍，完整逐項驗證沿用主範例迴圈，不得用前綴處理取代。（[Stream API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html#takeWhile(java.util.function.Predicate))）
+
+**違反（Java 11）**
+
+```java
+// takeWhile 在失敗處結束前綴，無法滿足每筆都驗證的契約。
+class Example {
+    boolean validateEveryItem(List<String> values, Predicate<String> validator) {
+        return values.stream().takeWhile(validator).count() == values.size();
+    }
+}
+```
+
 <a id="java-parallel-stream-adoption"></a>
 
 ### 平行處理的採用條件
 
 採用平行 Stream 須有明確需求，先驗證資料隔離、順序、歸約與失敗語意，評估執行資源及阻塞影響，並以代表性負載量測確認收益。不得僅因資料量大或改寫方便就啟用平行處理，也不得忽略對其他工作及副作用保證的影響。
+
+**版本差異**
+
+- Java 21 起：在 Java 21 的虛擬執行緒內啟用平行 Stream，仍會使用與虛擬執行緒排程器不同的 common ForkJoinPool 執行平行工作；仍須評估阻塞、資源競爭並以代表性負載確認收益，不得因呼叫端改用虛擬執行緒就直接啟用平行處理。執行期差異，範例不驗證。（[JEP 444](https://openjdk.org/jeps/444)）
 
 <a id="java-reduction-collection"></a>
 
@@ -241,6 +331,26 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 Java 11 引入的 `Files.readString`，以 `Files.readAllBytes` 與預設回報解碼錯誤的 UTF-8 `CharsetDecoder` 維持同一保證；仍須傳遞讀取與解碼的 `IOException`，不得以替代字元掩蓋錯誤。（[Files.readString API @since 11](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#readString(java.nio.file.Path))、[CharsetDecoder API @since 1.4](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/CharsetDecoder.html)）
+
+**符合（Java 8）**
+
+```java
+// 明確讀取並嚴格解碼，讓讀取與解碼失敗沿原契約傳遞。
+class Example {
+    List<String> readAll(List<Path> paths) throws IOException {
+        List<String> result = new ArrayList<>();
+        for (Path path : paths) {
+            result.add(StandardCharsets.UTF_8.newDecoder()
+                    .decode(java.nio.ByteBuffer.wrap(Files.readAllBytes(path))).toString());
+        }
+        return result;
+    }
+}
+```
+
 <a id="java-stream-consumption"></a>
 
 ### 明確消費範圍
@@ -266,6 +376,26 @@ class Example {
 class Example {
     long countTwice(List<String> values) {
         List<String> snapshot = List.copyOf(values);
+        return snapshot.stream().count() + snapshot.stream().count();
+    }
+}
+```
+
+**版本差異**
+
+- Java 8：沒有 Java 10 引入的 `List.copyOf`，以防禦性複製、逐項拒絕 null 及不可修改包裝維持同一快照保證；仍須從快照各自建立 Stream，不得重用已消費的實例。（[List.copyOf API @since 10](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#copyOf(java.util.Collection))）
+
+**符合（Java 8）**
+
+```java
+// 複製並封裝同一份快照，兩次處理分別建立 Stream。
+class Example {
+    long countTwice(List<String> values) {
+        List<String> copy = new ArrayList<>(values);
+        for (String value : copy) {
+            Objects.requireNonNull(value);
+        }
+        List<String> snapshot = Collections.unmodifiableList(copy);
         return snapshot.stream().count() + snapshot.stream().count();
     }
 }
