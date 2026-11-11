@@ -7,7 +7,10 @@ require 'tmpdir'
 require 'open3'
 
 class RulesCheck
-  COMMANDS = %w[links skeleton headings template examples].freeze
+  SUPPORTED_JAVA = %w[8 11 17 21].freeze
+  BASELINE_JAVA = '17'
+  EXAMPLE_MARKER = /^\*\*(違反|符合)(?:（Java (8|11|17|21)）)?\*\*$/
+  COMMANDS = %w[links skeleton headings template examples versions].freeze
   TEMPLATE = '依變更影響及實際採用能力驗證，測試層級與案例維護依'
   JAVA_PREFIX = '共同驗收與 Java 語言增量'
   IMPORTS = <<~JAVA
@@ -21,7 +24,7 @@ class RulesCheck
     @root = root
     @files = Dir[File.join(root, 'rules/**/*.md')].sort
     @common = @files.reject { |f| f.include?('/stacks/') }
-    @java = @files.select { |f| f.include?('/stacks/java/common/') }
+    @java = Dir[File.join(root, 'rules/stacks/java/common/*.md')].sort
     @lines = @files.to_h { |f| [f, File.readlines(f, chomp: true)] }
     @errors = Hash.new(0)
     @notes = {}
@@ -238,6 +241,148 @@ class RulesCheck
     @notes[@command] = "#{@java.size} 份 Java 文件，樣板 #{counts.size} 種（比較導言第一句）"
   end
 
+  # 以三級標題及其前置錨點識別小節；程式碼內的 Markdown 不參與結構判定。
+  def java_sections(file)
+    rows = prose(file)
+    sections = []
+    pending = []
+    current = nil
+    rows.each do |line, i|
+      heading = line.match(/^\s{0,3}(\#{1,6})\s+(.+)/)
+      if heading
+        current[:end] = i if current
+        current = nil
+        if heading[1].size == 3
+          current = { file: file, start: i, end: @lines[file].size, ids: pending.dup, blocks: [] }
+          sections << current
+        end
+        pending = []
+      elsif !ids(line).empty?
+        pending.concat(ids(line))
+      elsif !line.strip.empty?
+        pending = []
+      end
+    end
+    sections
+  end
+
+  def versions
+    sections = @java.flat_map { |file| java_sections(file) }
+    labels = { '8' => [8], '8／11' => [8, 11], '11' => [11], '17 起' => [17, 21], '21 起' => [21] }
+    @java.each do |file|
+      rows = prose(file)
+      local = sections.select { |s| s[:file] == file }
+      rows.each do |line, i|
+        if line.match?(/^\s*\*\*(?:違反|符合)/) && !line.match?(EXAMPLE_MARKER)
+          report(file, i, 'V1', '範例標記須用全形括號及支援版本 8、11、17、21')
+        end
+        next unless line.match?(/^\s*\*\*版本差異/)
+        report(file, i, 'V2', '版本差異標記整行須恰為 **版本差異**') unless line == '**版本差異**'
+        section = local.find { |s| i > s[:start] && i < s[:end] }
+        unless section
+          report(file, i, 'V2', '版本差異須位於三級小節內')
+          next
+        end
+        report(file, i, 'V2', '每小節最多一個版本差異區塊') unless section[:blocks].empty?
+        # 有主範例的小節，區塊須在全部主範例之後；沒有主範例（設定、流程類小節）則直接接在條文之後。
+        main = rows.select { |text, n| n > section[:start] && n < section[:end] && text.match?(/^\*\*(違反|符合)\*\*$/) }
+        unless main.all? { |_, n| n < i }
+          report(file, i, 'V2', '版本差異須在主範例違反／符合之後')
+        end
+        boundary = rows.find do |text, n|
+          n > i && (text.match?(/^\s{0,3}\#{1,6}\s/) ||
+            (!ids(text).empty? && text.match?(/^\s*<a\s/)) ||
+            text.match?(/^\*\*(違反|符合)[（(]Java /))
+        end
+        ending = boundary&.last || @lines[file].size
+        # 下一個同級／上級標題才結束小節；較深標題仍是區塊後的非法結構。
+        section_end = titles(file).find { |level, _, n| n > i && level <= 3 }&.last || @lines[file].size
+        # 緊貼下一個標題前的錨點行屬於下一小節，不算區塊後的新錨點。
+        lead = section_end
+        lead -= 1 while lead - 1 > i && (@lines[file][lead - 1].strip.empty? || @lines[file][lead - 1].match?(/\A<a\s+id="[^"]+"><\/a>\s*\z/))
+        rows.each do |text, n|
+          next unless n >= ending && n < lead
+          if text.match?(/<a\s+id\b|^\s{0,3}\#{1,6}\s/)
+            report(file, n, 'V5', '版本差異區塊後至下一個同級／上級標題前不得有錨點或標題')
+          end
+        end
+        block = { line: i, versions: Set.new }
+        section[:blocks] << block
+        previous = 0
+        seen = Set.new
+        entries = 0
+        @lines[file][(i + 1)...ending].each_with_index do |text, offset|
+          n = i + 1 + offset
+          next if text.strip.empty?
+          if text.match?(/不適用|豁免|免除|可不|不再需要|得省略|<a\s+id|\A\s*\#{1,6}\s|驗收/)
+            report(file, n, 'V4', '版本差異不得放寬要求或含錨點、標題、驗收')
+          end
+          match = text.match(/\A- Java (8|8／11|11|17 起|21 起)：\S/)
+          unless match
+            report(file, n, 'V3', '版本差異只允許以指定版本標籤起頭的條列')
+            next
+          end
+          entries += 1
+          label = match[1]
+          # 「起」涵蓋較新版本供 V5 使用，但排序／重複只計明列的版本。
+          explicit = label.scan(/\d+/).map(&:to_i)
+          if explicit.first <= previous || explicit.any? { |v| seen.include?(v) }
+            report(file, n, 'V3', '版本標籤須遞增且不得重複')
+          end
+          previous = explicit.last
+          seen.merge(explicit)
+          block[:versions].merge(labels.fetch(label).map(&:to_s))
+        end
+        report(file, i, 'V3', '版本差異至少須有一個版本條列') if entries.zero?
+      end
+      rows.each do |line, i|
+        marker = line.match(EXAMPLE_MARKER)
+        next unless marker && marker[2]
+        section = local.find { |s| i > s[:start] && i < s[:end] }
+        block = section && section[:blocks].find { |b| b[:line] < i }
+        unless block && block[:versions].include?(marker[2])
+          report(file, i, 'V5', '版本範例須在同小節版本差異之後，且版本須由條列涵蓋')
+        end
+      end
+    end
+    @common.each do |file|
+      prose(file).each do |line, i|
+        if line.include?('**版本差異**') || line.match?(/\*\*(違反|符合)[（(]Java /)
+          report(file, i, 'V7', '共通文件不得含版本差異或版本範例標記')
+        end
+      end
+    end
+    policy = File.join(@root, 'rules/stacks/java/common/version-policy.md')
+    indexed = Set.new
+    if @lines.key?(policy)
+      heading = titles(policy).find { |_, title, _| title == '版本差異索引' }
+      if heading
+        ending = titles(policy).find { |_, _, n| n > heading[2] }&.last || @lines[policy].size
+        prose(policy).each do |line, i|
+          next unless i > heading[2] && i < ending && line.start_with?('|')
+          cells = line.split('|').map(&:strip)
+          next if cells[1] == '主題檔' || cells[1]&.match?(/\A:?-+:?\z/)
+          target = cells[2]&.match(/\A\[[^\]]+\]\(([^)]+)\)\z/)&.[](1)
+          dest, fragment = target ? destination(policy, target) : [nil, nil]
+          section = sections.find { |s| s[:file] == dest && s[:ids].include?(fragment) }
+          if section && !section[:blocks].empty? && anchors(dest).include?(fragment)
+            indexed << section
+            covered = section[:blocks].flat_map { |block| block[:versions].to_a }.uniq.sort_by(&:to_i).join('、')
+            unless cells[3] == covered
+              report(policy, i, 'V6', "索引版本欄須與區塊涵蓋版本一致（應為 #{covered}）")
+            end
+          else
+            report(policy, i, 'V6', '索引小節須連到存在且含版本差異的語意錨點')
+          end
+        end
+      end
+    end
+    sections.select { |s| !s[:blocks].empty? }.each do |section|
+      report(section[:file], section[:start], 'V6', '含版本差異的小節未列於版本差異索引') unless indexed.include?(section)
+    end
+    @notes[@command] = "#{@java.size} 份 Java 文件，#{sections.sum { |s| s[:blocks].size }} 個版本差異區塊"
+  end
+
   def examples
     begin
       version, status = Open3.capture2e('javac', '-version')
@@ -247,34 +392,47 @@ class RulesCheck
     end
     unless status&.success?
       @skipped << @command
-      report('scripts/check-rules.rb', 0, 'examples', '跳過：找不到可用 javac，請安裝 JDK 17', failure: false)
+      report('scripts/check-rules.rb', 0, 'examples', '跳過：找不到可用 javac，請安裝 JDK 21', failure: false)
       return
     end
-    unless version.match?(/javac 17(?:\.|\s|$)/)
-      report('scripts/check-rules.rb', 0, 'examples', "需要 javac 17，實際 #{version.strip}")
+    minimum = SUPPORTED_JAVA.map(&:to_i).max
+    major = version[/javac (\d+)(?:\.|\s|$)/, 1].to_i
+    unless major >= minimum
+      report('scripts/check-rules.rb', 0, 'examples', "需要 javac #{minimum}，實際 #{version.strip}")
       return
     end
     total = 0
+    counts = Hash.new(0)
     @java.each do |file|
       lines = @lines[file]
-      lines.each_with_index do |line, i|
-        next unless line.match?(/^\*\*(違反|符合)\*\*/)
+      prose(file).each do |line, i|
+        marker = line.match(EXAMPLE_MARKER)
+        next unless marker
+        release = marker[2] || BASELINE_JAVA
         j = i + 1
         j += 1 while j < lines.size && lines[j].strip.empty?
-        next unless lines[j]&.strip == '```java'
+        unless lines[j]&.strip == '```java'
+          report(file, i, 'examples', '範例標記後須接 Java 程式碼圍欄')
+          next
+        end
         ending = j + 1
         ending += 1 while ending < lines.size && lines[ending].strip != '```'
         total += 1
+        counts[release] += 1
         if ending == lines.size
           report(file, j, 'examples', 'Java 範例沒有結束圍欄')
           next
         end
         code = lines[(j + 1)...ending].join("\n")
+        if code.match?(/--enable-preview|StructuredTaskScope|ScopedValue|StringTemplate/)
+          report(file, j, 'examples', '範例不得含 Preview 功能或啟用參數')
+          next
+        end
         Dir.mktmpdir('rules-example-') do |dir|
           name = code[/public\s+(?:(?:final|abstract|sealed|non-sealed)\s+)*(?:class|record|interface|enum)\s+(\w+)/, 1] || 'Snippet'
           src = File.join(dir, "#{name}.java")
           File.write(src, IMPORTS + code + "\n")
-          output, result = Open3.capture2e('javac', '--release', '17', '-encoding', 'UTF-8', '-proc:none', '-Xlint:none', '-d', dir, src)
+          output, result = Open3.capture2e('javac', '--release', release, '-encoding', 'UTF-8', '-proc:none', '-Xlint:none', '-Xlint:-options', '-d', dir, src)
           unless result.success?
             diagnostic = output.gsub(dir + '/', '').lines.first(6).map(&:strip).join(' | ')
             report(file, j, 'examples', "#{line.delete('*')}範例編譯失敗：#{diagnostic}")
@@ -283,7 +441,8 @@ class RulesCheck
       end
     end
     report('rules/stacks/java/common', 0, 'examples', '沒有找到違反／符合 Java 範例') if total.zero?
-    @notes[@command] = "#{total} 個範例"
+    distribution = ([BASELINE_JAVA] + (SUPPORTED_JAVA - [BASELINE_JAVA])).map { |v| "Java #{v}=#{counts[v]}" if counts[v].positive? }.compact
+    @notes[@command] = "#{total} 個範例（#{distribution.join('、')}）"
   end
 
   def run(commands)

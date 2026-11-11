@@ -32,6 +32,12 @@ class OrderLimit {
 }
 ```
 
+**版本差異**
+
+- Java 8：單獨的 `_` 作為識別字會產生編譯警告，仍須改用表達業務概念的名稱，不得以能編譯作為命名合規依據。（[JEP 213](https://openjdk.org/jeps/213)）
+- Java 11：單獨的 `_` 自 Java 9 起是關鍵字，`var` 自 Java 10 起不能作為型別名稱；仍須使用符合大小寫形式且表達責任的名稱，不能只替換成另一個無意義名稱。（[JEP 213](https://openjdk.org/jeps/213)、[JEP 286](https://openjdk.org/jeps/286)）
+- Java 17 起：`yield` 自 Java 14、`record` 自 Java 16、`sealed`／`permits` 自 Java 17 起不能作為型別名稱；名為 `yield` 的方法呼叫須加接收者或型別限定，仍須維持名稱與責任一致。這些限制區分大小寫，不代表 `Record` 或同名的合法欄位一律禁止。（[JEP 361](https://openjdk.org/jeps/361)、[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)、[JLS 3.8](https://docs.oracle.com/javase/specs/jls/se17/html/jls-3.html#jls-3.8)）
+
 <a id="java-specific-responsibility"></a>
 
 ### 名稱表達具體責任
@@ -94,6 +100,11 @@ public final class OrderService {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 Java 9 引入的模組系統，以主範例的套件可見性配合依賴檢查維持公開契約與內部實作的同一保證；仍須檢查共用套件的依賴方向。（[JEP 261](https://openjdk.org/jeps/261)）
+- Java 11：可用自 Java 9 起的 `module-info.java`，以 `requires` 宣告模組依賴、`exports` 公開契約套件，另以 `opens` 控制深層反射開放（`exports` 不等於 `opens`）；仍須保留適用的可見性與依賴檢查，不能因套件名稱含 `internal` 就推定實作已被封裝。（[JEP 261](https://openjdk.org/jeps/261)）
+
 ## 契約文件與維護
 
 本組由共通規範承接的要求：[實作註解與暫時處理](../../../coding/code-design.md#implementation-notes)。
@@ -133,17 +144,72 @@ class TextReader {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 `Files.readString`，可用 `Files.readAllBytes` 搭配明確的 UTF-8 解碼器維持整檔讀取、解碼失敗回報及關閉自行取得資源的同一保證；仍須記錄前置條件、結果與失敗契約。（[`Files.readString` API `@since 11`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#readString(java.nio.file.Path,java.nio.charset.Charset))）
+- Java 11：可用自 Java 11 起的 `Files.readString`，直接採主範例寫法；仍須說明 UTF-8、空檔案結果、資源生命週期與讀取失敗，不以方法名稱取代契約。（[`Files.readString` API `@since 11`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#readString(java.nio.file.Path,java.nio.charset.Charset))）
+- Java 21 起：可用自 Java 18 起的 Javadoc `{@snippet}` 就近展示契約用法，或引用外部範例檔；仍須保留必要契約敘述，並另外編譯及測試範例，Javadoc 產生成功不代表範例或語意正確。（[JEP 413](https://openjdk.org/jeps/413)）
+
+**符合（Java 8）**
+
+```java
+import java.nio.ByteBuffer;
+// 保留整檔讀取契約，明確以 UTF-8 解碼並回報不合法的位元組。
+class TextReader {
+    /**
+     * 讀取整個檔案的 UTF-8 文字，並於返回前關閉自行取得的資源。
+     * @param path 非空的檔案路徑
+     * @return 檔案文字，空檔案回傳空字串
+     * @throws IOException 無法開啟、讀取檔案或解碼時
+     */
+    public String read(Path path) throws IOException {
+        return StandardCharsets.UTF_8.newDecoder()
+            .decode(ByteBuffer.wrap(Files.readAllBytes(path))).toString();
+    }
+}
+```
+
+**符合（Java 21）**
+
+```java
+// 用文件片段補充呼叫方式，仍保留完整契約並另外驗證片段。
+class TextReader {
+    /** 讀取整個檔案的 UTF-8 文字，並於返回前關閉自行取得的資源。
+     * {@snippet :
+     * new TextReader().read(Path.of("orders.txt"));
+     * }
+     * @param path 非空的檔案路徑
+     * @return 檔案文字，空檔案回傳空字串
+     * @throws IOException 無法開啟或讀取檔案時
+     */
+    public String read(Path path) throws IOException {
+        return Files.readString(path, StandardCharsets.UTF_8);
+    }
+}
+```
+
 <a id="java-rename-impact"></a>
 
 ### 重新命名與搬移的影響
 
 類別、方法與套件重新命名或搬移時，須核對直接引用、設定、動態機制及外部使用端的影響。已構成公開或持久化契約的名稱，須依相容性要求處理，必要時安排遷移，並同步更新文件、範例與驗證。不僅依賴 IDE 重構結果，也不得因直接引用已更新就推定所有影響已處理。
 
+**版本差異**
+
+- Java 11：採用自 Java 9 起的模組系統時，搬移套件或型別除了更新直接引用，仍須核對 `module-info.java` 的 `exports`／`opens`、`uses`／`provides` 及外部服務或反射設定，維持原有公開契約與必要遷移。（[JEP 261](https://openjdk.org/jeps/261)）
+- Java 17 起：`yield` 自 Java 14 起不能用於未限定的方法呼叫；遷移既有同名方法時可加接收者或型別限定來保留名稱，仍須核對動態引用與使用端相容性，不能只因 IDE 已更新直接呼叫就認定遷移完成。（[JEP 361](https://openjdk.org/jeps/361)）
+
 <a id="java-document-verification"></a>
 
 ### 形式與語意分別驗收
 
 依[形式與語意分別驗收的共通要求](../../../quality/rule-verification.md#document-verification)執行。Java 命名形式、Javadoc 參照及可執行範例須驗證實際結果；範例能在承諾支援的版本使用，不以文件產生成功代替內容正確。
+
+**版本差異**
+
+- Java 8／11：文件工具沒有 Java 18 引入的 `{@snippet}`，以 `{@code}` 展示並將範例另存為可編譯原始碼或測試，維持形式與語意分別檢查的同一保證；仍須在承諾支援的版本驗證範例。（[JEP 413](https://openjdk.org/jeps/413)）
+- Java 17 起：使用 Java 17 的文件工具時仍沿用 `{@code}` 與獨立範例測試；較新文件工具即使成功產生文件，仍須以對應目標版本編譯及測試，不能據此推定舊版本可用。（[JEP 413](https://openjdk.org/jeps/413)）
+- Java 21 起：可用自 Java 18 起的 `{@snippet file="TextReaderExample.java"}` 引用外部範例檔，將同一份檔案納入編譯與測試；仍須分別核對 Javadoc 參照、範例結果與契約語意，`javadoc` 本身不會編譯或執行片段。（[JEP 413](https://openjdk.org/jeps/413)）
 
 <a id="java-closing-requirements"></a>
 

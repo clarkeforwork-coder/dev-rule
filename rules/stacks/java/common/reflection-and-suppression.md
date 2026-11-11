@@ -81,6 +81,12 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 Java 9 引入的模組封裝，須以公開 API、正式建構子及特殊存取審查維持同一封裝保證；反射成功仍不代表已獲核准；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
+- Java 11：預設仍容許未命名模組反射存取部分 JDK 8 已存在套件的內部成員，仍須逐項核准特殊存取，不得把警告或呼叫成功當成授權；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；Java 16 起預設強封裝 JDK 內部實作，Java 17 起 `--illegal-access` 無法恢復寬鬆模式；必要的 `--add-opens` 仍須個別核准，且 `record` 之 final 欄位即使放寬存取也不能反射寫入，仍須走正式建立流程維持不變條件；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)、[JEP 395](https://openjdk.org/jeps/395)、[AccessibleObject API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/AccessibleObject.html#setAccessible(boolean))）
+
 <a id="java-dynamic-contract-validation"></a>
 
 ### 使用前驗證契約
@@ -107,6 +113,30 @@ class Example {
     interface Plugin { int version(); String render(); }
     Plugin register(Object candidate) {
         if (!(candidate instanceof Plugin plugin) || plugin.version() != 1) {
+            throw new IllegalArgumentException("外掛契約不相容");
+        }
+        return plugin;
+    }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有 Java 16 正式發布的 `instanceof` 型別模式，先以傳統 `instanceof` 確認能力介面再轉型，仍須驗證契約版本，維持同一保證。（[JEP 394](https://openjdk.org/jeps/394)）
+- Java 17 起：可用 `instanceof` 型別模式合併型別檢查與變數綁定，仍須額外驗證外掛契約版本。（[JEP 394](https://openjdk.org/jeps/394)）
+
+**符合（Java 8）**
+
+```java
+// 外掛先確認介面再轉型，並驗證支援的契約版本。
+class Example {
+    interface Plugin { int version(); String render(); }
+    Plugin register(Object candidate) {
+        if (!(candidate instanceof Plugin)) {
+            throw new IllegalArgumentException("外掛契約不相容");
+        }
+        Plugin plugin = (Plugin) candidate;
+        if (plugin.version() != 1) {
             throw new IllegalArgumentException("外掛契約不相容");
         }
         return plugin;
@@ -150,6 +180,11 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 11：可用 Java 9 起的 `canAccess` 檢查呼叫端能否存取；必要且已核准的存取放寬若使用 `trySetAccessible`，回傳 `false` 仍須視為存取失敗，不能當成正常業務結果；`setAccessible` 的 `InaccessibleObjectException` 也不得遺失原因或被吞掉；執行期差異，範例不驗證。（[AccessibleObject API `@since 9`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/AccessibleObject.html#trySetAccessible())）
+- Java 17 起：JDK 強封裝使先前依賴寬鬆存取的反射路徑可能失敗，仍須保留存取故障及原始原因，不得轉成查無資料或成功結果；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
+
 ## 檢查抑制與產生碼
 
 <a id="java-warning-suppression"></a>
@@ -177,6 +212,38 @@ class Example {
     @SuppressWarnings("serial")
     static class LocalFailure extends RuntimeException {}
     void execute() { throw new LocalFailure(); }
+}
+```
+
+**版本差異**
+
+- Java 8：沒有 Java 9 引入的 `removal` 警告分類，普通棄用警告以 `deprecation` 精確指定，仍須限制在必要的最小範圍，維持同一抑制保證。（[JEP 277](https://openjdk.org/jeps/277)）
+- Java 11：可用 Java 9 起的 `removal` 指定預定移除警告，`deprecation` 不會抑制這類警告；仍須按實際警告選擇具體規則及最小範圍，不得將兩者一律合併抑制。（[JEP 277](https://openjdk.org/jeps/277)）
+- Java 21 起：可用新增的 `javac -Xlint:this-escape` 檢查建構期間可能外洩的 `this`；對應的 `@SuppressWarnings("this-escape")` 仍須限定具體規則及最小範圍，不得用抑制代替修正建構安全問題。（[JDK 21 發行說明，JDK-8015831](https://www.oracle.com/java/technologies/javase/21-relnote-issues.html)）
+
+**符合（Java 8）**
+
+```java
+// 已核准的舊介面銜接僅在必要方法抑制普通棄用警告。
+class Legacy {
+    @Deprecated static void execute() {}
+}
+class Example {
+    @SuppressWarnings("deprecation")
+    void execute() { Legacy.execute(); }
+}
+```
+
+**符合（Java 11）**
+
+```java
+// 已核准的暫時銜接僅在必要方法抑制預定移除警告。
+class Legacy {
+    @Deprecated(forRemoval = true) static void execute() {}
+}
+class Example {
+    @SuppressWarnings("removal")
+    void execute() { Legacy.execute(); }
 }
 ```
 
@@ -212,11 +279,52 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 Java 16 正式發布的 `instanceof` 型別模式，手寫銜接以傳統型別檢查後轉型維持同一保證；產生來源可使用 `javax.annotation.Generated` 標記，仍須由來源／設定重建且不得擴大檢查排除範圍。（[JEP 394](https://openjdk.org/jeps/394)、[JEP 320](https://openjdk.org/jeps/320)）
+- Java 11：以傳統 `instanceof` 檢查後轉型維持手寫銜接的同一型別保證；JDK 已移除提供 `javax.annotation.Generated` 的模組，可改用 Java 9 起的 `javax.annotation.processing.Generated`，仍須同步核對產生器與檢查工具的註解識別及排除範圍。（[JEP 394](https://openjdk.org/jeps/394)、[JEP 320](https://openjdk.org/jeps/320)、[Generated API `@since 9`](https://docs.oracle.com/en/java/javase/21/docs/api/java.compiler/javax/annotation/processing/Generated.html)）
+- Java 17 起：可用 `instanceof` 型別模式驗證並綁定產生碼的結果，仍須讓手寫銜接維持完整型別檢查，產生碼標記不得擴及手寫部分。（[JEP 394](https://openjdk.org/jeps/394)）
+
+**符合（Java 8）**
+
+```java
+// 僅標記可重建的產生介面，手寫銜接先檢查再轉型。
+class Example {
+    @javax.annotation.Generated("ClientGenerator")
+    interface GeneratedClient { Object read(); }
+    String read(GeneratedClient client) {
+        Object value = client.read();
+        if (value instanceof String) return (String) value;
+        throw new IllegalArgumentException("產生碼結果不符合字串契約");
+    }
+}
+```
+
+**符合（Java 11）**
+
+```java
+// 使用新版產生碼標記，手寫銜接仍先檢查再轉型。
+class Example {
+    @javax.annotation.processing.Generated("ClientGenerator")
+    interface GeneratedClient { Object read(); }
+    String read(GeneratedClient client) {
+        Object value = client.read();
+        if (value instanceof String) return (String) value;
+        throw new IllegalArgumentException("產生碼結果不符合字串契約");
+    }
+}
+```
+
 <a id="java-dynamic-verification"></a>
 
 ### 驗證限制實際有效
 
 依[驗證限制實際有效的共通要求](../../../quality/rule-verification.md#dynamic-control-verification)執行。Java 實際反射、存取及重新產生路徑依[本文件驗收要求](#驗收要求)，不只確認警告消失或成功目標能執行。
+
+**版本差異**
+
+- Java 11：可用 `--illegal-access=warn`／`debug` 找出相容模式容許的舊 JDK 內部反射路徑，再用 `--illegal-access=deny` 驗證拒絕路徑；仍須實際執行受影響操作，不能只確認成功目標能執行；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
+- Java 17 起：`--illegal-access` 已不能切換封裝模式，須以實際部署的模組與個別核准的開放設定驗證允許及拒絕路徑，仍須確認限制有效，不得把編譯成功當成存取已驗證；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
 
 <a id="java-closing-requirements"></a>
 

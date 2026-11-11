@@ -31,6 +31,31 @@ record CustomerId(long value) {}
 record Order(OrderId orderId, CustomerId customerId) {}
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 `record`，以不同的一般類別承載 `OrderId` 與 `CustomerId`，維持不可混用的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record` 宣告專屬型別；仍須區分訂單與客戶的業務概念。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 以不同的一般類別區分訂單與客戶識別碼。
+final class OrderId {
+    private final long value;
+    OrderId(long value) { this.value = value; }
+    long value() { return value; }
+}
+final class CustomerId {
+    private final long value;
+    CustomerId(long value) { this.value = value; }
+    long value() { return value; }
+}
+final class Order {
+    private final OrderId orderId; private final CustomerId customerId;
+    Order(OrderId orderId, CustomerId customerId) { this.orderId = orderId; this.customerId = customerId; }
+}
+```
+
 <a id="java-value-construction-invariants"></a>
 
 ### 建立時保護不變條件
@@ -57,6 +82,26 @@ record OrderId(long value) {
     OrderId {
         if (value <= 0) throw new IllegalArgumentException();
     }
+    static OrderId of(long value) { return new OrderId(value); }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有 `record` 緊湊建構子，以一般建構子集中驗證，工廠委派給該建構子，維持所有建立入口的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record` 緊湊建構子集中驗證；仍須保護自身不變條件，不把格式有效當成存在性或授權成立。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 一般建構子保護正數條件，工廠共用同一驗證。
+final class OrderId {
+    private final long value;
+    OrderId(long value) {
+        if (value <= 0) throw new IllegalArgumentException();
+        this.value = value;
+    }
+    long value() { return value; }
     static OrderId of(long value) { return new OrderId(value); }
 }
 ```
@@ -89,6 +134,50 @@ final class Tags {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 `List.copyOf`，以 `new ArrayList<>(values)` 複製後再用 `Collections.unmodifiableList` 包裝，維持隔離傳入與取出修改的同一保證；仍須處理可變元素，主範例的 `copyOf` 會拒絕空元素，範例以 `requireNonNull` 維持同一行為。（[`List.copyOf` @since 10](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#copyOf(java.util.Collection))）
+- Java 11：可用自 Java 10 起的 `List.copyOf` 建立不可修改的集合快照；仍須另行保護可變元素，容器複製不等於深層不可變。（[`List.copyOf` @since 10](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#copyOf(java.util.Collection))）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record` 承載集合，但元件欄位的 `final` 只固定參考；仍須複製或封裝可變內容，保護傳入與取出路徑。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 21 起：`List.reversed()` 回傳反向檢視，直接保留外部可變集合的檢視會破壞隔離，不得當成快照；仍須先隔離來源再提供不可修改的表示。（[`List.reversed` @since 21](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#reversed())）
+
+**符合（Java 8）**
+
+```java
+// 複製後檢查空元素，再包裝私有副本以隔離修改。
+final class Tags {
+    private final List<String> values;
+    Tags(List<String> values) {
+        List<String> copy = new ArrayList<>(values);
+        copy.forEach(Objects::requireNonNull);
+        this.values = Collections.unmodifiableList(copy);
+    }
+    List<String> values() { return values; }
+}
+```
+
+**違反（Java 21）**
+
+```java
+// 反向檢視仍連到傳入集合，無法保護值物件內容。
+final class Tags {
+    private final List<String> values;
+    Tags(List<String> values) { this.values = values.reversed(); }
+    List<String> values() { return values; }
+}
+```
+
+**符合（Java 21）**
+
+```java
+// 先隔離傳入集合，再提供不可修改快照的反向檢視。
+final class Tags {
+    private final List<String> values;
+    Tags(List<String> values) { this.values = List.copyOf(values).reversed(); }
+    List<String> values() { return values; }
+}
+```
+
 ## 相等性、正規化與運算
 
 <a id="java-value-equality"></a>
@@ -115,6 +204,29 @@ record OrderId(long value) {}
 record CustomerId(long value) {}
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 `record` 自動產生的方法，以一般類別明寫同型別的值比較及一致的 `hashCode()`，維持業務型別不可混同的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record` 產生同型別、逐元件的相等性及雜湊；仍須確認元件的比較方式符合業務契約，陣列元件不會自動改為內容比較。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 兩種識別碼各自以同型別的數值判等並產生一致雜湊。
+final class OrderId {
+    private final long value;
+    OrderId(long value) { this.value = value; }
+    @Override public boolean equals(Object other) { return other instanceof OrderId && value == ((OrderId) other).value; }
+    @Override public int hashCode() { return Long.hashCode(value); }
+}
+final class CustomerId {
+    private final long value;
+    CustomerId(long value) { this.value = value; }
+    @Override public boolean equals(Object other) { return other instanceof CustomerId && value == ((CustomerId) other).value; }
+    @Override public int hashCode() { return Long.hashCode(value); }
+}
+```
+
 <a id="java-value-normalization"></a>
 
 ### 正規化規則
@@ -139,6 +251,27 @@ record Code(String value) {
 record Code(String value) {
     Code { value = value.toUpperCase(Locale.ROOT); }
     static Code of(String value) { return new Code(value); }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有 `record` 緊湊建構子，以一般建構子正規化並讓工廠委派，`equals()` 與 `hashCode()` 比較正規化後的欄位，維持各入口的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用緊湊建構子調整參數，正常結束後才隱式指定元件欄位；仍須使各入口與相等性遵循同一正規化規則。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 所有入口在一般建構子正規化，再以正規化值判等。
+final class Code {
+    private final String value;
+    Code(String value) { this.value = value.toUpperCase(Locale.ROOT); }
+    static Code of(String value) { return new Code(value); }
+    String value() { return value; }
+    @Override public boolean equals(Object other) {
+        return other instanceof Code && value.equals(((Code) other).value);
+    }
+    @Override public int hashCode() { return value.hashCode(); }
 }
 ```
 
@@ -170,6 +303,31 @@ record Exchange(Rates rates) {
     Money convert(Money source, String target) {
         BigDecimal rate = rates.rate(source.currency(), target);
         return new Money(source.amount().multiply(rate), target);
+    }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有 `record`，以一般類別承載 `Money` 與 `Exchange` 所需資料，仍由 `Exchange` 協調外部匯率，維持運算責任的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record` 承載資料及依賴；仍須由領域元件協調外部政策，不因語法改變而把換匯協調移入值物件。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 一般類別同樣由領域元件協調外部匯率政策。
+interface Rates { BigDecimal rate(String from, String to); }
+final class Money {
+    private final BigDecimal amount; private final String currency;
+    Money(BigDecimal amount, String currency) { this.amount = amount; this.currency = currency; }
+    BigDecimal amount() { return amount; }
+    String currency() { return currency; }
+}
+final class Exchange {
+    private final Rates rates;
+    Exchange(Rates rates) { this.rates = rates; }
+    Money convert(Money source, String target) {
+        return new Money(source.amount().multiply(rates.rate(source.currency(), target)), target);
     }
 }
 ```
@@ -211,6 +369,11 @@ final class OrderId {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：沒有正式的 `record`；一般 `Serializable` 類別的原生反序列化不呼叫自身建構子，以 `readObject` 驗證還原值或採序列化代理重走驗證入口，維持建立與還原的同一保證；此一般類別行為也適用於較新版；執行期差異，範例不驗證。（[JEP 395](https://openjdk.org/jeps/395)、[`Serializable` @since 1.1](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record`，其 Java 原生反序列化會呼叫正式建構子；仍須驗證實際還原路徑，不能將此保證外推到所有 ORM 或 JSON 框架；執行期差異，範例不驗證。（[JEP 395](https://openjdk.org/jeps/395)、[原生序列化規格 §1.13](https://docs.oracle.com/en/java/javase/17/docs/specs/serialization/serial-arch.html#serialization-of-records)）
+
 <a id="java-value-implementation"></a>
 
 ### 一般類別與 record
@@ -229,6 +392,27 @@ record AccessToken(String value) {}
 ```java
 // 覆寫字串表示，避免自動產生的方法洩漏敏感權杖。
 record AccessToken(String value) {
+    @Override public String toString() { return "AccessToken[REDACTED]"; }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有 `record`，以一般類別明寫建構、存取及相等方法，並控制字串表示，維持驗證、不可變性、相等性與敏感資料保護的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record` 自動產生存取、相等及字串方法；仍須檢視公開內容，敏感值須覆寫 `toString()`，可變元件仍須保護。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 一般類別保留值相等語意，診斷字串遮蔽敏感權杖。
+final class AccessToken {
+    private final String value;
+    AccessToken(String value) { this.value = value; }
+    String value() { return value; }
+    @Override public boolean equals(Object other) {
+        return other instanceof AccessToken && Objects.equals(value, ((AccessToken) other).value);
+    }
+    @Override public int hashCode() { return Objects.hashCode(value); }
     @Override public String toString() { return "AccessToken[REDACTED]"; }
 }
 ```
@@ -254,6 +438,25 @@ class OrderIdCodec {
 ```java
 // 此例交換契約明訂為十進位數字，編碼不依賴診斷字串。
 record OrderId(long value) {}
+class OrderIdCodec {
+    String encode(OrderId id) { return Long.toString(id.value()); }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有 `record`，以一般類別的存取方法取得值，交由明確的編碼方法轉換，維持診斷與交換格式分離的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record` 存取方法取得值並明確編碼；仍須獨立定義交換格式，不把自動產生的 `toString()` 當成穩定契約。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 明訂十進位交換格式，一般類別也不依賴診斷字串。
+final class OrderId {
+    private final long value;
+    OrderId(long value) { this.value = value; }
+    long value() { return value; }
+}
 class OrderIdCodec {
     String encode(OrderId id) { return Long.toString(id.value()); }
 }

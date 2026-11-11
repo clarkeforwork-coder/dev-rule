@@ -52,6 +52,28 @@ record Paid(String transactionId) implements Payment {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record` 與 `sealed`（Java 17 正式發布），以私有建構子的抽象類別及巢狀 `final` 子類別維持狀態型別的同一保證；必要資料仍須在子類別建構子驗證。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)）
+- Java 17 起：可用 `sealed` 限制狀態型別並以 `record` 承載各狀態資料；必要資料仍須在建構時驗證，`record` 不會自動拒絕空值。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)）
+
+**符合（Java 8）**
+
+```java
+// 封閉狀態階層，已付款型別在建立時保護交易編號。
+abstract class Payment {
+    private Payment() {}
+    static final class Pending extends Payment {}
+    static final class Paid extends Payment {
+        private final String transactionId;
+        Paid(String transactionId) {
+            this.transactionId = Objects.requireNonNull(transactionId);
+        }
+        String transactionId() { return transactionId; }
+    }
+}
+```
+
 <a id="java-business-state-transitions"></a>
 
 ### 業務操作控制轉換
@@ -165,6 +187,48 @@ class Display {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 switch 運算式（Java 14 正式發布，見 [JEP 361](https://openjdk.org/jeps/361)），以列舉 switch 敘述列出已知分支，並以 `default: throw` 拒絕未知狀態；完整性仍須由測試及審查補足。
+- Java 17 起：可用列舉 switch 運算式接受編譯器的窮盡檢查；Java 17 的 pattern switch 為 Preview（[JEP 406](https://openjdk.org/jeps/406)），不得用於規範範例，專案採用依 [Preview 功能要求](version-policy.md#java-preview-features)處理；仍不得把未知狀態當成功。
+- Java 21 起：可用正式的 pattern switch（[JEP 409](https://openjdk.org/jeps/409)、[JEP 441](https://openjdk.org/jeps/441)）搭配 sealed 型別接受窮盡檢查；仍須完整處理分支，不以 `default` 將未知狀態當成功。
+
+**符合（Java 11）**
+
+```java
+// 列出已知結果並拒絕未知狀態，完整性另由測試及審查補足。
+class Display {
+    enum Result { SUCCESS, REJECTED, PENDING }
+    String message(Result result) {
+        switch (result) {
+            case SUCCESS: return "成功";
+            case REJECTED: return "拒絕";
+            case PENDING: return "待確認";
+            default: throw new IllegalStateException("未知結果");
+        }
+    }
+}
+```
+
+**符合（Java 21）**
+
+```java
+// 封閉結果型別搭配模式 switch，缺少分支時由編譯器拒絕。
+sealed interface Result permits Success, Rejected, Pending {}
+record Success() implements Result {}
+record Rejected() implements Result {}
+record Pending() implements Result {}
+class Display {
+    String message(Result result) {
+        return switch (result) {
+            case Success success -> "成功";
+            case Rejected rejected -> "拒絕";
+            case Pending pending -> "待確認";
+        };
+    }
+}
+```
+
 ## 外部代碼、擴充與結果資料
 
 本組由共通規範承接的要求：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。
@@ -205,6 +269,30 @@ enum State {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 switch 運算式（Java 14 正式發布），以 switch 敘述維持外部代碼固定映射的同一保證；仍須拒絕本範例契約未定義的代碼，不以 `ordinal()` 代替映射。（[JEP 361](https://openjdk.org/jeps/361)）
+- Java 17 起：可用 switch 運算式表達外部代碼映射；仍須明訂穩定代碼並依契約處理未知值，語法不會自動保護代碼相容性。（[JEP 361](https://openjdk.org/jeps/361)）
+
+**符合（Java 8）**
+
+```java
+// 外部代碼固定映射，以傳統分支拒絕未知代碼。
+enum State {
+    PENDING(10), PAID(20);
+    private final int code;
+    State(int code) { this.code = code; }
+    int externalCode() { return code; }
+    static State fromCode(int code) {
+        switch (code) {
+            case 10: return PENDING;
+            case 20: return PAID;
+            default: throw new IllegalArgumentException("未知狀態代碼");
+        }
+    }
+}
+```
+
 <a id="java-model-extensibility"></a>
 
 ### 封閉或允許擴充
@@ -228,6 +316,22 @@ record Unexpected() implements Result {}
 sealed interface Result permits Success, Rejected {}
 record Success() implements Result {}
 record Rejected() implements Result {}
+```
+
+**版本差異**
+
+- Java 8／11：沒有 `sealed`（Java 17 正式發布），以私有建構子的抽象類別及巢狀 `final` 子類別維持封閉契約的同一保證；仍須檢查可見性與建立入口，避免其他實作進入模型。（[JEP 409](https://openjdk.org/jeps/409)）
+- Java 17 起：可用 `sealed` 與 `permits` 限制直接子型別；仍須依契約控制後續擴充，`non-sealed` 會重新開放該分支，不得用它破壞原本的封閉契約。（[JEP 409](https://openjdk.org/jeps/409)）
+
+**符合（Java 8）**
+
+```java
+// 私有基底建構子與巢狀 final 子類別封閉結果階層。
+abstract class Result {
+    private Result() {}
+    static final class Success extends Result {}
+    static final class Rejected extends Result {}
+}
 ```
 
 <a id="java-model-acceptance"></a>

@@ -48,6 +48,10 @@ class Child extends Base {
 }
 ```
 
+**版本差異**
+
+- Java 21 起：建置 JDK 自 Java 21 起可用 `-Xlint:this-escape` 輔助檢查建構期間的外洩；其警告限於可能有模組外（未使用模組時為套件外）子類別的情況，仍須審查所有建構路徑，不能以沒有警告推論沒有外洩或可覆寫呼叫。（[javac 21 文件](https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html)、[JDK-8015831](https://bugs.openjdk.org/browse/JDK-8015831)）
+
 ## 依賴、建立方式與擴充
 
 本組由共通規範承接的要求：[介面的能力劃分](../../../coding/code-design.md#interface-capabilities)。
@@ -115,6 +119,31 @@ class RangeBuilder {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以一般類別的建構子集中驗證，讓 Builder 與工廠呼叫同一入口以維持同一保證；仍須拒絕無效物件。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：可用 record 的緊湊標準建構子集中驗證，其他 record 建構子須委派至標準建構子；仍須在該入口檢查必要條件，record 自動產生的建構子不會代為檢查業務條件。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// Builder 仍經過同一建構子驗證，不能產出起訖顛倒的區間。
+final class Range {
+    private final int start, end;
+    Range(int start, int end) {
+        if (start > end) throw new IllegalArgumentException("Invalid range");
+        this.start = start; this.end = end;
+    }
+    int start() { return start; }
+    int end() { return end; }
+}
+class RangeBuilder {
+    int start = 10;
+    int end = 1;
+    Range build() { return new Range(start, end); }
+}
+```
+
 <a id="java-override-scope"></a>
 
 ### `super` 呼叫與 `final` 的擴充限制
@@ -147,6 +176,27 @@ abstract class Payment {
     protected abstract void process(int amount);
 }
 class CashPayment extends Payment {
+    @Override protected void process(int amount) { System.out.println(amount); }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有正式的 sealed（Java 17 正式發布），以 `final` 方法固定必要檢查，再以建構子可見性及審查限制允許的繼承範圍，維持同一保證；仍須確認子類別不能繞過必要檢查。（[JEP 409](https://openjdk.org/jeps/409)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 sealed 與 `permits` 限制直接子型別，但允許的子類別仍能覆寫非 `final` 方法；仍須保留不可繞過的檢查入口，並確認代理與繼承機制相容；`record` 隱含 `final`，選用時同樣須確認擴充需求。（[JEP 409](https://openjdk.org/jeps/409)、[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 17）**
+
+```java
+// 限制允許的付款子類別，固定入口仍保留不可繞過的檢查。
+abstract sealed class Payment permits CashPayment {
+    final void pay(int amount) {
+        if (amount <= 0) throw new IllegalArgumentException("Invalid amount");
+        process(amount);
+    }
+    protected abstract void process(int amount);
+}
+final class CashPayment extends Payment {
     @Override protected void process(int amount) { System.out.println(amount); }
 }
 ```
