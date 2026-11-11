@@ -1,0 +1,4 @@
+# JDK 8：實測可用 20 類（all／none 為控制鍵）
+# 可用：auxiliaryclass,cast,classfile,dep-ann,deprecation,divzero,empty,fallthrough,finally,options,overloads,overrides,path,processing,rawtypes,serial,static,try,unchecked,varargs
+# 報告工作可另用 -Xlint:all；阻擋工作見 README.md。
+-Xlint:rawtypes,unchecked,varargs,overrides,finally,divzero,empty,deprecation

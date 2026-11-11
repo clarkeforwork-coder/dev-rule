@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 預設不排除測試或產生碼；核准後才加入精確 Class／Method／Bug 配對。 -->
+<FindBugsFilter/>

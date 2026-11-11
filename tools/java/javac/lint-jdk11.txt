@@ -1,0 +1,4 @@
+# JDK 11：實測可用 27 類（all／none 為控制鍵）
+# 可用：auxiliaryclass,cast,classfile,dep-ann,deprecation,divzero,empty,exports,fallthrough,finally,module,opens,options,overloads,overrides,path,preview,processing,rawtypes,removal,requires-automatic,requires-transitive-automatic,serial,static,try,unchecked,varargs
+# 報告工作可另用 -Xlint:all；阻擋工作見 README.md。
+-Xlint:rawtypes,unchecked,varargs,overrides,finally,divzero,empty,deprecation,removal

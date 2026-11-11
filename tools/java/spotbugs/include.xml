@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <!-- [JV-NP-020] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form -->
+  <Match><Bug pattern="NM_METHOD_NAMING_CONVENTION"/></Match>
+  <!-- [JV-CC-004] 建構期間的安全性 → rules/stacks/java/common/classes-and-construction.md#java-construction-safety -->
+  <Match><Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR"/></Match>
+  <!-- [JV-NO-004] Optional 本身非空 → rules/stacks/java/common/null-and-optional.md#java-optional-nonnull -->
+  <Match><Bug pattern="NP_OPTIONAL_RETURN_NULL"/></Match>
+  <!-- [JV-CO-009] 複合操作的原子性 → rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity -->
+  <Match><Bug pattern="AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION"/></Match>
+  <!-- [JV-ER-005] 明確的故障分類 → rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification -->
+  <Match><Bug pattern="THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION"/></Match>
+  <!-- [JV-ER-011] 捕捉範圍與處置相符 → rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope -->
+  <Match><Bug pattern="REC_CATCH_EXCEPTION"/></Match>
+  <!-- [JV-ER-020] 優先使用語言資源管理機制 → rules/stacks/java/common/exceptions-and-resources.md#java-resource-management -->
+  <Match><Bug pattern="OS_OPEN_STREAM_EXCEPTION_PATH"/></Match>
+  <!-- [JV-EH-005] 相等與雜湊契約 → rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract -->
+  <Match><Bug pattern="HE_EQUALS_NO_HASHCODE"/></Match>
+  <!-- [JV-EH-013] 跨型別相等範圍 → rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality -->
+  <Match><Bug pattern="EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"/></Match>
+  <!-- [JV-ND-010] 範圍與轉換檢查 → rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks -->
+  <Match><Bug pattern="ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"/></Match>
+  <!-- [JV-CA-004] 可見性與共享資料 → rules/stacks/java/common/concurrency-and-async.md#java-visibility-sharing -->
+  <Match><Bug pattern="VO_VOLATILE_INCREMENT"/></Match>
+  <!-- [JV-CA-012] 鎖定範圍與取得策略 → rules/stacks/java/common/concurrency-and-async.md#java-lock-scope -->
+  <Match><Bug pattern="UL_UNRELEASED_LOCK"/></Match>
+</FindBugsFilter>

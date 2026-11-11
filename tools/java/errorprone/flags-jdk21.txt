@@ -1,0 +1,33 @@
+# JDK 21／Error Prone 2.52.0；詳 README.md。
+-XepDisableAllChecks
+# [JV-TG-012] 型別安全警告 → rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings
+-Xep:SuppressWarningsWithoutExplanation:ERROR
+# [JV-TG-021] 集合與映射的宣告型別 → rules/stacks/java/common/types-and-generics.md#java-collection-declarations
+-Xep:NonApiType:WARN
+# [JV-LS-006] 中間操作不隱藏業務副作用 → rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects
+# [JV-LS-011] 延遲與短路範圍 → rules/stacks/java/common/lambda-and-stream.md#java-lazy-short-circuit
+-Xep:ReturnValueIgnored:ERROR
+# [JV-NP-014] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+-Xep:IdentifierName:ERROR
+# [JV-CC-010] `super` 呼叫與 `final` 的擴充限制 → rules/stacks/java/common/classes-and-construction.md#java-override-scope
+-Xep:MissingSuperCall:ERROR
+# [JV-CO-005] 遍歷期間的修改 → rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation
+-Xep:ModifyCollectionInEnhancedForLoop:ERROR
+# [JV-CO-014] 延遲讀取的資源責任 → rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime
+-Xep:StreamResourceLeak:ERROR
+# [JV-ER-014] 保留中斷意圖 → rules/stacks/java/common/exceptions-and-resources.md#java-interruption
+-Xep:InterruptedExceptionSwallowed:ERROR
+# [JV-ER-022] 保留操作與清理失敗 → rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures
+-Xep:Finally:ERROR
+# [JV-EH-003] 相等與雜湊契約 → rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract
+-Xep:EqualsUsingHashCode:ERROR
+# [JV-EH-011] 跨型別相等範圍 → rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality
+# 候選停用：-Xep:EqualsGetClass:ERROR
+# [JV-EH-016] 比較關係一致 → rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations
+-Xep:BadComparable:ERROR
+# [JV-ND-008] 範圍與轉換檢查 → rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks
+-Xep:NarrowingCompoundAssignment:ERROR
+# [JV-ND-012] BigDecimal 判同語意 → rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence
+-Xep:BigDecimalEquals:ERROR
+# [JV-ND-023] 可控制的時間基準 → rules/stacks/java/common/numbers-dates-text.md#java-clock-source
+-Xep:JavaTimeDefaultTimeZone:WARN
