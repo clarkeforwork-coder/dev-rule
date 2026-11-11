@@ -284,8 +284,9 @@ class RulesCheck
           next
         end
         report(file, i, 'V2', '每小節最多一個版本差異區塊') unless section[:blocks].empty?
+        # 有主範例的小節，區塊須在全部主範例之後；沒有主範例（設定、流程類小節）則直接接在條文之後。
         main = rows.select { |text, n| n > section[:start] && n < section[:end] && text.match?(/^\*\*(違反|符合)\*\*$/) }
-        unless %w[違反 符合].all? { |kind| main.any? { |text, n| text == "**#{kind}**" && n < i } } && main.all? { |_, n| n < i }
+        unless main.all? { |_, n| n < i }
           report(file, i, 'V2', '版本差異須在主範例違反／符合之後')
         end
         boundary = rows.find do |text, n|
@@ -296,8 +297,11 @@ class RulesCheck
         ending = boundary&.last || @lines[file].size
         # 下一個同級／上級標題才結束小節；較深標題仍是區塊後的非法結構。
         section_end = titles(file).find { |level, _, n| n > i && level <= 3 }&.last || @lines[file].size
+        # 緊貼下一個標題前的錨點行屬於下一小節，不算區塊後的新錨點。
+        lead = section_end
+        lead -= 1 while lead - 1 > i && (@lines[file][lead - 1].strip.empty? || @lines[file][lead - 1].match?(/\A<a\s+id="[^"]+"><\/a>\s*\z/))
         rows.each do |text, n|
-          next unless n >= ending && n < section_end
+          next unless n >= ending && n < lead
           if text.match?(/<a\s+id\b|^\s{0,3}\#{1,6}\s/)
             report(file, n, 'V5', '版本差異區塊後至下一個同級／上級標題前不得有錨點或標題')
           end
