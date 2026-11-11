@@ -165,6 +165,48 @@ class Display {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 switch 運算式（Java 14 正式發布，見 [JEP 361](https://openjdk.org/jeps/361)），以列舉 switch 敘述列出已知分支，並以 `default: throw` 拒絕未知狀態；完整性仍須由測試及審查補足。
+- Java 17 起：可用列舉 switch 運算式接受編譯器的窮盡檢查；Java 17 的 pattern switch 為 Preview（[JEP 406](https://openjdk.org/jeps/406)），不得用於規範範例，專案採用依 [Preview 功能要求](version-policy.md#java-preview-features)處理；仍不得把未知狀態當成功。
+- Java 21 起：可用正式的 pattern switch（[JEP 441](https://openjdk.org/jeps/441)）搭配 sealed 型別接受窮盡檢查；仍須完整處理分支，不以 `default` 將未知狀態當成功。
+
+**符合（Java 11）**
+
+```java
+// 列出已知結果並拒絕未知狀態，完整性另由測試及審查補足。
+class Display {
+    enum Result { SUCCESS, REJECTED, PENDING }
+    String message(Result result) {
+        switch (result) {
+            case SUCCESS: return "成功";
+            case REJECTED: return "拒絕";
+            case PENDING: return "待確認";
+            default: throw new IllegalStateException("未知結果");
+        }
+    }
+}
+```
+
+**符合（Java 21）**
+
+```java
+// 封閉結果型別搭配模式 switch，缺少分支時由編譯器拒絕。
+sealed interface Result permits Success, Rejected, Pending {}
+record Success() implements Result {}
+record Rejected() implements Result {}
+record Pending() implements Result {}
+class Display {
+    String message(Result result) {
+        return switch (result) {
+            case Success success -> "成功";
+            case Rejected rejected -> "拒絕";
+            case Pending pending -> "待確認";
+        };
+    }
+}
+```
+
 ## 外部代碼、擴充與結果資料
 
 本組由共通規範承接的要求：[結果保留當時事實](../../../coding/domain-modeling.md#result-facts)。

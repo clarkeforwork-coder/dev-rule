@@ -26,7 +26,7 @@ Java 跨版本共用要求集中於 `common/`，此處的 common 不等於跨語
 
 內容欄摘要各文件的 Java 增量；由共通承接的主題見各文件分組下的指路句與共同驗收。
 
-Java 8、11、17、21 的版本差異、Framework 規範及具體工具配置仍待制定。
+Java 8、11、17、21 的版本差異內嵌於各主題小節的主範例之後，依版本條列與對應範例閱讀；支援版本、主範例基線與差異索引見[支援版本與基線](common/version-policy.md#java-supported-versions)。Framework 規範及具體工具配置仍待制定。
 
 ## 驗收入口
 

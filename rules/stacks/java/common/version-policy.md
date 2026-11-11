@@ -140,6 +140,30 @@ Java 版本變更須評估參與編譯、測試、分析及產物處理的工具
 
 每個發布產物須可追溯實際建置 JDK、編譯目標、依賴版本與相容性驗證紀錄。部署後須能核對產物識別與實際 Java 執行環境，包含發行商、完整版本及相關啟動設定。可沿用專案既有建置與部署紀錄。
 
+<a id="java-supported-versions"></a>
+
+## 支援版本與基線
+
+<a id="java-example-baseline"></a>
+
+### 支援版本與主範例基線
+
+本規範支援 Java 8、11、17、21；主範例以 Java 17 撰寫。專案版本低於 17 時，須依各小節「版本差異」條列與對應版本範例落實；高於 17 時主範例仍適用，「Java 21 起」條列是可選的新機制或加嚴。版本差異只描述落實方式，不得新增、放寬或免除任何要求。
+
+<a id="java-version-lifecycle"></a>
+
+### 新版本納入與版本退場
+
+新 JDK 發布不自動成為支援版本，須先盤點對各主題的影響、驗證工具鏈後才加入清單。移除支援版本須依[建置升級與支援範圍變更](#java-build-upgrade)的既有流程決定，決定後從清單移除並清除該版本的條列與範例。
+
+<a id="java-version-differences-index"></a>
+
+### 版本差異索引
+
+| 主題檔 | 小節 | 版本 | 摘要 |
+| --- | --- | --- | --- |
+| states-and-results.md | [處理完整性](states-and-results.md#java-exhaustive-result-handling) | 8、11、17、21 | 依版本以列舉分支、switch 運算式或 sealed 搭配 pattern switch 落實完整處理。 |
+
 ## 驗收要求
 
 共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依本次變更與適用能力執行下列檢查，將結果連到受驗產物及其版本。測試層級、證據與執行門檻依[共通測試策略](../../../quality/testing.md#execution-gates-and-acceptance)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)制定。
@@ -150,6 +174,8 @@ Java 版本變更須評估參與編譯、測試、分析及產物處理的工具
 - [實際執行範圍](../../../quality/rule-verification.md#actual-check-scope)。
 
 ### Java 語言增量驗收
+
+版本差異須驗收：移除版本差異區塊後要求不變、版本事實有官方來源、版本範例可在對應 `--release` 編譯。
 
 | 對應要求 | 語言增量驗收 |
 | --- | --- |

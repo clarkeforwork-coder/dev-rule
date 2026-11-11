@@ -1,7 +1,21 @@
 # 規範檢查
 
-本機需 Ruby 2.6 以上（只使用標準函式庫）及 JDK 17。在儲存庫根目錄執行 `ruby scripts/check-rules.rb` 執行全部檢查，也可指定 `links`、`skeleton`、`headings`、`template`、`examples`，例如 `ruby scripts/check-rules.rb links headings`。GitHub Actions 在 PR 與推送到 `main` 時使用 Ruby 3.3、Temurin 17 執行相同入口。
+本機需 Ruby 2.6 以上（只使用標準函式庫）及 JDK 21。在儲存庫根目錄執行 `ruby scripts/check-rules.rb` 執行全部檢查，也可指定 `links`、`skeleton`、`headings`、`template`、`examples`、`versions`，例如 `ruby scripts/check-rules.rb links headings`。GitHub Actions 在 PR 與推送到 `main` 時使用 Ruby 3.3、Temurin 21 執行相同入口。
 
-`links` 檢查本地 Markdown 連結的檔案與錨點，Java → 共通整檔連結列為警告並計數，但不影響結束碼，失效連結仍算失敗；`skeleton` 檢查共通文件 S1–S8（一級標題、層級、語意錨點、導言、驗收位置、樣板、重複與整檔連結位置），沿用既有檢查器的 README／跨主題驗收索引 S5 例外與 README 的 S8 例外；`headings` 檢查所有文件的重複標題文字及明訂錨點；`template` 限制共通樣板句只在 testing.md，並要求 15 份 Java 主題各有一份以「共同驗收與 Java 語言增量」起頭的導言段落，去除換行後只比對第一句（至第一個「。」），15 份須相同（以最多數版本列出差異），之後依主題不同的案例選擇句不比對；`examples` 將「違反／符合」後的 Java 區塊補上常用 import，逐一在暫存目錄以 javac 17 編譯，僅驗證語法與型別，不執行範例，其他 `java` 區塊不編譯。
+`links` 檢查本地 Markdown 連結的檔案與錨點，Java → 共通整檔連結列為警告並計數，但不影響結束碼，失效連結仍算失敗；`skeleton` 檢查共通文件 S1–S8（一級標題、層級、語意錨點、導言、驗收位置、樣板、重複與整檔連結位置），沿用既有檢查器的 README／跨主題驗收索引 S5 例外與 README 的 S8 例外；`headings` 檢查所有文件的重複標題文字及明訂錨點；`template` 限制共通樣板句只在 testing.md，並要求 15 份 Java 主題各有一份以「共同驗收與 Java 語言增量」起頭的導言段落，去除換行後只比對第一句（至第一個「。」），15 份須相同（以最多數版本列出差異），之後依主題不同的案例選擇句不比對；`examples` 將「違反／符合」後的 Java 區塊補上常用 import，逐一在暫存目錄以 javac 21 以上搭配 `--release N` 編譯，`--release` 只驗證語法、型別與 API，不驗證執行期行為，也不執行範例；其他 `java` 區塊不編譯。
 
 問題輸出為 `檔案:行 [規則] 說明`，行號從 1 起算；最後一行列出各項狀態、問題數與檢查範圍。結束碼 0 表示所有指定檢查通過，1 表示有問題，2 表示參數錯誤或因缺少 javac 跳過（跳過不算通過）。Markdown 檢查忽略程式碼圍欄，支援 ATX 標題、`<a id>`、行內連結及完整／縮寫 reference links；不連線檢查外部網址。依輸出的文件與行號檢查原因，不以工具通過取代語意審查。
+
+範例標記使用獨立一行的 `**違反**`／`**符合**`（主範例，`--release 17`），或 `**違反（Java N）**`／`**符合（Java N）**`（全形括號，N 只允許 8、11、17、21），後接 Java 程式碼圍欄；有版本者使用對應 `--release N`。javac 主版本須至少為支援清單最大版本（目前 21），不足即失敗；摘要列各版本範例數。範例含 `--enable-preview`、`StructuredTaskScope`、`ScopedValue` 或 `StringTemplate` 直接失敗；其他 Preview 語法由未啟用 Preview 的編譯拒絕。保留 `-Xlint:none` 並加 `-Xlint:-options` 壓掉舊目標版本警告。
+
+`versions` 隨全部檢查執行，V1–V6 只掃 `rules/stacks/java/common/*.md`；V7 另掃共通文件（`rules/` 下 `stacks/` 以外）：
+
+- V1：範例標記僅允許上述四種形式，半形括號及非支援版本均失敗。
+- V2：`**版本差異**` 須位於三級小節的主「違反／符合」範例之後，每小節最多一個區塊。
+- V3：區塊只容許空行及以 `- Java 8：`、`- Java 8／11：`、`- Java 11：`、`- Java 17 起：`、`- Java 21 起：` 起頭的條列，版本須遞增且不重複。
+- V4：區塊不得含「不適用」「豁免」「免除」「可不」「不再需要」「得省略」、錨點、標題或「驗收」。
+- V5：版本範例須在同小節版本差異區塊之後，且版本須在條列涵蓋範圍內（8／11 涵蓋兩版、17 起涵蓋 17 與 21、21 起涵蓋 21）。
+- V6：版本政策的索引每列須連到存在且含版本差異的小節語意錨點，每個有差異的小節也須列於索引。
+- V7：共通文件不得出現版本差異區塊或帶版本的範例標記。
+
+版本差異區塊自標記行起，到下一個標題、錨點行或版本範例標記為止；區塊與版本範例沿用所在小節的語意錨點，不新增版本專屬錨點。機械檢查無法判斷文字是否實質放寬要求，仍須依版本政策的驗收要求審查。
