@@ -41,6 +41,9 @@
 
 審查時應確認拆分理由、敏感欄位與可修改欄位範圍，以及集合與巢狀資料是否仍可被外部修改。偏離要求須依[例外核准流程](../workflow/rule-governance.md#exception-approval)處理。
 
+<a id="supplementary-contract-acceptance"></a>
+### 補充契約驗收
+
 | 契約 | 驗收內容 |
 | --- | --- |
 | <a id="acceptance-boundary-separation"></a>[隔離與拆分](#separation) | 審查邊界物件的契約責任與隔離依據，確認未因欄位相同而不當共用，也未僅因分層而重複建立 DTO。確認公開資料未直接暴露持久化或模組內部模型。 |

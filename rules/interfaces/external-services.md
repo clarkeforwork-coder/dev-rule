@@ -51,6 +51,7 @@
 - 超出容量或暫停呼叫時，明確回報暫時不可用，或使用已核准的降級，不得假裝成功。
 - 不要求所有整合採用同一套複雜機制，具體門檻與隔離方式由專案決定。
 
+<a id="accepted-and-completed"></a>
 <a id="acceptance-and-completion"></a>
 ## 接受與完成
 

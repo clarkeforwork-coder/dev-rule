@@ -23,14 +23,12 @@
 
 <a id="mapping-responsibility"></a>
 <a id="bm-03"></a>
-
 ### 聚焦轉換與必要驗證
 
 映射須聚焦契約定義的資料轉換與必要驗證，不得隱藏外部存取、業務決策或業務副作用。可依契約解析格式及建立專屬型別；查詢補充資料、決定折扣、寫入資料庫或發送事件等行為，由負責元件明確協調，再進行映射。
 
 <a id="directional-mapping"></a>
 <a id="bm-07"></a>
-
 ### 各方向分別定義
 
 各方向的映射須分別定義欄位、來源與轉換規則，不得預設輸出映射可反向用於輸入。只有契約明確允許且轉換可逆時，才共用或產生反向映射；不得將唯讀、衍生或經遮罩的資料直接寫回業務物件。工具具備反向產生功能不代表可免除上述判斷。
@@ -38,10 +36,9 @@
 <a id="mapping-contract-integration"></a>
 <a id="既有共同保證的落實"></a>
 <a id="相關共通契約"></a>
-
 ## 映射失敗、更新與隔離
 
-映射失敗依[錯誤處理](../coding/error-handling.md#failure-classification)及[資料驗證](../coding/validation.md#validation-responsibilities)區分外部不合法資料與內部缺陷。部分成功依[多步驟與部分成功](../coding/error-handling.md#partial-success)。更新意圖依[空值語意](../coding/nullability.md#空值語意)。隔離與共用值依[邊界隔離](boundary-objects.md#separation)、[共用值契約](boundary-objects.md#separation)、[值物件不可變性](../coding/domain-modeling.md#value-immutability)及[集合所有權](../coding/collections-and-ownership.md#collection-ownership)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#mapping-ownership)、[介面用途](dependency-composition.md#interfaces)及[共用能力](shared-capabilities.md#shared-code)。
+映射失敗依[錯誤處理](../coding/error-handling.md#failure-classification)及[資料驗證](../coding/validation.md#validation-responsibilities)區分外部不合法資料與內部缺陷。部分成功依[多步驟與部分成功](../coding/error-handling.md#partial-success)。更新意圖依[空值語意](../coding/nullability.md#null-state-semantics)。隔離與共用值依[邊界隔離](boundary-objects.md#separation)、[共用值契約](boundary-objects.md#separation)、[值物件不可變性](../coding/domain-modeling.md#value-immutability)及[集合所有權](../coding/collections-and-ownership.md#collection-ownership)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#mapping-ownership)、[介面用途](dependency-composition.md#interfaces)及[共用能力](shared-capabilities.md#shared-code)。
 
 <a id="acceptance"></a>
 ## 驗收
@@ -52,11 +49,11 @@
 
 <a id="mapping-path-verification"></a>
 <a id="bm-09"></a>
-
 ### 驗證實際映射路徑
 
 映射新增或變更時，須依影響驗證欄位來源、轉換語意、失敗處理、更新意圖與可變資料隔離，以及禁止流出的資料。使用工具或框架時須驗證實際映射路徑，不能只測試手寫替代版本，也不能僅確認轉換成功或物件型別正確。涉及反序列化或序列化設定時，須透過實際邊界路徑驗證。
 
+<a id="supplementary-contract-acceptance"></a>
 <a id="supplementary-acceptance"></a>
 ### 補充契約驗收
 

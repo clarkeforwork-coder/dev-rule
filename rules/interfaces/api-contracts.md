@@ -29,7 +29,7 @@
 - 每項操作必須說明對象、必要條件與業務效果。
 - 成功結果須明確表示哪些變更已完成、哪些仍待後續處理，不讓使用端自行猜測。
 - 多步驟操作明確定義本次完成範圍，不把尚未完成的後續工作算入成功。
-- 已接受、處理中與已完成的區分遵循[外部整合可靠性](external-services.md#acceptance-and-completion)，部分成功及結果未知遵循[錯誤處理](../coding/error-handling.md#partial-success)。
+- 已接受、處理中與已完成的區分遵循[外部整合可靠性](external-services.md#accepted-and-completed)，部分成功及結果未知遵循[錯誤處理](../coding/error-handling.md#partial-success)。
 - 使用端只需依公開契約理解結果，不必了解內部分層、資料表或服務呼叫順序。
 - 實作與文件必須一致，不得在未調整契約的情況下改變成功語意；變更須遵守[資料契約](data-contracts.md#compatibility-and-changes)的相容性要求。
 
@@ -39,7 +39,7 @@
 - 必須明確區分完整替換與部分修改。
 - 完整替換須定義可替換的資料範圍及省略欄位的處理方式，不讓使用端修改系統管理欄位。
 - 部分修改只修改明確提供的欄位，未提供者保留原值。
-- 清空、空字串與預設值遵循[空值語意](../coding/nullability.md#空值語意)，不由框架自行猜測。
+- 清空、空字串與預設值遵循[空值語意](../coding/nullability.md#null-state-semantics)，不由框架自行猜測。
 - 狀態轉換或業務規則仍透過明確業務能力執行，不藉通用更新繞過。
 - 更新若依賴使用端先前讀取的版本，契約須提供版本條件或其他衝突偵測方式；衝突時明確回報，不默默覆蓋。內部保障遵循[交易與併發控制](../data/transactions.md#concurrent-updates)。
 

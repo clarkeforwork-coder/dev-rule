@@ -33,7 +33,7 @@
 - 不得讓框架自動將不符合契約的輸入轉成可接受的值。
 - 語言保證不損失資訊且不改變語意的安全轉換可以允許，具體範圍由語言規範定義。
 
-專屬型別與狀態見[領域建模](domain-modeling.md#dedicated-types)，空值語意見[空值語意](nullability.md#空值語意)。檢查與合併門檻見[規範驗證](../quality/rule-verification.md#verification-coverage)。
+專屬型別與狀態見[領域建模](domain-modeling.md#dedicated-types)，空值語意見[空值語意](nullability.md#null-state-semantics)。檢查與合併門檻見[規範驗證](../quality/rule-verification.md#verification-coverage)。
 
 <a id="dynamic-type-contracts"></a>
 ## 動態能力的型別契約

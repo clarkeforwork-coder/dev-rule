@@ -36,7 +36,8 @@
 
 <a id="execution-resource-lifecycle"></a>
 <a id="共同生命週期"></a>
-### 執行資源的生命週期
+<a id="執行資源的生命週期"></a>
+### 執行資源與結果責任
 
 元件就緒、依賴生命週期及受控關閉由[資源生命週期](resource-lifecycle.md#contract-requirements)維護；結果接收及完成責任依[結果接收與故障處置](#async-result-reception)及[明確的工作擁有者](#task-ownership)。
 

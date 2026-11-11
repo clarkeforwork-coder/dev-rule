@@ -12,6 +12,11 @@
 - 需要理解業務語意的要求，必須人工審查，例如物件拆分是否合理、專屬型別是否表達正確概念。
 - 工具尚未涵蓋的要求必須列入審查清單，不能因 CI 通過就視為全部符合。
 
+<a id="cross-topic-acceptance"></a>
+### 跨主題檢查驗收
+
+驗收時須逐項核對必要規範與自動檢查、行為測試或人工審查的對應；工具未覆蓋的必要內容有明確清單及處置，不以 CI 成功代替完整性確認。
+
 <a id="review-checklist"></a>
 ## 審查清單
 
@@ -47,8 +52,8 @@
 - 遷移是否版本化且維持所需相容性，大量操作是否可恢復並核對結果？
 
 <a id="dynamic-controls-and-documents"></a>
-<a id="動態限制與文件驗證"></a>
-## 動態限制驗證
+<a id="動態限制驗證"></a>
+## 動態限制與文件驗證
 
 <a id="dynamic-control-verification"></a>
 <a id="rf-08"></a>
@@ -56,11 +61,22 @@
 
 動態能力、特殊存取或檢查抑制新增及變更時，須驗證允許與拒絕路徑、故障分類、必要不變條件及檢查範圍。涉及工具產出時，須驗證實際重新產生的結果，不僅測試成功案例或確認警告消失。
 
+<a id="document-verification"></a>
+<a id="nd-07"></a>
+### 形式與語意分別驗收
+
+命名與文件變更須以自動檢查維持可判定的形式要求，並由人工審查語意、責任及契約一致性。相關連結、參照與範例須依影響驗證；具有可執行意義的範例須確認能在適用環境下使用。不以格式通過或文件成功產生代替內容正確性，也不強制所有方法填寫相同文件內容。
+
 <a id="reproducible-check-configuration"></a>
 <a id="au-02"></a>
 ## 檢查配置可重現
 
 必要檢查的工具版本、規則及設定須受版本控制。本機與 CI 使用一致規則，提供可重現的執行方式，不只依賴 IDE 個人設定。具體工具由專案選擇；語言規範補充必要能力。
+
+<a id="acceptance-check-configuration"></a>
+<a id="檢查配置重現驗收"></a>
+
+驗收：在依專案文件建立的環境執行同一入口，核對版本、規則及設定一致；確認不是只有 IDE 能執行。
 
 <a id="actual-check-scope"></a>
 <a id="au-03"></a>
@@ -68,11 +84,21 @@
 
 必要檢查須核對實際執行範圍與結果，包含適用的模組、程式碼及測試範圍。未執行、被略過或未涵蓋必要內容不得視為通過；無適用內容須有明確依據，不能僅以零問題或成功退出判定有效。
 
+<a id="acceptance-check-execution"></a>
+<a id="檢查執行範圍驗收"></a>
+
+驗收：以實際執行紀錄核對必要範圍，辨識略過、未收集測試及排除內容；無適用內容的判斷可追查。
+
 <a id="check-configuration-validation"></a>
 <a id="au-04"></a>
 ## 檢查設定本身的有效性
 
 新增或變更檢查規則、範圍及配置時，須以代表性的符合與違反案例確認可以正確放行及拒絕。不能只確認工具啟動、報告產生或警告消失，也不要求每個 PR 重測全部檢查工具。
+
+<a id="acceptance-check-validation"></a>
+<a id="檢查設定有效性驗收"></a>
+
+驗收：代表性正例通過、反例被適用規則拒絕，並確認排除或抑制沒有擴大到其他必要範圍。
 
 <a id="evidence-version-validity"></a>
 <a id="au-06"></a>
@@ -80,11 +106,21 @@
 
 檢查與測試證據須對應實際受驗版本、環境及規則設定。使用快取或增量結果時，須確認相關輸入、依賴及必要涵蓋範圍仍有效；無法確認時重新執行受影響檢查，不把舊結果直接套用到新內容。合併前另核對與目標分支整合後的適用性。
 
+<a id="acceptance-evidence-validity"></a>
+<a id="證據版本與快取驗收"></a>
+
+驗收：從結果追溯程式版本、工具／規則設定及環境；改變受影響輸入或依賴時，確認快取失效或有可核對的有效性依據。
+
 <a id="diagnostic-classification"></a>
 <a id="au-08"></a>
 ## 結果分類與安全診斷
 
 檢查及測試結果須可定位、可重現並追溯受驗版本，區分程式違規、行為失敗與工具故障。工具無法執行或解析不代表程式通過；診斷資訊遵守安全及日誌規範，不輸出秘密或不必要的敏感資料。
+
+<a id="acceptance-diagnostics"></a>
+<a id="結果分類與診斷驗收"></a>
+
+驗收：分別核對違規、測試失敗與工具故障的結果及處置；確認定位與重現資料足夠且經安全檢查。
 
 <a id="effective-merge-gates"></a>
 <a id="au-09"></a>
@@ -92,7 +128,12 @@
 
 必要檢查的合併阻擋須實際生效。檢查配置或合併保護新增及變更時，確認失敗、未完成或應執行卻被略過的變更無法直接合併，不能以只產生報告取代門檻。可使用測試分支、測試儲存庫或平台檢查能力，不要求每個 PR 故意製造失敗。核准例外依既有流程追溯。
 
-違規基準依[精確違規基準](../workflow/rule-governance.md#precise-violation-baseline)，自動修正依[自動修正的審查](../workflow/git-pr-review.md#automated-fix-review)。檢查抑制與產生碼依[規範治理](../workflow/rule-governance.md#檢查抑制與產生碼治理)，診斷遵守[安全](security.md#secrets-and-credentials)及[可觀測性](observability.md#diagnostic-logging-and-tracing)。
+<a id="acceptance-merge-gates"></a>
+<a id="合併門檻驗收"></a>
+
+驗收：以受控方式確認不符合條件會阻擋，符合條件可依程序合併，涵蓋人工與自動化操作；例外具核准及紀錄。
+
+違規基準依[精確違規基準](../workflow/rule-governance.md#precise-violation-baseline)，自動修正依[自動修正的審查](../workflow/git-pr-review.md#automated-fix-review)。[檢查抑制](../workflow/rule-governance.md#suppression-scope)與[產生碼](../workflow/rule-governance.md#generated-code-exceptions)依規範治理，診斷遵守[安全](security.md#secrets-and-credentials)及[可觀測性](observability.md#diagnostic-logging-and-tracing)。
 
 <a id="acceptance"></a>
 ## 驗收
@@ -123,12 +164,12 @@
 | <a id="git-與-pr-驗收"></a>Git 與 PR 驗收 | [Git、PR 與程式碼審查](../workflow/git-pr-review.md#acceptance) |
 | <a id="測試程式碼"></a>測試程式碼 | [型別安全](../coding/type-safety.md#acceptance) |
 | Java 語言 | [Java 語言](../stacks/java/README.md#驗收入口) |
-| 集合與資料所有權 | [集合與資料所有權](../coding/collections-and-ownership.md#驗收要求) |
-| 資源生命週期 | [資源生命週期](../coding/resource-lifecycle.md#驗收要求) |
-| 併發與非同步 | [併發與非同步](../coding/concurrency-and-async.md#驗收要求) |
-| 數值、日期時間與文字 | [數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求) |
+| 集合與資料所有權 | [集合與資料所有權](../coding/collections-and-ownership.md#acceptance) |
+| 資源生命週期 | [資源生命週期](../coding/resource-lifecycle.md#acceptance) |
+| 併發與非同步 | [併發與非同步](../coding/concurrency-and-async.md#acceptance) |
+| 數值、日期時間與文字 | [數值、日期時間與文字](../coding/numbers-dates-text.md#acceptance) |
 | 領域建模補充契約 | [領域建模補充契約](../coding/domain-modeling.md#supplementary-contract-acceptance) |
-| 資料映射補充契約 | [資料映射補充契約](../architecture/data-mapping.md#supplementary-acceptance) |
+| 資料映射補充契約 | [資料映射補充契約](../architecture/data-mapping.md#supplementary-contract-acceptance) |
 | 空值語意補充契約 | [空值語意補充契約](../coding/nullability.md#supplementary-contract-acceptance) |
 | 介面用途 | [介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose) |
 | 多步驟與部分成功 | [多步驟與部分成功](../coding/error-handling.md#acceptance-partial-operation) |
@@ -136,49 +177,9 @@
 | 共通測試策略補充契約 | [共通測試策略補充契約](../quality/testing.md#acceptance) |
 | 規範治理補充契約 | [規範治理補充契約](../workflow/rule-governance.md#supplementary-contract-acceptance) |
 
-其他語言依其適用規範補足；共同要求的效力依[規範索引](../README.md#規範效力)。跨主題驗收（共同把關、審查清單、動態限制與文件驗證、檢查配置與門檻）仍由本文件維護，不在本文件重複維護各主題摘要。
+其他語言依其適用規範補足；共同要求的效力依[規範索引](../README.md#rule-effect)。跨主題驗收（共同把關、審查清單、動態限制與文件驗證、檢查配置與門檻）仍由本文件維護，不在本文件重複維護各主題摘要。
 
-<a id="document-verification"></a>
-<a id="nd-07"></a>
-### 形式與語意分別驗收
-
-命名與文件變更須以自動檢查維持可判定的形式要求，並由人工審查語意、責任及契約一致性。相關連結、參照與範例須依影響驗證；具有可執行意義的範例須確認能在適用環境下使用。不以格式通過或文件成功產生代替內容正確性，也不強制所有方法填寫相同文件內容。
-
-<a id="cross-topic-acceptance"></a>
-### 跨主題檢查驗收
-
-驗收時須逐項核對必要規範與自動檢查、行為測試或人工審查的對應；工具未覆蓋的必要內容有明確清單及處置，不以 CI 成功代替完整性確認。
-
-<a id="acceptance-check-configuration"></a>
-### 檢查配置重現驗收
-
-驗收：在依專案文件建立的環境執行同一入口，核對版本、規則及設定一致；確認不是只有 IDE 能執行。
-
-<a id="acceptance-check-execution"></a>
-### 檢查執行範圍驗收
-
-驗收：以實際執行紀錄核對必要範圍，辨識略過、未收集測試及排除內容；無適用內容的判斷可追查。
-
-<a id="acceptance-check-validation"></a>
-### 檢查設定有效性驗收
-
-驗收：代表性正例通過、反例被適用規則拒絕，並確認排除或抑制沒有擴大到其他必要範圍。
-
-<a id="acceptance-evidence-validity"></a>
-### 證據版本與快取驗收
-
-驗收：從結果追溯程式版本、工具／規則設定及環境；改變受影響輸入或依賴時，確認快取失效或有可核對的有效性依據。
-
-<a id="acceptance-diagnostics"></a>
-### 結果分類與診斷驗收
-
-驗收：分別核對違規、測試失敗與工具故障的結果及處置；確認定位與重現資料足夠且經安全檢查。
-
-<a id="acceptance-merge-gates"></a>
-### 合併門檻驗收
-
-驗收：以受控方式確認不符合條件會阻擋，符合條件可依程序合併，涵蓋人工與自動化操作；例外具核准及紀錄。
-
+<a id="supplementary-contract-acceptance"></a>
 <a id="supplemental-contract-acceptance"></a>
 ### 補充契約驗收
 
