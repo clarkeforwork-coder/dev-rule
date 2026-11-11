@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: ['21', '8']
+        java: ['21', '17', '8']
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -37,6 +37,16 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
+      - name: 安裝固定 Maven
+        run: |
+          archive="$RUNNER_TEMP/maven.tar.gz"
+          curl -fsSL https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz -o "$archive"
+          echo "7a9cdf674fc1703d6382f5f330b3d110ea1b512b51f1652846d9e4e8a588d766  $archive" | sha256sum -c -
+          tar -xzf "$archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/apache-maven-3.9.9/bin" >> "$GITHUB_PATH"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
       - name: 安裝 XML 標準函式庫
         run: gem install rexml --no-document
       - name: 驗證 Java 工具與規範範例

@@ -32,5 +32,8 @@ run /bin/bash "${base}/tests/run-hook-failure.sh"
 run /bin/sh "${base}/tests/run-baseline.sh"
 run ruby "${base}/tests/run-ci-tools.rb"
 run /bin/bash "${base}/tests/run-build-layer.sh"
+if [ "$("${java_bin}" -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d . -f 1)" = 17 ]; then
+    run ruby "${base}/tests/run-ci-integration.rb" "${work}/integration"
+fi
 printf '\n全部階段彙總結束碼：%s\n' "${result}"
 exit "${result}"

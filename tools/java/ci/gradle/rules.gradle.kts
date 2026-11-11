@@ -74,3 +74,74 @@ if (providers.gradleProperty("devRuleBaseline").isPresent) {
     }
     tasks.named("check") { dependsOn(baselineCheck) }
 }
+
+// CI 編譯、依賴、位元碼與架構測試共用正式政策。
+apply(from = devRuleRoot.resolve("tools/java/build/gradle-enforcer.gradle.kts"))
+val compilerVersion = providers.gradleProperty("devRuleCompiler").get().toInt()
+require(compilerVersion == JavaVersion.current().majorVersion.toInt()) {
+    "JAVA_HOME／Gradle 執行 JDK 必須等於 devRuleCompiler；devRuleRelease 可指定較舊 API 基線"
+}
+tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
+    // Gradle 會把 fork executable 當成 JDK/bin/javac 探測，不能直接指定 shell wrapper。
+    // 保留 JavaCompile 的來源／輸出／classpath 宣告，以共用入口替換編譯 action。
+    setActions(emptyList())
+    inputs.files(devRuleRoot.resolve("tools/java/ci/compiler"), devRuleRoot.resolve("tools/java/profiles"),
+        devRuleRoot.resolve("tools/java/errorprone"), devRuleRoot.resolve("tools/java/javac"), devRuleRoot.resolve("tools/java/rule-map.yml"))
+    doLast {
+        project.delete(destinationDirectory.get().asFile)
+        destinationDirectory.get().asFile.mkdirs()
+        val arguments = mutableListOf("sh", devRuleRoot.resolve("tools/java/ci/compiler/javac.sh").absolutePath,
+            "-encoding", options.encoding ?: "UTF-8", "-d", destinationDirectory.get().asFile.absolutePath,
+            "-classpath", classpath.asPath)
+        if (options.release.isPresent) arguments.addAll(listOf("--release", options.release.get().toString()))
+        else arguments.addAll(listOf("-source", sourceCompatibility, "-target", targetCompatibility))
+        options.annotationProcessorPath?.let { if (!it.isEmpty) arguments.addAll(listOf("-processorpath", it.asPath)) }
+        arguments.addAll(options.compilerArgs)
+        arguments.addAll(source.files.map { it.absolutePath })
+        project.exec { commandLine(arguments) }
+    }
+}
+val spotbugsRuntime = configurations.create("devRuleSpotbugs")
+dependencies.add(spotbugsRuntime.name, "com.github.spotbugs:spotbugs:4.8.6")
+dependencies.add("testImplementation", "com.tngtech.archunit:archunit:1.4.1")
+dependencies.add("testImplementation", "junit:junit:4.13.2")
+val javaSources = extensions.getByType<org.gradle.api.tasks.SourceSetContainer>()
+val spotbugsTasks = javaSources.map { sources ->
+    tasks.register<JavaExec>("spotbugs" + sources.name.replaceFirstChar { it.uppercase() }) {
+        dependsOn(tasks.named(sources.classesTaskName))
+        classpath = spotbugsRuntime
+        mainClass.set("edu.umd.cs.findbugs.FindBugs2")
+        val report = layout.buildDirectory.file("reports/spotbugs/${sources.name}.xml")
+        outputs.file(report)
+        inputs.files(sources.output.classesDirs, sources.runtimeClasspath,
+            devRuleRoot.resolve("tools/java/spotbugs/include.xml"), devRuleRoot.resolve("tools/java/spotbugs/exclude.xml"))
+        doFirst {
+            report.get().asFile.parentFile.mkdirs()
+            args("-effort:max", "-xml:withMessages", "-output", report.get().asFile.absolutePath,
+                "-include", devRuleRoot.resolve("tools/java/spotbugs/include.xml").absolutePath,
+                "-exclude", devRuleRoot.resolve("tools/java/spotbugs/exclude.xml").absolutePath,
+                "-auxclasspath", sources.runtimeClasspath.asPath)
+            args(sources.output.classesDirs.files.map { it.absolutePath })
+        }
+    }
+}
+val dependencyCheck = tasks.register("devRuleDependencies") {
+    doLast { configurations.filter { it.isCanBeResolved && it.name.endsWith("Classpath") }.forEach { it.resolve() } }
+}
+val classpathFile = tasks.register("devRuleClasspath") {
+    doLast { file(".java-rules-classpath").writeText(configurations.getByName("testRuntimeClasspath").asPath) }
+}
+val bytecodeCheck = tasks.register<Exec>("devRuleBytecode") {
+    dependsOn(spotbugsTasks, classpathFile)
+    commandLine("sh", devRuleRoot.resolve("tools/java/ci/verify.sh").absolutePath,
+        layout.buildDirectory.dir("classes/java/main").get().asFile.absolutePath,
+        layout.buildDirectory.dir("classes/java/test").get().asFile.absolutePath,
+        file(".java-rules-classpath").absolutePath,
+        layout.buildDirectory.file("reports/spotbugs/main.xml").get().asFile.absolutePath,
+        layout.buildDirectory.file("reports/spotbugs/test.xml").get().asFile.absolutePath)
+}
+tasks.withType<Test>().configureEach {
+    useJUnit()
+    testLogging { exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL }
+}
+tasks.named("check") { dependsOn(dependencyCheck, bytecodeCheck) }

@@ -100,5 +100,38 @@ check.call(mapping == expected && mapping.size == properties.size, 'SpotBugs pat
   check.call(active.drop(1).all? { |f| f.match?(/\A-Xep:[A-Za-z0-9]+:(?:ERROR|WARN)\z/) && expected.key?(f.split(':')[1]) }, "Error Prone #{jdk} 未登錄參數")
 end
 puts "CI 設定：#{ci_rows.size} 映射，SpotBugs 候選隔離／診斷對照與四版 Error Prone 參數。"
+# 合併完整性：全部工具、profile 鍵、CI build 映射與階段唯一性。
+known = %w[pmd checkstyle javac errorprone spotbugs archunit jdeps jdeprscan maven-enforcer gradle none]
+check.call((rows.map { |r| r['tool'] }.uniq - known).empty?, '未知工具')
+Dir.glob(File.join(root, 'tools/java/profiles/jdk*.env')).each do |file|
+  keys = File.readlines(file).map { |line| line[/\A([A-Z0-9_]+)=/, 1] }.compact
+  check.call(keys.uniq == keys, "#{file} 重複 profile 鍵")
+  %w[ERRORPRONE_VERSION ERRORPRONE_SHA256 SPOTBUGS_VERSION SPOTBUGS_SHA256 ARCHUNIT_VERSION ARCHUNIT_SHA256].each do |key|
+    check.call(keys.include?(key), "#{file} 缺少 #{key}")
+  end
+end
+sources = {
+  'archunit' => %w[archunit/RulesTemplate.java], 'jdeps' => %w[build/jdeps.sh],
+  'jdeprscan' => %w[build/jdeprscan.sh], 'maven-enforcer' => %w[build/maven-enforcer.xml],
+  'gradle' => %w[build/gradle-enforcer.gradle.kts]
+}
+sources.each do |tool, files|
+  content = files.map { |file| File.read(File.join(root, 'tools/java', file)) }.join("\n")
+  rows.select { |r| r['tool'] == tool && r['status'] != 'candidate' }.each do |row|
+    check.call(content.include?(row['id']), "#{tool} 缺少映射 #{row['id']}")
+  end
+end
+stages = File.readlines(File.join(root, 'tools/java/tests/run-all.sh')).grep(/^\s*run /).map(&:strip)
+check.call(stages.uniq == stages, 'run-all 重複階段')
+puts '建置設定：ArchUnit／jdeps／jdeprscan／Enforcer／Gradle、四版 profile 與階段完整性。'
+workflow = YAML.load_file(File.join(root, '.github/workflows/java-rules.yml'))
+caller = YAML.load_file(File.join(root, 'tools/java/ci/github/caller.yml'))
+events = workflow['on'] || workflow[true] # Psych YAML 1.1 將 on 視為 boolean。
+inputs = events.fetch('workflow_call').fetch('inputs')
+provided = caller.fetch('jobs').fetch('java-rules').fetch('with')
+check.call(provided.keys.sort == inputs.keys.sort, '五行 caller 與 workflow inputs 不符')
+check.call(caller['jobs']['java-rules']['uses'].include?('/.github/workflows/java-rules.yml@'), 'caller 未引用正式 workflow')
+check.call(workflow['jobs']['rules']['steps'].any? { |step| step['run'] == 'sh vendor/dev-rule/tools/java/ci/github/run.sh' }, 'workflow 未使用正式 runner')
+puts 'Workflow：正式 YAML、最小五行 caller 與輸入契約通過。'
 puts errors.empty? ? '一致性：零問題（雙向映射、候選隔離、訊息、等級、內嵌 XPath）。' : errors.join("\n")
 exit(errors.empty? ? 0 : 1)

@@ -9,9 +9,9 @@
 | 文件數 | 15 |
 | 小節數 | 143 |
 | 映射筆數 | 308 |
-| status：verified（筆） | 79 |
-| status：partial（筆） | 48 |
-| status：candidate（筆） | 41 |
+| status：verified（筆） | 81 |
+| status：partial（筆） | 52 |
+| status：candidate（筆） | 35 |
 | status：manual（筆） | 140 |
 | tier：pre-commit（筆） | 111 |
 | tier：ci-compile（筆） | 28 |
@@ -31,11 +31,11 @@
 | tool：maven-enforcer（筆） | 4 |
 | tool：gradle（筆） | 2 |
 | tool：none（筆） | 140 |
-| 本庫 PMD／Checkstyle／javac／Error Prone／SpotBugs verified 小節數 | 48 |
-| CI 層未 verified（映射筆數；不計涵蓋率） | 40 |
-| 涵蓋率（verified 小節／全部小節） | 48／143 = 33.57% |
+| 本庫 PMD／Checkstyle／CI 工具 verified 小節數 | 49 |
+| CI 層未 verified（映射筆數；不計涵蓋率） | 38 |
+| 涵蓋率（verified 小節／全部小節） | 49／143 = 34.27% |
 
-每小節只要有一筆本庫可重跑的 PMD／Checkstyle／javac／Error Prone／SpotBugs verified 即計入分子，同小節多規則不重複計數；status／tier／tool 欄則按映射筆數計算。partial、candidate、manual 均不計分子；verified 不代表整個小節、所有版本或所有合法例外都已自動驗證。
+每小節只要有一筆本庫可重跑的 PMD／Checkstyle／CI 工具 verified 即計入分子，同小節多規則不重複計數；status／tier／tool 欄則按映射筆數計算。partial、candidate、manual 均不計分子；verified 不代表整個小節、所有版本或所有合法例外都已自動驗證。
 
 manual 可與 verified 並存，表示該小節仍有工具無法替代的審查或尚待實作的契約測試；candidate 包含失敗候選，不是啟用建議。實證版本、合成範例與漏報限制見 rule-map.yml 的 note。
 
@@ -228,11 +228,11 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 一致的命名形式 | java-naming-form | error | manual | none：none（JV-NP-021） | manual | — |
 | 名稱表達具體責任 | java-specific-responsibility | error | manual | none：none（JV-NP-022） | manual | — |
 | 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:InternalPackageNotPublic（JV-NP-023） | partial | 是（未達 verified） |
-| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:NestedStorageNotPublic（JV-NP-024） | partial | 是（未達 verified） |
+| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:NestedStorageNotPublic（JV-NP-024） | verified | 否（本庫已重跑） |
 | 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:SharedPackageNoBusinessDependency（JV-NP-025） | partial | 是（未達 verified） |
 | 套件與架構邊界 | java-package-boundaries | error | ci-build | jdeps：--check（JV-NP-026） | candidate | 是（未達 verified） |
 | 套件與架構邊界 | java-package-boundaries | error | ci-build | jdeps：-jdkinternals（JV-NP-027） | candidate | 是（未達 verified） |
-| 套件與架構邊界 | java-package-boundaries | error | ci-build | maven-enforcer：bannedDependencies（JV-NP-028） | candidate | 是（未達 verified） |
+| 套件與架構邊界 | java-package-boundaries | error | ci-build | maven-enforcer：bannedDependencies（JV-NP-028） | partial | 是（未達 verified） |
 | 套件與架構邊界 | java-package-boundaries | error | manual | none：none（JV-NP-029） | manual | — |
 | 補足契約資訊 | java-javadoc-contract | warn | pre-commit | checkstyle：JavadocMethod（JV-NP-030） | verified | — |
 | 補足契約資訊 | java-javadoc-contract | error | pre-commit | checkstyle：MissingJavadocMethod（JV-NP-031） | partial | — |
@@ -392,17 +392,17 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 
 | 小節 | 錨點 | 等級 | tier | 工具與規則 | status | CI層候選 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 分別記錄版本資訊 | java-version-declarations | error | ci-build | maven-enforcer：requireJavaVersion（JV-VP-001） | candidate | 是（未達 verified） |
+| 分別記錄版本資訊 | java-version-declarations | error | ci-build | maven-enforcer：requireJavaVersion（JV-VP-001） | partial | 是（未達 verified） |
 | 分別記錄版本資訊 | java-version-declarations | error | manual | none：none（JV-VP-002） | manual | — |
-| 建置設定落實限制 | java-build-compatibility | error | ci-build | gradle：JavaCompile.options.release（JV-VP-003） | candidate | 是（未達 verified） |
+| 建置設定落實限制 | java-build-compatibility | error | ci-build | gradle：JavaCompile.options.release（JV-VP-003） | partial | 是（未達 verified） |
 | 建置設定落實限制 | java-build-compatibility | error | ci-compile | javac：--release（JV-VP-004） | candidate | 是（未達 verified） |
 | 建置設定落實限制 | java-build-compatibility | error | manual | none：none（JV-VP-005） | manual | — |
 | 執行版本驗證 | java-runtime-verification | error | test | none：none（JV-VP-006） | manual | — |
 | 多模組版本要求 | java-module-versions | error | test | none：none（JV-VP-007） | manual | — |
 | 版本宣告與相容性補充說明 | java-group-notes-version-declarations | error | manual | none：none（JV-VP-008） | manual | — |
-| 依賴版本要求 | java-dependency-versions | error | ci-build | gradle：ResolutionStrategy.failOnVersionConflict（JV-VP-009） | candidate | 是（未達 verified） |
-| 依賴版本要求 | java-dependency-versions | error | ci-build | maven-enforcer：bannedDependencies（JV-VP-010） | candidate | 是（未達 verified） |
-| 依賴版本要求 | java-dependency-versions | error | ci-build | maven-enforcer：dependencyConvergence（JV-VP-011） | candidate | 是（未達 verified） |
+| 依賴版本要求 | java-dependency-versions | error | ci-build | gradle：ResolutionStrategy.failOnVersionConflict（JV-VP-009） | partial | 是（未達 verified） |
+| 依賴版本要求 | java-dependency-versions | error | ci-build | maven-enforcer：bannedDependencies（JV-VP-010） | partial | 是（未達 verified） |
+| 依賴版本要求 | java-dependency-versions | error | ci-build | maven-enforcer：dependencyConvergence（JV-VP-011） | partial | 是（未達 verified） |
 | 依賴版本要求 | java-dependency-versions | error | manual | none：none（JV-VP-012） | manual | — |
 | 建置升級與支援範圍變更 | java-build-upgrade | error | manual | none：none（JV-VP-013） | manual | — |
 | Preview 功能 | java-preview-features | error | ci-compile | javac：-Xlint:preview（JV-VP-014） | candidate | 是（未達 verified） |
@@ -412,7 +412,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | JDK 內部實作與存取限制 | java-jdk-internals | error | manual | none：none（JV-VP-018） | manual | — |
 | 棄用 API | java-deprecated-api | error | ci-compile | javac：-Xlint:deprecation（JV-VP-019） | verified | 否（本庫已重跑） |
 | 棄用 API | java-deprecated-api | error | ci-compile | javac：-Xlint:removal（JV-VP-020） | verified | 否（本庫已重跑） |
-| 棄用 API | java-deprecated-api | error | ci-build | jdeprscan：--release（JV-VP-021） | partial | 是（未達 verified） |
+| 棄用 API | java-deprecated-api | error | ci-build | jdeprscan：--release（JV-VP-021） | verified | 否（本庫已重跑） |
 | 棄用 API | java-deprecated-api | error | manual | none：none（JV-VP-022） | manual | — |
 | 依賴、升級與特殊功能補充說明 | java-group-notes-dependency-versions | error | manual | none：none（JV-VP-023） | manual | — |
 | 建置與驗證工具相容性 | java-toolchain-compatibility | error | test | none：none（JV-VP-024） | manual | — |
@@ -616,7 +616,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 
 | 來源小節 | status |
 | --- | --- |
-| rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries | partial |
+| rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries | verified |
 
 ### custom:SharedPackageNoBusinessDependency
 

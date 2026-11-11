@@ -1,19 +1,3 @@
-<!-- 合併至專案 POM build/plugins，並合併 ci/maven/pom-fragment.xml 與 build/maven-enforcer.xml。 -->
-<plugins>
-  <plugin>
-    <groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>3.13.0</version>
-    <configuration><fork>true</fork><showWarnings>true</showWarnings><compilerArgs><arg>${dev-rule.lint}</arg></compilerArgs></configuration>
-  </plugin>
-  <plugin>
-    <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId><version>3.5.2</version>
-    <configuration><failIfNoTests>true</failIfNoTests></configuration>
-  </plugin>
-  <plugin>
-    <groupId>com.github.spotbugs</groupId><artifactId>spotbugs-maven-plugin</artifactId><version>4.8.6.6</version>
-    <configuration>
-      <includeFilterFile>${dev-rule.root}/tools/java/spotbugs/include.xml</includeFilterFile>
-      <excludeFilterFile>${dev-rule.root}/tools/java/spotbugs/exclude.xml</excludeFilterFile>
-      <xmlOutput>true</xmlOutput><includeTests>true</includeTests><failOnError>true</failOnError>
-    </configuration>
-  </plugin>
-</plugins>
+<!-- 舊版額外 plugins 已整併至 ../maven/pom-fragment.xml。
+     請只合併完整片段的 properties、profiles、dependencies、build，勿重複宣告 plugins。 -->
+<plugins/>
