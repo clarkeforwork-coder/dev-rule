@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# 只讀取 index 快照；不 stash、不修改工作目錄、不採用 pre-commit 傳入的檔案內容。
+set -euo pipefail
+hook_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+rules_root=${DEV_RULE_ROOT:-$(cd "${hook_dir}/../../.." && pwd)}
+root=$(git rev-parse --show-toplevel)
+cd "${root}"
+tmp=$(mktemp -d "${TMPDIR:-/tmp}/dev-rule-java.XXXXXX")
+tmp=$(cd "${tmp}" && pwd -P)
+trap 'rc=$?; rm -rf "${tmp}"; exit ${rc}' EXIT
+fail() { printf 'dev-rule: %s\n' "$*" >&2; exit 2; }
+# write-tree 固定此次檢查所見的 index，避免取檔案與 diff 之間的不一致。
+tree=$(git write-tree)
+base=$(git rev-parse --verify HEAD 2>/dev/null || git hash-object -t tree /dev/null)
+git diff --no-color --no-ext-diff --no-textconv --name-status -z --find-renames --diff-filter=ACMR "${base}" "${tree}" -- '*.java' > "${tmp}/names"
+[ -s "${tmp}/names" ] || exit 0
+mkdir -p "${tmp}/src"
+: > "${tmp}/ranges"
+while IFS= read -r -d '' status; do
+    IFS= read -r -d '' path
+    old=${path}
+    case "${status}" in R*|C*) IFS= read -r -d '' path ;; esac
+    case "${path}${old}" in *$'\n'*|*$'\t'*) fail 'Java 檔案路徑不可包含換行或 tab' ;; esac
+    mode=$(git --literal-pathspecs ls-tree "${tree}" -- "${path}")
+    case "${mode}" in 100644*|100755*) ;; *) fail "不支援的 Java 檔案類型：${path}" ;; esac
+    mkdir -p "${tmp}/src/$(dirname "${path}")"
+    git show "${tree}:${path}" > "${tmp}/src/${path}"
+    # 逐檔比較舊 blob 與 staged blob，重新命名後又重建舊路徑也不會混入另一檔的 hunk。
+    : > "${tmp}/before"
+    case "${status}" in A*) ;; *) git show "${base}:${old}" > "${tmp}/before" ;; esac
+    diff_status=0
+    git diff --no-index --no-color --no-ext-diff --no-textconv --text --inter-hunk-context=0 -U0 -- "${tmp}/before" "${tmp}/src/${path}" > "${tmp}/diff" || diff_status=$?
+    [ "${diff_status}" -le 1 ] || fail "無法比較 staged 內容：${path}"
+    # 不使用 awk -v 傳路徑，避免反斜線被解碼。
+    DEV_RULE_PATH=${path} awk '/^@@ / {split($3,a,","); start=substr(a[1],2); count=(a[2]==""?1:a[2]); if(count>0) print ENVIRON["DEV_RULE_PATH"] "\t" start "\t" start+count-1}' "${tmp}/diff" >> "${tmp}/ranges"
+done < "${tmp}/names"
+checkstyle=${DEV_RULE_CHECKSTYLE_CONFIG:-${rules_root}/tools/java/checkstyle/checkstyle.xml}
+pmd=${DEV_RULE_PMD_RULESET:-${rules_root}/tools/java/pmd/ruleset.xml}
+[ -f "${checkstyle}" ] || fail "缺少 Checkstyle 設定：${checkstyle}"
+[ -f "${pmd}" ] || fail "缺少 PMD 設定：${pmd}"
+cs_status=0
+"${hook_dir}/toolbox.sh" checkstyle -c "${checkstyle}" -f xml -o "${tmp}/checkstyle.xml" "${tmp}/src" > "${tmp}/cs.stdout" 2> "${tmp}/cs.stderr" || cs_status=$?
+[ -f "${tmp}/checkstyle.xml" ] && grep -q '</checkstyle>' "${tmp}/checkstyle.xml" || { cat "${tmp}/cs.stdout" "${tmp}/cs.stderr" >&2; fail 'Checkstyle 執行失敗或報告不完整'; }
+# 設定／JVM 失敗不得被新增行過濾隱藏。
+if [ "${cs_status}" -ne 0 ] && ! grep -q '<error ' "${tmp}/checkstyle.xml"; then
+    cat "${tmp}/cs.stderr" >&2; fail "Checkstyle 執行失敗（${cs_status}）"
+fi
+pmd_status=0
+"${hook_dir}/toolbox.sh" pmd -R "${pmd}" -d "${tmp}/src" -f xml -r "${tmp}/pmd.xml" --no-cache --threads 1 > "${tmp}/pmd.stdout" 2> "${tmp}/pmd.stderr" || pmd_status=$?
+case "${pmd_status}" in 0|4) ;; *) cat "${tmp}/pmd.stdout" "${tmp}/pmd.stderr" >&2; fail "PMD 執行失敗（${pmd_status}）" ;; esac
+[ -f "${tmp}/pmd.xml" ] && grep -q '</pmd>' "${tmp}/pmd.xml" || fail 'PMD 報告不完整'
+export DEV_RULE_SNAPSHOT=${tmp}/src/ DEV_RULE_RANGES=${tmp}/ranges
+awk -f "${hook_dir}/report.awk" "${tmp}/checkstyle.xml" "${tmp}/pmd.xml"

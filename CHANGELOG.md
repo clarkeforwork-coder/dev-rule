@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### 新增
+
+- 加入 Java 自動檢查工具的 pre-commit 層（`tools/java/`）：規則對照表 `rule-map.yml`（每條工具規則對一個規範錨點）、PMD 7.29.0 規則集與自訂 XPath 規則、Checkstyle 10.26.1／9.3 設定、純 shell pre-commit hook（只檢查暫存的 `.java`、只阻擋新增違規、依 JDK 8／11／17／21 選工具）、`install.sh`、`.pre-commit-hooks.yaml`、Maven／Gradle 接入片段，以及以規範範例驗證工具的測試；CI 新增 `java-tools` job（#10）。
+
 ## [1.0.0] - 2026-11-11
 
 ### 新增
@@ -25,7 +29,5 @@
 
 - 移除共通規範的歷史代號錨點、改名後保留的舊標題 slug 與驗收入口表舊錨點，使用舊錨點的專案須改連至對應語意錨點（#7）。
 
-<!-- 尚未建立 v1.0.0 標籤；建立時補上以下版本連結：
 [Unreleased]: https://github.com/clarkeforwork-coder/dev-rule/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/clarkeforwork-coder/dev-rule/releases/tag/v1.0.0
--->

@@ -1,1 +1,4 @@
 .DS_Store
+# 工具的驗證輸出不入庫，執行 tools/java/tests/run-all.sh 重現
+tools/java/tests/evidence/
+*.log

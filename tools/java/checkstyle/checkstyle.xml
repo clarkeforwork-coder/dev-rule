@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN" "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!-- 由 rule-map 對照；候選僅保留於 candidates.xml，不納入預設阻擋。 -->
+<module name="Checker">
+  <property name="charset" value="UTF-8"/>
+  <property name="fileExtensions" value="java"/>
+  <module name="SuppressionFilter">
+    <property name="file" value="${checkstyle.suppressions.file}" default="tools/java/checkstyle/suppressions.xml"/>
+  </module>
+    <!-- JV-ER-013：verified；Checkstyle 無內建規則；純文字 regex 作為不解析 AST 時的最低限度檢查；；誤報風險說明：只抓空 catch 區塊）；；實證版本：17；設定：[format=catch\s*\(\s*(final\s+)?InterruptedException\s+\w+\s*\)\s*\{\s*\}]。 -->
+    <module name="RegexpMultiline">
+      <property name="id" value="JV-ER-013"/>
+      <property name="severity" value="error"/>
+      <property name="format" value="catch\s*\(\s*(final\s+)?InterruptedException\s+\w+\s*\)\s*\{\s*\}"/>
+      <property name="message" value="[JV-ER-013] 保留中斷意圖 → rules/stacks/java/common/exceptions-and-resources.md#java-interruption"/>
+      <property name="maximum" value="0"/>
+    </module>
+  <module name="TreeWalker">
+    <!-- JV-TG-001：verified；純文字規則，format="(^|[\s(,])var\s+[A-Za-z_$][\w$]*\s*(=|:|\)|,)"，ignoreComments=true；同時抓區域變數 var 與 Lambda 的 (var x)；字串常值內出現同樣文字會誤報（罕見）；PMD 版較準確；若 pre-commit 只跑一個工具，二選一即可；；實證版本：17、11、8；設定：(id=NoVar)。 -->
+    <module name="RegexpSinglelineJava">
+      <property name="id" value="JV-TG-001"/>
+      <property name="severity" value="error"/>
+      <property name="format" value="(^|[\s(,])var\s+[A-Za-z_$][\w$]*\s*(=|:|\)|,)"/>
+      <property name="message" value="[JV-TG-001] 明確宣告型別 → rules/stacks/java/common/types-and-generics.md#java-explicit-types"/>
+      <property name="maximum" value="0"/>
+      <property name="ignoreComments" value="true"/>
+    </module>
+    <!-- JV-TG-011：verified；format="^\s*(rawtypes|unchecked|all)\s*$"；既有程式碼與工具生成碼常見此類抑制，需 SuppressionFilter 或依規範治理的例外清單；Lombok／MapStruct 生成碼請以 generated 目錄排除；；實證版本：17。 -->
+    <module name="SuppressWarnings">
+      <property name="id" value="JV-TG-011"/>
+      <property name="severity" value="error"/>
+      <property name="format" value="^\s*(rawtypes|unchecked|all)\s*$"/>
+      <message key="suppressed.warning.not.allowed" value="[JV-TG-011] 型別安全警告 → rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings"/>
+    </module>
+    <!-- JV-TG-020：verified；預設 illegalClassNames 不含 ArrayList／LinkedList（只有 HashMap/HashSet/LinkedHashMap/LinkedHashSet/TreeMap/TreeSet），須自行加入 ArrayList, LinkedList, ArrayDeque, PriorityQueue, ConcurrentHashMap, CopyOnWriteArrayList 等並含完整名稱；未加之前違反範例抓不到；；實證版本：17、21。 -->
+    <module name="IllegalType">
+      <property name="id" value="JV-TG-020"/>
+      <property name="severity" value="warning"/>
+      <property name="illegalClassNames" value="ArrayList,java.util.ArrayList,LinkedList,java.util.LinkedList,ArrayDeque,java.util.ArrayDeque,PriorityQueue,java.util.PriorityQueue,HashMap,java.util.HashMap,HashSet,java.util.HashSet,LinkedHashMap,java.util.LinkedHashMap,LinkedHashSet,java.util.LinkedHashSet,TreeMap,java.util.TreeMap,TreeSet,java.util.TreeSet,ConcurrentHashMap,java.util.concurrent.ConcurrentHashMap,CopyOnWriteArrayList,java.util.concurrent.CopyOnWriteArrayList"/>
+      <message key="illegal.type" value="[JV-TG-020] 集合與映射的宣告型別 → rules/stacks/java/common/types-and-generics.md#java-collection-declarations"/>
+    </module>
+    <!-- JV-TG-029：verified；四個模組都設 format="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"：允許單字母與角色名（Source、Decoded），拒絕編號型 T1／T2／T3；Checkstyle 預設 format 會把符合範例的 Source／Decoded／Result 判為違規（google_checks 實測誤報），必須覆寫；既有程式碼的 E1／K2 與 Google 式 FooT 會被拒，需調整 format；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="InterfaceTypeParameterName">
+      <property name="id" value="JV-TG-029"/>
+      <property name="severity" value="warning"/>
+      <property name="format" value="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"/>
+      <message key="name.invalidPattern" value="[JV-TG-029] 泛型參數命名 → rules/stacks/java/common/types-and-generics.md#java-type-parameter-names"/>
+    </module>
+    <!-- JV-LS-001：verified；啟發式，max=3（預設 10 抓不到 5 行的違反範例）；閾值武斷：多行 Lambda 不等於混入獨立責任，java-failure-classification 的 4 行 try/catch 違反範例也被抓到；只能當提示，不能當判定；；實證版本：17、8。 -->
+    <module name="LambdaBodyLength">
+      <property name="id" value="JV-LS-001"/>
+      <property name="severity" value="warning"/>
+      <property name="max" value="3"/>
+      <message key="maxLen.lambdaBody" value="[JV-LS-001] 意圖與可讀性優先 → rules/stacks/java/common/lambda-and-stream.md#java-intent-readability"/>
+    </module>
+    <!-- JV-LS-003：partial；只涵蓋 (var value) -> 形式（違反（Java 11）範例抓到）；主範例省略型別的 value -> 純文字無法判斷，抓不到；Regexp 已限縮為 Lambda 的括號後 var；；實證版本：17、11、8；設定：(id=NoVar)。 -->
+    <module name="RegexpSinglelineJava">
+      <property name="id" value="JV-LS-003"/>
+      <property name="severity" value="error"/>
+      <property name="format" value="\(\s*var\s+"/>
+      <property name="message" value="[JV-LS-003] 明確的參數型別 → rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types"/>
+      <property name="maximum" value="0"/>
+      <property name="ignoreComments" value="true"/>
+    </module>
+    <!-- JV-NP-002：verified；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="ConstantName">
+      <property name="id" value="JV-NP-002"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-002] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-007：verified；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="MethodName">
+      <property name="id" value="JV-NP-007"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-007] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+      <message key="method.name.equals.class.name" value="[JV-NP-007] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-013：verified；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="TypeName">
+      <property name="id" value="JV-NP-013"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-013] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-030：verified；validateThrows=true、allowMissingParamTags=false、allowMissingReturnTag=false；違反範例報缺 @param path、@return、@throws IOException，符合（Java 21）的 {@snippet} 解析無誤報；注意 accessModifiers 以方法的有效可見性判斷：範例類別是 package-private，驗證時需含 package；實際專案設 public, protected 即可；既有程式碼缺標籤者眾，需 scope 限制或基準線；；實證版本：17、8、21。 -->
+    <module name="JavadocMethod">
+      <property name="id" value="JV-NP-030"/>
+      <property name="severity" value="warning"/>
+      <property name="validateThrows" value="true"/>
+      <property name="allowMissingParamTags" value="false"/>
+      <property name="allowMissingReturnTag" value="false"/>
+      <property name="accessModifiers" value="public,protected,package,private"/>
+      <message key="javadoc.expectedTag" value="[JV-NP-030] 補足契約資訊 → rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract"/>
+      <message key="javadoc.classInfo" value="[JV-NP-030] 補足契約資訊 → rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract"/>
+      <message key="javadoc.unusedTagGeneral" value="[JV-NP-030] 補足契約資訊 → rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract"/>
+      <message key="javadoc.return.expected" value="[JV-NP-030] 補足契約資訊 → rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract"/>
+      <message key="javadoc.invalidInheritDoc" value="[JV-NP-030] 補足契約資訊 → rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract"/>
+      <message key="javadoc.unusedTag" value="[JV-NP-030] 補足契約資訊 → rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract"/>
+      <message key="javadoc.duplicateTag" value="[JV-NP-030] 補足契約資訊 → rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract"/>
+    </module>
+    <!-- JV-NP-031：partial；只抓「完全沒有 Javadoc」（scope=public）；本小節違反範例有 Javadoc 故抓不到，但在 java-package-boundaries 範例的 public save 方法實證會報；Checkstyle 10.26.1 對同一設定未報這三筆（版本差異，見報告）；；實證版本：17。 -->
+    <module name="MissingJavadocMethod">
+      <property name="id" value="JV-NP-031"/>
+      <property name="severity" value="error"/>
+      <property name="scope" value="public"/>
+      <message key="javadoc.missing" value="[JV-NP-031] 補足契約資訊 → rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract"/>
+    </module>
+    <!-- JV-ER-001：verified；IllegalThrows 預設只含 Error／RuntimeException／Throwable，須改 illegalClassNames 才會抓 Exception；實測 Checkstyle 12.3.1 與 10.26.1 皆可；；誤報風險說明：同上；ignoreOverriddenMethods 預設 true 可略過帶 @Override 的框架方法；；實證版本：17、8；設定：[illegalClassNames=Exception,Throwable,java.lang.Exception,java.lang.Throwable]。 -->
+    <module name="IllegalThrows">
+      <property name="id" value="JV-ER-001"/>
+      <property name="severity" value="error"/>
+      <property name="illegalClassNames" value="Exception,Throwable,java.lang.Exception,java.lang.Throwable"/>
+      <message key="illegal.throw" value="[JV-ER-001] 明確的故障分類 → rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification"/>
+    </module>
+    <!-- JV-ER-008：partial；Throwable／Error 以自製樣本實證。 -->
+    <module name="IllegalCatch">
+      <property name="id" value="JV-ER-008"/>
+      <property name="severity" value="error"/>
+      <property name="illegalClassNames" value="Throwable,Error,java.lang.Throwable,java.lang.Error"/>
+      <message key="illegal.catch" value="[JV-ER-008] 捕捉範圍與處置相符 → rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope"/>
+    </module>
+    <!-- JV-ER-031：verified；優先捕捉具體例外，入口層須精確核准抑制。 -->
+    <module name="IllegalCatch">
+      <property name="id" value="JV-ER-031"/>
+      <property name="severity" value="warning"/>
+      <property name="illegalClassNames" value="Exception,RuntimeException,java.lang.Exception,java.lang.RuntimeException"/>
+      <message key="illegal.catch" value="[JV-ER-031] 捕捉範圍與處置相符 → rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope"/>
+    </module>
+    <!-- JV-EH-002：partial；同 PMD OverrideBothEqualsAndHashcode；；實證版本：17、8；補充實證：samples/SubClauses3.java:15 與 SubClauses.java:53（只覆寫 hashCode）caught。 -->
+    <module name="EqualsHashCode">
+      <property name="id" value="JV-EH-002"/>
+      <property name="severity" value="error"/>
+      <message key="equals.noHashCode" value="[JV-EH-002] 相等與雜湊契約 → rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract"/>
+      <message key="equals.noEquals" value="[JV-EH-002] 相等與雜湊契約 → rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract"/>
+    </module>
+    <!-- JV-EH-010：verified；同上，間接命中；；實證版本：17、8。 -->
+    <module name="EqualsHashCode">
+      <property name="id" value="JV-EH-010"/>
+      <property name="severity" value="error"/>
+      <message key="equals.noHashCode" value="[JV-EH-010] 跨型別相等範圍 → rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality"/>
+      <message key="equals.noEquals" value="[JV-EH-010] 跨型別相等範圍 → rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality"/>
+    </module>
+    <!-- JV-ND-002：verified；純文字替代方案，供不跑 PMD 的最輕量 pre-commit；；誤報風險說明：變數型別為 double 時 regex 看不出來）；；實證版本：17；設定：[format=new\s+BigDecimal\(\s*(\(double\)|\(float\)|Double\.parseDouble|Float\.parseFloat|Double\.valueOf|Float\.valueOf|[0-9]+\.[0-9]+[dDfF]?\s*\))]。 -->
+    <module name="RegexpSinglelineJava">
+      <property name="id" value="JV-ND-002"/>
+      <property name="severity" value="error"/>
+      <property name="format" value="new\s+BigDecimal\(\s*(\(double\)|\(float\)|Double\.parseDouble|Float\.parseFloat|Double\.valueOf|Float\.valueOf|[0-9]+\.[0-9]+[dDfF]?\s*\))"/>
+      <property name="message" value="[JV-ND-002] 從精確來源建立 → rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources"/>
+      <property name="maximum" value="0"/>
+      <property name="ignoreComments" value="true"/>
+    </module>
+    <!-- JV-ND-016：partial；對應子句「優先使用 java.time」；IllegalType 以程式碼中的名稱比對，須同時列簡名與全名；規範違反範例 LocalDateTime 冒充時點屬語意，不報；；誤報風險說明：JDBC／舊框架邊界必須使用 java.sql.Timestamp 等型別，需在邊界層抑制；；實證版本：17、8；補充實證：samples/SubClauses.java:36,37,38 Date／Calendar 欄位與參數 caught；設定：[illegalClassNames=Date,Calendar,GregorianCalendar,SimpleDateFormat,DateFormat,Timestamp,java.util.Date,java.util.Calendar,java.util.GregorianCalendar,java.text.SimpleDateFormat,java.text.DateFormat,java.sql.Date,java.sql.Time,java.sql.Timestamp]。 -->
+    <module name="IllegalType">
+      <property name="id" value="JV-ND-016"/>
+      <property name="severity" value="warning"/>
+      <property name="illegalClassNames" value="Date,Calendar,GregorianCalendar,SimpleDateFormat,DateFormat,Timestamp,java.util.Date,java.util.Calendar,java.util.GregorianCalendar,java.text.SimpleDateFormat,java.text.DateFormat,java.sql.Date,java.sql.Time,java.sql.Timestamp"/>
+      <message key="illegal.type" value="[JV-ND-016] 依業務語意選擇時間型別 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-representation"/>
+    </module>
+    <!-- JV-ND-019：verified；純文字替代方案；；誤報風險說明：regex 看不到接收者型別，對 Instant／逾時設定等所有 Duration.ofDays／ofHours 都報；只宜作提醒；；實證版本：17；設定：[format=Duration\.of(Days|Hours)\(]。 -->
+    <module name="RegexpSinglelineJava">
+      <property name="id" value="JV-ND-019"/>
+      <property name="severity" value="warning"/>
+      <property name="format" value="Duration\.of(Days|Hours)\("/>
+      <property name="message" value="[JV-ND-019] 區分時間長度與日曆規則 → rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods"/>
+      <property name="maximum" value="0"/>
+      <property name="ignoreComments" value="true"/>
+    </module>
+    <!-- JV-ND-022：verified；純文字替代方案；Checkstyle 10.26.1／12.3.1 皆可；；誤報風險說明：同上；；實證版本：17、8、11、21；設定：[format=\b(Instant|LocalDate|LocalDateTime|LocalTime|ZonedDateTime|OffsetDateTime|OffsetTime|Year|YearMonth|MonthDay)\.now\(\s*\)|System\.currentTimeMillis\(\)|new\s+Date\(\s*\)]。 -->
+    <module name="RegexpSinglelineJava">
+      <property name="id" value="JV-ND-022"/>
+      <property name="severity" value="warning"/>
+      <property name="format" value="\b(Instant|LocalDate|LocalDateTime|LocalTime|ZonedDateTime|OffsetDateTime|OffsetTime|Year|YearMonth|MonthDay)\.now\(\s*\)|System\.currentTimeMillis\(\)|new\s+Date\(\s*\)"/>
+      <property name="message" value="[JV-ND-022] 可控制的時間基準 → rules/stacks/java/common/numbers-dates-text.md#java-clock-source"/>
+      <property name="maximum" value="0"/>
+      <property name="ignoreComments" value="true"/>
+    </module>
+    <!-- JV-ND-026：verified；純文字替代方案；；實證版本：17；設定：[format=ResolverStyle\.(SMART|LENIENT)\b]。 -->
+    <module name="RegexpSinglelineJava">
+      <property name="id" value="JV-ND-026"/>
+      <property name="severity" value="error"/>
+      <property name="format" value="ResolverStyle\.(SMART|LENIENT)\b"/>
+      <property name="message" value="[JV-ND-026] 解析與輸出契約 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting"/>
+      <property name="maximum" value="0"/>
+      <property name="ignoreComments" value="true"/>
+    </module>
+  </module>
+</module>

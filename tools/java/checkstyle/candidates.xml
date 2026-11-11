@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN" "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!-- 由 rule-map 對照；候選僅保留於 candidates.xml，不納入預設阻擋。 -->
+<module name="Checker">
+  <property name="charset" value="UTF-8"/>
+  <property name="fileExtensions" value="java"/>
+  <module name="SuppressionFilter">
+    <property name="file" value="${checkstyle.suppressions.file}" default="tools/java/checkstyle/suppressions.xml"/>
+  </module>
+  <module name="TreeWalker">
+    <!-- JV-TG-028：candidate；四個模組都設 format="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"：允許單字母與角色名（Source、Decoded），拒絕編號型 T1／T2／T3；Checkstyle 預設 format 會把符合範例的 Source／Decoded／Result 判為違規（google_checks 實測誤報），必須覆寫；既有程式碼的 E1／K2 與 Google 式 FooT 會被拒，需調整 format；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="ClassTypeParameterName">
+      <property name="id" value="JV-TG-028"/>
+      <property name="severity" value="warning"/>
+      <property name="format" value="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"/>
+      <message key="name.invalidPattern" value="[JV-TG-028] 泛型參數命名 → rules/stacks/java/common/types-and-generics.md#java-type-parameter-names"/>
+    </module>
+    <!-- JV-TG-030：candidate；四個模組都設 format="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"：允許單字母與角色名（Source、Decoded），拒絕編號型 T1／T2／T3；Checkstyle 預設 format 會把符合範例的 Source／Decoded／Result 判為違規（google_checks 實測誤報），必須覆寫；既有程式碼的 E1／K2 與 Google 式 FooT 會被拒，需調整 format；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="MethodTypeParameterName">
+      <property name="id" value="JV-TG-030"/>
+      <property name="severity" value="warning"/>
+      <property name="format" value="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"/>
+      <message key="name.invalidPattern" value="[JV-TG-030] 泛型參數命名 → rules/stacks/java/common/types-and-generics.md#java-type-parameter-names"/>
+    </module>
+    <!-- JV-TG-031：candidate；四個模組都設 format="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"：允許單字母與角色名（Source、Decoded），拒絕編號型 T1／T2／T3；Checkstyle 預設 format 會把符合範例的 Source／Decoded／Result 判為違規（google_checks 實測誤報），必須覆寫；既有程式碼的 E1／K2 與 Google 式 FooT 會被拒，需調整 format；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="RecordTypeParameterName">
+      <property name="id" value="JV-TG-031"/>
+      <property name="severity" value="warning"/>
+      <property name="format" value="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"/>
+      <message key="name.invalidPattern" value="[JV-TG-031] 泛型參數命名 → rules/stacks/java/common/types-and-generics.md#java-type-parameter-names"/>
+    </module>
+    <!-- JV-NP-001：candidate；對應「團隊須統一縮寫慣例」：allowedAbbreviationLength=1 禁止連續大寫（HTTPClient→HttpClient）；規範範例沒有縮寫案例，故 violation_caught 無法實證（false），全部範例無誤報；既有 URL／ID／DTO 類名會大量命中，需 allowedAbbreviations 清單；；實證版本：17。 -->
+    <module name="AbbreviationAsWordInName">
+      <property name="id" value="JV-NP-001"/>
+      <property name="severity" value="error"/>
+      <property name="allowedAbbreviationLength" value="1"/>
+      <message key="abbreviation.as.word" value="[JV-NP-001] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-003：candidate；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="LambdaParameterName">
+      <property name="id" value="JV-NP-003"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-003] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-004：candidate；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="LocalFinalVariableName">
+      <property name="id" value="JV-NP-004"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-004] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-005：candidate；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="LocalVariableName">
+      <property name="id" value="JV-NP-005"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-005] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-006：candidate；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="MemberName">
+      <property name="id" value="JV-NP-006"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-006] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-008：candidate；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="PackageName">
+      <property name="id" value="JV-NP-008"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-008] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-009：candidate；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="ParameterName">
+      <property name="id" value="JV-NP-009"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-009] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-010：candidate；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="PatternVariableName">
+      <property name="id" value="JV-NP-010"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-010] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-011：candidate；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="RecordComponentName">
+      <property name="id" value="JV-NP-011"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-011] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-NP-012：candidate；違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName 只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的 static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列 candidate。 -->
+    <module name="StaticVariableName">
+      <property name="id" value="JV-NP-012"/>
+      <property name="severity" value="error"/>
+      <message key="name.invalidPattern" value="[JV-NP-012] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form"/>
+    </module>
+    <!-- JV-CC-009：candidate；意圖相符（非 final 的可覆寫 public/protected 方法需 final／abstract／空實作或 Javadoc 說明），但只看 public/protected：規範違反範例的 pay 是 package-private 故抓不到；合成 public 版會報；真實專案幾乎所有 public 非 final 方法都命中，等於強制 final-by-default，與條文「不一律強制 final」不合，不建議啟用；；實證版本：17。 -->
+    <module name="DesignForExtension">
+      <property name="id" value="JV-CC-009"/>
+      <property name="severity" value="warning"/>
+      <message key="design.forExtension" value="[JV-CC-009] `super` 呼叫與 `final` 的擴充限制 → rules/stacks/java/common/classes-and-construction.md#java-override-scope"/>
+    </module>
+  </module>
+</module>

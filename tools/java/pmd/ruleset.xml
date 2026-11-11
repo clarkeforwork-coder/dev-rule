@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-TG-002 -->
+  <rule ref="category/java/codestyle.xml/UseExplicitTypes" name="UseExplicitTypes" message="[JV-TG-002] 明確宣告型別 → rules/stacks/java/common/types-and-generics.md#java-explicit-types" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-explicit-types">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-TG-005、JV-TG-025 -->
+  <rule name="RawGenericType" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-TG-005] 禁止 raw type 與不必要的型別抽象 → rules/stacks/java/common/types-and-generics.md#java-generic-type-information；[JV-TG-025] 允許建構端使用菱形運算子 → rules/stacks/java/common/types-and-generics.md#java-diamond-construction" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-generic-type-information">
+    <description>pre-commit 近似版（不編譯）：只認白名單內的 JDK 泛型型別，專案自訂泛型須加入白名單；完整檢查以 javac -Xlint:rawtypes 為準；本小節自身違反範例（Object）抓不到；以 java-diamond-construction／java-type-safety-warnings 的 raw type 違反範例與合成範例（List raw、Map&lt;String, List&gt;、Comparable raw）實證抓到，instanceof List／List.class／List.of() 不誤報；第一版用 typeIs(Comparable) 會把 String 當 raw 誤報，已改 typeIsExactly；；實證版本：17、8。 來源：inventory-inv-claude-a.yml 第 5 筆（JV-TG-005）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//ClassType[not(TypeArguments)][not(parent::ClassType)]
+  [not(parent::TypeExpression)][not(parent::ClassLiteral)][not(ancestor::Annotation)][not(ancestor::ImportDeclaration)]
+  [pmd-java:typeIsExactly('java.util.Collection') or pmd-java:typeIsExactly('java.util.List') or pmd-java:typeIsExactly('java.util.ArrayList')
+   or pmd-java:typeIsExactly('java.util.LinkedList') or pmd-java:typeIsExactly('java.util.Set') or pmd-java:typeIsExactly('java.util.HashSet')
+   or pmd-java:typeIsExactly('java.util.LinkedHashSet') or pmd-java:typeIsExactly('java.util.TreeSet') or pmd-java:typeIsExactly('java.util.SortedSet')
+   or pmd-java:typeIsExactly('java.util.NavigableSet') or pmd-java:typeIsExactly('java.util.Map') or pmd-java:typeIsExactly('java.util.HashMap')
+   or pmd-java:typeIsExactly('java.util.LinkedHashMap') or pmd-java:typeIsExactly('java.util.TreeMap') or pmd-java:typeIsExactly('java.util.SortedMap')
+   or pmd-java:typeIsExactly('java.util.NavigableMap') or pmd-java:typeIsExactly('java.util.concurrent.ConcurrentHashMap')
+   or pmd-java:typeIsExactly('java.util.concurrent.ConcurrentMap') or pmd-java:typeIsExactly('java.util.Map.Entry') or pmd-java:typeIsExactly('java.util.Queue')
+   or pmd-java:typeIsExactly('java.util.Deque') or pmd-java:typeIsExactly('java.util.ArrayDeque') or pmd-java:typeIsExactly('java.util.PriorityQueue')
+   or pmd-java:typeIsExactly('java.util.Iterator') or pmd-java:typeIsExactly('java.util.ListIterator') or pmd-java:typeIsExactly('java.lang.Iterable')
+   or pmd-java:typeIsExactly('java.util.Optional') or pmd-java:typeIsExactly('java.util.stream.Stream') or pmd-java:typeIsExactly('java.util.Comparator')
+   or pmd-java:typeIsExactly('java.lang.Comparable') or pmd-java:typeIsExactly('java.util.function.Function') or pmd-java:typeIsExactly('java.util.function.BiFunction')
+   or pmd-java:typeIsExactly('java.util.function.Supplier') or pmd-java:typeIsExactly('java.util.function.Consumer') or pmd-java:typeIsExactly('java.util.function.BiConsumer')
+   or pmd-java:typeIsExactly('java.util.function.Predicate') or pmd-java:typeIsExactly('java.util.function.BiPredicate') or pmd-java:typeIsExactly('java.util.function.UnaryOperator')
+   or pmd-java:typeIsExactly('java.util.function.BinaryOperator') or pmd-java:typeIsExactly('java.util.concurrent.Future') or pmd-java:typeIsExactly('java.util.concurrent.CompletableFuture')
+   or pmd-java:typeIsExactly('java.util.concurrent.Callable') or pmd-java:typeIsExactly('java.lang.Class') or pmd-java:typeIsExactly('java.lang.ThreadLocal')
+   or pmd-java:typeIsExactly('java.util.concurrent.atomic.AtomicReference') or pmd-java:typeIsExactly('java.lang.ref.WeakReference') or pmd-java:typeIsExactly('java.util.Enumeration')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-TG-007 -->
+  <rule name="GenericMethodReturnsObject" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-TG-007] 輸入與輸出的型別關聯 → rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation">
+    <description>啟發式：宣告型別參數的方法卻回傳 Object；只涵蓋本小節範例的形狀；回傳 Map&lt;String, Object&gt; 或接受 List&lt;?&gt; 再轉型等其他失去關聯的寫法抓不到；反射／序列化工具方法可能合理回傳 Object，需 @SuppressWarnings(&quot;PMD.GenericMethodReturnsObject&quot;)；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 7 筆（JV-TG-007）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodDeclaration[TypeParameters]/ClassType[pmd-java:typeIsExactly('java.lang.Object')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-TG-009 -->
+  <rule name="DowncastFromObject" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-TG-009] 不得以向下轉型補回業務型別 → rules/stacks/java/common/types-and-generics.md#java-business-type-casts" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-business-type-casts">
+    <description>對靜態型別恰為 Object 的運算式做轉型或 instanceof（含 Java 16+ 型別模式，違反（Java 17）範例也抓到）；equals(Object) 排除；只抓「從 Object 猜回」；從較寬的業務型別向下轉型（例如 (CashPayment) payment）需要型別階層資訊，本規則不抓；邊界層（JNDI、反序列化、Map&lt;String, Object&gt; 取值、框架回呼）會大量命中，須以套件層級 exclude 或 @SuppressWarnings 配合例外流程；；實證版本：17、8。 來源：inventory-inv-claude-a.yml 第 9 筆（JV-TG-009）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[(//CastExpression[ClassType][*[2][pmd-java:typeIsExactly('java.lang.Object')]]
+ | //InfixExpression[@Operator = 'instanceof'][*[1][pmd-java:typeIsExactly('java.lang.Object')]])
+ [not(ancestor::MethodDeclaration[@Name = 'equals' and @Arity = 1])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-TG-014 -->
+  <rule name="NoSuppressTypeSafetyWarnings" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-TG-014] 型別安全警告 → rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings">
+    <description>與 Checkstyle SuppressWarnings 等價，二選一；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 13 筆（JV-TG-014）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//Annotation[pmd-java:typeIs('java.lang.SuppressWarnings')]//StringLiteral[@ConstValue = ('rawtypes', 'unchecked', 'all')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-TG-017 -->
+  <rule name="ObjectValuedDataShape" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-TG-017] 業務資料結構 → rules/stacks/java/common/types-and-generics.md#java-business-data-shape" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-business-data-shape">
+    <description>回傳值、欄位、參數或 record 元件型別為 Map&lt;?, Object&gt; 或 Object[]；JSON／框架 Model（Spring Model attributes、JDBC 列）在邊界層合法，需對邊界套件 exclude；真正動態映射改用明確值型別即可通過；；實證版本：17、8。 來源：inventory-inv-claude-a.yml 第 17 筆（JV-TG-017）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//(MethodDeclaration|FieldDeclaration|FormalParameter|RecordComponent)
+  /*[self::ClassType or self::ArrayType]/descendant-or-self::node()/(self::ClassType[pmd-java:typeIs('java.util.Map')]/TypeArguments/ClassType[2][pmd-java:typeIsExactly('java.lang.Object')]
+    | ArrayType[ClassType[pmd-java:typeIsExactly('java.lang.Object')]])]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-TG-022 -->
+  <rule ref="category/java/bestpractices.xml/LooseCoupling" name="LooseCoupling" message="[JV-TG-022] 集合與映射的宣告型別 → rules/stacks/java/common/types-and-generics.md#java-collection-declarations" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-collection-declarations">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-TG-026 -->
+  <rule name="UnboundedWildcardReturnType" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-TG-026] 泛型回傳值 → rules/stacks/java/common/types-and-generics.md#java-generic-return-types" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-generic-return-types">
+    <description>只抓回傳型別中的無界 ?（含巢狀），Class&lt;?&gt; 排除；有上下界的萬用字元（契約確實需要）不抓；反射／序列化工具層回傳 List&lt;?&gt; 可能合理，需 suppress；；實證版本：17、8、11。 來源：inventory-inv-claude-a.yml 第 26 筆（JV-TG-026）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodDeclaration/ClassType//WildcardType[not(*)][not(parent::TypeArguments/parent::ClassType[pmd-java:typeIs('java.lang.Class')])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-LS-004 -->
+  <rule name="NoInferredLambdaParameterType" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-LS-004] 明確的參數型別 → rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types">
+    <description>同時抓省略型別（value -&gt;）與 (var value) -&gt;（違反（Java 11）範例，@VarKeyword=true）；明確型別 (String value) 的 @TypeInferred=false；內建 UseExplicitTypes 不抓 Lambda 參數的 var；誤報低，但既有程式碼幾乎全部省略 Lambda 參數型別，命中量極大，需基準線或只對新增／修改行報告；；實證版本：17、11、8。 來源：inventory-inv-claude-a.yml 第 33 筆（JV-LS-004）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//LambdaParameter[@TypeInferred = true()]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-LS-007 -->
+  <rule name="StreamPeekUsage" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-LS-007] 中間操作不隱藏業務副作用 → rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects">
+    <description>抓所有 Stream.peek；peek 的官方用途是除錯記錄，純 log 的 peek 會誤報，需 suppress 或團隊約定不用 peek；其他中間操作（filter／map）內的副作用無法靜態判斷；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 36 筆（JV-LS-007）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName = 'peek'][*[1][pmd-java:typeIs('java.util.stream.BaseStream')]]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-LS-009 -->
+  <rule name="ForEachAccumulatesExternalState" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-LS-009] 明確累積結果 → rules/stacks/java/common/lambda-and-stream.md#java-result-accumulation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-result-accumulation">
+    <description>Stream／Iterable／Map 的 forEach Lambda 內對外部集合、Map 或 StringBuilder 呼叫修改方法；符合範例（collect）與符合（Java 17）（toList）均乾淨；抓不到以方法參考（result::add）累積、計數器／旗標（int[] 或 AtomicInteger）累積的寫法；forEach 刻意寫入外部 Map（groupingBy 難以表達時）會被抓，需 suppress；；實證版本：17。 排除該 Lambda 內宣告的參數與區域集合。 來源：inventory-inv-claude-a.yml 第 39 筆（JV-LS-009）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName = ('forEach', 'forEachOrdered')]
+  [*[1][pmd-java:typeIs('java.util.stream.BaseStream') or pmd-java:typeIs('java.lang.Iterable') or pmd-java:typeIs('java.util.Map')]]
+  /ArgumentList/LambdaExpression
+  [.//MethodCall[@MethodName = ('add', 'addAll', 'put', 'putAll', 'putIfAbsent', 'offer', 'push', 'append', 'remove', 'merge', 'compute', 'computeIfAbsent')]
+     [*[1][self::VariableAccess or self::FieldAccess]
+          [pmd-java:typeIs('java.util.Collection') or pmd-java:typeIs('java.util.Map') or pmd-java:typeIs('java.lang.StringBuilder')]
+          [not(@Name = ancestor::LambdaExpression[1]//VariableId/@Name)]]]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-LS-013 -->
+  <rule name="ParallelStreamUsage" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-LS-013] 平行處理的採用條件 → rules/stacks/java/common/lambda-and-stream.md#java-parallel-stream-adoption" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-parallel-stream-adoption">
+    <description>本小節沒有規範範例，以合成範例實證（parallelStream() 與 stream().parallel() 各抓到一次，stream().count() 乾淨）；所有平行處理都會被報，已核准者須 @SuppressWarnings(&quot;PMD.ParallelStreamUsage&quot;) 並附量測依據，這正是條文要求的例外流程；；實證版本：17。 無規範正反例，以自製 parallelStream／stream 樣本實證；不計 verified。 來源：inventory-inv-claude-a.yml 第 43 筆（JV-LS-013）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[(@MethodName = 'parallelStream' and *[1][pmd-java:typeIs('java.util.Collection')])
+          or (@MethodName = 'parallel' and *[1][pmd-java:typeIs('java.util.stream.BaseStream')])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-LS-016 -->
+  <rule name="LambdaCatchWithoutRethrow" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-LS-016] 維持錯誤分類 → rules/stacks/java/common/lambda-and-stream.md#java-failure-classification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-failure-classification">
+    <description>Lambda 內的 catch 沒有任何 throw（吞錯或回傳替代值）；允許部分成功且保留各筆結果的流程（catch 後記錄到結果物件）會被抓，需 suppress；內建 EmptyCatchBlock／AvoidCatchingGenericException 抓不到此範例（catch 非空、型別具體）；；實證版本：17、8。 排除 catch 內的 throw、interrupt、cancel、shutdownNow，與中斷處理規範一致。 來源：inventory-inv-claude-a.yml 第 47 筆（JV-LS-016）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//CatchClause[ancestor::LambdaExpression][not(Block//ThrowStatement)][not(Block//MethodCall[@MethodName=('interrupt','cancel','shutdownNow')])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-LS-018 -->
+  <rule name="StreamVariableReused" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-LS-018] 明確消費範圍 → rules/stacks/java/common/lambda-and-stream.md#java-stream-consumption" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-stream-consumption">
+    <description>僅統計同一最近 Block 內、以同名 Stream 變數為直接接收者的終端操作；重新指派 filter、null 檢查、不同區塊同名不報。無控制流程分析：互斥分支或兩次消費間重新建立新 Stream 仍可能誤報；跨區塊、方法或中間操作鏈可能漏報，故 warn＋partial。 來源：inventory-inv-claude-a.yml 第 49 筆（JV-LS-018）。</description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//VariableId[@LocalVariable = true()][pmd-java:typeIs('java.util.stream.BaseStream')]
+  [let $v := ., $n := @Name, $b := ancestor::Block[1] return
+    count($b//MethodCall[@MethodName=('count','collect','toList','toArray','forEach','forEachOrdered','reduce','min','max','findFirst','findAny','anyMatch','allMatch','noneMatch','iterator','spliterator','sum','average','summaryStatistics')]
+      [VariableAccess[@Name=$n]][ancestor::Block[1] is $b]) > 1]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-NP-015 -->
+  <rule ref="category/java/codestyle.xml/ClassNamingConventions" name="ClassNamingConventions" message="[JV-NP-015] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/naming-packages-docs.md#java-naming-form">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NP-016 -->
+  <rule ref="category/java/codestyle.xml/FieldNamingConventions" name="FieldNamingConventions" message="[JV-NP-016] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/naming-packages-docs.md#java-naming-form">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NP-019 -->
+  <rule ref="category/java/codestyle.xml/MethodNamingConventions" name="MethodNamingConventions" message="[JV-NP-019] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/naming-packages-docs.md#java-naming-form">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CC-003 -->
+  <rule ref="category/java/errorprone.xml/ConstructorCallsOverridableMethod" name="ConstructorCallsOverridableMethod" message="[JV-CC-003] 建構期間的安全性 → rules/stacks/java/common/classes-and-construction.md#java-construction-safety" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/classes-and-construction.md#java-construction-safety">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CC-006 -->
+  <rule ref="category/java/design.xml/MutableStaticState" name="MutableStaticState" message="[JV-CC-006] 明確取得依賴 → rules/stacks/java/common/classes-and-construction.md#java-explicit-dependencies" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/classes-and-construction.md#java-explicit-dependencies">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NO-001 -->
+  <rule ref="category/java/errorprone.xml/ReturnEmptyCollectionRatherThanNull" name="ReturnEmptyCollectionRatherThanNull" message="[JV-NO-001] 查詢的正常缺值 → rules/stacks/java/common/null-and-optional.md#java-query-absence" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/null-and-optional.md#java-query-absence">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NO-003 -->
+  <rule name="OptionalReturnNull" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-NO-003] Optional 本身非空 → rules/stacks/java/common/null-and-optional.md#java-optional-nonnull" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/null-and-optional.md#java-optional-nonnull">
+    <description>只涵蓋 java.util.Optional 方法直接 return null；間接變數回傳、欄位與參數為缺口，補強反例已證明 indirectNull 不被抓；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：17。 來源：inventory-inv-codex-a.yml 第 46 筆（JV-NO-003）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//ReturnStatement/NullLiteral[ancestor::MethodDeclaration[1]/ClassType[pmd-java:typeIs('java.util.Optional')]][not(ancestor::LambdaExpression)]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-SR-008 -->
+  <rule name="EnumDefaultHidesCases" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-SR-008] 處理完整性 → rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling">
+    <description>僅審查候選：抓 enum 缺少明列常數且有 default；不判斷成功語意；補強測試顯示 default throw 也會被抓，不能直接作阻擋門檻，須核定完整明列契約及例外；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：11、17、21。 來源：inventory-inv-codex-a.yml 第 49／50／51 筆（JV-SR-008）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//(SwitchStatement | SwitchExpression)[@EnumSwitch = true()][@ExhaustiveEnumSwitch = false()][*/SwitchLabel[@Default = true()]]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-SR-010 -->
+  <rule name="EnumOrdinalAtBoundary" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-SR-010] 穩定的外部代碼 → rules/stacks/java/common/states-and-results.md#java-stable-external-codes" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/states-and-results.md#java-stable-external-codes">
+    <description>只可套用已確認屬外部代碼的映射來源檔或以理由抑制；XPath 本身不識別邊界，內部 ordinal 索引可合法且已實測誤報，禁止全域直接阻擋；不能證明代碼穩定性；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17。 來源：inventory-inv-codex-a.yml 第 48 筆（JV-SR-010）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[pmd-java:matchesSig('java.lang.Enum#ordinal()')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-CO-003 -->
+  <rule name="ListFromHashSetLosesOrder" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-003] 順序與重複資料 → rules/stacks/java/common/collections-and-ownership.md#java-order-and-duplicates" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-order-and-duplicates">
+    <description>只抓「List ← HashSet 建構」這一種失去順序與重複值的寫法；Set.of／Map.of 不保證順序、SequencedSet 不保留重複等屬契約判斷，見同節 manual 筆；；誤報風險說明：刻意用 HashSet 去重再排序的寫法也會被報；用 LinkedHashSet／TreeSet 表達意圖者不報；建議 warn 並允許 @SuppressWarnings；；實證版本：17、21。 來源：inventory-inv-claude-b.yml 第 3 筆（JV-CO-003）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//ConstructorCall[pmd-java:typeIs('java.util.List')]/ArgumentList/ConstructorCall[pmd-java:typeIsExactly('java.util.HashSet')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-CO-006 -->
+  <rule name="CatchConcurrentModification" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-006] 遍歷期間的修改 → rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation">
+    <description>對應子句「未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑」；規範無此違反範例，以自製樣本實證；；誤報風險說明：捕捉 CME 幾乎只用於重跑或忽略；若為記錄後重新拋出可抑制；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存） caught。 來源：inventory-inv-claude-b.yml 第 6／7 筆（JV-CO-006）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//CatchParameter//ClassType[pmd-java:typeIs('java.util.ConcurrentModificationException')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-CO-007 -->
+  <rule name="ModifyCollectionInForeach" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-007] 遍歷期間的修改 → rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation">
+    <description>PMD 7 XPath；pre-commit 層的對應規則；；誤報風險說明：同 Error Prone，remove 後 break 會被報；只比對變數名稱，被遍歷集合若是方法回傳值（for (x : get())）則抓不到；；實證版本：17。 來源：inventory-inv-claude-b.yml 第 6／7 筆（JV-CO-007）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName = ('add','addAll','remove','removeAll','removeIf','retainAll','clear','set','sort','put','putAll','putIfAbsent','replaceAll')][*[1][self::VariableAccess or self::FieldAccess]/@Name = ancestor::ForeachStatement/*[2][self::VariableAccess or self::FieldAccess]/@Name][not(ancestor::LambdaExpression[ancestor::ForeachStatement])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-CO-008 -->
+  <rule name="ConcurrentMapCheckThenAct" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-008] 複合操作的原子性 → rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity">
+    <description>SpotBugs AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION 對規範違反範例（欄位型別 ConcurrentMap 介面）不報，只對宣告為 ConcurrentHashMap 的欄位報（原盤點子條文合成樣本（未隨庫保存）），故 pre-commit 以本規則為主；；誤報風險說明：containsKey／get==null 後接 put／remove／replace 的同鍵檢查再寫入；在已持鎖區段內屬合理寫法時需抑制；只看 ConcurrentMap 型別的接收者，宣告為 Map 介面者抓不到；；實證版本：17。 來源：inventory-inv-claude-b.yml 第 8 筆（JV-CO-008）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//IfStatement[(UnaryExpression[@Operator='!']/MethodCall[@MethodName='containsKey'] | MethodCall[@MethodName='containsKey'] | InfixExpression[@Operator=('==','!=')][NullLiteral]/MethodCall[@MethodName='get'])[*[1][pmd-java:typeIs('java.util.concurrent.ConcurrentMap')]]/*[1]/@Name = *[position() > 1]//MethodCall[@MethodName=('put','remove','replace')]/*[1][self::VariableAccess or self::FieldAccess]/@Name]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-CO-011 -->
+  <rule name="SortedBeforeLimit" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-011] 限制資料累積 → rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation">
+    <description>與 UnboundedStreamStatefulOp 互補：本規則不看來源是否無界，只看「先排序再截取」；；誤報風險說明：有限來源的 sorted().limit(n) 只是效能問題而非無界累積，會被報；建議 warn；；實證版本：17、8、11。 來源：inventory-inv-claude-b.yml 第 11／12 筆（JV-CO-011）。</description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName='limit']/MethodCall[1][@MethodName='sorted'][pmd-java:typeIs('java.util.stream.Stream')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-CO-012 -->
+  <rule name="UnboundedStreamStatefulOp" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-012] 限制資料累積 → rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation">
+    <description>Java 11 符合範例用三參數 iterate（有停止條件）→ 不報；Java 8／17 符合範例 limit 在 sorted 之前 → 不報；；誤報風險說明：只針對 Stream.generate／二參數 Stream.iterate 這類確定無界的來源，且 limit／takeWhile 不在 sorted／distinct 之前；；實證版本：17、8、11。 來源：inventory-inv-claude-b.yml 第 11／12 筆（JV-CO-012）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName=('sorted','distinct')][descendant::MethodCall[TypeExpression/ClassType[pmd-java:typeIs('java.util.stream.BaseStream')]][@MethodName='generate' or (@MethodName='iterate' and ArgumentList/@Size=2)]][not(descendant::MethodCall[@MethodName=('limit','takeWhile')])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-CO-015 -->
+  <rule name="LazyStreamReturnedFromTryWithResources" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-015] 延遲讀取的資源責任 → rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime">
+    <description>回傳型別為 List 等已收集結果者不報（符合範例）；；誤報風險說明：回傳的 Stream／Iterator 必須直接引用 try-with-resources 的資源變數才報；；實證版本：17、8。 排除已 collect／toList／toArray 實體化後再建立 Stream 的鏈。 來源：inventory-inv-claude-b.yml 第 14 筆（JV-CO-015）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//TryStatement[@TryWithResources = true()]/Block//ReturnStatement[not(ancestor::LambdaExpression[ancestor::TryStatement[@TryWithResources = true()]])][not(ancestor::ClassBody[ancestor::TryStatement])]/*[pmd-java:typeIs('java.util.stream.BaseStream') or pmd-java:typeIs('java.util.Iterator') or pmd-java:typeIs('java.util.Spliterator')][descendant-or-self::VariableAccess/@Name = ancestor::TryStatement[@TryWithResources = true()][1]/ResourceList/Resource//VariableId/@Name][not(descendant-or-self::MethodCall[@MethodName=('collect','toList','toArray')][descendant::VariableAccess/@Name = ancestor::TryStatement[@TryWithResources=true()][1]/ResourceList/Resource//VariableId/@Name])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ER-002 -->
+  <rule ref="category/java/bestpractices.xml/PreserveStackTrace" name="PreserveStackTrace_JV_ER_002" message="[JV-ER-002] 明確的故障分類 → rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-003 -->
+  <rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes" name="AvoidThrowingRawExceptionTypes" message="[JV-ER-003] 明確的故障分類 → rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-004 -->
+  <rule ref="category/java/design.xml/SignatureDeclareThrowsException" name="SignatureDeclareThrowsException" message="[JV-ER-004] 明確的故障分類 → rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-009 -->
+  <rule ref="category/java/errorprone.xml/AvoidCatchingGenericException" name="AvoidCatchingGenericException" message="[JV-ER-009] 捕捉範圍與處置相符 → rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-ER-010 -->
+  <rule name="CatchThrowableOrError" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ER-010] 捕捉範圍與處置相符 → rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope">
+    <description>取代已棄用的 AvoidCatchingThrowable 並加入 Error；；誤報風險說明：同上；；實證版本：17、8；補充實證：原盤點子條文合成樣本（未隨庫保存）（經 AvoidCatchingGenericException 同位置實證；本規則 XPath 與 PMD 已棄用的 AvoidCatchingThrowable 相同形式）。 納入正式集合以 error 阻擋 Throwable／Error，合成正反例可重跑；JV-ER-009 維持廣泛捕捉提醒。 來源：inventory-inv-claude-b.yml 第 29／30 筆（JV-ER-010）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//CatchParameter//ClassType[pmd-java:typeIsExactly('java.lang.Throwable') or pmd-java:typeIsExactly('java.lang.Error')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ER-015 -->
+  <rule ref="category/java/errorprone.xml/EmptyCatchBlock" name="EmptyCatchBlock" message="[JV-ER-015] 保留中斷意圖 → rules/stacks/java/common/exceptions-and-resources.md#java-interruption" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-interruption">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-016 -->
+  <rule name="SwallowedInterruptedException" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ER-016] 保留中斷意圖 → rules/stacks/java/common/exceptions-and-resources.md#java-interruption" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-interruption">
+    <description>等同 Sonar S2142 的語意；；誤報風險說明：以其他取消機制（例如設定旗標後 return）處理者會被報，需抑制；多重捕捉亦涵蓋（樣本 catch (InterruptedException | ExecutionException) + cancel 不報）；；實證版本：17。 來源：inventory-inv-claude-b.yml 第 33／34 筆（JV-ER-016）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//CatchClause[CatchParameter//ClassType[pmd-java:typeIs('java.lang.InterruptedException')]][not(Block//MethodCall[@MethodName='interrupt'])][not(Block//ThrowStatement)][not(Block//MethodCall[@MethodName=('cancel','shutdownNow')])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ER-018 -->
+  <rule ref="category/java/bestpractices.xml/UseTryWithResources" name="UseTryWithResources_JV_ER_018" message="[JV-ER-018] 優先使用語言資源管理機制 → rules/stacks/java/common/exceptions-and-resources.md#java-resource-management" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-resource-management">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-ER-019 -->
+  <rule ref="category/java/errorprone.xml/CloseResource" name="CloseResource" message="[JV-ER-019] 優先使用語言資源管理機制 → rules/stacks/java/common/exceptions-and-resources.md#java-resource-management" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-resource-management">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-024 -->
+  <rule ref="category/java/bestpractices.xml/UseTryWithResources" name="UseTryWithResources_JV_ER_024" message="[JV-ER-024] 保留操作與清理失敗 → rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-025 -->
+  <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally" name="DoNotThrowExceptionInFinally" message="[JV-ER-025] 保留操作與清理失敗 → rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-026 -->
+  <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock" name="ReturnFromFinallyBlock" message="[JV-ER-026] 保留操作與清理失敗 → rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-028 -->
+  <rule name="ResourceCapturedByAsyncTask" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ER-028] 有效期與關閉契約 → rules/stacks/java/common/exceptions-and-resources.md#java-resource-close-contract" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-resource-close-contract">
+    <description>規範違反範例 CompletableFuture.runAsync(lambda 使用 input, executor) 被報；；誤報風險說明：在 try 內同步等待結果的 executor.submit(() -&gt; input.read()).get() 也會被報（原盤點子條文合成樣本（未隨庫保存） 實測報）；此類需抑制；Java 21 符合範例（ExecutorService 本身是資源、lambda 不引用它）不報；；實證版本：17。 來源：inventory-inv-claude-b.yml 第 48 筆（JV-ER-028）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//TryStatement[@TryWithResources = true()]/Block//MethodCall[@MethodName=('runAsync','supplyAsync','submit','execute','schedule','scheduleAtFixedRate','scheduleWithFixedDelay','invokeAll','invokeAny','thenRunAsync','thenApplyAsync','thenAcceptAsync','thenComposeAsync','whenCompleteAsync','handleAsync','start')]/ArgumentList/*[self::LambdaExpression or self::MethodReference][descendant-or-self::*[self::VariableAccess or self::MethodReference]/@Name = ancestor::TryStatement[@TryWithResources = true()][1]/ResourceList/Resource//VariableId/@Name]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-EH-004 -->
+  <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode" name="OverrideBothEqualsAndHashcode_JV_EH_004" message="[JV-EH-004] 相等與雜湊契約 → rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-EH-008 -->
+  <rule name="IdentityEqualsWithStateHashCode" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-EH-008] Entity 識別碼的生命週期 → rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle">
+    <description>只涵蓋違反範例這一種「身分相等＋可變狀態雜湊」組合；；誤報風險說明：樣式很窄（equals 為 this == other 且 hashCode 讀取非 final 欄位），幾乎必為錯；但涵蓋面也窄；；實證版本：17。 來源：inventory-inv-claude-b.yml 第 60 筆（JV-EH-008）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//ClassDeclaration[ClassBody/MethodDeclaration[@Name='equals'][FormalParameters/@Size=1]/Block[@Size=1]/ReturnStatement/InfixExpression[@Operator='=='][ThisExpression]][ClassBody/MethodDeclaration[@Name='hashCode'][FormalParameters/@Size=0][.//VariableAccess[@Name = ancestor::ClassDeclaration[1]/ClassBody/FieldDeclaration/VariableDeclarator/VariableId[@Final = false()]/@Name] or .//FieldAccess[ThisExpression][@Name = ancestor::ClassDeclaration[1]/ClassBody/FieldDeclaration/VariableDeclarator/VariableId[@Final = false()]/@Name]]]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-EH-012 -->
+  <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode" name="OverrideBothEqualsAndHashcode_JV_EH_012" message="[JV-EH-012] 跨型別相等範圍 → rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-EH-017 -->
+  <rule name="ComparatorBySubtraction" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-EH-017] 比較關係一致 → rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations">
+    <description>Error Prone 對 Integer 相減無對應檢查；只有 BadComparable 抓「long 相減後縮窄成 int」（同樣本 47 行報），對規範違反範例不報；；誤報風險說明：比較兩個已知有界的小整數（例如 enum ordinal 相減）技術上不會溢位但仍會被報；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存） compareTo 中 (int)(rank - other.rank) 亦 caught。 來源：inventory-inv-claude-b.yml 第 68 筆（JV-EH-017）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//InfixExpression[@Operator='-'][pmd-java:typeIs('int') or pmd-java:typeIs('long') or pmd-java:typeIs('float') or pmd-java:typeIs('double')][parent::LambdaExpression[pmd-java:typeIs('java.util.Comparator')] or parent::CastExpression/parent::LambdaExpression[pmd-java:typeIs('java.util.Comparator')] or parent::ReturnStatement[ancestor::LambdaExpression[1][pmd-java:typeIs('java.util.Comparator')]] or parent::CastExpression/parent::ReturnStatement[ancestor::LambdaExpression[1][pmd-java:typeIs('java.util.Comparator')]] or parent::ReturnStatement[not(ancestor::LambdaExpression)][ancestor::MethodDeclaration[1][@Name=('compare','compareTo')][FormalParameters/@Size = (1,2)]] or parent::CastExpression/parent::ReturnStatement[not(ancestor::LambdaExpression)][ancestor::MethodDeclaration[1][@Name=('compare','compareTo')]]]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-EH-019 -->
+  <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashCodeOnComparable" name="OverrideBothEqualsAndHashCodeOnComparable" message="[JV-EH-019] 比較為零與相等性 → rules/stacks/java/common/equality-hashing-ordering.md#java-sorted-key-equivalence" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-sorted-key-equivalence">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-ND-003 -->
+  <rule ref="category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor" name="AvoidDecimalLiteralsInBigDecimalConstructor" message="[JV-ND-003] 從精確來源建立 → rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-004 -->
+  <rule name="BigDecimalFromFloatingPoint" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-004] 從精確來源建立 → rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources">
+    <description>內建規則的超集：加上 valueOf(double)；SpotBugs DMI_BIGDECIMAL_CONSTRUCTED_FROM_DOUBLE 只針對無法精確表示的字面常數，對違反範例不報；；誤報風險說明：BigDecimal.valueOf(double) 在來源本來就是量測 double 時合理；若只要內建規則的建構子部分，可不採用本規則；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存） BigDecimal.valueOf(double) caught。 來源：inventory-inv-claude-b.yml 第 78／79 筆（JV-ND-004）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//ConstructorCall[pmd-java:typeIs('java.math.BigDecimal')]/ArgumentList/*[1][pmd-java:typeIs('double') or pmd-java:typeIs('float') or pmd-java:typeIs('java.lang.Double') or pmd-java:typeIs('java.lang.Float')] | //MethodCall[@MethodName='valueOf'][TypeExpression/ClassType[pmd-java:typeIs('java.math.BigDecimal')]]/ArgumentList/*[1][pmd-java:typeIs('double') or pmd-java:typeIs('float') or pmd-java:typeIs('java.lang.Double') or pmd-java:typeIs('java.lang.Float')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ND-006 -->
+  <rule name="BigDecimalWithoutRoundingMode" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-006] 明訂捨入規則 → rules/stacks/java/common/numbers-dates-text.md#java-rounding-policy" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-rounding-policy">
+    <description>規範違反範例是把 scale 與 RoundingMode 交給呼叫端決定（語意違反），工具抓不到；本規則只涵蓋「讓 API 預設決定」的子句；；誤報風險說明：單參數 divide 遇非終止小數會拋 ArithmeticException、單參數 setScale 遇需捨入會拋例外，幾乎總是未明訂捨入；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存） divide(b)／setScale(2) caught。 來源：inventory-inv-claude-b.yml 第 82 筆（JV-ND-006）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[*[1][pmd-java:typeIs('java.math.BigDecimal')]][(@MethodName='divide' and ArgumentList/@Size = 1) or (@MethodName='setScale' and ArgumentList/@Size = 1)]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ND-009 -->
+  <rule name="NarrowingPrimitiveCast" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-009] 範圍與轉換檢查 → rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks">
+    <description>原 XPath 僅偵測縮窄轉型；新增 Math.clamp 且引數含 Integer.MIN_VALUE／MAX_VALUE 的語法分支，涵蓋 Java 21 規範反例，Math.toIntExact 符合例仍乾淨。無法推論是否允許飽和截斷的業務契約，合法 clamp 與位元／影像轉型仍可能誤報，風險 high；經核准逐處抑制，不全面排除。hashCode 內縮窄轉型維持排除。 排除編譯期常數、char 轉換及 byte 的 0xFF 遮罩慣用式；補 double→float。 來源：inventory-inv-claude-b.yml 第 84 筆（JV-ND-009）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//CastExpression[not(*[2][@CompileTimeConstant = true()])][not(PrimitiveType[@Kind='char'])][not(PrimitiveType[@Kind='byte'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=255]])][not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')] and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')]) or (PrimitiveType[@Kind='float'] and *[2][pmd-java:typeIs('double')])] | //MethodCall[@MethodName='clamp'][TypeExpression/ClassType[@SimpleName='Math']][ArgumentList/FieldAccess[@Name='MIN_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]][ArgumentList/FieldAccess[@Name='MAX_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ND-014 -->
+  <rule name="ComparableBigDecimalRecordEqualsMismatch" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-014] BigDecimal 判同語意 → rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence">
+    <description>只適用 record（Java 16+）；Java 8 符合範例為一般類別、自行實作三者，不在範圍（實測不報）；；誤報風險說明：record 以 BigDecimal.compareTo 排序卻沿用自動 equals，compareTo==0 與 equals 必然不一致；；實證版本：17、8。 來源：inventory-inv-claude-b.yml 第 88／89 筆（JV-ND-014）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//RecordDeclaration[ImplementsList/ClassType[pmd-java:typeIs('java.lang.Comparable')]][RecordComponentList/RecordComponent/ClassType[pmd-java:typeIs('java.math.BigDecimal')]][RecordBody/MethodDeclaration[@Name='compareTo']//MethodCall[@MethodName='compareTo'][*[1][pmd-java:typeIs('java.math.BigDecimal')]]][not(RecordBody/MethodDeclaration[@Name='equals'])][not(RecordBody/*[self::CompactConstructorDeclaration or self::ConstructorDeclaration]//MethodCall[@MethodName=('stripTrailingZeros','setScale')])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ND-017 -->
+  <rule ref="category/java/errorprone.xml/ReplaceJavaUtilDate" name="ReplaceJavaUtilDate" message="[JV-ND-017] 依業務語意選擇時間型別 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-representation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-temporal-representation">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-ND-020 -->
+  <rule name="DurationUsedForCalendarDay" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-020] 區分時間長度與日曆規則 → rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods">
+    <description>符合範例 start.plus(Period.ofDays(1)) 不報；；誤報風險說明：契約真的要「恰好 24 小時後」時屬合法；只抓字面常數倍數，變數小時數抓不到；；實證版本：17。 來源：inventory-inv-claude-b.yml 第 95 筆（JV-ND-020）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName=('plus','minus')][*[1][pmd-java:typeIs('java.time.ZonedDateTime') or pmd-java:typeIs('java.time.LocalDateTime') or pmd-java:typeIs('java.time.OffsetDateTime')]]/ArgumentList/MethodCall[TypeExpression/ClassType[pmd-java:typeIs('java.time.Duration')]][@MethodName='ofDays' or (@MethodName='ofHours' and ArgumentList/NumericLiteral[@ValueAsLong mod 24 = 0])] | //MethodCall[@MethodName='plusHours' or @MethodName='minusHours'][*[1][pmd-java:typeIs('java.time.ZonedDateTime')]][ArgumentList/NumericLiteral[@ValueAsLong mod 24 = 0]]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ND-024 -->
+  <rule name="NowWithoutClock" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-024] 可控制的時間基準 → rules/stacks/java/common/numbers-dates-text.md#java-clock-source" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-clock-source">
+    <description>Instant.now(clock)、source.instant() 不報；實測 PMD 在 JDK 8／11／17／21 執行期下結果一致；；誤報風險說明：測試碼、日誌時間戳、非業務用途的計時會被報；以 package／測試來源集排除，或在組態／Clock 供應者處抑制；System.nanoTime 等單調來源刻意不報；；實證版本：17、8、11、21；補充實證：原盤點子條文合成樣本（未隨庫保存） new Date()／currentTimeMillis()／LocalDate.now() caught。 來源：inventory-inv-claude-b.yml 第 98 筆（JV-ND-024）。</description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName='now'][not(ArgumentList/*[pmd-java:typeIs('java.time.Clock')])][TypeExpression/ClassType[pmd-java:typeIs('java.time.temporal.TemporalAccessor')]] | //MethodCall[pmd-java:matchesSig('java.lang.System#currentTimeMillis()')] | //ConstructorCall[pmd-java:matchesSig('java.util.Date#new()')] | //MethodCall[@MethodName='getInstance'][TypeExpression/ClassType[pmd-java:typeIs('java.util.Calendar')]][not(ArgumentList/*[pmd-java:typeIs('java.time.Clock')])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ND-027 -->
+  <rule ref="category/java/errorprone.xml/SimpleDateFormatNeedsLocale" name="SimpleDateFormatNeedsLocale" message="[JV-ND-027] 解析與輸出契約 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-028 -->
+  <rule name="DateTimeFormatterPatternNotStrict" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-028] 解析與輸出契約 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting">
+    <description>涵蓋條文「須明訂格式、地區…不允許寬鬆修正」的預設 SMART 情況（未呼叫 withResolverStyle）；注意 STRICT 必須搭配 uuuu 而非 yyyy，否則解析失敗；可另加 XPath 檢查 STRICT 鏈上的字面樣式含 yyyy；；誤報風險說明：只用於格式化輸出的 formatter 不需要 STRICT；formatter 存成欄位後另行 withResolverStyle 也會被報；ofPattern 未給 Locale 在純數字 ISO 樣式下影響有限；建議 warn；；實證版本：17。 static import STRICT 已排除；僅輸出用途與欄位稍後設定 STRICT 仍可能誤報，故 partial。 來源：inventory-inv-claude-b.yml 第 102／103／105 筆（JV-ND-028）。</description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName='ofPattern'][TypeExpression/ClassType[pmd-java:typeIs('java.time.format.DateTimeFormatter')]][ArgumentList/@Size = 1 or not(ancestor::MethodCall[@MethodName='withResolverStyle'][ArgumentList/*[self::FieldAccess or self::VariableAccess][@Name='STRICT'][pmd-java:typeIs('java.time.format.ResolverStyle')]])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-ND-029 -->
+  <rule name="LenientDateTimeResolver" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-029] 解析與輸出契約 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting">
+    <description>；誤報風險說明：明確指定 SMART／LENIENT 幾乎都是刻意放寬，與條文「不允許寬鬆修正非法日期」直接衝突；；實證版本：17。 來源：inventory-inv-claude-b.yml 第 102／103／105 筆（JV-ND-029）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName='withResolverStyle']/ArgumentList/FieldAccess[@Name=('SMART','LENIENT')][TypeExpression/ClassType[pmd-java:typeIs('java.time.format.ResolverStyle')]]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-CA-002 -->
+  <rule name="NoUnmanagedThread" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CA-002] 統一管理執行資源 → rules/stacks/java/common/concurrency-and-async.md#java-execution-resources" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/concurrency-and-async.md#java-execution-resources">
+    <description>採用：限定非資源管理元件；ThreadFactory、測試基礎設施及核准擁有者需精確例外；不涵蓋 Thread.ofVirtual().start 等其他建立 API，也不證明容量管理；實證：bad-17=1, good-17=0, good-21=0；原盤點 PMD 結果（未隨庫保存）；；實證版本：17、21。 排除 Runtime.addShutdownHook 與 ThreadFactory.newThread；核准的資源管理元件、測試基礎設施仍可能誤報，故 warn＋partial。 來源：inventory-inv-codex-b.yml 第 42／48 筆（JV-CA-002）。</description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//ConstructorCall[pmd-java:typeIs('java.lang.Thread')][not(parent::ArgumentList/parent::MethodCall[@MethodName='addShutdownHook'][*[1][pmd-java:typeIs('java.lang.Runtime')]])][not(ancestor::MethodDeclaration[@Name='newThread'][ancestor::ClassDeclaration[pmd-java:typeIs('java.util.concurrent.ThreadFactory')]])]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-CA-015 -->
+  <rule name="NoFixedSleepInConcurrencyTest" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CA-015] 可控制的併發驗收 → rules/stacks/java/common/concurrency-and-async.md#java-controlled-verification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/concurrency-and-async.md#java-controlled-verification">
+    <description>條件式採用：只套用併發驗收測試來源；正常程式退避、延遲模擬或測試刻意控制計時可能合法，須允許精確例外；只抓 Thread.sleep(long/int)，不涵蓋其他間接等待；實證：bad-17=1, good-17=0, good-21=0；原盤點 PMD 結果（未隨庫保存）；；實證版本：17、21。 來源：inventory-inv-codex-b.yml 第 45 筆（JV-CA-015）。</description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[pmd-java:matchesSig('java.lang.Thread#sleep(long)') or pmd-java:matchesSig('java.lang.Thread#sleep(long,int)')]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-RS-002 -->
+  <rule name="ReviewReflectiveFieldWrite" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-RS-002] 維持封裝與不變條件 → rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation">
+    <description>條件式採用：標出 Field 寫入供封裝審查，不能從語法判定業務不變條件；序列化框架與合法映射需逐點核准；未配置例外前不適合整個儲存庫直接阻擋；實證：bad-17=1, good-17=0；原盤點 PMD 結果（未隨庫保存）；；實證版本：17。 來源：inventory-inv-codex-b.yml 第 43 筆（JV-RS-002）。</description>
+    <priority>3</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName = ('set','setBoolean','setByte','setChar','setShort','setInt','setLong','setFloat','setDouble')][*[1][pmd-java:typeIs('java.lang.reflect.Field')]]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-RS-005 -->
+  <rule ref="category/java/bestpractices.xml/PreserveStackTrace" name="PreserveStackTrace_JV_RS_005" message="[JV-RS-005] 區分故障與執行結果 → rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-RS-008 -->
+  <rule name="MisplacedSerialSuppression" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-RS-008] 限定檢查抑制 → rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression">
+    <description>採用局部模式：非 Serializable 類別本身沒有 serial 需求，應把 serial 抑制移至需要的內層型別；仍不能證明其他抑制的最小範圍、核准理由；實證：bad-17=1, good-17=0, good-8=0, good-11=0；原盤點 PMD 結果（未隨庫保存）；；實證版本：8、11、17。 來源：inventory-inv-codex-b.yml 第 44／49 筆（JV-RS-008）。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//ClassDeclaration[not(pmd-java:typeIs('java.io.Serializable'))]/ModifierList/Annotation[pmd-java:typeIs('java.lang.SuppressWarnings')][.//StringLiteral[@ConstValue = 'serial']]]]></value></property>
+    </properties>
+  </rule>
+  <!-- JV-VP-017 -->
+  <rule ref="category/java/errorprone.xml/AvoidAccessibilityAlteration" name="AvoidAccessibilityAlteration" message="[JV-VP-017] JDK 內部實作與存取限制 → rules/stacks/java/common/version-policy.md#java-jdk-internals" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/version-policy.md#java-jdk-internals">
+    <priority>1</priority>
+  </rule>
+</ruleset>

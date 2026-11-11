@@ -1,0 +1,1 @@
+import java.time.format.*; import java.util.Locale; import static java.time.format.ResolverStyle.STRICT; class Probe { DateTimeFormatter formatter=DateTimeFormatter.ofPattern("uuuu-MM-dd",Locale.ROOT).withResolverStyle(STRICT); }
