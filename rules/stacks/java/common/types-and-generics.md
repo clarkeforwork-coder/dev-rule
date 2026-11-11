@@ -34,6 +34,22 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 `List.of`（Java 9 引入），以 `Collections.singletonList` 建立此單元素清單；仍須明確宣告 `List<String>`，維持元素型別資訊。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#of(E)))
+- Java 11：區域變數 `var` 自 Java 10 起、Lambda 參數 `var` 自 Java 11 起可編譯，但會省略要求的型別標註，不得使用；仍須明確宣告型別。（[JEP 286](https://openjdk.org/jeps/286)、[JEP 323](https://openjdk.org/jeps/323)）
+
+**符合（Java 8）**
+
+```java
+// 區域變數明確宣告元素型別，使用舊版的單元素清單工廠。
+class Example {
+    void prepare() {
+        java.util.List<String> names = java.util.Collections.singletonList("Ada");
+    }
+}
+```
+
 <a id="java-generic-type-information"></a>
 
 ### 禁止 raw type 與不必要的型別抽象
@@ -55,6 +71,24 @@ class Example {
 ```java
 // 欄位保留已知的訂單型別。
 record Order(String id) {}
+class Example {
+    private final Order order = new Order("A1");
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有正式的 `record`（Java 16 正式發布），以具名一般類別承載訂單；欄位仍須宣告為 `Order`，維持已知業務型別的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 具名一般類別與欄位宣告保留訂單型別。
+final class Order {
+    private final String id;
+    Order(String id) { this.id = id; }
+    String id() { return id; }
+}
 class Example {
     private final Order order = new Order("A1");
 }
@@ -114,6 +148,40 @@ record Order(String id) {}
 class Example {
     String orderId(Order order) {
         return order.id();
+    }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有正式的 `record`（Java 16 正式發布），以具名一般類別搭配明確的 `Order` 參數契約，維持不靠向下轉型補回業務型別的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`instanceof` 型別模式自 Java 16 正式發布，可將型別測試、轉換與變數宣告合併；用它猜回先前遺失的業務型別仍會破壞契約，不得以模式語法掩蓋此設計，仍須保留業務型別。（[JEP 394](https://openjdk.org/jeps/394)）
+
+**符合（Java 8）**
+
+```java
+// 一般類別搭配明確參數契約，不需向下轉型。
+final class Order {
+    private final String id;
+    Order(String id) { this.id = id; }
+    String id() { return id; }
+}
+class Example {
+    String orderId(Order order) {
+        return order.id();
+    }
+}
+```
+
+**違反（Java 17）**
+
+```java
+// 先遺失業務型別，再用型別模式猜回，仍破壞參數契約。
+record Order(String id) {}
+class Example {
+    String orderId(Object order) {
+        if (order instanceof Order value) return value.id();
+        throw new IllegalArgumentException("非訂單");
     }
 }
 ```
@@ -188,6 +256,28 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：沒有正式的 `record`（Java 16 正式發布），以具名一般類別宣告固定欄位與建構子；仍須保留各欄位型別，不得改用 `Map<String, Object>` 或 `Object[]`，維持資料結構的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 具名一般類別明確宣告固定的訂單欄位。
+final class Order {
+    private final String id;
+    private final int quantity;
+    Order(String id, int quantity) { this.id = id; this.quantity = quantity; }
+    String id() { return id; }
+    int quantity() { return quantity; }
+}
+class Example {
+    Order order() {
+        return new Order("A1", 2);
+    }
+}
+```
+
 <a id="java-generic-capabilities"></a>
 
 ### 型別能力與約束
@@ -244,6 +334,21 @@ class Example {
 }
 ```
 
+**版本差異**
+
+- Java 21 起：可用新引入的 `SequencedCollection`、`SequencedSet`、`SequencedMap` 表達遍歷順序與首尾操作；只需首項的契約可用 `SequencedCollection`，需要索引時仍須使用 `List`，排序方式與可修改性仍須另行明訂。（[JEP 431](https://openjdk.org/jeps/431)）
+
+**符合（Java 21）**
+
+```java
+// 只取遍歷順序的首項；呼叫端須提供非空集合，不要求索引操作。
+class Example {
+    String first(java.util.SequencedCollection<String> names) {
+        return names.getFirst();
+    }
+}
+```
+
 <a id="java-diamond-construction"></a>
 
 ### 允許建構端使用菱形運算子
@@ -268,6 +373,45 @@ class Example {
 class Example {
     void prepare() {
         List<String> names = new ArrayList<>();
+    }
+}
+```
+
+**版本差異**
+
+- Java 8：匿名類別建構不能使用菱形運算子，以完整建構型別參數維持同一保證；宣告端仍須保留完整泛型資訊。（[JEP 213](https://openjdk.org/jeps/213)）
+- Java 11：自 Java 9 起，匿名類別在推導型別可表示於簽章等限制下可用菱形運算子；宣告端仍須保留完整泛型資訊，匿名類別內非 `private` 方法須覆寫超型別方法。（[JEP 213](https://openjdk.org/jeps/213)）
+
+**符合（Java 8）**
+
+```java
+// 匿名類別建構明寫型別參數，宣告端也保留元素型別。
+class Example {
+    void prepare() {
+        java.util.List<String> names = new java.util.AbstractList<String>() {
+            @Override public String get(int index) {
+                if (index != 0) throw new IndexOutOfBoundsException();
+                return "Ada";
+            }
+            @Override public int size() { return 1; }
+        };
+    }
+}
+```
+
+**符合（Java 11）**
+
+```java
+// 匿名類別建構使用菱形運算子，宣告端仍保留元素型別。
+class Example {
+    void prepare() {
+        java.util.List<String> names = new java.util.AbstractList<>() {
+            @Override public String get(int index) {
+                if (index != 0) throw new IndexOutOfBoundsException();
+                return "Ada";
+            }
+            @Override public int size() { return 1; }
+        };
     }
 }
 ```
@@ -298,6 +442,43 @@ record Order(String id) {}
 class Example {
     List<Order> orders() {
         return List.of(new Order("A1"));
+    }
+}
+```
+
+**版本差異**
+
+- Java 8：沒有 `List.of`（Java 9 引入）及正式的 `record`（Java 16 正式發布），以 `Collections.singletonList` 與具名一般類別替代；回傳值仍須宣告 `List<Order>`，維持可直接使用元素型別的同一保證。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#of(E))、[JEP 395](https://openjdk.org/jeps/395)）
+- Java 11：可用 Java 9 引入的 `List.of` 建立不可修改清單，訂單仍以一般類別承載；回傳值仍須宣告 `List<Order>`，不得以萬用字元代替不可變性設計。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#of(E))、[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 一般類別與單元素清單保留可直接使用的回傳元素型別。
+final class Order {
+    private final String id;
+    Order(String id) { this.id = id; }
+    String id() { return id; }
+}
+class Example {
+    java.util.List<Order> orders() {
+        return java.util.Collections.singletonList(new Order("A1"));
+    }
+}
+```
+
+**符合（Java 11）**
+
+```java
+// 使用清單工廠仍明確宣告訂單元素型別。
+final class Order {
+    private final String id;
+    Order(String id) { this.id = id; }
+    String id() { return id; }
+}
+class Example {
+    java.util.List<Order> orders() {
+        return java.util.List.of(new Order("A1"));
     }
 }
 ```
