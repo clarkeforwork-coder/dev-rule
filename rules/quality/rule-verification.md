@@ -114,22 +114,22 @@
 
 | 主題 | 驗收位置 |
 | --- | --- |
-| <a id="架構檢查與可測試性"></a>架構檢查與可測試性 | [架構分層與依賴方向](../architecture/layering.md#acceptance)、[框架與依賴組裝](../architecture/dependency-composition.md#acceptance) |
-| <a id="錯誤處理驗證與驗收"></a>錯誤處理驗證與驗收 | [錯誤處理](../coding/error-handling.md#acceptance) |
-| <a id="補償流程驗收"></a>補償流程驗收 | [跨步驟失敗與業務補償](../workflow/compensation.md#acceptance) |
-| <a id="外部整合與事件故障恢復驗證"></a>外部整合與事件故障恢復驗證 | [外部整合可靠性](../interfaces/external-services.md#acceptance)、[事件可靠性](../interfaces/events.md#acceptance) |
-| <a id="資料庫行為與遷移驗證"></a>資料庫行為與遷移驗證 | [資料存取與完整性](../data/persistence.md#acceptance)、[交易邊界與併發控制](../data/transactions.md#acceptance)、[資料遷移與大量操作](../data/migrations.md#acceptance) |
-| <a id="api-契約與操作驗證"></a>API 契約與操作驗證 | [API 操作語意與介面設計](../interfaces/api-contracts.md#acceptance) |
-| <a id="api-版本相容性與遷移驗收"></a>API 版本相容性與遷移驗收 | [API 版本管理、淘汰與使用端遷移](../interfaces/api-versioning.md#acceptance) |
-| <a id="列表查詢組合驗證"></a>列表查詢組合驗證 | [列表 API 的分頁、篩選與排序](../interfaces/list-queries.md#acceptance) |
-| <a id="公開事件的契約驗證"></a>公開事件的契約驗證 | [事件命名與內容設計](../interfaces/event-contracts.md#acceptance) |
-| <a id="安全驗收"></a>安全驗收 | [安全共通規範](../quality/security.md#acceptance) |
-| <a id="可觀測性驗收"></a>可觀測性驗收 | [日誌、稽核與可觀測性](../quality/observability.md#acceptance) |
-| <a id="效能與資源驗收"></a>效能與資源驗收 | [效能與資源使用](../quality/performance.md#acceptance) |
-| <a id="設定管理驗收"></a>設定管理驗收 | [設定管理與環境差異](../workflow/configuration.md#acceptance) |
-| <a id="依賴管理驗收"></a>依賴管理驗收 | [第三方套件與依賴管理](../workflow/dependencies.md#acceptance) |
-| <a id="git-與-pr-驗收"></a>Git 與 PR 驗收 | [Git、PR 與程式碼審查](../workflow/git-pr-review.md#acceptance) |
-| <a id="測試程式碼"></a>測試程式碼 | [型別安全](../coding/type-safety.md#acceptance) |
+|架構檢查與可測試性 | [架構分層與依賴方向](../architecture/layering.md#acceptance)、[框架與依賴組裝](../architecture/dependency-composition.md#acceptance) |
+|錯誤處理驗證與驗收 | [錯誤處理](../coding/error-handling.md#acceptance) |
+|補償流程驗收 | [跨步驟失敗與業務補償](../workflow/compensation.md#acceptance) |
+|外部整合與事件故障恢復驗證 | [外部整合可靠性](../interfaces/external-services.md#acceptance)、[事件可靠性](../interfaces/events.md#acceptance) |
+|資料庫行為與遷移驗證 | [資料存取與完整性](../data/persistence.md#acceptance)、[交易邊界與併發控制](../data/transactions.md#acceptance)、[資料遷移與大量操作](../data/migrations.md#acceptance) |
+|API 契約與操作驗證 | [API 操作語意與介面設計](../interfaces/api-contracts.md#acceptance) |
+|API 版本相容性與遷移驗收 | [API 版本管理、淘汰與使用端遷移](../interfaces/api-versioning.md#acceptance) |
+|列表查詢組合驗證 | [列表 API 的分頁、篩選與排序](../interfaces/list-queries.md#acceptance) |
+|公開事件的契約驗證 | [事件命名與內容設計](../interfaces/event-contracts.md#acceptance) |
+|安全驗收 | [安全共通規範](../quality/security.md#acceptance) |
+|可觀測性驗收 | [日誌、稽核與可觀測性](../quality/observability.md#acceptance) |
+|效能與資源驗收 | [效能與資源使用](../quality/performance.md#acceptance) |
+|設定管理驗收 | [設定管理與環境差異](../workflow/configuration.md#acceptance) |
+|依賴管理驗收 | [第三方套件與依賴管理](../workflow/dependencies.md#acceptance) |
+|Git 與 PR 驗收 | [Git、PR 與程式碼審查](../workflow/git-pr-review.md#acceptance) |
+|測試程式碼 | [型別安全](../coding/type-safety.md#acceptance) |
 | Java 語言 | [Java 語言](../stacks/java/README.md#驗收入口) |
 | 集合與資料所有權 | [集合與資料所有權](../coding/collections-and-ownership.md#acceptance) |
 | 資源生命週期 | [資源生命週期](../coding/resource-lifecycle.md#acceptance) |
