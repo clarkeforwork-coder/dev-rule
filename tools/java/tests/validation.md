@@ -1,4 +1,6 @@
-# Java pre-commit 層收尾驗證
+# Java pre-commit 層收尾驗證（歷史）
+
+最新審閱修正、正式 Maven／Gradle 與 JDK 8／17／21 驗收見 [審閱修正紀錄](review-fixes.md)。以下為修正前紀錄，舊涵蓋率、規則數與採用決策由新紀錄取代。
 
 日期：2026-11-11；分支 `tools/java-precommit`。未修改 rules／scripts，未推送、未建立 PR；本分支沒有 `docs/decisions/0005-java-tooling.md`，未建立替代 ADR。
 

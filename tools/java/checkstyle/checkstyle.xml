@@ -53,11 +53,11 @@
       <property name="max" value="3"/>
       <message key="maxLen.lambdaBody" value="[JV-LS-001] 意圖與可讀性優先 → rules/stacks/java/common/lambda-and-stream.md#java-intent-readability"/>
     </module>
-    <!-- JV-LS-003：partial；只涵蓋 (var value) -> 形式（違反（Java 11）範例抓到）；主範例省略型別的 value -> 純文字無法判斷，抓不到；Regexp 同 java-explicit-types；；實證版本：17、11、8；設定：(id=NoVar)。 -->
+    <!-- JV-LS-003：partial；只涵蓋 (var value) -> 形式（違反（Java 11）範例抓到）；主範例省略型別的 value -> 純文字無法判斷，抓不到；Regexp 已限縮為 Lambda 的括號後 var；；實證版本：17、11、8；設定：(id=NoVar)。 -->
     <module name="RegexpSinglelineJava">
       <property name="id" value="JV-LS-003"/>
       <property name="severity" value="error"/>
-      <property name="format" value="(^|[\s(,])var\s+[A-Za-z_$][\w$]*\s*(=|:|\)|,)"/>
+      <property name="format" value="\(\s*var\s+"/>
       <property name="message" value="[JV-LS-003] 明確的參數型別 → rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types"/>
       <property name="maximum" value="0"/>
       <property name="ignoreComments" value="true"/>
@@ -84,7 +84,7 @@
     <!-- JV-NP-030：verified；validateThrows=true、allowMissingParamTags=false、allowMissingReturnTag=false；違反範例報缺 @param path、@return、@throws IOException，符合（Java 21）的 {@snippet} 解析無誤報；注意 accessModifiers 以方法的有效可見性判斷：範例類別是 package-private，驗證時需含 package；實際專案設 public, protected 即可；既有程式碼缺標籤者眾，需 scope 限制或基準線；；實證版本：17、8、21。 -->
     <module name="JavadocMethod">
       <property name="id" value="JV-NP-030"/>
-      <property name="severity" value="error"/>
+      <property name="severity" value="warning"/>
       <property name="validateThrows" value="true"/>
       <property name="allowMissingParamTags" value="false"/>
       <property name="allowMissingReturnTag" value="false"/>
@@ -158,7 +158,7 @@
     <!-- JV-ND-019：verified；純文字替代方案；；誤報風險說明：regex 看不到接收者型別，對 Instant／逾時設定等所有 Duration.ofDays／ofHours 都報；只宜作提醒；；實證版本：17；設定：[format=Duration\.of(Days|Hours)\(]。 -->
     <module name="RegexpSinglelineJava">
       <property name="id" value="JV-ND-019"/>
-      <property name="severity" value="error"/>
+      <property name="severity" value="warning"/>
       <property name="format" value="Duration\.of(Days|Hours)\("/>
       <property name="message" value="[JV-ND-019] 區分時間長度與日曆規則 → rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods"/>
       <property name="maximum" value="0"/>

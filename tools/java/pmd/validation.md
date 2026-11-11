@@ -1,6 +1,6 @@
 # PMD 7.29.0 驗收紀錄
 
-日期：2026-11-11。來源／SHA-256 見 [README](README.md)。實測執行期為 `/private/tmp/java-versions-phase0/jdk-21.0.13+9/Contents/Home` 的 JDK 21.0.13+9；PMD 解壓於 `/private/tmp/dev-rule-pmd/pmd-bin-7.29.0`。依範例標記以 `--use-version` 分組解析 Java 8、11、17、21，沒有宣稱完成四個 JDK 執行期矩陣。
+日期：2026-11-11。來源／SHA-256 見 [README](README.md)。實測執行期為 `<TMP>/java-versions-phase0/jdk-21.0.13+9/Contents/Home` 的 JDK 21.0.13+9；PMD 解壓於 `<TMP>/dev-rule-pmd/pmd-bin-7.29.0`。依範例標記以 `--use-version` 分組解析 Java 8、11、17、21，沒有宣稱完成四個 JDK 執行期矩陣。
 
 抽取 15 份文件的 319 個範例：Java 8＝57、11＝15、17＝232、21＝15；原始規範程式與 import 未改寫，XPath 與 rule-map 逐字一致。75 筆映射的訊息前綴、URL、優先序及所有自訂 XPath 已以 REXML／YAML 核對。預設集合的 4 次 PMD 執行皆無 processingErrors／configurationErrors；候選集合另以一個 Java 17 範例做載入檢查，兩種錯誤亦皆為空，這不是候選語意驗收。
 
@@ -18,17 +18,17 @@
 重現命令：
 
 ```sh
-JAVA_HOME=/private/tmp/java-versions-phase0/jdk-21.0.13+9/Contents/Home \
+JAVA_HOME=<TMP>/java-versions-phase0/jdk-21.0.13+9/Contents/Home \
   ruby tools/java/tests/run-pmd.rb \
-  --pmd /private/tmp/dev-rule-pmd/pmd-bin-7.29.0/bin/pmd \
-  --output /private/tmp/dev-rule-pmd/run-final
+  --pmd <TMP>/dev-rule-pmd/pmd-bin-7.29.0/bin/pmd \
+  --output <TMP>/dev-rule-pmd/run-final
 ```
 
 完整標準輸出如下（原始 PMD JSON／log 位於列出的暫存目錄）：
 
 ```text
 工具：PMD 7.29.0 (47b3135b2cdd4afa0b4447da91786497b58bc10b, 2026-10-30T08:20:47Z)
-範例與原始報告：/private/tmp/dev-rule-pmd/run-final
+範例與原始報告：<TMP>/dev-rule-pmd/run-final
 抽取：319 個範例，15 份文件
 通過 JV-TG-002 UseExplicitTypes：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
 部分（僅報告） JV-TG-005 RawGenericType_JV_TG_005：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0

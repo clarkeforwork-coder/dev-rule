@@ -3,21 +3,21 @@
 set -euo pipefail
 base=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 unset DEV_RULE_CHECKSTYLE_CONFIG DEV_RULE_PMD_RULESET DEV_RULE_FULL_FILE
-export DEV_RULE_ROOT=$(cd "$base/../.." && pwd)
+export DEV_RULE_ROOT=$(cd "${base}/../.." && pwd)
 work=$(mktemp -d "${TMPDIR:-/tmp}/java-hook-official.XXXXXX")
-trap 'rm -rf "$work"' EXIT
-cd "$work"
+trap 'rc=$?; rm -rf "${work}"; exit ${rc}' EXIT
+cd "${work}"
 git init -q
 git config user.name 'Java hook test'
 git config user.email 'test@example.invalid'
-git config core.hooksPath "$work/disabled"
+git config core.hooksPath "${work}/disabled"
 run() {
     local label=$1 expected=$2 actual=0
     shift 2
-    printf '\n案例：%s；預期結束碼 %s\n' "$label" "$expected"
-    /usr/bin/time -p env "$@" "$base/hooks/pre-commit" || actual=$?
-    [ "$expected" = "$actual" ] || { printf '失敗：實際 %s\n' "$actual"; exit 1; }
-    printf '通過：結束碼 %s\n' "$actual"
+    printf '\n案例：%s；預期結束碼 %s\n' "${label}" "${expected}"
+    /usr/bin/time -p env "$@" "${base}/hooks/pre-commit" || actual=$?
+    [ "${expected}" = "${actual}" ] || { printf '失敗：實際 %s\n' "${actual}"; exit 1; }
+    printf '通過：結束碼 %s\n' "${actual}"
 }
 run '沒有 Java' 0
 printf 'class bad_name {}\n' > Bad.java

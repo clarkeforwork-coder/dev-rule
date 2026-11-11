@@ -1,0 +1,1 @@
+import java.util.concurrent.ExecutorService; class Probe { Runnable task(ExecutorService executor) { return () -> { try { throw new IllegalStateException(); } catch (IllegalStateException e) { executor.shutdownNow(); } }; } }

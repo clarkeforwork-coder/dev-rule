@@ -1,0 +1,40 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+> Task :clean
+> Task :compileJava
+> Task :processResources NO-SOURCE
+> Task :classes
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :checkstyleTest NO-SOURCE
+> Task :pmdTest NO-SOURCE
+> Task :test NO-SOURCE
+> Task :checkstyleMain
+<TMP>/java-build-integration-20261111-57629-1sfdxd9/src/main/java/Probe.java:1:	RawGenericType:	[JV-TG-005] 禁止 raw type 與不必要的型別抽象 → rules/stacks/java/common/types-and-generics.md#java-generic-type-information；[JV-TG-025] 允許建構端使用菱形運算子 → rules/stacks/java/common/types-and-generics.md#java-diamond-construction
+
+> Task :pmdMain FAILED
+Adding current platform <TMP>/dev-rule-hook-assets/zulu8.98.0.111-ca-jdk8.0.512-macosx_aarch64/Contents/Home/jre/lib/rt.jar to auxClasspath, which could be the wrong java version. Please add the correct jrt-fs.jar explicitly to the auxClasspath. See https://docs.pmd-code.org/latest/pmd_languages_java.html#providing-the-auxiliary-classpath Set env var PMD_JAVA_DISABLE_AUX_CLASSPATH_WARNINGS=true to disable this warning.
+
+[Incubating] Problems report is available at: file://<TMP>/java-build-integration-20261111-57629-1sfdxd9/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':pmdMain'.
+> A failure occurred while executing org.gradle.api.plugins.quality.internal.PmdAction
+   > 1 PMD rule violations were found. See the report at: file://<TMP>/java-build-integration-20261111-57629-1sfdxd9/build/reports/pmd/main.html
+
+* Try:
+> Run with --scan to get full insights.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 5s
+4 actionable tasks: 4 executed
+
+exit=1

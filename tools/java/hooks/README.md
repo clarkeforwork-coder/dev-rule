@@ -2,7 +2,7 @@
 
 此 hook 對 staged 的 `.java` 先執行 Checkstyle，再執行 PMD。預設只阻擋新增／修改行上的 error；warn 列出但不阻擋。它不會修改工作目錄、stash 內容或變更 index，也不需要 Python、Maven、Gradle、unzip 或 `jar` 指令。
 
-需要 Bash 3.2+、Git、curl、`shasum` 或 `sha256sum`、Java，以及系統基本工具（awk、sed、grep、mktemp、mkdir 等）。適用 macOS／Linux；Windows 請使用 WSL。工具第一次下載需要網路，其後每次均先校驗快取。
+需要 Bash 3.2+（已在 macOS Bash 3.2／UTF-8 語系驗證）、Git、curl、`shasum` 或 `sha256sum`、Java，以及系統基本工具（awk、sed、grep、mktemp、mkdir 等）。適用 macOS／Linux；Windows 請使用 WSL。工具第一次下載需要網路，其後每次均先校驗快取。
 
 ## 安裝
 
@@ -28,12 +28,12 @@ bash /path/to/dev-rule/tools/java/hooks/install.sh --hooks-path /path/to/project
 ```yaml
 repos:
   - repo: https://github.com/clarkeforwork-coder/dev-rule
-    rev: v1.0.0
+    rev: '<包含本次工具設定的已審查 commit SHA>'
     hooks:
       - id: dev-rule-java
 ```
 
-`v1.0.0` 是接入範例，需待該 tag 發布才可使用；發布前請改填包含工具與設定檔的實際 commit。框架本身需要其執行環境；本 hook 使用 `language: script`，不建立 Python 虛擬環境。忽略框架傳入的檔名，統一以 Git index 為準；一次呼叫處理所有 staged Java 檔案。`pre-commit run --all-files` 仍只檢查 staged Java。
+rev 使用 commit SHA；本層納入正式版本後改用 tag。框架本身需要其執行環境；本 hook 使用 `language: script`，不建立 Python 虛擬環境。忽略框架傳入的檔名，統一以 Git index 為準；一次呼叫處理所有 staged Java 檔案。`pre-commit run --all-files` 仍只檢查 staged Java。
 
 ## 首次下載與離線
 
@@ -117,3 +117,5 @@ Checkstyle 遵循 `severity`；PMD priority 1／2 阻擋，3／4／5 為 warn（
 - **這是否取代編譯與 CI？** 不會。hook 只分析 staged 檔案且可被 Git `--no-verify` 略過，完整建置、型別解析與團隊 CI 仍需保留。
 
 工具介面參考：[Checkstyle CLI](https://checkstyle.org/cmdline.html)、[PMD CLI](https://pmd.github.io/pmd/pmd_userdocs_cli_reference.html)、[PMD Maven 接入](https://pmd.github.io/pmd/pmd_userdocs_tools_maven.html)、[Gradle PMD](https://docs.gradle.org/8.14.3/userguide/pmd_plugin.html)。
+
+失敗回歸：`/bin/bash tools/java/tests/run-hook-failure.sh` 在 UTF-8 語系下驗證離線 PMD jar 竄改、缺少與 Java 21 語法解析錯誤均以 2 阻擋。`run-all.sh` 已包含此測試。

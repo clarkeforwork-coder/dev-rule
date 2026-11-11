@@ -74,14 +74,14 @@ sys 0.32
 PASS exit=0
 
 案例：語法錯誤不可被忽略（預期 2）
-com.puppycrawl.tools.checkstyle.api.CheckstyleException: 处理时抛出异常 /private/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/dev-rule-java.g48Pve/src/Broken.java
+com.puppycrawl.tools.checkstyle.api.CheckstyleException: 处理时抛出异常 <TMP>/dev-rule-java.g48Pve/src/Broken.java
 	at com.puppycrawl.tools.checkstyle.Checker.processFiles(Checker.java:312)
 	at com.puppycrawl.tools.checkstyle.Checker.process(Checker.java:226)
 	at com.puppycrawl.tools.checkstyle.Main.runCheckstyle(Main.java:429)
 	at com.puppycrawl.tools.checkstyle.Main.runCli(Main.java:347)
 	at com.puppycrawl.tools.checkstyle.Main.execute(Main.java:206)
 	at com.puppycrawl.tools.checkstyle.Main.main(Main.java:130)
-Caused by: com.puppycrawl.tools.checkstyle.api.CheckstyleException: IllegalStateException occurred while parsing file /private/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/dev-rule-java.g48Pve/src/Broken.java.
+Caused by: com.puppycrawl.tools.checkstyle.api.CheckstyleException: IllegalStateException occurred while parsing file <TMP>/dev-rule-java.g48Pve/src/Broken.java.
 	at com.puppycrawl.tools.checkstyle.JavaParser.parse(JavaParser.java:104)
 	at com.puppycrawl.tools.checkstyle.TreeWalker.processFiltered(TreeWalker.java:195)
 	at com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck.process(AbstractFileSetCheck.java:101)
@@ -137,7 +137,7 @@ sys 0.33
 PASS exit=1
 
 案例：離線缺少快取必須阻擋（預期 2）
-dev-rule: 離線快取缺少檔案或校驗失敗：/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T//dev-rule-hook-test.LRIeGN/empty-cache/dev-rule/java/checkstyle-10.26.1/checkstyle.jar
+dev-rule: 離線快取缺少檔案或校驗失敗：<TMP>/dev-rule-hook-test.LRIeGN/empty-cache/dev-rule/java/checkstyle-10.26.1/checkstyle.jar
 dev-rule: Checkstyle 執行失敗或報告不完整
 real 0.73
 user 0.18
@@ -145,26 +145,26 @@ sys 0.22
 PASS exit=2
 
 案例：離線快取校驗失敗必須阻擋（預期 2）
-dev-rule: 離線快取缺少檔案或校驗失敗：/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T//dev-rule-hook-test.LRIeGN/broken-cache/dev-rule/java/checkstyle-10.26.1/checkstyle.jar
+dev-rule: 離線快取缺少檔案或校驗失敗：<TMP>/dev-rule-hook-test.LRIeGN/broken-cache/dev-rule/java/checkstyle-10.26.1/checkstyle.jar
 dev-rule: Checkstyle 執行失敗或報告不完整
 real 0.71
 user 0.18
 sys 0.22
 PASS exit=2
-已接入：/private/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/dev-rule-hook-test.LRIeGN/project
+已接入：<TMP>/dev-rule-hook-test.LRIeGN/project
 模式：複製啟動器
 路徑：.git/hooks/pre-commit
-來源：/Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/hooks
-已接入：/private/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/dev-rule-hook-test.LRIeGN/project
+來源：<REPO>/tools/java/hooks
+已接入：<TMP>/dev-rule-hook-test.LRIeGN/project
 模式：複製啟動器
 路徑：.git/hooks/pre-commit
-來源：/Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/hooks
-已接入：/private/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/dev-rule-hook-test.LRIeGN/project
+來源：<REPO>/tools/java/hooks
+已接入：<TMP>/dev-rule-hook-test.LRIeGN/project
 模式：core.hooksPath
-路徑：/Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/hooks
-已接入：/private/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/dev-rule-hook-test.LRIeGN/project
+路徑：<REPO>/tools/java/hooks
+已接入：<TMP>/dev-rule-hook-test.LRIeGN/project
 模式：core.hooksPath
-路徑：/Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/hooks
+路徑：<REPO>/tools/java/hooks
 PASS 兩種安裝方式可重複執行，複製啟動器確實阻擋違規
 
 所有案例通過。

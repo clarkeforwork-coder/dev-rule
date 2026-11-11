@@ -1,0 +1,256 @@
+openjdk version "17.0.19" 2026-04-21
+OpenJDK Runtime Environment Temurin-17.0.19+10 (build 17.0.19+10)
+OpenJDK 64-Bit Server VM Temurin-17.0.19+10 (build 17.0.19+10, mixed mode, sharing)
+
+執行：ruby -r <REPO>/tools/java/tests/extract-examples.rb -e m = JavaExamples.extract(ARGV.fetch(0)); puts "抽取：#{m.size} 個範例" <TMP>/java-tests.CEt4B1/examples
+抽取：319 個範例
+階段結束碼：0
+
+執行：ruby <REPO>/tools/java/coverage/build-coverage.rb --check
+通過：15 份文件、143 個 Java 小節。
+通過：308 筆映射的錨點存在、標題相符、ID 唯一、欄位合法。
+通過：全部 Java 小節至少一筆映射；沒有重複的小節 × 工具規則。
+通過：自訂名稱與 XPath 欄位合法，同名 XPath 一致。
+涵蓋率：43／143 = 30.07%。
+通過：coverage.md 與 rule-map.yml 一致。
+階段結束碼：0
+
+執行：ruby <REPO>/tools/java/tests/check-consistency.rb
+pmd/ruleset.xml：65 規則，66 映射
+pmd/ruleset-candidates.xml：9 規則，9 映射
+checkstyle/checkstyle.xml：22 規則，22 映射
+checkstyle/candidates.xml：14 規則，14 映射
+一致性：零問題（雙向映射、候選隔離、訊息、等級、內嵌 XPath）。
+階段結束碼：0
+
+執行：ruby <REPO>/tools/java/tests/run-pmd.rb --output <TMP>/java-tests.CEt4B1/pmd
+工具：PMD 7.29.0 (47b3135b2cdd4afa0b4447da91786497b58bc10b, 2026-10-30T08:20:47Z)
+範例與原始報告：<TMP>/java-tests.CEt4B1/pmd
+抽取：319 個範例，15 份文件
+通過 JV-TG-002 UseExplicitTypes：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+部分（僅報告） JV-TG-005 RawGenericType：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-TG-007 GenericMethodReturnsObject：violation-1-java17=1、compliant-1-java17=0
+通過 JV-TG-009 DowncastFromObject：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、violation-2-java17=1
+通過 JV-TG-014 NoSuppressTypeSafetyWarnings：violation-1-java17=2、compliant-1-java17=0
+通過 JV-TG-017 ObjectValuedDataShape：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+通過 JV-TG-022 LooseCoupling：violation-1-java17=1、compliant-1-java17=0、compliant-1-java21=0
+通過 JV-TG-025 RawGenericType：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0
+通過 JV-TG-026 UnboundedWildcardReturnType：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0
+通過 JV-LS-004 NoInferredLambdaParameterType：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、violation-1-java11=1
+通過 JV-LS-007 StreamPeekUsage：violation-1-java17=1、compliant-1-java17=0
+通過 JV-LS-009 ForEachAccumulatesExternalState：violation-1-java17=1、compliant-1-java17=0、compliant-2-java17=0
+部分（僅報告） JV-LS-013 ParallelStreamUsage：
+  缺少 violation 規範範例
+  缺少 compliant 規範範例
+通過 JV-LS-016 LambdaCatchWithoutRethrow：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+部分（僅報告） JV-LS-018 StreamVariableReused：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+通過 JV-NP-015 ClassNamingConventions：violation-1-java17=1、compliant-1-java17=0
+通過 JV-NP-016 FieldNamingConventions：violation-1-java17=1、compliant-1-java17=0
+通過 JV-NP-019 MethodNamingConventions：violation-1-java17=1、compliant-1-java17=0
+通過 JV-CC-003 ConstructorCallsOverridableMethod：violation-1-java17=1、compliant-1-java17=0
+部分（僅報告） JV-CC-006 MutableStaticState：violation-1-java17=1、compliant-1-java17=0
+通過 JV-NO-001 ReturnEmptyCollectionRatherThanNull：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+部分（僅報告） JV-NO-003 OptionalReturnNull：violation-1-java17=1、compliant-1-java17=0
+部分（僅報告） JV-SR-008 EnumDefaultHidesCases：violation-1-java17=1、compliant-1-java17=0、compliant-1-java11=0、compliant-1-java21=0
+部分（僅報告） JV-SR-010 EnumOrdinalAtBoundary：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+通過 JV-CO-003 ListFromHashSetLosesOrder：violation-1-java17=1、compliant-1-java17=0、compliant-1-java21=0
+部分（僅報告） JV-CO-006 CatchConcurrentModification：violation-1-java17=0、compliant-1-java17=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-CO-007 ModifyCollectionInForeach：violation-1-java17=1、compliant-1-java17=0
+通過 JV-CO-008 ConcurrentMapCheckThenAct：violation-1-java17=1、compliant-1-java17=0
+通過 JV-CO-011 SortedBeforeLimit：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0
+通過 JV-CO-012 UnboundedStreamStatefulOp：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0
+通過 JV-CO-015 LazyStreamReturnedFromTryWithResources：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+部分（僅報告） JV-ER-002 PreserveStackTrace_JV_ER_002：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0
+  violation-1-java17 預期命中，實際 0
+部分（僅報告） JV-ER-003 AvoidThrowingRawExceptionTypes：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-ER-004 SignatureDeclareThrowsException：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+通過 JV-ER-009 AvoidCatchingGenericException：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+部分（僅報告） JV-ER-010 CatchThrowableOrError：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-ER-015 EmptyCatchBlock：violation-1-java17=1、compliant-1-java17=0
+通過 JV-ER-016 SwallowedInterruptedException：violation-1-java17=1、compliant-1-java17=0
+部分（僅報告） JV-ER-018 UseTryWithResources_JV_ER_018：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0、compliant-1-java21=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-ER-019 CloseResource：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0、compliant-1-java21=0
+通過 JV-ER-024 UseTryWithResources_JV_ER_024：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0
+部分（僅報告） JV-ER-025 DoNotThrowExceptionInFinally：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0
+  violation-1-java17 預期命中，實際 0
+部分（僅報告） JV-ER-026 ReturnFromFinallyBlock：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-ER-028 ResourceCapturedByAsyncTask：violation-1-java17=1、compliant-1-java17=0
+部分（僅報告） JV-EH-004 OverrideBothEqualsAndHashcode_JV_EH_004：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0、compliant-2-java17=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-EH-008 IdentityEqualsWithStateHashCode：violation-1-java17=1、compliant-1-java17=0
+通過 JV-EH-012 OverrideBothEqualsAndHashcode_JV_EH_012：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、compliant-2-java17=0
+通過 JV-EH-017 ComparatorBySubtraction：violation-1-java17=1、compliant-1-java17=0
+部分（僅報告） JV-EH-019 OverrideBothEqualsAndHashCodeOnComparable：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-ND-003 AvoidDecimalLiteralsInBigDecimalConstructor：violation-1-java17=1、compliant-1-java17=0
+通過 JV-ND-004 BigDecimalFromFloatingPoint：violation-1-java17=1、compliant-1-java17=0
+部分（僅報告） JV-ND-006 BigDecimalWithoutRoundingMode：violation-1-java17=0、compliant-1-java17=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-ND-009 NarrowingPrimitiveCast：violation-1-java17=1、compliant-1-java17=0、violation-1-java21=1
+通過 JV-ND-014 ComparableBigDecimalRecordEqualsMismatch：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
+部分（僅報告） JV-ND-017 ReplaceJavaUtilDate：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0
+  violation-1-java17 預期命中，實際 0
+通過 JV-ND-020 DurationUsedForCalendarDay：violation-1-java17=1、compliant-1-java17=0
+通過 JV-ND-024 NowWithoutClock：violation-1-java17=1、compliant-1-java17=0、compliant-2-java17=0
+部分（僅報告） JV-ND-027 SimpleDateFormatNeedsLocale：violation-1-java17=0、compliant-1-java17=0
+  violation-1-java17 預期命中，實際 0
+部分（僅報告） JV-ND-028 DateTimeFormatterPatternNotStrict：violation-1-java17=1、compliant-1-java17=0
+通過 JV-ND-029 LenientDateTimeResolver：violation-1-java17=1、compliant-1-java17=0
+部分（僅報告） JV-CA-002 NoUnmanagedThread：violation-1-java17=1、compliant-1-java17=0、compliant-1-java21=0
+通過 JV-CA-015 NoFixedSleepInConcurrencyTest：violation-1-java17=1、compliant-1-java17=0、compliant-1-java21=0
+通過 JV-RS-002 ReviewReflectiveFieldWrite：violation-1-java17=1、compliant-1-java17=0
+通過 JV-RS-005 PreserveStackTrace_JV_RS_005：violation-1-java17=1、compliant-1-java17=0
+通過 JV-RS-008 MisplacedSerialSuppression：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0、compliant-1-java11=0
+通過 JV-VP-017 AvoidAccessibilityAlteration：violation-1-java17=1、compliant-1-java17=0
+總結：verified 通過 45／失敗 0；partial 21 筆（不計失敗）；工具錯誤 0
+階段結束碼：0
+
+執行：ruby <REPO>/tools/java/tests/run-checkstyle.rb 10.26.1
+Checkstyle 10.26.1；openjdk version "17.0.19" 2026-04-21
+來源：https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.26.1/checkstyle-10.26.1-all.jar
+SHA-256：e41c24433723ba310a30e41da4f449c105ad47cab2ae9e6be5e06606a647dbca
+正式與候選設定載入：通過
+通過 JV-TG-001 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-TG-001 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-TG-001 RegexpSinglelineJava compliant Java 8：命中 0
+通過 JV-TG-011 SuppressWarnings violation Java 17：命中 2
+通過 JV-TG-011 SuppressWarnings compliant Java 17：命中 0
+通過 JV-TG-020 IllegalType violation Java 17：命中 1
+通過 JV-TG-020 IllegalType compliant Java 17：命中 0
+通過 JV-TG-020 IllegalType compliant Java 21：命中 0
+通過 JV-TG-029 InterfaceTypeParameterName violation Java 17：命中 3
+通過 JV-TG-029 InterfaceTypeParameterName compliant Java 17：命中 0
+通過 JV-LS-001 LambdaBodyLength violation Java 17：命中 1
+通過 JV-LS-001 LambdaBodyLength compliant Java 17：命中 0
+通過 JV-LS-001 LambdaBodyLength compliant Java 8：命中 0
+通過 JV-NP-002 ConstantName violation Java 17：命中 1
+通過 JV-NP-002 ConstantName compliant Java 17：命中 0
+通過 JV-NP-007 MethodName violation Java 17：命中 1
+通過 JV-NP-007 MethodName compliant Java 17：命中 0
+通過 JV-NP-013 TypeName violation Java 17：命中 1
+通過 JV-NP-013 TypeName compliant Java 17：命中 0
+通過 JV-NP-030 JavadocMethod violation Java 17：命中 3
+通過 JV-NP-030 JavadocMethod compliant Java 17：命中 0
+通過 JV-NP-030 JavadocMethod compliant Java 8：命中 0
+通過 JV-NP-030 JavadocMethod compliant Java 21：命中 0
+通過 JV-ER-001 IllegalThrows violation Java 17：命中 1
+通過 JV-ER-001 IllegalThrows compliant Java 17：命中 0
+通過 JV-ER-001 IllegalThrows compliant Java 8：命中 0
+通過 JV-ER-031 IllegalCatch[illegalClassNames=Exception,RuntimeException] violation Java 17：命中 1
+通過 JV-ER-031 IllegalCatch[illegalClassNames=Exception,RuntimeException] compliant Java 17：命中 0
+通過 JV-ER-031 IllegalCatch[illegalClassNames=Exception,RuntimeException] compliant Java 8：命中 0
+通過 JV-ER-013 RegexpMultiline violation Java 17：命中 1
+通過 JV-ER-013 RegexpMultiline compliant Java 17：命中 0
+通過 JV-EH-010 EqualsHashCode violation Java 17：命中 1
+通過 JV-EH-010 EqualsHashCode compliant Java 17：命中 0
+通過 JV-EH-010 EqualsHashCode compliant Java 8：命中 0
+通過 JV-EH-010 EqualsHashCode compliant Java 17：命中 0
+通過 JV-ND-002 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-ND-002 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-ND-019 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-ND-019 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-ND-022 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-ND-022 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-ND-022 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-ND-026 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-ND-026 RegexpSinglelineJava compliant Java 17：命中 0
+總結 10.26.1：17 筆 verified，44 個範例；17 筆通過，0 筆失敗。
+階段結束碼：0
+
+執行：ruby <REPO>/tools/java/tests/run-synthetic.rb
+通過 CatchThrowableOrError/bad-error.java：命中 1
+通過 CatchThrowableOrError/bad-throwable.java：命中 1
+通過 CatchThrowableOrError/good-specific.java：命中 0
+通過 DateTimeFormatterPatternNotStrict/bad-smart.java：命中 1
+通過 DateTimeFormatterPatternNotStrict/good-qualified.java：命中 0
+通過 DateTimeFormatterPatternNotStrict/good-static.java：命中 0
+通過 DurationUsedForCalendarDay/bad-calendar.java：命中 1
+通過 DurationUsedForCalendarDay/good-timeout.java：命中 0
+通過 ForEachAccumulatesExternalState/bad-external.java：命中 1
+通過 ForEachAccumulatesExternalState/good-local.java：命中 0
+通過 ForEachAccumulatesExternalState/good-parameter.java：命中 0
+通過 JV-ER-008/bad-error.java：命中 1
+通過 JV-ER-008/bad-throwable.java：命中 1
+通過 JV-ER-008/good-specific.java：命中 0
+通過 JV-LS-003/bad-lambda.java：命中 1
+通過 JV-LS-003/good-local.java：命中 0
+通過 JV-LS-003/good-typed.java：命中 0
+通過 JV-ND-019/bad-days.java：命中 1
+通過 JV-ND-019/bad-hours.java：命中 1
+通過 JV-ND-019/good-minutes.java：命中 0
+通過 LambdaCatchWithoutRethrow/bad-swallow.java：命中 1
+通過 LambdaCatchWithoutRethrow/good-cancel.java：命中 0
+通過 LambdaCatchWithoutRethrow/good-interrupt.java：命中 0
+通過 LambdaCatchWithoutRethrow/good-shutdown.java：命中 0
+通過 LambdaCatchWithoutRethrow/good-throw.java：命中 0
+通過 LazyStreamReturnedFromTryWithResources/bad-lines.java：命中 1
+通過 LazyStreamReturnedFromTryWithResources/good-collect.java：命中 0
+通過 LazyStreamReturnedFromTryWithResources/good-tolist.java：命中 0
+通過 NarrowingPrimitiveCast/bad-byte.java：命中 1
+通過 NarrowingPrimitiveCast/bad-float.java：命中 1
+通過 NarrowingPrimitiveCast/bad-int.java：命中 1
+通過 NarrowingPrimitiveCast/good-char.java：命中 0
+通過 NarrowingPrimitiveCast/good-constants.java：命中 0
+通過 NarrowingPrimitiveCast/good-mask.java：命中 0
+通過 NoUnmanagedThread/bad-start.java：命中 1
+通過 NoUnmanagedThread/good-factory.java：命中 0
+通過 NoUnmanagedThread/good-shutdown.java：命中 0
+通過 NowWithoutClock/bad-empty.java：命中 1
+通過 NowWithoutClock/bad-timezone.java：命中 1
+通過 NowWithoutClock/bad-zone.java：命中 1
+通過 NowWithoutClock/good-clock.java：命中 0
+通過 ObjectValuedDataShape/bad-array.java：命中 1
+通過 ObjectValuedDataShape/bad-nested.java：命中 1
+通過 ObjectValuedDataShape/good-typed.java：命中 0
+通過 ParallelStreamUsage/bad-parallel.java：命中 1
+通過 ParallelStreamUsage/good-stream.java：命中 0
+通過 RawGenericType/bad-entry.java：命中 1
+通過 RawGenericType/bad-list.java：命中 1
+通過 RawGenericType/good-entry.java：命中 0
+通過 StreamVariableReused/bad-double.java：命中 1
+通過 StreamVariableReused/good-filter.java：命中 0
+通過 StreamVariableReused/good-null.java：命中 0
+通過 StreamVariableReused/good-scope.java：命中 0
+通過 UnboundedWildcardReturnType/bad-list.java：命中 1
+通過 UnboundedWildcardReturnType/good-class.java：命中 0
+合成樣本：55 個，失敗 0。
+階段結束碼：0
+
+執行：/bin/bash <REPO>/tools/java/tests/run-version-parser.sh
+通過：JDK "21" 解析成功、進入工具快取驗證
+通過：JDK "17.0.19" 解析成功、進入工具快取驗證
+通過：JDK "1.8.0_512" 解析成功、進入工具快取驗證
+階段結束碼：0
+
+執行：/bin/bash <REPO>/tools/java/tests/run-hook-failure.sh
+dev-rule: 離線快取缺少檔案或校驗失敗：<TMP>/java-hook-failure.4it9o1/cache/dev-rule/java/pmd-7.29.0/pmd-java-7.29.0.jar
+dev-rule: PMD 執行失敗（2）
+通過：離線 PMD jar 竄改 exit=2（/bin/bash、UTF-8）
+dev-rule: 離線快取缺少檔案或校驗失敗：<TMP>/java-hook-failure.4it9o1/cache/dev-rule/java/pmd-7.29.0/pmd-java-7.29.0.jar
+dev-rule: PMD 執行失敗（2）
+通過：離線 PMD jar 缺少 exit=2（/bin/bash、UTF-8）
+Processing files   0% [                  ] 0/1 (0:00:00) Violations:0, Errors:0
+Processing files 100% [==================] 1/1 (0:00:00) Violations:0, Errors:1
+Processing files 100% [==================] 1/1 (0:00:00) Violations:0, Errors:1
+Processing files 100% [==================] 1/1 (0:00:00) Violations:0, Errors:1
+
+Processing files 100% [==================] 1/1 (0:00:00) Violations:0, Errors:1
+Processing files 100% [==================] 1/1 (0:00:00) Violations:0, Errors:1
+
+[main] INFO net.sourceforge.pmd.cli - An error occurred while executing PMD.
+Run in verbose mode to see a stack-trace.
+If you think this is a bug in PMD, please report this issue at https://github.com/pmd/pmd/issues/new/choose
+If you do so, please include a stack-trace, the code sample
+ causing the issue, and details about your run configuration.
+[main] INFO net.sourceforge.pmd.cli - Found no violations. There was 1 processing error.
+dev-rule: PMD 執行失敗（5）
+通過：Java 21 語法以舊語言 profile 解析 exit=2（/bin/bash、UTF-8）
+階段結束碼：0
+
+全部階段彙總結束碼：0

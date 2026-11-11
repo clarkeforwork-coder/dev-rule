@@ -24,10 +24,11 @@ ruby tools/java/tests/run-checkstyle.rb 9.3
 
 | ID | pattern 判斷範圍及誤報／漏報 |
 | --- | --- |
-| JV-TG-001、JV-LS-003 | 辨識 `var name =`、`var name :`、`var name )` 等；字串相同文字會報，跨行宣告可能漏報；不能檢查省略型別的 Lambda。 |
+| JV-TG-001 | 辨識區域變數及 Lambda 的 var；字串相同文字會報，跨行宣告可能漏報。 |
+| JV-LS-003 | 僅比對 `\(\s*var\s+` 的 Lambda 參數，不再對區域變數 var 重複報告；不能檢查省略型別的 Lambda，維持 partial。 |
 | JV-ER-013 | RegexpMultiline 僅辨識空的 `catch (InterruptedException name) { }`；註解／字串／文字區塊中的相同文字可能誤報，有註解的空 catch、限定名稱、多重 catch 及有內容但吞中斷皆可能漏報。不能證明中斷契約正確。 |
 | JV-ND-002 | 辨識 `new BigDecimal` 的浮點 literal、cast 或列舉的 Double／Float 轉換呼叫；無法判斷變數型別、限定類名、別名與跨行，字串可能誤報。 |
-| JV-ND-019 | 所有 `Duration.ofDays(`／`ofHours(` 都報；固定時間長度契約也會誤報，不能由文字判斷日曆語意。原 level 是 error，本次未擅自降級，導入前須判定精確適用範圍。 |
+| JV-ND-019 | 所有 `Duration.ofDays(`／`ofHours(` 都報；固定時間長度契約也會誤報，不能由文字判斷日曆語意。已依審閱裁決降為 warning，不阻擋提交；較精確的日曆語意檢查由 PMD DurationUsedForCalendarDay 補足。 |
 | JV-ND-022 | 辨識列舉時間型別的零參數 now、System.currentTimeMillis 與零參數 new Date；時鐘適配器／測試可能誤報，static import、換行與自訂包裝可能漏報。 |
 | JV-ND-026 | 辨識 ResolverStyle.SMART／LENIENT；業務允許的其他解析契約、字串可能誤報，static import／換行可能漏報。 |
 
@@ -36,3 +37,5 @@ partial 的 EqualsHashCode、MissingJavadocMethod、IllegalType 僅檢查 rule-m
 ## 收尾裁決與驗證
 
 JV-ER-008 限定 Throwable／Error、error、partial，以自製樣本實證；新增 JV-ER-031 限定 Exception／RuntimeException、warning、verified，以原規範正反例驗證。兩版現均 17 筆／44 範例全數通過，最新輸出見 [收尾驗證](../tests/validation.md)。原 [validation.md](validation.md) 保留修正前歷史；例外規則見 [suppressions.md](suppressions.md)。
+
+測試與 hook 共用 toolbox 的 SHA-256 校驗快取，不再另建測試下載目錄；`toolbox.sh checkstyle-path [9.3|10.26.1]` 可取得指定版本的已驗證 jar 路徑。

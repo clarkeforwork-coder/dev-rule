@@ -4,7 +4,7 @@
 
 ## 專案接入
 
-先把包含本目錄的已審查 revision 固定在 `vendor/dev-rule`，不要追蹤浮動分支。需要 Bash 3.2+、Git、curl、SHA-256 工具及 JDK；首次下載後可使用已校驗的離線快取。
+先把包含本目錄的已審查 revision 固定在 `vendor/dev-rule`，不要追蹤浮動分支。需要 Bash 3.2+（已在 macOS Bash 3.2／UTF-8 語系驗證）、Git、curl、SHA-256 工具及 JDK；首次下載後可使用已校驗的離線快取。
 
 ### 安裝 Git hook
 
@@ -30,11 +30,11 @@ repos:
       - id: dev-rule-java
 ```
 
-把佔位值換成實際已發布 commit 後執行 `pre-commit install`；本階段不發布 tag。hook 使用 `language: script`，忽略框架傳入的檔名、統一讀取 index；`pre-commit run --all-files` 也仍只檢查 staged Java。
+把佔位值換成實際已發布 commit 後執行 `pre-commit install`；rev 使用 commit SHA；本層納入正式版本後改用 tag。hook 使用 `language: script`，忽略框架傳入的檔名、統一讀取 index；`pre-commit run --all-files` 也仍只檢查 staged Java。
 
 ### Maven／Gradle 外掛
 
-Maven 請將 [完整 POM 片段](ci/maven/pom-fragment.xml) 的 properties、profiles、build 合併到專案 POM。核心設定如下；完整片段另鎖定各 PMD 模組版本、Checkstyle dependency 與 JDK 8 profile，不可省略：
+正式 PMD 自訂規則已全部內嵌到 `pmd/ruleset.xml`，hook、Maven、Gradle 與測試使用同一檔；不再依賴相對的 `pmd/rules/`。Maven 請將 [完整 POM 片段](ci/maven/pom-fragment.xml) 的 properties、profiles、build 合併到專案 POM。核心設定如下；完整片段另鎖定各 PMD 模組版本、Checkstyle dependency 與 JDK 8 profile，不可省略：
 
 ```xml
 <properties>
@@ -102,9 +102,9 @@ Bad.java:1 [JV-NP-013] 一致的命名形式 → rules/stacks/java/common/naming
 
 ## 映射與涵蓋率
 
-唯一來源是 [rule-map.yml](rule-map.yml)。ID 建立後不重編，新增取文件最大流水號加一；`rule` 為文件與錨點，`check` 為模組／規則（需區別設定時附屬性），`xpath` 僅供 PMD 自訂。`versions` 是適用版本，不代表每版實測；`note` 保留證據限制與誤報風險。來源盤點指紋見 [整併紀錄](coverage/merge-decisions.md)。
+唯一來源是 [rule-map.yml](rule-map.yml)。ID 建立後不重編，新增取文件最大流水號加一；`rule` 為文件與錨點，`check` 為模組／規則（需區別設定時附屬性），`xpath` 僅供 PMD 自訂。`versions` 是適用版本，不代表每版實測；`note` 保留證據限制與誤報風險。來源盤點指紋與穩定 ID 對照見 [來源索引](coverage/inventory-provenance.md)。
 
-共 15 份文件、143 個小節、308 筆映射；verified 86、partial 41、candidate 41、manual 140。只有至少一筆 verified 的小節計入涵蓋率：**52／143＝36.36%**，同小節不重複計數。此為整份盤點涵蓋率，包含尚未落地的 CI 工具既有研究證據，不表示本次 pre-commit 已涵蓋全部 52 小節。
+共 15 份文件、143 個小節、308 筆映射；verified 62、partial 66、candidate 40、manual 140。只有本庫可重跑的 PMD／Checkstyle verified 小節計入涵蓋率：**43／143＝30.07%**，同小節不重複計數。21 筆尚無本庫可重跑測試的 CI 工具研究證據改列 partial；CI 層候選共 57 筆，另欄列示且不計分子。
 
 `test` 34 筆仍為 `status: manual`，表示待實作測試責任；另有人工審查 106 筆。原始 56 筆 test 中 22 筆為驗收索引，未當作獨立規範映射；逐筆裁決見 [收尾紀錄](tests/validation.md)。[涵蓋率報告](coverage/coverage.md)分開列出測試驗收與人工審查。
 
@@ -119,7 +119,7 @@ JAVA_HOME=/path/to/jdk tools/java/tests/run-hook-official.sh
 PATH=/path/to/jdk21/bin:$PATH ruby scripts/check-rules.rb
 ```
 
-驗收需要 Ruby（含 REXML；較新 Ruby 可先 `gem install rexml`）、JDK、curl 及 SHA-256 工具。`run-all.sh` 串接唯一範例抽取器、coverage 過期檢查、雙向設定一致性、PMD、當前 JDK 對應 Checkstyle 及 partial 合成證據；各階段完整執行後彙總非零結束碼。PMD 預設使用 hook 的鎖定 JAR toolbox，也可用 `PMD_BIN` 指定 7.29.0 CLI。CI 的 java-tools job 分別使用 JDK 21、8；主規範 job 不變。
+驗收需要 Ruby（含 REXML；較新 Ruby 可先 `gem install rexml`）、JDK、curl 及 SHA-256 工具。`run-all.sh` 串接唯一範例抽取器、coverage 過期檢查、雙向設定一致性、PMD、當前 JDK 對應 Checkstyle 、55 個固定合成正反例、JDK 版本解析及 Bash／UTF-8 hook 失敗回歸；各階段完整執行後彙總非零結束碼。PMD 預設使用 hook 的鎖定 JAR toolbox，也可用 `PMD_BIN` 指定 7.29.0 CLI。CI 的 java-tools job 分別使用 JDK 21、8；主規範 job 不變。
 
 [完整輸出與裁決](tests/validation.md)包含 JDK 矩陣及 hook 每案耗時。一次性匯入器 `coverage/merge-inventories.rb` 僅供重現首版，不可用來覆蓋後續 ID／裁決。
 

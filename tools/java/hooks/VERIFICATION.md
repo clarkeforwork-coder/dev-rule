@@ -1,5 +1,7 @@
 # Hook 接入驗證紀錄
 
+2026-11-11 審閱修正：正式 ruleset 已內嵌所有自訂規則；Maven 3.9.9 與 Gradle 8.14.3 在 JDK 17／8 的合規專案皆成功，raw List 自訂違規皆失敗。完整命令、8 組建置輸出與 Bash 3.2／UTF-8 失敗回歸見 [最新修正驗證](../tests/review-fixes.md)。以下舊紀錄使用臨時測試規則集，僅能證明接入機制，不能視為正式規則集驗證。
+
 日期：2026-11-11。平台：macOS arm64。測量使用 `/usr/bin/time -p` 的 real 秒數；工具快取已預熱，無 Maven／Gradle 參與 hook 執行。
 
 ## 版本與重現
@@ -18,7 +20,7 @@ JAVA_HOME=/path/to/jdk17 bash tools/java/hooks/test.sh
 JAVA_HOME=/path/to/jdk21 bash tools/java/hooks/test.sh
 ```
 
-三次均輸出 `所有案例通過。`。測試規則只在暫存目錄建立，測試使用 `naming-packages-docs.md#java-naming-form` 的符合／違反範例；測試用 `JV-NM-001` 僅驗證訊息格式，不宣稱是正式 rule-map 的 ID。正式 PMD／Checkstyle 設定在此分支尚未提供，因此本紀錄證明的是接入、真實工具執行及過濾語意；正式規則全集需整合後另驗。
+三次均輸出 `所有案例通過。`。測試規則只在暫存目錄建立，測試使用 `naming-packages-docs.md#java-naming-form` 的符合／違反範例；測試用 `JV-NM-001` 僅驗證訊息格式，不宣稱是正式 rule-map 的 ID。當時正式 PMD／Checkstyle 設定尚未提供，因此本紀錄證明的是接入、真實工具執行及過濾語意；正式規則全集需整合後另驗。
 
 ## 案例、退出碼與實測耗時
 

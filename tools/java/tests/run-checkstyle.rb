@@ -44,8 +44,6 @@ begin
   versions = JSON.parse(File.read(File.join(CONFIG, 'versions.json')))
   selected = ARGV.empty? ? versions.keys : ARGV
   raise "版本必須是 #{versions.keys.join('、')}" unless (selected - versions.keys).empty?
-  cache = ENV.fetch('CHECKSTYLE_CACHE', File.join(Dir.tmpdir, 'dev-rule-checkstyle'))
-  FileUtils.mkdir_p(cache)
   rules = YAML.load_file(File.join(ROOT, 'tools/java/rule-map.yml')).select { |r| r['tool'] == 'checkstyle' && r['status'] == 'verified' }
   raise '沒有 verified 映射' if rules.empty?
   config_document = REXML::Document.new(File.read(File.join(CONFIG, 'checkstyle.xml')))
@@ -58,18 +56,6 @@ begin
   failures = 0
   selected.each do |version|
     info = versions.fetch(version)
-    jar = File.join(cache, "checkstyle-#{version}-all.jar")
-    unless File.file?(jar)
-      partial = "#{jar}.download-#{Process.pid}"
-      begin
-        raise '下載失敗' unless system('curl', '--fail', '--location', '--retry', '2', '--output', partial, info.fetch('url'))
-        raise '下載 SHA-256 不符' unless Digest::SHA256.file(partial).hexdigest == info.fetch('sha256')
-        File.rename(partial, jar)
-      ensure
-        FileUtils.rm_f(partial)
-      end
-    end
-    raise "SHA-256 不符：#{jar}" unless Digest::SHA256.file(jar).hexdigest == info.fetch('sha256')
     java = ENV['JAVA_HOME'] ? File.join(ENV['JAVA_HOME'], 'bin/java') : java_for(info.fetch('runtime'))
     fallback = !java && info.fetch('runtime') == 8
     java ||= java_for(17)
@@ -80,6 +66,11 @@ begin
     expected_major = ENV['JAVA_HOME'] ? major : (fallback ? 17 : info.fetch('runtime'))
     raise 'Checkstyle 10 需要 JDK 11+' if version == '10.26.1' && major < 11
     raise "JDK 版本不符：預期 #{expected_major}，實際 #{major}" unless major == expected_major
+    jar, tool_status = Open3.capture2e({'JAVA_HOME'=>File.dirname(File.dirname(java))}, File.join(ROOT, 'tools/java/hooks/toolbox.sh'), 'checkstyle-path', version)
+    raise "toolbox 快取取得失敗：#{jar}" unless tool_status.success?
+    jar = jar.strip
+    raise "toolbox 版本不符：要求 #{version}，取得 #{jar}" unless jar.end_with?("/checkstyle-#{version}/checkstyle.jar")
+    raise "SHA-256 不符：#{jar}" unless Digest::SHA256.file(jar).hexdigest == info.fetch('sha256')
     puts "Checkstyle #{version}；#{runtime.lines.first.strip}"
     puts '本機沒有 JDK 8；9.3 改用 JDK 17，未驗證 JDK 8 執行期。' if fallback
     puts "來源：#{info.fetch('url')}"

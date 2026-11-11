@@ -2,7 +2,7 @@
 
 日期：2026-11-11。環境：macOS arm64，Eclipse Temurin 17.0.19；無 JDK 8，以 JDK 17 執行 9.3。
 
-指令：`CHECKSTYLE_CACHE=/tmp/dev-rule-checkstyle ruby tools/java/tests/run-checkstyle.rb`。退出碼：1，屬驗收未全通過；不將規範映射缺口視為成功。原始來源與 SHA-256 列於輸出及 versions.json。
+指令：`CHECKSTYLE_CACHE=<TMP>/dev-rule-checkstyle ruby tools/java/tests/run-checkstyle.rb`。退出碼：1，屬驗收未全通過；不將規範映射缺口視為成功。原始來源與 SHA-256 列於輸出及 versions.json。
 
 正式設定 21 個檢查實例、候選設定 14 個，共 35 個／28 種模組；兩版均能載入兩份配置。候選僅用空類別驗證載入，不計入正反例覆蓋率。
 

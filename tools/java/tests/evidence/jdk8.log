@@ -2,11 +2,11 @@ openjdk version "1.8.0_512"
 OpenJDK Runtime Environment (Zulu 8.98.0.111-CA-macos-aarch64) (build 1.8.0_512-b09)
 OpenJDK 64-Bit Server VM (Zulu 8.98.0.111-CA-macos-aarch64) (build 25.512-b09, mixed mode)
 
-執行：ruby -r /Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/tests/extract-examples.rb -e m = JavaExamples.extract(ARGV.fetch(0)); puts "抽取：#{m.size} 個範例" /var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T//java-tests.PPt2ZA/examples 
+執行：ruby -r <REPO>/tools/java/tests/extract-examples.rb -e m = JavaExamples.extract(ARGV.fetch(0)); puts "抽取：#{m.size} 個範例" <TMP>/java-tests.PPt2ZA/examples
 抽取：319 個範例
 階段結束碼：0
 
-執行：ruby /Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/coverage/build-coverage.rb --check 
+執行：ruby <REPO>/tools/java/coverage/build-coverage.rb --check
 通過：15 份文件、143 個 Java 小節。
 通過：308 筆映射的錨點存在、標題相符、ID 唯一、欄位合法。
 通過：全部 Java 小節至少一筆映射；沒有重複的小節 × 工具規則。
@@ -15,7 +15,7 @@ OpenJDK 64-Bit Server VM (Zulu 8.98.0.111-CA-macos-aarch64) (build 25.512-b09, m
 通過：coverage.md 與 rule-map.yml 一致。
 階段結束碼：0
 
-執行：ruby /Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/tests/check-consistency.rb 
+執行：ruby <REPO>/tools/java/tests/check-consistency.rb
 pmd/ruleset.xml：65 規則，65 映射
 pmd/ruleset-candidates.xml：10 規則，10 映射
 checkstyle/checkstyle.xml：22 規則，22 映射
@@ -23,9 +23,9 @@ checkstyle/candidates.xml：14 規則，14 映射
 一致性：零問題（雙向映射、候選隔離、訊息、等級、XPath）。
 階段結束碼：0
 
-執行：ruby /Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/tests/run-pmd.rb --output /var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T//java-tests.PPt2ZA/pmd 
+執行：ruby <REPO>/tools/java/tests/run-pmd.rb --output <TMP>/java-tests.PPt2ZA/pmd
 工具：PMD 7.29.0 (47b3135b2cdd4afa0b4447da91786497b58bc10b, 2026-10-30T08:20:47Z)
-範例與原始報告：/var/folders/87/mflyspxn0lb_l1tkcmtz4qs80000gp/T/java-tests.PPt2ZA/pmd
+範例與原始報告：<TMP>/java-tests.PPt2ZA/pmd
 抽取：319 個範例，15 份文件
 通過 JV-TG-002 UseExplicitTypes：violation-1-java17=1、compliant-1-java17=0、compliant-1-java8=0
 部分（僅報告） JV-TG-005 RawGenericType_JV_TG_005：violation-1-java17=0、compliant-1-java17=0、compliant-1-java8=0
@@ -109,7 +109,7 @@ checkstyle/candidates.xml：14 規則，14 映射
 總結：verified 通過 48／失敗 0；partial 17 筆（不計失敗）；工具錯誤 0
 階段結束碼：0
 
-執行：ruby /Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/tests/run-checkstyle.rb 9.3 
+執行：ruby <REPO>/tools/java/tests/run-checkstyle.rb 9.3
 Checkstyle 9.3；openjdk version "1.8.0_512"
 來源：https://github.com/checkstyle/checkstyle/releases/download/checkstyle-9.3/checkstyle-9.3-all.jar
 SHA-256：02ad3307e46059a7c4f8af6c5f61f477bc5fd910e56afb145c45904c95d213ac
@@ -161,7 +161,7 @@ SHA-256：02ad3307e46059a7c4f8af6c5f61f477bc5fd910e56afb145c45904c95d213ac
 總結 9.3：17 筆 verified，44 個範例；17 筆通過，0 筆失敗。
 階段結束碼：0
 
-執行：ruby /Users/clarkeyeh/orca/workspaces/dev-rule/java-precommit/tools/java/tests/run-synthetic.rb 
+執行：ruby <REPO>/tools/java/tests/run-synthetic.rb
 合成樣本 JV-LS-013：parallelStream 命中 1，stream 命中 0（partial）。
 合成樣本 JV-ER-008：Throwable／Error 各命中 1，具體例外命中 0（partial）。
 階段結束碼：0

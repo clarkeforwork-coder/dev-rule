@@ -20,6 +20,7 @@ module PmdRulesets
     row.fetch('check').split(/[\/:]/).last
   end
   def self.runtime_name(row)
+    return name(row) if row['check'].start_with?('custom:')
     @mapping_counts ||= YAML.load_file(File.join(ROOT, "tools/java/rule-map.yml"))
                             .select { |r| r["tool"] == "pmd" }
                             .group_by { |r| r["check"] }.transform_values(&:size)
@@ -27,7 +28,7 @@ module PmdRulesets
     duplicated ? "#{name(row)}_#{row.fetch("id").tr("-", "_")}" : name(row)
   end
   def self.reference(row)
-    row['check'].start_with?('custom:') ? "#{__dir__}/rules/#{name(row)}.xml/#{name(row)}" : row['check']
+    row['check']
   end
   def self.rule(rows, ref: nil, definition: false)
     first = rows.first
@@ -49,18 +50,16 @@ module PmdRulesets
   end
   def self.build
     rows = YAML.load_file(File.join(ROOT, 'tools/java/rule-map.yml')).select { |r| r['tool'] == 'pmd' }
-    FileUtils.mkdir_p(File.join(__dir__, 'rules'))
-    rows.select { |r| r['check'].start_with?('custom:') }.group_by { |r| r['check'] }.each_value do |group|
-      raise "#{name(group.first)} 的 XPath 不一致" unless group.map { |r| r['xpath'] }.uniq.one?
-      File.write(File.join(__dir__, 'rules', name(group.first) + '.xml'), HEADER + rule(group, definition: true) + "</ruleset>\n")
-    end
     { 'ruleset.xml' => rows.reject { |r| r['status'] == 'candidate' },
       'ruleset-candidates.xml' => rows.select { |r| r['status'] == 'candidate' } }.each do |file, selected|
-      body = selected.map do |row|
-        group = [row]
-        ref = row['check'].start_with?('custom:') ? "rules/#{name(row)}.xml/#{name(row)}" : row['check']
-        rule(group, ref: ref)
+      body = selected.group_by { |r| r['check'].start_with?('custom:') ? r['check'] : r['id'] }.values.map do |group|
+        custom = group.first['check'].start_with?('custom:')
+        raise "#{name(group.first)} 的 XPath 不一致" if custom && !group.map { |r| r['xpath'] }.uniq.one?
+        rule(group, definition: custom)
       end.join
+      if file == 'ruleset-candidates.xml'
+        body = "  <!-- JV-SR-006 ExhaustiveSwitchHasDefault 的訊息由內建規則動態產生，message 覆寫無效；不得直接升正式，須先修訊息與 report.awk 相容性。 -->\n" + body
+      end
       File.write(File.join(__dir__, file), HEADER + body + "</ruleset>\n")
     end
   end

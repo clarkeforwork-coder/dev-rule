@@ -1,0 +1,49 @@
+Checkstyle 9.3；openjdk version "17.0.19" 2026-04-21
+來源：https://github.com/checkstyle/checkstyle/releases/download/checkstyle-9.3/checkstyle-9.3-all.jar
+SHA-256：02ad3307e46059a7c4f8af6c5f61f477bc5fd910e56afb145c45904c95d213ac
+正式與候選設定載入：通過
+通過 JV-TG-001 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-TG-001 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-TG-001 RegexpSinglelineJava compliant Java 8：命中 0
+通過 JV-TG-011 SuppressWarnings violation Java 17：命中 2
+通過 JV-TG-011 SuppressWarnings compliant Java 17：命中 0
+通過 JV-TG-020 IllegalType violation Java 17：命中 1
+通過 JV-TG-020 IllegalType compliant Java 17：命中 0
+通過 JV-TG-020 IllegalType compliant Java 21：命中 0
+通過 JV-TG-029 InterfaceTypeParameterName violation Java 17：命中 3
+通過 JV-TG-029 InterfaceTypeParameterName compliant Java 17：命中 0
+通過 JV-LS-001 LambdaBodyLength violation Java 17：命中 1
+通過 JV-LS-001 LambdaBodyLength compliant Java 17：命中 0
+通過 JV-LS-001 LambdaBodyLength compliant Java 8：命中 0
+通過 JV-NP-002 ConstantName violation Java 17：命中 1
+通過 JV-NP-002 ConstantName compliant Java 17：命中 0
+通過 JV-NP-007 MethodName violation Java 17：命中 1
+通過 JV-NP-007 MethodName compliant Java 17：命中 0
+通過 JV-NP-013 TypeName violation Java 17：命中 1
+通過 JV-NP-013 TypeName compliant Java 17：命中 0
+通過 JV-NP-030 JavadocMethod violation Java 17：命中 3
+通過 JV-NP-030 JavadocMethod compliant Java 17：命中 0
+通過 JV-NP-030 JavadocMethod compliant Java 8：命中 0
+通過 JV-NP-030 JavadocMethod compliant Java 21：命中 0
+通過 JV-ER-001 IllegalThrows violation Java 17：命中 1
+通過 JV-ER-001 IllegalThrows compliant Java 17：命中 0
+通過 JV-ER-001 IllegalThrows compliant Java 8：命中 0
+通過 JV-ER-031 IllegalCatch[illegalClassNames=Exception,RuntimeException] violation Java 17：命中 1
+通過 JV-ER-031 IllegalCatch[illegalClassNames=Exception,RuntimeException] compliant Java 17：命中 0
+通過 JV-ER-031 IllegalCatch[illegalClassNames=Exception,RuntimeException] compliant Java 8：命中 0
+通過 JV-ER-013 RegexpMultiline violation Java 17：命中 1
+通過 JV-ER-013 RegexpMultiline compliant Java 17：命中 0
+通過 JV-EH-010 EqualsHashCode violation Java 17：命中 1
+通過 JV-EH-010 EqualsHashCode compliant Java 17：命中 0
+通過 JV-EH-010 EqualsHashCode compliant Java 8：命中 0
+通過 JV-EH-010 EqualsHashCode compliant Java 17：命中 0
+通過 JV-ND-002 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-ND-002 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-ND-019 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-ND-019 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-ND-022 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-ND-022 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-ND-022 RegexpSinglelineJava compliant Java 17：命中 0
+通過 JV-ND-026 RegexpSinglelineJava violation Java 17：命中 1
+通過 JV-ND-026 RegexpSinglelineJava compliant Java 17：命中 0
+總結 9.3：17 筆 verified，44 個範例；17 筆通過，0 筆失敗。
