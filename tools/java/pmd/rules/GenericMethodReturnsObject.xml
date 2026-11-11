@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-TG-007 -->
+  <rule name="GenericMethodReturnsObject" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-TG-007] 輸入與輸出的型別關聯 → rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation">
+    <description>啟發式：宣告型別參數的方法卻回傳 Object；只涵蓋本小節範例的形狀；回傳 Map&lt;String, Object&gt; 或接受 List&lt;?&gt; 再轉型等其他失去關聯的寫法抓不到；反射／序列化工具方法可能合理回傳 Object，需 @SuppressWarnings(&quot;PMD.GenericMethodReturnsObject&quot;)；；實證版本：17。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodDeclaration[TypeParameters]/ClassType[pmd-java:typeIsExactly('java.lang.Object')]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

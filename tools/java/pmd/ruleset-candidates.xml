@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-TG-032 -->
+  <rule ref="category/java/codestyle.xml/TypeParameterNamingConventions" name="TypeParameterNamingConventions" message="[JV-TG-032] 泛型參數命名 → rules/stacks/java/common/types-and-generics.md#java-type-parameter-names" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-type-parameter-names">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-NP-017 -->
+  <rule ref="category/java/codestyle.xml/FormalParameterNamingConventions" name="FormalParameterNamingConventions" message="[JV-NP-017] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/naming-packages-docs.md#java-naming-form">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NP-018 -->
+  <rule ref="category/java/codestyle.xml/LocalVariableNamingConventions" name="LocalVariableNamingConventions" message="[JV-NP-018] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/naming-packages-docs.md#java-naming-form">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-VO-006 -->
+  <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode" name="OverrideBothEqualsAndHashcode_JV_VO_006" message="[JV-VO-006] 值相等的條件 → rules/stacks/java/common/value-objects.md#java-value-equality" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/value-objects.md#java-value-equality">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-SR-006 -->
+  <rule ref="category/java/bestpractices.xml/ExhaustiveSwitchHasDefault" name="ExhaustiveSwitchHasDefault" message="[JV-SR-006] 處理完整性 → rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-SR-007 -->
+  <rule ref="category/java/bestpractices.xml/NonExhaustiveSwitch" name="NonExhaustiveSwitch" message="[JV-SR-007] 處理完整性 → rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-010 -->
+  <rule ref="rules/CatchThrowableOrError.xml/CatchThrowableOrError" name="CatchThrowableOrError" message="[JV-ER-010] 捕捉範圍與處置相符 → rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-013 -->
+  <rule ref="rules/BigDecimalRecordWithoutNormalization.xml/BigDecimalRecordWithoutNormalization" name="BigDecimalRecordWithoutNormalization" message="[JV-ND-013] BigDecimal 判同語意 → rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CA-001 -->
+  <rule ref="category/java/multithreading.xml/DoNotUseThreads" name="DoNotUseThreads" message="[JV-CA-001] 統一管理執行資源 → rules/stacks/java/common/concurrency-and-async.md#java-execution-resources" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/concurrency-and-async.md#java-execution-resources">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-RS-007 -->
+  <rule ref="category/java/bestpractices.xml/UnnecessaryWarningSuppression" name="UnnecessaryWarningSuppression" message="[JV-RS-007] 限定檢查抑制 → rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression">
+    <priority>1</priority>
+  </rule>
+</ruleset>

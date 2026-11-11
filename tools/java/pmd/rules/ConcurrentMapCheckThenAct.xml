@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-CO-008 -->
+  <rule name="ConcurrentMapCheckThenAct" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-008] 複合操作的原子性 → rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity">
+    <description>SpotBugs AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION 對規範違反範例（欄位型別 ConcurrentMap 介面）不報，只對宣告為 ConcurrentHashMap 的欄位報（samples/SubClauses.java:33），故 pre-commit 以本規則為主；；誤報風險說明：containsKey／get==null 後接 put／remove／replace 的同鍵檢查再寫入；在已持鎖區段內屬合理寫法時需抑制；只看 ConcurrentMap 型別的接收者，宣告為 Map 介面者抓不到；；實證版本：17。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//IfStatement[(UnaryExpression[@Operator='!']/MethodCall[@MethodName='containsKey'] | MethodCall[@MethodName='containsKey'] | InfixExpression[@Operator=('==','!=')][NullLiteral]/MethodCall[@MethodName='get'])[*[1][pmd-java:typeIs('java.util.concurrent.ConcurrentMap')]]/*[1]/@Name = *[position() > 1]//MethodCall[@MethodName=('put','remove','replace')]/*[1][self::VariableAccess or self::FieldAccess]/@Name]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

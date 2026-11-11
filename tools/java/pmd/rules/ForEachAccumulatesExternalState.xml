@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-LS-009 -->
+  <rule name="ForEachAccumulatesExternalState" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-LS-009] 明確累積結果 → rules/stacks/java/common/lambda-and-stream.md#java-result-accumulation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-result-accumulation">
+    <description>Stream／Iterable／Map 的 forEach Lambda 內對外部集合、Map 或 StringBuilder 呼叫修改方法；符合範例（collect）與符合（Java 17）（toList）均乾淨；抓不到以方法參考（result::add）累積、計數器／旗標（int[] 或 AtomicInteger）累積的寫法；forEach 刻意寫入外部 Map（groupingBy 難以表達時）會被抓，需 suppress；；實證版本：17。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName = ('forEach', 'forEachOrdered')]
+  [*[1][pmd-java:typeIs('java.util.stream.BaseStream') or pmd-java:typeIs('java.lang.Iterable') or pmd-java:typeIs('java.util.Map')]]
+  /ArgumentList/LambdaExpression
+  [.//MethodCall[@MethodName = ('add', 'addAll', 'put', 'putAll', 'putIfAbsent', 'offer', 'push', 'append', 'remove', 'merge', 'compute', 'computeIfAbsent')]
+     [*[1][self::VariableAccess or self::FieldAccess]
+          [pmd-java:typeIs('java.util.Collection') or pmd-java:typeIs('java.util.Map') or pmd-java:typeIs('java.lang.StringBuilder')]
+          [not(@Name = ancestor::LambdaExpression//LambdaParameter/VariableId/@Name)]]]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

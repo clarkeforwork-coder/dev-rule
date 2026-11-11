@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-TG-002 -->
+  <rule ref="category/java/codestyle.xml/UseExplicitTypes" name="UseExplicitTypes" message="[JV-TG-002] 明確宣告型別 → rules/stacks/java/common/types-and-generics.md#java-explicit-types" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-explicit-types">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-TG-005 -->
+  <rule ref="rules/RawGenericType.xml/RawGenericType" name="RawGenericType_JV_TG_005" message="[JV-TG-005] 禁止 raw type 與不必要的型別抽象 → rules/stacks/java/common/types-and-generics.md#java-generic-type-information" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-generic-type-information">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-TG-007 -->
+  <rule ref="rules/GenericMethodReturnsObject.xml/GenericMethodReturnsObject" name="GenericMethodReturnsObject" message="[JV-TG-007] 輸入與輸出的型別關聯 → rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-TG-009 -->
+  <rule ref="rules/DowncastFromObject.xml/DowncastFromObject" name="DowncastFromObject" message="[JV-TG-009] 不得以向下轉型補回業務型別 → rules/stacks/java/common/types-and-generics.md#java-business-type-casts" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-business-type-casts">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-TG-014 -->
+  <rule ref="rules/NoSuppressTypeSafetyWarnings.xml/NoSuppressTypeSafetyWarnings" name="NoSuppressTypeSafetyWarnings" message="[JV-TG-014] 型別安全警告 → rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-TG-017 -->
+  <rule ref="rules/ObjectValuedDataShape.xml/ObjectValuedDataShape" name="ObjectValuedDataShape" message="[JV-TG-017] 業務資料結構 → rules/stacks/java/common/types-and-generics.md#java-business-data-shape" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-business-data-shape">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-TG-022 -->
+  <rule ref="category/java/bestpractices.xml/LooseCoupling" name="LooseCoupling" message="[JV-TG-022] 集合與映射的宣告型別 → rules/stacks/java/common/types-and-generics.md#java-collection-declarations" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-collection-declarations">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-TG-025 -->
+  <rule ref="rules/RawGenericType.xml/RawGenericType" name="RawGenericType_JV_TG_025" message="[JV-TG-025] 允許建構端使用菱形運算子 → rules/stacks/java/common/types-and-generics.md#java-diamond-construction" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-diamond-construction">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-TG-026 -->
+  <rule ref="rules/UnboundedWildcardReturnType.xml/UnboundedWildcardReturnType" name="UnboundedWildcardReturnType" message="[JV-TG-026] 泛型回傳值 → rules/stacks/java/common/types-and-generics.md#java-generic-return-types" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-generic-return-types">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-LS-004 -->
+  <rule ref="rules/NoInferredLambdaParameterType.xml/NoInferredLambdaParameterType" name="NoInferredLambdaParameterType" message="[JV-LS-004] 明確的參數型別 → rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-LS-007 -->
+  <rule ref="rules/StreamPeekUsage.xml/StreamPeekUsage" name="StreamPeekUsage" message="[JV-LS-007] 中間操作不隱藏業務副作用 → rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-LS-009 -->
+  <rule ref="rules/ForEachAccumulatesExternalState.xml/ForEachAccumulatesExternalState" name="ForEachAccumulatesExternalState" message="[JV-LS-009] 明確累積結果 → rules/stacks/java/common/lambda-and-stream.md#java-result-accumulation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-result-accumulation">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-LS-013 -->
+  <rule ref="rules/ParallelStreamUsage.xml/ParallelStreamUsage" name="ParallelStreamUsage" message="[JV-LS-013] 平行處理的採用條件 → rules/stacks/java/common/lambda-and-stream.md#java-parallel-stream-adoption" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-parallel-stream-adoption">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-LS-016 -->
+  <rule ref="rules/LambdaCatchWithoutRethrow.xml/LambdaCatchWithoutRethrow" name="LambdaCatchWithoutRethrow" message="[JV-LS-016] 維持錯誤分類 → rules/stacks/java/common/lambda-and-stream.md#java-failure-classification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-failure-classification">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-LS-018 -->
+  <rule ref="rules/StreamVariableReused.xml/StreamVariableReused" name="StreamVariableReused" message="[JV-LS-018] 明確消費範圍 → rules/stacks/java/common/lambda-and-stream.md#java-stream-consumption" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-stream-consumption">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NP-015 -->
+  <rule ref="category/java/codestyle.xml/ClassNamingConventions" name="ClassNamingConventions" message="[JV-NP-015] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/naming-packages-docs.md#java-naming-form">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NP-016 -->
+  <rule ref="category/java/codestyle.xml/FieldNamingConventions" name="FieldNamingConventions" message="[JV-NP-016] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/naming-packages-docs.md#java-naming-form">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NP-019 -->
+  <rule ref="category/java/codestyle.xml/MethodNamingConventions" name="MethodNamingConventions" message="[JV-NP-019] 一致的命名形式 → rules/stacks/java/common/naming-packages-docs.md#java-naming-form" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/naming-packages-docs.md#java-naming-form">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CC-003 -->
+  <rule ref="category/java/errorprone.xml/ConstructorCallsOverridableMethod" name="ConstructorCallsOverridableMethod" message="[JV-CC-003] 建構期間的安全性 → rules/stacks/java/common/classes-and-construction.md#java-construction-safety" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/classes-and-construction.md#java-construction-safety">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CC-006 -->
+  <rule ref="category/java/design.xml/MutableStaticState" name="MutableStaticState" message="[JV-CC-006] 明確取得依賴 → rules/stacks/java/common/classes-and-construction.md#java-explicit-dependencies" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/classes-and-construction.md#java-explicit-dependencies">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NO-001 -->
+  <rule ref="category/java/errorprone.xml/ReturnEmptyCollectionRatherThanNull" name="ReturnEmptyCollectionRatherThanNull" message="[JV-NO-001] 查詢的正常缺值 → rules/stacks/java/common/null-and-optional.md#java-query-absence" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/null-and-optional.md#java-query-absence">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-NO-003 -->
+  <rule ref="rules/OptionalReturnNull.xml/OptionalReturnNull" name="OptionalReturnNull" message="[JV-NO-003] Optional 本身非空 → rules/stacks/java/common/null-and-optional.md#java-optional-nonnull" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/null-and-optional.md#java-optional-nonnull">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-SR-008 -->
+  <rule ref="rules/EnumDefaultHidesCases.xml/EnumDefaultHidesCases" name="EnumDefaultHidesCases" message="[JV-SR-008] 處理完整性 → rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-SR-010 -->
+  <rule ref="rules/EnumOrdinalAtBoundary.xml/EnumOrdinalAtBoundary" name="EnumOrdinalAtBoundary" message="[JV-SR-010] 穩定的外部代碼 → rules/stacks/java/common/states-and-results.md#java-stable-external-codes" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/states-and-results.md#java-stable-external-codes">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CO-003 -->
+  <rule ref="rules/ListFromHashSetLosesOrder.xml/ListFromHashSetLosesOrder" name="ListFromHashSetLosesOrder" message="[JV-CO-003] 順序與重複資料 → rules/stacks/java/common/collections-and-ownership.md#java-order-and-duplicates" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-order-and-duplicates">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CO-006 -->
+  <rule ref="rules/CatchConcurrentModification.xml/CatchConcurrentModification" name="CatchConcurrentModification" message="[JV-CO-006] 遍歷期間的修改 → rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CO-007 -->
+  <rule ref="rules/ModifyCollectionInForeach.xml/ModifyCollectionInForeach" name="ModifyCollectionInForeach" message="[JV-CO-007] 遍歷期間的修改 → rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CO-008 -->
+  <rule ref="rules/ConcurrentMapCheckThenAct.xml/ConcurrentMapCheckThenAct" name="ConcurrentMapCheckThenAct" message="[JV-CO-008] 複合操作的原子性 → rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CO-011 -->
+  <rule ref="rules/SortedBeforeLimit.xml/SortedBeforeLimit" name="SortedBeforeLimit" message="[JV-CO-011] 限制資料累積 → rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CO-012 -->
+  <rule ref="rules/UnboundedStreamStatefulOp.xml/UnboundedStreamStatefulOp" name="UnboundedStreamStatefulOp" message="[JV-CO-012] 限制資料累積 → rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CO-015 -->
+  <rule ref="rules/LazyStreamReturnedFromTryWithResources.xml/LazyStreamReturnedFromTryWithResources" name="LazyStreamReturnedFromTryWithResources" message="[JV-CO-015] 延遲讀取的資源責任 → rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-002 -->
+  <rule ref="category/java/bestpractices.xml/PreserveStackTrace" name="PreserveStackTrace_JV_ER_002" message="[JV-ER-002] 明確的故障分類 → rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-003 -->
+  <rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes" name="AvoidThrowingRawExceptionTypes" message="[JV-ER-003] 明確的故障分類 → rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-004 -->
+  <rule ref="category/java/design.xml/SignatureDeclareThrowsException" name="SignatureDeclareThrowsException" message="[JV-ER-004] 明確的故障分類 → rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-009 -->
+  <rule ref="category/java/errorprone.xml/AvoidCatchingGenericException" name="AvoidCatchingGenericException" message="[JV-ER-009] 捕捉範圍與處置相符 → rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-ER-015 -->
+  <rule ref="category/java/errorprone.xml/EmptyCatchBlock" name="EmptyCatchBlock" message="[JV-ER-015] 保留中斷意圖 → rules/stacks/java/common/exceptions-and-resources.md#java-interruption" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-interruption">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-016 -->
+  <rule ref="rules/SwallowedInterruptedException.xml/SwallowedInterruptedException" name="SwallowedInterruptedException" message="[JV-ER-016] 保留中斷意圖 → rules/stacks/java/common/exceptions-and-resources.md#java-interruption" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-interruption">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-018 -->
+  <rule ref="category/java/bestpractices.xml/UseTryWithResources" name="UseTryWithResources_JV_ER_018" message="[JV-ER-018] 優先使用語言資源管理機制 → rules/stacks/java/common/exceptions-and-resources.md#java-resource-management" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-resource-management">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-ER-019 -->
+  <rule ref="category/java/errorprone.xml/CloseResource" name="CloseResource" message="[JV-ER-019] 優先使用語言資源管理機制 → rules/stacks/java/common/exceptions-and-resources.md#java-resource-management" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-resource-management">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-024 -->
+  <rule ref="category/java/bestpractices.xml/UseTryWithResources" name="UseTryWithResources_JV_ER_024" message="[JV-ER-024] 保留操作與清理失敗 → rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-025 -->
+  <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally" name="DoNotThrowExceptionInFinally" message="[JV-ER-025] 保留操作與清理失敗 → rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-026 -->
+  <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock" name="ReturnFromFinallyBlock" message="[JV-ER-026] 保留操作與清理失敗 → rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ER-028 -->
+  <rule ref="rules/ResourceCapturedByAsyncTask.xml/ResourceCapturedByAsyncTask" name="ResourceCapturedByAsyncTask" message="[JV-ER-028] 有效期與關閉契約 → rules/stacks/java/common/exceptions-and-resources.md#java-resource-close-contract" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-resource-close-contract">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-EH-004 -->
+  <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode" name="OverrideBothEqualsAndHashcode_JV_EH_004" message="[JV-EH-004] 相等與雜湊契約 → rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-EH-008 -->
+  <rule ref="rules/IdentityEqualsWithStateHashCode.xml/IdentityEqualsWithStateHashCode" name="IdentityEqualsWithStateHashCode" message="[JV-EH-008] Entity 識別碼的生命週期 → rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-EH-012 -->
+  <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode" name="OverrideBothEqualsAndHashcode_JV_EH_012" message="[JV-EH-012] 跨型別相等範圍 → rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-EH-017 -->
+  <rule ref="rules/ComparatorBySubtraction.xml/ComparatorBySubtraction" name="ComparatorBySubtraction" message="[JV-EH-017] 比較關係一致 → rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-EH-019 -->
+  <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashCodeOnComparable" name="OverrideBothEqualsAndHashCodeOnComparable" message="[JV-EH-019] 比較為零與相等性 → rules/stacks/java/common/equality-hashing-ordering.md#java-sorted-key-equivalence" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-sorted-key-equivalence">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-ND-003 -->
+  <rule ref="category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor" name="AvoidDecimalLiteralsInBigDecimalConstructor" message="[JV-ND-003] 從精確來源建立 → rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-004 -->
+  <rule ref="rules/BigDecimalFromFloatingPoint.xml/BigDecimalFromFloatingPoint" name="BigDecimalFromFloatingPoint" message="[JV-ND-004] 從精確來源建立 → rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-006 -->
+  <rule ref="rules/BigDecimalWithoutRoundingMode.xml/BigDecimalWithoutRoundingMode" name="BigDecimalWithoutRoundingMode" message="[JV-ND-006] 明訂捨入規則 → rules/stacks/java/common/numbers-dates-text.md#java-rounding-policy" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-rounding-policy">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-009 -->
+  <rule ref="rules/NarrowingPrimitiveCast.xml/NarrowingPrimitiveCast" name="NarrowingPrimitiveCast" message="[JV-ND-009] 範圍與轉換檢查 → rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-014 -->
+  <rule ref="rules/ComparableBigDecimalRecordEqualsMismatch.xml/ComparableBigDecimalRecordEqualsMismatch" name="ComparableBigDecimalRecordEqualsMismatch" message="[JV-ND-014] BigDecimal 判同語意 → rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-017 -->
+  <rule ref="category/java/errorprone.xml/ReplaceJavaUtilDate" name="ReplaceJavaUtilDate" message="[JV-ND-017] 依業務語意選擇時間型別 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-representation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-temporal-representation">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-ND-020 -->
+  <rule ref="rules/DurationUsedForCalendarDay.xml/DurationUsedForCalendarDay" name="DurationUsedForCalendarDay" message="[JV-ND-020] 區分時間長度與日曆規則 → rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-024 -->
+  <rule ref="rules/NowWithoutClock.xml/NowWithoutClock" name="NowWithoutClock" message="[JV-ND-024] 可控制的時間基準 → rules/stacks/java/common/numbers-dates-text.md#java-clock-source" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-clock-source">
+    <priority>3</priority>
+  </rule>
+  <!-- JV-ND-027 -->
+  <rule ref="category/java/errorprone.xml/SimpleDateFormatNeedsLocale" name="SimpleDateFormatNeedsLocale" message="[JV-ND-027] 解析與輸出契約 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-028 -->
+  <rule ref="rules/DateTimeFormatterPatternNotStrict.xml/DateTimeFormatterPatternNotStrict" name="DateTimeFormatterPatternNotStrict" message="[JV-ND-028] 解析與輸出契約 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-ND-029 -->
+  <rule ref="rules/LenientDateTimeResolver.xml/LenientDateTimeResolver" name="LenientDateTimeResolver" message="[JV-ND-029] 解析與輸出契約 → rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CA-002 -->
+  <rule ref="rules/NoUnmanagedThread.xml/NoUnmanagedThread" name="NoUnmanagedThread" message="[JV-CA-002] 統一管理執行資源 → rules/stacks/java/common/concurrency-and-async.md#java-execution-resources" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/concurrency-and-async.md#java-execution-resources">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-CA-015 -->
+  <rule ref="rules/NoFixedSleepInConcurrencyTest.xml/NoFixedSleepInConcurrencyTest" name="NoFixedSleepInConcurrencyTest" message="[JV-CA-015] 可控制的併發驗收 → rules/stacks/java/common/concurrency-and-async.md#java-controlled-verification" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/concurrency-and-async.md#java-controlled-verification">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-RS-002 -->
+  <rule ref="rules/ReviewReflectiveFieldWrite.xml/ReviewReflectiveFieldWrite" name="ReviewReflectiveFieldWrite" message="[JV-RS-002] 維持封裝與不變條件 → rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-RS-005 -->
+  <rule ref="category/java/bestpractices.xml/PreserveStackTrace" name="PreserveStackTrace_JV_RS_005" message="[JV-RS-005] 區分故障與執行結果 → rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-RS-008 -->
+  <rule ref="rules/MisplacedSerialSuppression.xml/MisplacedSerialSuppression" name="MisplacedSerialSuppression" message="[JV-RS-008] 限定檢查抑制 → rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression">
+    <priority>1</priority>
+  </rule>
+  <!-- JV-VP-017 -->
+  <rule ref="category/java/errorprone.xml/AvoidAccessibilityAlteration" name="AvoidAccessibilityAlteration" message="[JV-VP-017] JDK 內部實作與存取限制 → rules/stacks/java/common/version-policy.md#java-jdk-internals" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/version-policy.md#java-jdk-internals">
+    <priority>1</priority>
+  </rule>
+</ruleset>

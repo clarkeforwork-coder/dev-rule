@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-ND-009 -->
+  <rule name="NarrowingPrimitiveCast" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-009] 範圍與轉換檢查 → rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks">
+    <description>條文「須明確檢查」字面為 error，但實務誤報高；Java 21 違反範例 Math.clamp 屬語意（clamp 本身是合法 API），不報；；誤報風險說明：位元運算、序列化、影像／音訊處理等大量合法縮窄轉型會被報；已排除 hashCode 方法內（樣本 53 行不報）；建議先以 warn 導入並允許逐處抑制，或限縮為 long→int；；實證版本：17、21。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//CastExpression[not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')] and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')])]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

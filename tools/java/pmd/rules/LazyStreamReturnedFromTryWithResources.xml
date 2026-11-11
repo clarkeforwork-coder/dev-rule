@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-CO-015 -->
+  <rule name="LazyStreamReturnedFromTryWithResources" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-015] 延遲讀取的資源責任 → rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime">
+    <description>回傳型別為 List 等已收集結果者不報（符合範例）；；誤報風險說明：回傳的 Stream／Iterator 必須直接引用 try-with-resources 的資源變數才報；；實證版本：17、8。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//TryStatement[@TryWithResources = true()]/Block//ReturnStatement[not(ancestor::LambdaExpression[ancestor::TryStatement[@TryWithResources = true()]])][not(ancestor::ClassBody[ancestor::TryStatement])]/*[pmd-java:typeIs('java.util.stream.BaseStream') or pmd-java:typeIs('java.util.Iterator') or pmd-java:typeIs('java.util.Spliterator')][descendant-or-self::VariableAccess/@Name = ancestor::TryStatement[@TryWithResources = true()][1]/ResourceList/Resource//VariableId/@Name]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-ND-006 -->
+  <rule name="BigDecimalWithoutRoundingMode" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ND-006] 明訂捨入規則 → rules/stacks/java/common/numbers-dates-text.md#java-rounding-policy" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/numbers-dates-text.md#java-rounding-policy">
+    <description>規範違反範例是把 scale 與 RoundingMode 交給呼叫端決定（語意違反），工具抓不到；本規則只涵蓋「讓 API 預設決定」的子句；；誤報風險說明：單參數 divide 遇非終止小數會拋 ArithmeticException、單參數 setScale 遇需捨入會拋例外，幾乎總是未明訂捨入；；實證版本：17；補充實證：samples/SubClauses.java:40,41 divide(b)／setScale(2) caught。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[*[1][pmd-java:typeIs('java.math.BigDecimal')]][(@MethodName='divide' and ArgumentList/@Size = 1) or (@MethodName='setScale' and ArgumentList/@Size = 1)]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

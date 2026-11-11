@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-LS-007 -->
+  <rule name="StreamPeekUsage" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-LS-007] 中間操作不隱藏業務副作用 → rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects">
+    <description>抓所有 Stream.peek；peek 的官方用途是除錯記錄，純 log 的 peek 會誤報，需 suppress 或團隊約定不用 peek；其他中間操作（filter／map）內的副作用無法靜態判斷；；實證版本：17。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//MethodCall[@MethodName = 'peek'][*[1][pmd-java:typeIs('java.util.stream.BaseStream')]]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

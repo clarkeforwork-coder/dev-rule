@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-CO-006 -->
+  <rule name="CatchConcurrentModification" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-CO-006] 遍歷期間的修改 → rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation">
+    <description>對應子句「未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑」；規範無此違反範例，以自製樣本實證；；誤報風險說明：捕捉 CME 幾乎只用於重跑或忽略；若為記錄後重新拋出可抑制；；實證版本：17；補充實證：samples/SubClauses3.java:7 caught。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//CatchParameter//ClassType[pmd-java:typeIs('java.util.ConcurrentModificationException')]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

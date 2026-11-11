@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-LS-004 -->
+  <rule name="NoInferredLambdaParameterType" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-LS-004] 明確的參數型別 → rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types">
+    <description>同時抓省略型別（value -&gt;）與 (var value) -&gt;（違反（Java 11）範例，@VarKeyword=true）；明確型別 (String value) 的 @TypeInferred=false；內建 UseExplicitTypes 不抓 Lambda 參數的 var；誤報低，但既有程式碼幾乎全部省略 Lambda 參數型別，命中量極大，需基準線或只對新增／修改行報告；；實證版本：17、11、8。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//LambdaParameter[@TypeInferred = true()]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

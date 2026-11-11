@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-TG-014 -->
+  <rule name="NoSuppressTypeSafetyWarnings" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-TG-014] 型別安全警告 → rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings">
+    <description>與 Checkstyle SuppressWarnings 等價，二選一；；實證版本：17。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//Annotation[pmd-java:typeIs('java.lang.SuppressWarnings')]//StringLiteral[@ConstValue = ('rawtypes', 'unchecked', 'all')]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

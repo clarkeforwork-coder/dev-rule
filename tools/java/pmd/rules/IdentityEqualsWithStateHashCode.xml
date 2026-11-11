@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-EH-008 -->
+  <rule name="IdentityEqualsWithStateHashCode" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-EH-008] Entity 識別碼的生命週期 → rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle">
+    <description>只涵蓋違反範例這一種「身分相等＋可變狀態雜湊」組合；；誤報風險說明：樣式很窄（equals 為 this == other 且 hashCode 讀取非 final 欄位），幾乎必為錯；但涵蓋面也窄；；實證版本：17。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//ClassDeclaration[ClassBody/MethodDeclaration[@Name='equals'][FormalParameters/@Size=1]/Block[@Size=1]/ReturnStatement/InfixExpression[@Operator='=='][ThisExpression]][ClassBody/MethodDeclaration[@Name='hashCode'][FormalParameters/@Size=0][.//VariableAccess[@Name = ancestor::ClassDeclaration[1]/ClassBody/FieldDeclaration/VariableDeclarator/VariableId[@Final = false()]/@Name] or .//FieldAccess[ThisExpression][@Name = ancestor::ClassDeclaration[1]/ClassBody/FieldDeclaration/VariableDeclarator/VariableId[@Final = false()]/@Name]]]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

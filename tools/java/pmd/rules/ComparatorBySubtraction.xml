@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-EH-017 -->
+  <rule name="ComparatorBySubtraction" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-EH-017] 比較關係一致 → rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations">
+    <description>Error Prone 對 Integer 相減無對應檢查；只有 BadComparable 抓「long 相減後縮窄成 int」（同樣本 47 行報），對規範違反範例不報；；誤報風險說明：比較兩個已知有界的小整數（例如 enum ordinal 相減）技術上不會溢位但仍會被報；；實證版本：17；補充實證：samples/SubClauses.java:47 compareTo 中 (int)(rank - other.rank) 亦 caught。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//InfixExpression[@Operator='-'][pmd-java:typeIs('int') or pmd-java:typeIs('long') or pmd-java:typeIs('float') or pmd-java:typeIs('double')][parent::LambdaExpression[pmd-java:typeIs('java.util.Comparator')] or parent::CastExpression/parent::LambdaExpression[pmd-java:typeIs('java.util.Comparator')] or parent::ReturnStatement[ancestor::LambdaExpression[1][pmd-java:typeIs('java.util.Comparator')]] or parent::CastExpression/parent::ReturnStatement[ancestor::LambdaExpression[1][pmd-java:typeIs('java.util.Comparator')]] or parent::ReturnStatement[not(ancestor::LambdaExpression)][ancestor::MethodDeclaration[1][@Name=('compare','compareTo')][FormalParameters/@Size = (1,2)]] or parent::CastExpression/parent::ReturnStatement[not(ancestor::LambdaExpression)][ancestor::MethodDeclaration[1][@Name=('compare','compareTo')]]]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

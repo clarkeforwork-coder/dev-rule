@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-ER-016 -->
+  <rule name="SwallowedInterruptedException" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-ER-016] 保留中斷意圖 → rules/stacks/java/common/exceptions-and-resources.md#java-interruption" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/exceptions-and-resources.md#java-interruption">
+    <description>等同 Sonar S2142 的語意；；誤報風險說明：以其他取消機制（例如設定旗標後 return）處理者會被報，需抑制；多重捕捉亦涵蓋（樣本 catch (InterruptedException | ExecutionException) + cancel 不報）；；實證版本：17。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//CatchClause[CatchParameter//ClassType[pmd-java:typeIs('java.lang.InterruptedException')]][not(Block//MethodCall[@MethodName='interrupt'])][not(Block//ThrowStatement)][not(Block//MethodCall[@MethodName=('cancel','shutdownNow')])]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-TG-009 -->
+  <rule name="DowncastFromObject" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-TG-009] 不得以向下轉型補回業務型別 → rules/stacks/java/common/types-and-generics.md#java-business-type-casts" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/types-and-generics.md#java-business-type-casts">
+    <description>對靜態型別恰為 Object 的運算式做轉型或 instanceof（含 Java 16+ 型別模式，違反（Java 17）範例也抓到）；equals(Object) 排除；只抓「從 Object 猜回」；從較寬的業務型別向下轉型（例如 (CashPayment) payment）需要型別階層資訊，本規則不抓；邊界層（JNDI、反序列化、Map&lt;String, Object&gt; 取值、框架回呼）會大量命中，須以套件層級 exclude 或 @SuppressWarnings 配合例外流程；；實證版本：17、8。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[(//CastExpression[ClassType][*[2][pmd-java:typeIsExactly('java.lang.Object')]]
+ | //InfixExpression[@Operator = 'instanceof'][*[1][pmd-java:typeIsExactly('java.lang.Object')]])
+ [not(ancestor::MethodDeclaration[@Name = 'equals' and @Arity = 1])]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>

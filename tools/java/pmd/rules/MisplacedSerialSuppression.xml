@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Java 共通規範" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>依 tools/java/rule-map.yml 建立；候選規則不在預設集合。</description>
+  <!-- JV-RS-008 -->
+  <rule name="MisplacedSerialSuppression" language="java" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" message="[JV-RS-008] 限定檢查抑制 → rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression" externalInfoUrl="https://github.com/clarkeforwork-coder/dev-rule/blob/main/rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression">
+    <description>採用局部模式：非 Serializable 類別本身沒有 serial 需求，應把 serial 抑制移至需要的內層型別；仍不能證明其他抑制的最小範圍、核准理由；實證：bad-17=1, good-17=0, good-8=0, good-11=0；詳 pmd-results.json；；實證版本：8、11、17。</description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath"><value><![CDATA[//ClassDeclaration[not(pmd-java:typeIs('java.io.Serializable'))]/ModifierList/Annotation[pmd-java:typeIs('java.lang.SuppressWarnings')][.//StringLiteral[@ConstValue = 'serial']]]]></value></property>
+    </properties>
+  </rule>
+</ruleset>
