@@ -296,7 +296,7 @@ class Response {
 - [第三方空值行為](../../../coding/nullability.md#acceptance-third-party-null)。
 - [空值契約變更](../../../coding/nullability.md#acceptance-null-contract-change)。
 - [API 邊界的缺值轉換](../../../interfaces/api-contracts.md#acceptance-api-absence)。
-- [測試程式碼](../../../quality/rule-verification.md#測試程式碼)。
+- [測試程式碼](../../../coding/type-safety.md#acceptance)。
 
 ### Java 語言增量驗收
 

@@ -42,7 +42,7 @@
 | [資料存取與完整性](data/persistence.md) | 模組邊界、資料約束、查詢資源與讀取一致性 |
 | [交易邊界與併發控制](data/transactions.md) | 交易歸屬、併發修改、隔離、鎖定與安全重試 |
 | [資料遷移與大量操作](data/migrations.md) | 版本化遷移、新舊版本相容、分批續跑與結果核對 |
-| [規範驗證](quality/rule-verification.md) | 自動檢查、行為與失敗路徑測試、人工審查及架構可測試性 |
+| [規範驗證](quality/rule-verification.md) | 跨主題共同把關、主題驗收入口、審查清單、動態限制與文件驗證、檢查配置與合併門檻 |
 | [共通測試策略](quality/testing.md) | 測試層級與斷言、資料與環境隔離、穩定性、驗收門檻與案例維護 |
 | [安全共通規範](quality/security.md) | 授權、身分與憑據、敏感資料、輸入輸出、檔案及網路邊界 |
 | [日誌、稽核與可觀測性](quality/observability.md) | 診斷追蹤、可靠稽核、指標與資料新鮮度、告警接手及恢復驗收 |

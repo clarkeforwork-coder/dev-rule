@@ -71,4 +71,15 @@
 - 驗證失敗不得執行業務副作用，須留下不含秘密資訊的必要安全紀錄。
 - 內部訊息系統也必須設定發布與訂閱權限，不因位於內網就默認可信。
 
-跨服務身分、金鑰管理與目的地限制見[安全共通規範](../quality/security.md)。事件發布與消費見[事件可靠性](events.md)，故障測試見[規範驗證](../quality/rule-verification.md)，例外依[規範治理](../workflow/rule-governance.md)處理。
+跨服務身分、金鑰管理與目的地限制見[安全共通規範](../quality/security.md)。事件發布與消費見[事件可靠性](events.md)，故障測試見[本文件驗收](#acceptance)，例外依[規範治理](../workflow/rule-governance.md)處理。
+
+<a id="acceptance"></a>
+## 驗收
+
+<a id="外部整合與事件故障恢復驗證"></a>
+
+依實際採用的機制與風險，驗證[外部整合](../interfaces/external-services.md)與[事件流程](../interfaces/events.md)中斷後能否恢復，以及恢復是否重複產生副作用。適用情境包括：
+
+- 外部呼叫逾時、限流或持續故障下，重試、整體期限與熔斷是否符合設定。
+
+可使用受控環境與故障模擬，不要求在正式環境製造故障，也不要求每個整合套用全部情境。

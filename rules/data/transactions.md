@@ -30,8 +30,17 @@
 - 重試前必須確認交易內的操作可安全重複，包括可能的外部副作用。
 - 外部重試與冪等遵循[外部整合可靠性](../interfaces/external-services.md)，不得因重新執行交易而繞過外部操作的安全重試條件。
 
-資料約束見[資料存取與完整性](persistence.md)，發布及消費的一致性要求見[事件可靠性](../interfaces/events.md)。具體隔離等級、鎖定工具、數值門檻及補償實作由專案決定，不預先指定統一技術方案。資料庫行為須依[規範驗證](../quality/rule-verification.md)確認。
+資料約束見[資料存取與完整性](persistence.md)，發布及消費的一致性要求見[事件可靠性](../interfaces/events.md)。具體隔離等級、鎖定工具、數值門檻及補償實作由專案決定，不預先指定統一技術方案。資料庫行為須依[本文件驗收](#acceptance)確認。
 
 結果未知、部分成功、取消與清理或補償失敗的表達及處置責任，遵循[錯誤處理](../coding/error-handling.md)。
 
 流程責任見[模組責任與公開入口](../architecture/module-boundaries.md)，架構變更與例外依[規範治理](../workflow/rule-governance.md)處理。
+
+<a id="acceptance"></a>
+## 驗收
+
+<a id="資料庫行為與遷移驗證"></a>
+
+涉及[交易與鎖定](../data/transactions.md)的保證，依[資料庫行為驗證](persistence.md#acceptance)。
+
+- 驗證併發修改能保護業務條件，以及衝突、死鎖與逾時是否依策略處理。

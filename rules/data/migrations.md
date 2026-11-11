@@ -28,4 +28,14 @@
 - 破壞性操作事先定義備份或其他可行恢復方式，依專案權限流程核准。
 - 完成後核對實際筆數、失敗項目與資料完整性，不只以腳本正常結束判定成功。
 
-遷移及大量操作依[規範驗證](../quality/rule-verification.md)測試相容、恢復與續跑。例外及架構影響依[規範治理](../workflow/rule-governance.md)處理。
+遷移及大量操作依[本文件驗收](#acceptance)測試相容、恢復與續跑。例外及架構影響依[規範治理](../workflow/rule-governance.md)處理。
+
+<a id="acceptance"></a>
+## 驗收
+
+<a id="資料庫行為與遷移驗證"></a>
+
+涉及[資料約束與查詢](../data/persistence.md)的保證，依[資料庫行為驗證](persistence.md#acceptance)。
+
+- [資料遷移](../data/migrations.md)使用具有代表性的既有資料驗證，包含新舊版本相容及適用的失敗恢復情境。
+- 大量操作依風險驗證分批、安全續跑與結果核對。
