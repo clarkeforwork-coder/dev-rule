@@ -1,0 +1,32 @@
+<!-- 合併到 build/plugins；properties 必填 dev-rule.java.range、dev-rule.banned、dev-rule.boundary.banned。 -->
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-enforcer-plugin</artifactId>
+  <version>3.5.0</version>
+  <executions><execution><id>dev-rule-enforce</id><goals><goal>enforce</goal></goals>
+    <configuration><rules>
+      <!-- JV-VP-001：僅限制 Maven 執行 JDK。 -->
+      <requireJavaVersion><version>${dev-rule.java.range}</version>
+        <message>[JV-VP-001] 分別記錄版本資訊 → rules/stacks/java/common/version-policy.md#java-version-declarations</message>
+      </requireJavaVersion>
+      <!-- JV-VP-010：已評估不相容版本的禁止清單，不可只用範例 GAV。 -->
+      <bannedDependencies><searchTransitive>true</searchTransitive>
+        <excludes><exclude>${dev-rule.banned}</exclude></excludes>
+        <message>[JV-VP-010] 依賴版本要求 → rules/stacks/java/common/version-policy.md#java-dependency-versions</message>
+      </bannedDependencies>
+      <!-- JV-VP-011：收斂與上界都是同一小節的輔助限制。 -->
+      <dependencyConvergence><message>[JV-VP-011] 依賴版本要求 → rules/stacks/java/common/version-policy.md#java-dependency-versions</message></dependencyConvergence>
+      <requireUpperBoundDeps><message>[JV-VP-011] 依賴版本要求 → rules/stacks/java/common/version-policy.md#java-dependency-versions</message></requireUpperBoundDeps>
+    </rules></configuration>
+  </execution>
+  <execution><id>dev-rule-boundaries</id><goals><goal>enforce</goal></goals>
+    <configuration><rules>
+      <!-- JV-NP-028：獨立於版本禁用清單，每個模組依核准架構設定。 -->
+      <bannedDependencies><searchTransitive>true</searchTransitive>
+        <excludes><exclude>${dev-rule.boundary.banned}</exclude></excludes>
+        <message>[JV-NP-028] 套件與架構邊界 → rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries</message>
+      </bannedDependencies>
+    </rules></configuration>
+  </execution></executions>
+
+</plugin>

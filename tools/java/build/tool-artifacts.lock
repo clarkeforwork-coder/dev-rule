@@ -1,0 +1,11 @@
+# SHA-256 URL；JDK 工具隨執行 JDK，不是獨立下載。
+be757f04f006348df247dcf235ca45a292fe4472b969fddf38ec2c6a70c4d964 https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-enforcer-plugin/3.5.0/maven-enforcer-plugin-3.5.0.jar
+6a92458c544308e42ca534cfcbdb6f1947ea4a9ca8717e087cd671d31f2d9b0c https://repo.maven.apache.org/maven2/com/tngtech/archunit/archunit/1.4.1/archunit-1.4.1.jar
+7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832 https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar
+6f819947a2a773792dc91d17f906e22113bfb2fefb6b64dec836175715d7402a https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-compiler-plugin/3.13.0/maven-compiler-plugin-3.13.0.jar
+18fb9be8981fe43d3efa1d847955cdfa1a3c64d5fa463d123dee7278afd88c14 https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-surefire-plugin/3.5.2/maven-surefire-plugin-3.5.2.jar
+9fc3d435085983b16bc53903f9413aede9de30e20c57c0cece94614f328b14b5 https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-dependency-plugin/3.8.1/maven-dependency-plugin-3.8.1.jar
+9d9cc6aca9c0c8582cb3685850a65da8d25a7a41d32f26ae68d7a909244c469e https://repo.maven.apache.org/maven2/com/github/spotbugs/spotbugs-maven-plugin/4.8.6.6/spotbugs-maven-plugin-4.8.6.6.jar
+d88d971bee19c21abf499af4f597117bc5f8bf54b4244d03590c84540fdb59f9 https://plugins.gradle.org/m2/com/github/spotbugs/snom/spotbugs-gradle-plugin/6.0.26/spotbugs-gradle-plugin-6.0.26.jar
+7a9cdf674fc1703d6382f5f330b3d110ea1b512b51f1652846d9e4e8a588d766 https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+bd71102213493060956ec229d946beee57158dbd89d0e62b91bca0fa2c5f3531 https://services.gradle.org/distributions/gradle-8.14.3-bin.zip
