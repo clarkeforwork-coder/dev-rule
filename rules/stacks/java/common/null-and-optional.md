@@ -32,6 +32,21 @@ class Queries {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 Java 9 引入的 `List.of()`，以 `Collections.emptyList()` 維持多筆無結果回傳空集合的同一保證；單筆正常缺值仍須回傳 `Optional.empty()`。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#of())）
+- Java 11：可用自 Java 9 起提供的 `List.of()` 表達空集合；仍須區分正常缺值、業務失敗與技術故障。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#of())）
+
+**符合（Java 8）**
+
+```java
+// 單筆正常缺值使用 Optional，多筆無結果使用 Java 8 的空集合工廠。
+class Queries {
+    Optional<String> findOne() { return Optional.empty(); }
+    List<String> findAll() { return Collections.emptyList(); }
+}
+```
+
 <a id="java-optional-nonnull"></a>
 
 ### Optional 本身非空
@@ -88,6 +103,39 @@ class Greeting {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有後續的 `isEmpty()` 等新增方法，以 `!isPresent()`、`map`／`orElseGet` 或 `orElseThrow(Supplier)` 維持明確處理缺值的同一保證；仍須依契約選擇替代值或失敗，不能改成直接 `get()`。（[Optional API @since 1.8；isEmpty @since 11](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html)）
+- Java 11：可用 Java 9 引入的 `or`／`ifPresentOrElse`／`stream`、Java 10 引入的無參數 `orElseThrow()` 與 Java 11 引入的 `isEmpty()`；仍須依業務語意處理缺值，不能以無參數拋例外或空串流掩蓋必要結果缺失。（[Optional API @since 9、10、11](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html)）
+
+**符合（Java 8）**
+
+```java
+// 查無暱稱時回傳一般問候，確認有值後才取值。
+class Greeting {
+    interface Nicknames { Optional<String> find(long userId); }
+    String greet(Nicknames nicknames, long userId) {
+        Optional<String> nickname = nicknames.find(userId);
+        if (!nickname.isPresent()) { return "你好"; }
+        return "你好，" + nickname.get();
+    }
+}
+```
+
+**符合（Java 11）**
+
+```java
+// 用 isEmpty 明確處理正常缺值，有值分支維持相同問候語意。
+class Greeting {
+    interface Nicknames { Optional<String> find(long userId); }
+    String greet(Nicknames nicknames, long userId) {
+        Optional<String> nickname = nicknames.find(userId);
+        if (nickname.isEmpty()) { return "你好"; }
+        return "你好，" + nickname.get();
+    }
+}
+```
+
 <a id="java-optional-positions"></a>
 
 ### 使用位置與狀態表達
@@ -110,6 +158,27 @@ sealed interface NicknameChange {
     record Clear() implements NicknameChange {}
     record Set(String value) implements NicknameChange {
         public Set { Objects.requireNonNull(value); }
+    }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有正式的 record 與 sealed，以私有建構子的抽象類別及巢狀 final 子類別分別表達保留、清空與設定，維持完整狀態的同一保證；設定值仍須驗證非空。（[JEP 395：Java 16](https://openjdk.org/jeps/395)、[JEP 409：Java 17](https://openjdk.org/jeps/409)）
+- Java 17 起：可用 Java 16 正式發布的 record 與 Java 17 正式發布的 sealed 限定狀態型別；仍須分別表達保留、清空與設定，不能以 Optional 混合多種狀態。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)）
+
+**符合（Java 8）**
+
+```java
+// 私有父類別建構子限制擴充，三種狀態各自具有明確型別。
+abstract class NicknameChange {
+    private NicknameChange() {}
+    static final class Keep extends NicknameChange {}
+    static final class Clear extends NicknameChange {}
+    static final class Set extends NicknameChange {
+        private final String value;
+        Set(String value) { this.value = Objects.requireNonNull(value); }
+        String value() { return value; }
     }
 }
 ```
@@ -147,6 +216,40 @@ class Names {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 Java 10 引入的 `List.copyOf`，以明確驗證後複製並包裝為不可修改清單維持同一保證；仍須拒絕不合法的 null 元素，不得默默移除。（[List.copyOf API @since 10](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#copyOf(java.util.Collection))）
+- Java 11：可用 Java 9 的 `List.of` 與 Java 10 的 `List.copyOf` 拒絕 null 元素；仍須依邊界契約處理不合法資料，主範例先驗證以保留明確的輸入錯誤語意。（[List API @since 9、10](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html)）
+- Java 17 起：Java 16 引入的 `Stream.toList()` 不會拒絕 null 元素，僅收集會讓不合法元素流入結果；仍須在邊界驗證，不得以過濾或替換掩蓋不合法資料。（[Stream.toList API @since 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#toList())）
+
+**符合（Java 8）**
+
+```java
+// 先拒絕不合法元素，再複製並包裝，保留主範例的輸入錯誤語意。
+class Names {
+    List<String> accept(List<String> input) {
+        if (input.stream().anyMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("名稱不得為空");
+        }
+        return Collections.unmodifiableList(new ArrayList<>(input));
+    }
+}
+```
+
+**符合（Java 17）**
+
+```java
+// toList 不代替非空驗證，收集前先拒絕不合法元素。
+class Names {
+    List<String> accept(List<String> input) {
+        if (input.stream().anyMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("名稱不得為空");
+        }
+        return input.stream().toList();
+    }
+}
+```
+
 <a id="java-nonnull-validation"></a>
 
 ### 非空驗證的位置
@@ -168,6 +271,23 @@ record Name(String value) {
 // 建立時保證非空，內部使用已成立的契約而不重複檢查。
 record Name(String value) {
     Name { Objects.requireNonNull(value); }
+    int length() { return value.length(); }
+}
+```
+
+**版本差異**
+
+- Java 8／11：沒有 Java 16 正式發布的 record 緊湊建構子，以一般類別的建構子維持建立時驗證非空的同一保證；內部仍須依已成立的契約使用值。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：可用自 Java 16 起正式提供的 record 緊湊建構子集中驗證；record 不會自動拒絕 null，建立時仍須明確驗證非空。（[JEP 395](https://openjdk.org/jeps/395)）
+
+**符合（Java 8）**
+
+```java
+// 一般建構子建立非空保證，內部使用時不重複檢查。
+final class Name {
+    private final String value;
+    Name(String value) { this.value = Objects.requireNonNull(value); }
+    String value() { return value; }
     int length() { return value.length(); }
 }
 ```
