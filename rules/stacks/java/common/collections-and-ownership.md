@@ -37,6 +37,23 @@ class Names {
 }
 ```
 
+**版本差異**
+
+- Java 21 起：可用 `reversed()` 提供反向檢視；仍須明訂它與原集合共用元素及底層資料的參考關係，修改能力依原集合而定。（[`SequencedCollection.reversed` API @since 21](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/SequencedCollection.html#reversed())）
+
+**符合（Java 21）**
+
+```java
+// 明訂反向檢視仍與來源共用資料及可變元素。
+class Names {
+    private final List<StringBuilder> values;
+    /** 保留原集合與元素參考，變更互相可見。 */
+    Names(List<StringBuilder> values) { this.values = values; }
+    /** 回傳共用資料的反向檢視；修改能力依原集合，元素仍共用。 */
+    List<StringBuilder> values() { return values.reversed(); }
+}
+```
+
 <a id="java-snapshots-and-views"></a>
 
 ### 區分不可修改與不可變快照
@@ -65,6 +82,60 @@ class Snapshots {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 Java 10 引入的 `List.copyOf`，也沒有 Java 16 引入的 `Stream.toList()`；以新集合收集轉換後的不可變元素，再用 `Collections.unmodifiableList` 包裝維持同一隔離保證，仍須避免直接包裝來源。（[`List.copyOf` API @since 10](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#copyOf(java.util.Collection))、[`Stream.toList` API @since 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#toList())）
+- Java 11：可用 Java 10 引入的 `Collectors.toUnmodifiableList()` 或 `List.copyOf` 建立不可修改結果；仍須先處理可變元素，兩者拒絕 null 且不深複製元素，`copyOf` 也不保證建立新物件。（[`Collectors.toUnmodifiableList` API @since 10](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Collectors.html#toUnmodifiableList())、[`List.copyOf` API @since 10](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#copyOf(java.util.Collection))）
+- Java 17 起：可用 Java 16 引入的 `Stream.toList()` 取得不可修改結果；仍須如主範例先把可變元素轉成不可變值，外層不可修改不等於元素隔離。（[`Stream.toList` API @since 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#toList())）
+- Java 21 起：`reversed()` 會產生來源的反向檢視，不得當作隔離快照；仍須先轉換可變元素並收集獨立結果。（[`SequencedCollection.reversed` API @since 21](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/SequencedCollection.html#reversed())）
+
+**符合（Java 8）**
+
+```java
+// 收集轉換後的不可變元素，再包裝獨立的新串列。
+class Snapshots {
+    static List<String> immutableSnapshot(List<StringBuilder> source) {
+        List<String> values = source.stream().map(StringBuilder::toString)
+                .collect(Collectors.toCollection(ArrayList::new));
+        return Collections.unmodifiableList(values);
+    }
+}
+```
+
+**符合（Java 11）**
+
+```java
+// 先隔離可變元素，再收集為不可修改串列。
+class Snapshots {
+    static List<String> immutableSnapshot(List<StringBuilder> source) {
+        return source.stream().map(StringBuilder::toString)
+                .collect(Collectors.toUnmodifiableList());
+    }
+}
+```
+
+**違反（Java 21）**
+
+```java
+// 反向檢視仍共用底層集合與可變元素，並非不可變快照。
+class Snapshots {
+    static List<StringBuilder> immutableSnapshot(List<StringBuilder> source) {
+        return source.reversed();
+    }
+}
+```
+
+**符合（Java 21）**
+
+```java
+// 反向遍歷後轉換元素並收集，建立隔離的反向快照。
+class Snapshots {
+    static List<String> immutableSnapshot(List<StringBuilder> source) {
+        return source.reversed().stream().map(StringBuilder::toString).toList();
+    }
+}
+```
+
 <a id="java-order-and-duplicates"></a>
 
 ### 順序與重複資料
@@ -88,6 +159,22 @@ class Copies {
 // 直接複製串列，保留契約要求的順序與重複值。
 class Copies {
     static List<String> preserveOrderAndDuplicates(List<String> source) {
+        return new ArrayList<>(source);
+    }
+}
+```
+
+**版本差異**
+
+- Java 11：Java 9 引入的 `Set.of`／`Map.of` 不保證迭代順序，不得用來承載順序契約；仍須使用如主範例的 List 保留順序與重複值，重複鍵另依契約處理。（[`Set.of` API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Set.html)、[`Map.of` API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Map.html)）
+- Java 21 起：可用 `SequencedCollection` 表達遭遇順序；仍須依具體集合維持重複值契約，不能因 `SequencedSet` 有順序就以它取代保留重複值的 List。（[`SequencedCollection` API @since 21](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/SequencedCollection.html)）
+
+**符合（Java 21）**
+
+```java
+// 接受有遭遇順序的集合，複製到串列時保留來源順序與重複值。
+class Copies {
+    static List<String> preserveOrderAndDuplicates(SequencedCollection<String> source) {
         return new ArrayList<>(source);
     }
 }
@@ -187,6 +274,37 @@ class Samples {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有 Java 9 引入的三參數 `Stream.iterate` 與 `takeWhile`，以 `limit` 限制筆數後排序維持同一有界保證；沒有 Java 16 引入的 `toList()`，以收集後不可修改包裝保留主範例結果語意，仍須先限制累積範圍。（[`Stream` API @since 9／16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html)）
+- Java 11：可用 Java 9 引入的三參數 `Stream.iterate` 或 `takeWhile` 表達停止條件；仍須確保條件能界定資料量並在排序前生效，以 Java 10 引入的 `toUnmodifiableList()` 保留不可修改結果。（[`Stream` API @since 9](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html)、[`Collectors.toUnmodifiableList` API @since 10](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Collectors.html#toUnmodifiableList())）
+- Java 17 起：可用 Java 16 引入的 `Stream.toList()` 收集結果；仍須先限制來源及中間操作的累積量，終端收集不會讓無界排序變成有界。（[`Stream.toList` API @since 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#toList())）
+
+**符合（Java 8）**
+
+```java
+// 限制前一百筆後排序，收集並包裝為不可修改結果。
+class Samples {
+    static List<Integer> sortedFirstHundred() {
+        List<Integer> values = Stream.iterate(0, (Integer n) -> n + 1)
+                .limit(100).sorted().collect(Collectors.toCollection(ArrayList::new));
+        return Collections.unmodifiableList(values);
+    }
+}
+```
+
+**符合（Java 11）**
+
+```java
+// 產生器最多提供一百筆，再排序並收集不可修改結果。
+class Samples {
+    static List<Integer> sortedFirstHundred() {
+        return Stream.iterate(0, (Integer n) -> n < 100, (Integer n) -> n + 1)
+                .sorted().collect(Collectors.toUnmodifiableList());
+    }
+}
+```
+
 <a id="java-lazy-resource-lifetime"></a>
 
 ### 延遲讀取的資源責任
@@ -219,6 +337,26 @@ class Lines {
 }
 ```
 
+**版本差異**
+
+- Java 8／11：沒有 Java 16 引入的 `Stream.toList()`，以 `collect` 收集新串列再包裝為不可修改結果維持同一保證；仍須在 try-with-resources 範圍內完成終端操作，不能把延遲讀取留到關閉之後。（[`Stream.toList` API @since 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#toList())）
+- Java 17 起：可用 Java 16 引入的 `Stream.toList()` 收集受控結果；仍須在資源有效期內完成讀取，終端操作不取代關閉責任。（[`Stream.toList` API @since 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#toList())）
+
+**符合（Java 8）**
+
+```java
+// 在資源範圍內收集前十行，關閉後只回傳已完成的結果。
+class Lines {
+    static List<String> firstTen(Path path) throws IOException {
+        try (Stream<String> lines = Files.lines(path)) {
+            List<String> values = lines.limit(10)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            return Collections.unmodifiableList(values);
+        }
+    }
+}
+```
+
 <a id="java-batch-failure-state"></a>
 
 ### 批次修改的失敗保證
@@ -244,6 +382,26 @@ class Values {
 // 在副本完成批次運算後才替換，例外時原集合保持不變。
 class Values {
     private List<Integer> values = new ArrayList<>(List.of(1, 0));
+    /** 除以零時拋出例外，並保留呼叫前的所有值。 */
+    void invert() {
+        List<Integer> updated = new ArrayList<>(values);
+        updated.replaceAll((Integer value) -> 10 / value);
+        values = updated;
+    }
+}
+```
+
+**版本差異**
+
+- Java 8：沒有 Java 9 引入的 `List.of`，以 `Arrays.asList` 初始化後複製為 `ArrayList` 維持同一保證；仍須在副本完成批次運算後才替換原集合。（[`List.of` API @since 9](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html)）
+- Java 11：可用 Java 9 引入的 `List.of` 建立初始資料；仍須複製至可修改集合，並在副本運算成功後才替換，工廠方法不提供批次修改的交易保證。（[`List.of` API @since 9](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html)）
+
+**符合（Java 8）**
+
+```java
+// 以舊版集合工廠初始化，保留副本運算成功後才替換的保證。
+class Values {
+    private List<Integer> values = new ArrayList<>(Arrays.asList(1, 0));
     /** 除以零時拋出例外，並保留呼叫前的所有值。 */
     void invert() {
         List<Integer> updated = new ArrayList<>(values);
