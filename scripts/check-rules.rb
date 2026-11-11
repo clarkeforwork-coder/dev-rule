@@ -276,7 +276,8 @@ class RulesCheck
         if line.match?(/^\s*\*\*(?:違反|符合)/) && !line.match?(EXAMPLE_MARKER)
           report(file, i, 'V1', '範例標記須用全形括號及支援版本 8、11、17、21')
         end
-        next unless line == '**版本差異**'
+        next unless line.match?(/^\s*\*\*版本差異/)
+        report(file, i, 'V2', '版本差異標記整行須恰為 **版本差異**') unless line == '**版本差異**'
         section = local.find { |s| i > s[:start] && i < s[:end] }
         unless section
           report(file, i, 'V2', '版本差異須位於三級小節內')
@@ -293,6 +294,14 @@ class RulesCheck
             text.match?(/^\*\*(違反|符合)[（(]Java /))
         end
         ending = boundary&.last || @lines[file].size
+        # 下一個同級／上級標題才結束小節；較深標題仍是區塊後的非法結構。
+        section_end = titles(file).find { |level, _, n| n > i && level <= 3 }&.last || @lines[file].size
+        rows.each do |text, n|
+          next unless n >= ending && n < section_end
+          if text.match?(/<a\s+id\b|^\s{0,3}\#{1,6}\s/)
+            report(file, n, 'V5', '版本差異區塊後至下一個同級／上級標題前不得有錨點或標題')
+          end
+        end
         block = { line: i, versions: Set.new }
         section[:blocks] << block
         previous = 0
@@ -354,6 +363,10 @@ class RulesCheck
           section = sections.find { |s| s[:file] == dest && s[:ids].include?(fragment) }
           if section && !section[:blocks].empty? && anchors(dest).include?(fragment)
             indexed << section
+            covered = section[:blocks].flat_map { |block| block[:versions].to_a }.uniq.sort_by(&:to_i).join('、')
+            unless cells[3] == covered
+              report(policy, i, 'V6', "索引版本欄須與區塊涵蓋版本一致（應為 #{covered}）")
+            end
           else
             report(policy, i, 'V6', '索引小節須連到存在且含版本差異的語意錨點')
           end

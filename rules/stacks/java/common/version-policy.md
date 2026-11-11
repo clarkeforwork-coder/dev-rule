@@ -175,10 +175,9 @@ Java 版本變更須評估參與編譯、測試、分析及產物處理的工具
 
 ### Java 語言增量驗收
 
-版本差異須驗收：移除版本差異區塊後要求不變、版本事實有官方來源、版本範例可在對應 `--release` 編譯。
-
 | 對應要求 | 語言增量驗收 |
 | --- | --- |
+| <a id="acceptance-version-differences"></a>[支援版本與主範例基線](#java-example-baseline) | 版本差異須驗收：移除版本差異區塊後要求不變、版本事實有官方來源、版本範例可在對應 `--release` 編譯。 |
 | <a id="acceptance-java-version-target"></a>[分別記錄版本資訊](#java-version-declarations)、[建置設定落實限制](#java-build-compatibility) | 核對版本宣告與實際建置設定。以不符合目標版本的語法或標準 API 案例，確認適用檢查會拒絕，並核對產物格式。 |
 | <a id="acceptance-java-runtime-matrix"></a>[執行版本驗證](#java-runtime-verification)、[多模組版本要求](#java-module-versions) | 查核各承諾執行版本的實際驗證結果。多模組按依賴關係核對使用端與提供端的相容範圍，不能只依單一較新環境通過推論所有版本符合。 |
 | <a id="acceptance-java-version-upgrade"></a>[依賴版本要求](#java-dependency-versions)、[建置升級與支援範圍變更](#java-build-upgrade) | 核對實際解析出的直接與間接依賴要求。提高最低版本時檢查使用端影響、遷移順序及回退安排，確認支援範圍變更已有明確決策。 |

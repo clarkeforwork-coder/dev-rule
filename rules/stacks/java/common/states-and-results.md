@@ -169,7 +169,7 @@ class Display {
 
 - Java 8／11：沒有 switch 運算式（Java 14 正式發布，見 [JEP 361](https://openjdk.org/jeps/361)），以列舉 switch 敘述列出已知分支，並以 `default: throw` 拒絕未知狀態；完整性仍須由測試及審查補足。
 - Java 17 起：可用列舉 switch 運算式接受編譯器的窮盡檢查；Java 17 的 pattern switch 為 Preview（[JEP 406](https://openjdk.org/jeps/406)），不得用於規範範例，專案採用依 [Preview 功能要求](version-policy.md#java-preview-features)處理；仍不得把未知狀態當成功。
-- Java 21 起：可用正式的 pattern switch（[JEP 441](https://openjdk.org/jeps/441)）搭配 sealed 型別接受窮盡檢查；仍須完整處理分支，不以 `default` 將未知狀態當成功。
+- Java 21 起：可用正式的 pattern switch（[JEP 409](https://openjdk.org/jeps/409)、[JEP 441](https://openjdk.org/jeps/441)）搭配 sealed 型別接受窮盡檢查；仍須完整處理分支，不以 `default` 將未知狀態當成功。
 
 **符合（Java 11）**
 
