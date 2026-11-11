@@ -378,11 +378,11 @@ class Verification {
 
 ## 補充要求
 
-共享集合的複合操作另依[集合與資料所有權](collections-and-ownership.md)，元件生命週期依[類別、介面與物件建立](classes-and-construction.md)，平行資料處理依[Lambda 與 Stream](lambda-and-stream.md)。身分及延後執行授權依[安全規範](../../../quality/security.md#授權與資料範圍)，追蹤與故障紀錄依[日誌、稽核與可觀測性](../../../quality/observability.md#診斷日誌與追蹤)。
+共享集合的複合操作另依[集合與資料所有權](collections-and-ownership.md)，元件生命週期依[類別、介面與物件建立](classes-and-construction.md)，平行資料處理依[Lambda 與 Stream](lambda-and-stream.md)。身分及延後執行授權依[安全規範](../../../quality/security.md#authorization-and-data-scope)，追蹤與故障紀錄依[日誌、稽核與可觀測性](../../../quality/observability.md#diagnostic-logging-and-tracing)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響及實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響及實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 

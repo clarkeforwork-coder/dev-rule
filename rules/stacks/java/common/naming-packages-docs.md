@@ -36,7 +36,7 @@ class OrderLimit {
 
 ### 名稱表達具體責任
 
-依[命名與可讀性](../../../coding/naming.md#領域詞彙與上下文)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。
+依[命名與可讀性](../../../coding/naming.md#domain-vocabulary-and-context)、[程式碼設計與公開介面](../../../coding/code-design.md)執行。Java 的 `Service`、`Handler`、`Helper`、`Utils` 可使用，但名稱須有明確責任且與行為一致。
 
 **違反**
 
@@ -149,17 +149,17 @@ class TextReader {
 
 ## 補充要求
 
-共用責任與依賴另依[共通機制與程式碼共用](../../../architecture/shared-capabilities.md#共用程式碼)，泛型參數命名依[型別宣告與泛型](types-and-generics.md)。動態引用的核對依[反射、動態能力與檢查抑制](reflection-and-suppression.md)，名稱成為外部值時另依[相等性、雜湊與排序](equality-hashing-ordering.md)及[狀態與結果建模](states-and-results.md)的契約要求。
+共用責任與依賴另依[共通機制與程式碼共用](../../../architecture/shared-capabilities.md#shared-code)，泛型參數命名依[型別宣告與泛型](types-and-generics.md)。動態引用的核對依[反射、動態能力與檢查抑制](reflection-and-suppression.md)，名稱成為外部值時另依[相等性、雜湊與排序](equality-hashing-ordering.md)及[狀態與結果建模](states-and-results.md)的契約要求。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
 - [註解與公開文件、實作註解與暫時處理](../../../coding/code-design.md#acceptance-document-contract)。
 - [形式與語意分別驗收](../../../quality/rule-verification.md#acceptance-document-verification)。
-- [審查清單](../../../quality/rule-verification.md#審查清單)。
+- [審查清單](../../../quality/rule-verification.md#review-checklist)。
 
 ### Java 語言增量驗收
 

@@ -99,7 +99,7 @@ Entity 若以識別碼定義相等性，須明訂識別碼產生前後的比較�
 
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
 
-驗證應確認錯誤型別不能誤用、無效值建立失敗，以及狀態轉換維持業務條件。語言實作方式另訂，例外依[規範治理](../workflow/rule-governance.md#例外核准)處理。
+驗證應確認錯誤型別不能誤用、無效值建立失敗，以及狀態轉換維持業務條件。語言實作方式另訂，例外依[規範治理](../workflow/rule-governance.md#exception-approval)處理。
 
 <a id="model-verification"></a>
 <a id="st-10"></a>
@@ -112,7 +112,7 @@ Entity 若以識別碼定義相等性，須明訂識別碼產生前後的比較�
 <a id="模型驗證與還原"></a>
 ### 模型驗證與還原
 
-專屬型別須驗證建立、邊界值、相等性、不可變性及適用的運算與還原行為，不能只測建立成功。狀態轉換與外部存在性、授權分別依[狀態建模](#狀態建模)及[模型驗收](#model-verification)、[專屬型別](#專屬型別)及[資料驗證](validation.md#責任分工)。數值、時間及文字處理細節依[共同資料語意](numbers-dates-text.md#契約要求)。
+專屬型別須驗證建立、邊界值、相等性、不可變性及適用的運算與還原行為，不能只測建立成功。狀態轉換與外部存在性、授權分別依[狀態建模](#state-modeling)及[模型驗收](#model-verification)、[專屬型別](#dedicated-types)及[資料驗證](validation.md#validation-responsibilities)。數值、時間及文字處理細節依[共同資料語意](numbers-dates-text.md#contract-requirements)。
 
 <a id="supplementary-contract-acceptance"></a>
 <a id="補充契約驗收"></a>

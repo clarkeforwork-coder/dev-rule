@@ -1,13 +1,13 @@
 # 規範驗證
 
-各主題的必測情境由對應規範維護，入口見[驗收入口](#驗收入口)；本文件維護跨主題驗收。選擇測試層級、安排執行門檻及維護案例時，依[共通測試策略](testing.md)辦理。
+各主題的必測情境由對應規範維護，入口見[驗收入口](#acceptance-index)；本文件維護跨主題驗收。選擇測試層級、安排執行門檻及維護案例時，依[共通測試策略](testing.md)辦理。
 
 <a id="verification-coverage"></a>
 <a id="au-01"></a>
 ## 共同把關
 
 - 可由工具判斷的要求，必須使用適用的編譯器、靜態分析、Lint 或架構檢查執行，例如明確型別宣告、不安全轉型與依賴限制。
-- 型別與其他已配置的強制檢查納入 CI，違規時阻擋合併；核准例外與既有違規依[規範治理](../workflow/rule-governance.md#例外核准)精確管理。
+- 型別與其他已配置的強制檢查納入 CI，違規時阻擋合併；核准例外與既有違規依[規範治理](../workflow/rule-governance.md#exception-approval)精確管理。
 - 行為測試驗證錯誤輸入拒絕、資料轉換、空值語意、業務條件，以及 Response 不含敏感欄位等實際行為。
 - 需要理解業務語意的要求，必須人工審查，例如物件拆分是否合理、專屬型別是否表達正確概念。
 - 工具尚未涵蓋的要求必須列入審查清單，不能因 CI 通過就視為全部符合。
@@ -15,7 +15,7 @@
 <a id="review-checklist"></a>
 ## 審查清單
 
-依[命名與可讀性](../coding/naming.md#領域詞彙與上下文)及[程式碼設計與公開介面](../coding/code-design.md#函式責任與參數)，在實際呼叫處檢查：
+依[命名與可讀性](../coding/naming.md#domain-vocabulary-and-context)及[程式碼設計與公開介面](../coding/code-design.md#function-responsibilities)，在實際呼叫處檢查：
 
 - 名稱與參數能否表達領域語意、操作效果與單位？布林名稱是否準確說明成立條件，字面值是否由對應規則管理？
 - 函式是否保留清楚的流程入口，並將各自變動的規則交給所屬元件？參數型別是否排除無效組合？
@@ -92,7 +92,7 @@
 
 必要檢查的合併阻擋須實際生效。檢查配置或合併保護新增及變更時，確認失敗、未完成或應執行卻被略過的變更無法直接合併，不能以只產生報告取代門檻。可使用測試分支、測試儲存庫或平台檢查能力，不要求每個 PR 故意製造失敗。核准例外依既有流程追溯。
 
-違規基準依[精確違規基準](../workflow/rule-governance.md#precise-violation-baseline)，自動修正依[自動修正的審查](../workflow/git-pr-review.md#automated-fix-review)。檢查抑制與產生碼依[規範治理](../workflow/rule-governance.md#檢查抑制與產生碼治理)，診斷遵守[安全](security.md#秘密與憑據)及[可觀測性](observability.md#診斷日誌與追蹤)。
+違規基準依[精確違規基準](../workflow/rule-governance.md#precise-violation-baseline)，自動修正依[自動修正的審查](../workflow/git-pr-review.md#automated-fix-review)。檢查抑制與產生碼依[規範治理](../workflow/rule-governance.md#檢查抑制與產生碼治理)，診斷遵守[安全](security.md#secrets-and-credentials)及[可觀測性](observability.md#diagnostic-logging-and-tracing)。
 
 <a id="acceptance"></a>
 ## 驗收
@@ -127,14 +127,14 @@
 | 資源生命週期 | [資源生命週期](../coding/resource-lifecycle.md#驗收要求) |
 | 併發與非同步 | [併發與非同步](../coding/concurrency-and-async.md#驗收要求) |
 | 數值、日期時間與文字 | [數值、日期時間與文字](../coding/numbers-dates-text.md#驗收要求) |
-| 領域建模補充契約 | [領域建模補充契約](../coding/domain-modeling.md#補充契約驗收) |
-| 資料映射補充契約 | [資料映射補充契約](../architecture/data-mapping.md#補充契約驗收) |
-| 空值語意補充契約 | [空值語意補充契約](../coding/nullability.md#補充契約驗收) |
+| 領域建模補充契約 | [領域建模補充契約](../coding/domain-modeling.md#supplementary-contract-acceptance) |
+| 資料映射補充契約 | [資料映射補充契約](../architecture/data-mapping.md#supplementary-acceptance) |
+| 空值語意補充契約 | [空值語意補充契約](../coding/nullability.md#supplementary-contract-acceptance) |
 | 介面用途 | [介面用途](../architecture/dependency-composition.md#acceptance-interface-purpose) |
 | 多步驟與部分成功 | [多步驟與部分成功](../coding/error-handling.md#acceptance-partial-operation) |
-| 程式碼設計補充契約 | [程式碼設計補充契約](../coding/code-design.md#補充契約驗收) |
+| 程式碼設計補充契約 | [程式碼設計補充契約](../coding/code-design.md#supplementary-contract-acceptance) |
 | 共通測試策略補充契約 | [共通測試策略補充契約](../quality/testing.md#acceptance) |
-| 規範治理補充契約 | [規範治理補充契約](../workflow/rule-governance.md#補充契約驗收) |
+| 規範治理補充契約 | [規範治理補充契約](../workflow/rule-governance.md#supplementary-contract-acceptance) |
 
 其他語言依其適用規範補足；共同要求的效力依[規範索引](../README.md#規範效力)。跨主題驗收（共同把關、審查清單、動態限制與文件驗證、檢查配置與門檻）仍由本文件維護。
 

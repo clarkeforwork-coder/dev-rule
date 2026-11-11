@@ -10,7 +10,7 @@
 
 ### 查詢的正常缺值
 
-單筆查詢允許正常不存在時，使用 `Optional<T>`；多筆查詢無結果時使用空集合，不回傳 `null`。依業務要求必須存在卻不存在時，表達明確的業務失敗；查詢技術故障依[錯誤處理](../../../coding/error-handling.md#失敗分類與表達)傳遞，不得混為正常缺值。
+單筆查詢允許正常不存在時，使用 `Optional<T>`；多筆查詢無結果時使用空集合，不回傳 `null`。依業務要求必須存在卻不存在時，表達明確的業務失敗；查詢技術故障依[錯誤處理](../../../coding/error-handling.md#failure-classification)傳遞，不得混為正常缺值。
 
 **違反**
 
@@ -60,7 +60,7 @@ class Lookup {
 
 ### 取值與缺值處置
 
-使用 `Optional` 的值前，須明確處理缺值情境，不得僅憑預期直接取值。替代值、缺值分支與失敗處理須符合業務語意，不得掩蓋缺值；替代結果與錯誤分類依[降級與替代結果](../../../coding/error-handling.md#降級與替代結果)及[失敗分類](../../../coding/error-handling.md#失敗分類與表達)。選用取值或拋出例外的方法本身不代表符合規範；若依已成立的不變條件必定有值，違反時須按[程式缺陷](../../../coding/error-handling.md#程式缺陷與不變條件)處理。
+使用 `Optional` 的值前，須明確處理缺值情境，不得僅憑預期直接取值。替代值、缺值分支與失敗處理須符合業務語意，不得掩蓋缺值；替代結果與錯誤分類依[降級與替代結果](../../../coding/error-handling.md#fallback-results)及[失敗分類](../../../coding/error-handling.md#failure-classification)。選用取值或拋出例外的方法本身不代表符合規範；若依已成立的不變條件必定有值，違反時須按[程式缺陷](../../../coding/error-handling.md#defects-and-invariants)處理。
 
 **違反**
 
@@ -151,7 +151,7 @@ class Names {
 
 ### 非空驗證的位置
 
-依[資料驗證](../../../coding/validation.md#責任分工)、[錯誤處理](../../../coding/error-handling.md#程式缺陷與不變條件)、[領域建模](../../../coding/domain-modeling.md)執行。Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。
+依[資料驗證](../../../coding/validation.md#validation-responsibilities)、[錯誤處理](../../../coding/error-handling.md#defects-and-invariants)、[領域建模](../../../coding/domain-modeling.md)執行。Java 接收、建立及狀態變更位置依上述非空保證驗證；內部可靠契約已成立時不逐層重複檢查。
 
 **違反**
 
@@ -283,13 +283,13 @@ class Response {
 
 ## 補充要求
 
-對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md#api-absence-representation)及[資料契約](../../../interfaces/data-contracts.md#主要定義來源)一致。本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。
+對外缺值表達須與[API 操作語意與介面設計](../../../interfaces/api-contracts.md#api-absence-representation)及[資料契約](../../../interfaces/data-contracts.md#primary-contract-source)一致。本文件不統一指定所有查無資料情境的 HTTP 狀態，也不將欄位省略與 JSON `null` 視為可任意互換。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，測試層級、證據及其餘事項另依[規範驗證](../../../quality/rule-verification.md#verification-coverage)及[共通測試策略](../../../quality/testing.md#層級與案例選擇)辦理。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的契約、呼叫端與邊界選擇案例；自動檢查、行為測試與人工審查共同把關，測試層級、證據及其餘事項另依[規範驗證](../../../quality/rule-verification.md#verification-coverage)及[共通測試策略](../../../quality/testing.md#test-levels-and-cases)辦理。
 
-不合法資料從允許承接它的邊界輸入；型別要求依[型別安全](../../../coding/type-safety.md#禁止主動繞過檢查)。
+不合法資料從允許承接它的邊界輸入；型別要求依[型別安全](../../../coding/type-safety.md#no-type-check-bypasses)。
 
 ### 共同驗收
 
@@ -304,7 +304,7 @@ class Response {
 | --- | --- |
 | <a id="acceptance-java-optional-results"></a>[查詢](#java-query-absence)、[Optional 非空](#java-optional-nonnull)、[取值](#java-optional-access) | 驗證有值、單筆正常查無資料、多筆空結果，以及適用的必須存在卻不存在、查詢故障與結果未知。確認 `Optional` 本身非空，呼叫端的缺值分支、替代值與失敗分類符合契約。 |
 | <a id="acceptance-java-optional-positions"></a>[使用位置](#java-optional-positions)、[集合空值](#java-container-nulls) | 審查參數與欄位採用 `Optional` 的必要性及配套。需要多狀態時分別驗證未提供、清空與設定值；集合等輸入含不允許的空值時，確認依契約處理，沒有默默丟棄或替換資料。 |
-| <a id="acceptance-java-null-contract"></a>[驗證責任](../../../coding/validation.md#責任分工)、[工具契約](#java-null-contract-tools)、[非空預設](#java-nonnull-default) | 核對非空預設、可空標註、檢查範圍及實際驗證位置。確認適用工具能偵測違反契約的使用方式；必填外部輸入缺值時依契約拒絕，且未產生不應發生的副作用。 |
+| <a id="acceptance-java-null-contract"></a>[驗證責任](../../../coding/validation.md#validation-responsibilities)、[工具契約](#java-null-contract-tools)、[非空預設](#java-nonnull-default) | 核對非空預設、可空標註、檢查範圍及實際驗證位置。確認適用工具能偵測違反契約的使用方式；必填外部輸入缺值時依契約拒絕，且未產生不應發生的副作用。 |
 | <a id="acceptance-java-optional-adaptation"></a>[第三方轉換](#java-third-party-optional) | 檢查第三方回傳值轉成 `Optional` 的路徑，只有契約允許的正常缺值才能使用空的 `Optional`。 |
 | <a id="acceptance-java-optional-coverage"></a>案例覆蓋 | 核對案例覆蓋受影響的有值與缺值分類，測試資料及替身遵守型別契約，未為製造案例而關閉檢查或使用不安全轉型。Optional、非空標註與實際 API 路徑均納入適用案例。 |
 

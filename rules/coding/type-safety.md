@@ -14,7 +14,7 @@
 - 自行撰寫的程式碼，包括第三方整合元件，一律禁止主動繞過型別檢查。
 - 不得透過不安全型別、未經檢查的強制轉型、無依據的斷言或忽略檢查指令消除型別錯誤。
 - 未知資料必須使用安全的承接方式，經驗證與型別收窄後才使用；不得直接假定為預期型別。
-- 工具或第三方套件限制須個別討論，依[例外核准流程](../workflow/rule-governance.md#例外核准)處理，不預先開放整合處例外。
+- 工具或第三方套件限制須個別討論，依[例外核准流程](../workflow/rule-governance.md#exception-approval)處理，不預先開放整合處例外。
 
 <a id="containers-and-generics"></a>
 ## 容器與泛型
@@ -33,7 +33,7 @@
 - 不得讓框架自動將不符合契約的輸入轉成可接受的值。
 - 語言保證不損失資訊且不改變語意的安全轉換可以允許，具體範圍由語言規範定義。
 
-專屬型別與狀態見[領域建模](domain-modeling.md#專屬型別)，空值語意見[空值語意](nullability.md#空值語意)。檢查與合併門檻見[規範驗證](../quality/rule-verification.md#共同把關)。
+專屬型別與狀態見[領域建模](domain-modeling.md#dedicated-types)，空值語意見[空值語意](nullability.md#空值語意)。檢查與合併門檻見[規範驗證](../quality/rule-verification.md#verification-coverage)。
 
 <a id="dynamic-type-contracts"></a>
 ## 動態能力的型別契約
@@ -63,4 +63,4 @@
 | 契約 | 驗收內容 |
 | --- | --- |
 | <a id="acceptance-dynamic-contract"></a>[使用前驗證契約](#dynamic-contract-validation) | 分別使用合法及不相容的目標，確認可提早判斷的能力、版本與參數／結果型別在註冊或啟動時檢查，依輸入決定的條件在呼叫前檢查；不符合時拒絕執行。 |
-| <a id="acceptance-data-shape"></a>[容器與泛型](#容器與泛型)、[禁止主動繞過檢查](#禁止主動繞過檢查) | 核對固定結構資料是否使用明確物件；動態資料的型別、結構與驗證是否有契約，並以受影響的合法及非法輸入確認驗證有效。 |
+| <a id="acceptance-data-shape"></a>[容器與泛型](#containers-and-generics)、[禁止主動繞過檢查](#no-type-check-bypasses) | 核對固定結構資料是否使用明確物件；動態資料的型別、結構與驗證是否有契約，並以受影響的合法及非法輸入確認驗證有效。 |

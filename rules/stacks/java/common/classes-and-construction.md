@@ -12,7 +12,7 @@
 
 ### 介面或具體類別的契約依賴
 
-依[框架與依賴組裝](../../../architecture/dependency-composition.md#介面與抽象)、[模組責任與公開入口](../../../architecture/module-boundaries.md#公開入口)執行。Java 可依契約依賴介面或具體類別；單一實作不構成省略必要架構隔離的理由。
+依[框架與依賴組裝](../../../architecture/dependency-composition.md#interfaces)、[模組責任與公開入口](../../../architecture/module-boundaries.md#public-entry-points)執行。Java 可依契約依賴介面或具體類別；單一實作不構成省略必要架構隔離的理由。
 
 <a id="java-construction-safety"></a>
 
@@ -165,11 +165,11 @@ class CashPayment extends Payment {
 
 ## 補充要求
 
-專屬型別的建立與不可變性另依[值物件規範](value-objects.md)，狀態轉換依[狀態與結果建模](states-and-results.md)，非空條件依[null 與 Optional](null-and-optional.md)。授權限制仍依[安全規範](../../../quality/security.md#授權與資料範圍)。
+專屬型別的建立與不可變性另依[值物件規範](value-objects.md)，狀態轉換依[狀態與結果建模](states-and-results.md)，非空條件依[null 與 Optional](null-and-optional.md)。授權限制仍依[安全規範](../../../quality/security.md#authorization-and-data-scope)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 

@@ -9,7 +9,7 @@
 - 同一業務操作的多次呼叫、重試與等待必須共用整體期限，不得每次重試重新取得完整額度。
 - 下游呼叫應配合上游剩餘時間；不足以完成時，不再啟動新嘗試。
 - 長時間作業使用適當背景處理與結果查詢，不單靠延長同步等待。
-- 逾時仍遵循[結果未知原則](../coding/error-handling.md#結果未知)，不得直接認定對方未執行。
+- 逾時仍遵循[結果未知原則](../coding/error-handling.md#unknown-outcome)，不得直接認定對方未執行。
 
 <a id="safe-retries"></a>
 ## 安全重試
@@ -75,11 +75,11 @@
 - 外部回呼與事件先驗證來源，再進入業務處理。依契約使用簽章、服務身分驗證或其他可信機制，不只相信來源欄位與內容。
 - 依協定使用簽章涵蓋的原始資料驗證，不先任意修改內容。
 - 有時效或防重放要求時，驗證時間範圍與唯一識別資訊等條件，同時依契約處理合法重送。
-- 來源驗證不得取代[資料驗證](../coding/validation.md#責任分工)、業務授權與冪等處理。
+- 來源驗證不得取代[資料驗證](../coding/validation.md#validation-responsibilities)、業務授權與冪等處理。
 - 驗證失敗不得執行業務副作用，須留下不含秘密資訊的必要安全紀錄。
 - 內部訊息系統也必須設定發布與訂閱權限，不因位於內網就默認可信。
 
-跨服務身分、金鑰管理與目的地限制見[安全共通規範](../quality/security.md#跨服務身分與帳號生命週期)。事件發布與消費見[事件可靠性](events.md#可恢復發布)，故障測試見[本文件驗收](#acceptance)，例外依[規範治理](../workflow/rule-governance.md#例外核准)處理。
+跨服務身分、金鑰管理與目的地限制見[安全共通規範](../quality/security.md#identity-and-account-lifecycle)。事件發布與消費見[事件可靠性](events.md#recoverable-publication)，故障測試見[本文件驗收](#acceptance)，例外依[規範治理](../workflow/rule-governance.md#exception-approval)處理。
 
 <a id="acceptance"></a>
 ## 驗收
@@ -88,7 +88,7 @@
 
 <a id="外部整合與事件故障恢復驗證"></a>
 
-依實際採用的機制與風險，驗證[外部整合](../interfaces/external-services.md#安全重試)與[事件流程](../interfaces/events.md#驗收)中斷後能否恢復，以及恢復是否重複產生副作用。適用情境包括：
+依實際採用的機制與風險，驗證[外部整合](../interfaces/external-services.md#safe-retries)與[事件流程](../interfaces/events.md#acceptance)中斷後能否恢復，以及恢復是否重複產生副作用。適用情境包括：
 
 - 外部呼叫逾時、限流或持續故障下，重試、整體期限與熔斷是否符合設定。
 

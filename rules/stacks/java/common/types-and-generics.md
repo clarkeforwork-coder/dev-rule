@@ -64,7 +64,7 @@ class Example {
 
 ### 輸入與輸出的型別關聯
 
-依[型別安全](../../../coding/type-safety.md#容器與泛型)執行。Java 泛型簽章須實際連結輸入與輸出的型別；特定業務操作直接使用其型別，不要求呼叫端轉型補回。
+依[型別安全](../../../coding/type-safety.md#containers-and-generics)執行。Java 泛型簽章須實際連結輸入與輸出的型別；特定業務操作直接使用其型別，不要求呼叫端轉型補回。
 
 **違反**
 
@@ -163,7 +163,7 @@ class Example {
 
 ### 業務資料結構
 
-依[型別安全](../../../coding/type-safety.md#容器與泛型)執行。例如固定欄位資料不得改以 `Map<String, Object>` 或 `Object[]` 承載；真正動態的映射仍須保留明確鍵值型別。
+依[型別安全](../../../coding/type-safety.md#containers-and-generics)執行。例如固定欄位資料不得改以 `Map<String, Object>` 或 `Object[]` 承載；真正動態的映射仍須保留明確鍵值型別。
 
 **違反**
 
@@ -341,11 +341,11 @@ List<Order> orders = new ArrayList<>();
 Map<OrderId, Order> ordersById = new HashMap<>();
 ```
 
-固定結構的訂單輸入則應使用明確物件，例如 `CreateOrderRequest`。邊界物件的拆分與映射責任另依[邊界物件](../../../architecture/boundary-objects.md#隔離與拆分)與[資料映射](../../../architecture/data-mapping.md#責任配置)。
+固定結構的訂單輸入則應使用明確物件，例如 `CreateOrderRequest`。邊界物件的拆分與映射責任另依[邊界物件](../../../architecture/boundary-objects.md#separation)與[資料映射](../../../architecture/data-mapping.md#mapping-ownership)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更範圍核對下列項目，包含受影響的呼叫端與測試程式碼。測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)；可自動判斷的要求依[規範驗證](../../../quality/rule-verification.md#verification-coverage)納入檢查，型別是否表達正確業務語意則由人工審查。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更範圍核對下列項目，包含受影響的呼叫端與測試程式碼。測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)；可自動判斷的要求依[規範驗證](../../../quality/rule-verification.md#verification-coverage)納入檢查，型別是否表達正確業務語意則由人工審查。
 
 ### 共同驗收
 

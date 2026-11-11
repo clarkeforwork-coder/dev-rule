@@ -11,7 +11,7 @@
 - 框架或第三方以例外表達已知業務失敗時，由銜接元件辨識並轉換；不得將所有例外一律轉成業務失敗。例如只有明確辨識為帳號重複的唯一性限制衝突，才能轉成「帳號已存在」。
 - 取消是獨立的控制結果，不一律視為系統故障，也不得回報成功。
 
-結果型別須遵循[型別安全](type-safety.md#嚴格檢查與明確宣告)與[狀態建模](domain-modeling.md#狀態建模)，對外呈現須符合[資料契約](../interfaces/data-contracts.md#對外錯誤契約)。
+結果型別須遵循[型別安全](type-safety.md#strict-checks-and-explicit-types)與[狀態建模](domain-modeling.md#state-modeling)，對外呈現須符合[資料契約](../interfaces/data-contracts.md#public-error-contract)。
 
 <a id="exception-handling-responsibility"></a>
 ## 捕捉與處置責任
@@ -41,7 +41,7 @@
 - 預期業務失敗不一律記為系統錯誤，依監控、稽核或安全需求決定記錄方式。
 - 跨服務各自記錄自己的處理結果，以共同追蹤識別碼串連，不要求分散式流程只能有一筆日誌。
 
-日誌層級、追蹤欄位與故障告警依[日誌、稽核與可觀測性](../quality/observability.md#診斷日誌與追蹤)制定。
+日誌層級、追蹤欄位與故障告警依[日誌、稽核與可觀測性](../quality/observability.md#diagnostic-logging-and-tracing)制定。
 
 <a id="fallback-results"></a>
 ## 降級與替代結果
@@ -59,13 +59,13 @@
 - 對可能產生副作用的操作，不得未經確認就重複執行。
 - 必須事先定義後續確認方式，例如依操作識別碼查詢、等待結果事件或對帳。
 - 對外契約依實際語意表達「處理中」或「結果待確認」；沒有仍在處理的依據時，不得僅因結果未知就宣稱處理中。
-- 自動重試必須符合[安全重試與冪等要求](../interfaces/external-services.md#安全重試)，不得只因逾時而重送；確認契約保證相同操作識別碼可安全重送後，才可依該機制處理。
+- 自動重試必須符合[安全重試與冪等要求](../interfaces/external-services.md#safe-retries)，不得只因逾時而重送；確認契約保證相同操作識別碼可安全重送後，才可依該機制處理。
 
 <a id="partial-success"></a>
 ## 多步驟與部分成功
 
 - 操作契約必須事先定義「全部成功才成立」或「允許部分成功」，不得失敗後才臨時改變語意。
-- 全部成功才成立的操作，失敗時依[交易邊界](../data/transactions.md#管理責任)及[跨步驟失敗與業務補償](../workflow/compensation.md#責任與補償範圍)處理；回復尚未完成，不得宣稱已全部撤銷。
+- 全部成功才成立的操作，失敗時依[交易邊界](../data/transactions.md#transaction-ownership)及[跨步驟失敗與業務補償](../workflow/compensation.md#compensation-responsibility)處理；回復尚未完成，不得宣稱已全部撤銷。
 - 允許部分成功時，明確回報各項目的成功、失敗或結果未知狀態，以及對應識別資訊。
 - 不得只回傳整體成功而隱藏項目失敗。
 - 後續重試只針對可安全重試的項目，不直接重跑已成功的操作。
@@ -74,7 +74,7 @@
 
 ## 失敗後狀態
 
-批次修改須明訂失敗後狀態，不得假設拋例外即未修改；不要求所有集合操作具備交易能力。全部成功或部分成功及各筆對應依[多步驟與部分成功](#多步驟與部分成功)。
+批次修改須明訂失敗後狀態，不得假設拋例外即未修改；不要求所有集合操作具備交易能力。全部成功或部分成功及各筆對應依[多步驟與部分成功](#partial-success)。
 
 <a id="cancellation"></a>
 ## 取消
@@ -102,7 +102,7 @@
 - 保留診斷資訊，交由既定故障記錄與監控機制處理。
 - 停止或隔離範圍依影響決定：單一請求故障通常結束該請求；共用狀態不可信時停止相關處理或由框架隔離，不一律要求整個程序退出。
 
-驗證與驗收要求見[本文件驗收](#acceptance)。偏離本規範須依[規範治理](../workflow/rule-governance.md#例外核准)核准，不得自行放寬。
+驗證與驗收要求見[本文件驗收](#acceptance)。偏離本規範須依[規範治理](../workflow/rule-governance.md#exception-approval)核准，不得自行放寬。
 
 <a id="dynamic-call-failures"></a>
 ## 動態呼叫的故障分類
@@ -121,7 +121,7 @@
 
 <a id="錯誤處理驗證與驗收"></a>
 
-依操作風險、實際邊界、副作用與重要業務流程，驗證[錯誤處理](../coding/error-handling.md#失敗分類與表達)的適用失敗路徑，不只測試成功流程，也不要求每個函式套用所有故障情境。
+依操作風險、實際邊界、副作用與重要業務流程，驗證[錯誤處理](../coding/error-handling.md#failure-classification)的適用失敗路徑，不只測試成功流程，也不要求每個函式套用所有故障情境。
 
 - 預期業務失敗回傳正確結果，技術故障與程式缺陷不被誤分類或吞掉。
 - 逾時、結果未知與取消不被誤報為成功或確定失敗。
@@ -129,7 +129,7 @@
 - 必要資源確實釋放，原始錯誤未被清理錯誤覆蓋。
 - 對外回應不洩漏敏感資訊，內部保留必要診斷資訊。
 
-測試程式碼同樣遵守[型別安全](../coding/type-safety.md#驗收)，具體要求見[測試程式碼](type-safety.md#acceptance)。
+測試程式碼同樣遵守[型別安全](../coding/type-safety.md#acceptance)，具體要求見[測試程式碼](type-safety.md#acceptance)。
 
 <a id="supplementary-contract-acceptance"></a>
 ### 補充契約驗收
@@ -138,4 +138,4 @@
 | --- | --- |
 | <a id="acceptance-dynamic-failure"></a>[區分故障與執行結果](#dynamic-failure-classification) | 分別觸發適用的解析、存取、契約及目標執行故障，確認原因與分類保留，未將已執行的故障誤當未找到目標，且未進行無安全依據的替換或重跑。 |
 | <a id="acceptance-failure-state"></a>[失敗後狀態](#failure-state-guarantee) | 觸發批次修改的適用失敗路徑，核對例外後實際狀態符合約定，不以拋例外推定未修改，也不要求所有集合操作具備交易能力。全部或部分成功及項目對應另見[多步驟與部分成功驗收](#acceptance-partial-operation)。 |
-| <a id="acceptance-partial-operation"></a>[多步驟與部分成功](#多步驟與部分成功) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。批次修改拋出例外後的狀態另見[失敗後狀態驗收](#acceptance-failure-state)。 |
+| <a id="acceptance-partial-operation"></a>[多步驟與部分成功](#partial-success) | 在處理中途製造適用的失敗，核對實際狀態是否符合全部成功或部分成功保證；允許部分成功時，結果須能對應已完成、未完成或結果未知的項目，不隱藏項目失敗或未完成事項。集合批次修改適用同一驗收。批次修改拋出例外後的狀態另見[失敗後狀態驗收](#acceptance-failure-state)。 |

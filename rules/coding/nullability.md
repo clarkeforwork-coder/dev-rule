@@ -40,7 +40,7 @@
 
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
 
-行為測試應分別確認省略欄位、明確清空、提供新值與不合法值的結果。例外依[規範治理](../workflow/rule-governance.md#例外核准)處理。
+行為測試應分別確認省略欄位、明確清空、提供新值與不合法值的結果。例外依[規範治理](../workflow/rule-governance.md#exception-approval)處理。
 
 <a id="supplementary-contract-acceptance"></a>
 <a id="補充契約驗收"></a>

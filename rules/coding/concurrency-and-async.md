@@ -25,7 +25,7 @@
 
 ### 結果接收與故障處置
 
-非同步結果依[錯誤處理](error-handling.md#失敗分類與表達)區分成功、業務失敗、技術故障及取消，明訂接收路徑，不得丟棄故障。
+非同步結果依[錯誤處理](error-handling.md#failure-classification)區分成功、業務失敗、技術故障及取消，明訂接收路徑，不得丟棄故障。
 
 <a id="execution-resources"></a>
 <a id="ca-02"></a>
@@ -38,7 +38,7 @@
 <a id="共同生命週期"></a>
 ### 執行資源的生命週期
 
-元件就緒、依賴生命週期及受控關閉由[資源生命週期](resource-lifecycle.md#契約要求)維護；結果接收及完成責任依[結果接收與故障處置](#async-result-reception)及[明確的工作擁有者](#task-ownership)。
+元件就緒、依賴生命週期及受控關閉由[資源生命週期](resource-lifecycle.md#contract-requirements)維護；結果接收及完成責任依[結果接收與故障處置](#async-result-reception)及[明確的工作擁有者](#task-ownership)。
 
 <a id="deadline-budget"></a>
 <a id="ca-04"></a>

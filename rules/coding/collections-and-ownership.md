@@ -9,7 +9,7 @@
 
 <a id="跨主題契約"></a>
 
-共享集合複合操作的原子性依[併發與非同步](concurrency-and-async.md#compound-atomicity)；大量資料累積依[效能與資源使用](../quality/performance.md#bounded-accumulation)；延遲讀取的所有權及關閉依[資源生命週期](resource-lifecycle.md#lazy-resource-lifetime)。批次修改依[多步驟與部分成功](error-handling.md#多步驟與部分成功)及[失敗後狀態](error-handling.md#failure-state-guarantee)。
+共享集合複合操作的原子性依[併發與非同步](concurrency-and-async.md#compound-atomicity)；大量資料累積依[效能與資源使用](../quality/performance.md#bounded-accumulation)；延遲讀取的所有權及關閉依[資源生命週期](resource-lifecycle.md#lazy-resource-lifetime)。批次修改依[多步驟與部分成功](error-handling.md#partial-success)及[失敗後狀態](error-handling.md#failure-state-guarantee)。
 
 <a id="collection-ownership"></a>
 <a id="co-01"></a>

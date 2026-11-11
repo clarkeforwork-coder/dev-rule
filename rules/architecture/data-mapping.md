@@ -16,7 +16,7 @@
 
 - 明確控制允許傳遞的欄位，避免來源新增欄位後自動複製到目標。
 - 可以使用映射工具，但工具必須維持欄位限制與型別安全，不得繞過驗證或暴露內部模型。
-- 外部資料的驗證遵循[資料驗證](../coding/validation.md#責任分工)；格式解析與精度等轉換遵循[型別安全](../coding/type-safety.md#型別轉換)。
+- 外部資料的驗證遵循[資料驗證](../coding/validation.md#validation-responsibilities)；格式解析與精度等轉換遵循[型別安全](../coding/type-safety.md#type-conversions)。
 
 <a id="mapping-directions"></a>
 ## 映射執行與方向契約
@@ -41,14 +41,14 @@
 
 ## 映射失敗、更新與隔離
 
-映射失敗依[錯誤處理](../coding/error-handling.md#失敗分類與表達)及[資料驗證](../coding/validation.md#責任分工)區分外部不合法資料與內部缺陷。部分成功依[多步驟與部分成功](../coding/error-handling.md#多步驟與部分成功)。更新意圖依[空值語意](../coding/nullability.md#空值語意)。隔離與共用值依[邊界隔離](boundary-objects.md#隔離與拆分)、[共用值契約](boundary-objects.md#隔離與拆分)、[值物件不可變性](../coding/domain-modeling.md#value-immutability)及[集合所有權](../coding/collections-and-ownership.md#明確定義修改權與參考關係)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#責任配置)、[介面用途](dependency-composition.md#介面與抽象)及[共用能力](shared-capabilities.md#共用程式碼)。
+映射失敗依[錯誤處理](../coding/error-handling.md#failure-classification)及[資料驗證](../coding/validation.md#validation-responsibilities)區分外部不合法資料與內部缺陷。部分成功依[多步驟與部分成功](../coding/error-handling.md#partial-success)。更新意圖依[空值語意](../coding/nullability.md#空值語意)。隔離與共用值依[邊界隔離](boundary-objects.md#separation)、[共用值契約](boundary-objects.md#separation)、[值物件不可變性](../coding/domain-modeling.md#value-immutability)及[集合所有權](../coding/collections-and-ownership.md#collection-ownership)，沿用[邊界隔離驗收](boundary-objects.md#acceptance-boundary-isolation)。轉換形式及共用依[責任配置](#mapping-ownership)、[介面用途](dependency-composition.md#interfaces)及[共用能力](shared-capabilities.md#shared-code)。
 
 <a id="acceptance"></a>
 ## 驗收
 
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
 
-驗證應涵蓋必要欄位的正確映射、禁止欄位未被傳遞，以及轉換失敗的處理。例外依[規範治理](../workflow/rule-governance.md#例外核准)核准。
+驗證應涵蓋必要欄位的正確映射、禁止欄位未被傳遞，以及轉換失敗的處理。例外依[規範治理](../workflow/rule-governance.md#exception-approval)核准。
 
 <a id="mapping-path-verification"></a>
 <a id="bm-09"></a>
@@ -65,5 +65,5 @@
 | <a id="acceptance-mapping-responsibility"></a>[聚焦轉換與必要驗證](#mapping-responsibility) | 審查映射及其呼叫路徑，確認外部資料取得、業務決策與副作用由負責元件明確協調，沒有藏在單純轉換的方法中。 |
 | <a id="acceptance-directional-mapping"></a>[各方向分別定義](#directional-mapping) | 分別核對輸入與輸出欄位及轉換；驗證唯讀、衍生與遮罩資料不會被直接寫回。採用反向映射時，須有允許依據並確認可逆性。 |
 | <a id="acceptance-mapping-paths"></a>[驗證實際映射路徑](#mapping-path-verification) | 確認測試執行實際採用的映射實作或工具產出，必要時涵蓋序列化與反序列化邊界；斷言須涵蓋欄位值、拒絕結果與禁止傳遞的資料，不僅確認物件非空。對需要區分更新意圖的契約，從實際接收入口分別提供省略、明確清空及設定值，確認意圖傳遞到業務操作並產生約定效果。 |
-| <a id="acceptance-mapping-fields"></a>[轉換要求](#轉換要求)、[最小必要欄位](boundary-objects.md#明確列出最小必要) | 核對允許欄位及來源，以含管理欄位的外部輸入驗證其無法覆寫可信資料，並確認內部敏感欄位未輸出。映射設定或契約變更時，確認新增來源或目標欄位不會自動擴大允許範圍。 |
-| <a id="acceptance-mapping-owner"></a>[責任配置](#責任配置) | 核對映射所有權、位置與依賴方向，相同契約沒有散落的不一致轉換，不同責任也未被不當集中。 |
+| <a id="acceptance-mapping-fields"></a>[轉換要求](#conversion-requirements)、[最小必要欄位](boundary-objects.md#minimal-fields) | 核對允許欄位及來源，以含管理欄位的外部輸入驗證其無法覆寫可信資料，並確認內部敏感欄位未輸出。映射設定或契約變更時，確認新增來源或目標欄位不會自動擴大允許範圍。 |
+| <a id="acceptance-mapping-owner"></a>[責任配置](#mapping-ownership) | 核對映射所有權、位置與依賴方向，相同契約沒有散落的不一致轉換，不同責任也未被不當集中。 |

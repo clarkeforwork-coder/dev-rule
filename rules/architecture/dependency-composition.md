@@ -14,7 +14,7 @@
 - 不要求每個類別建立對應介面。依架構依賴方向、實作替換或多型需求決定是否引入抽象。
 - DI 可以注入介面或具體類別，但必須符合專案架構。
 - 使用 DI 容器不會自動消除原始碼依賴，也不代表已符合依賴反轉。抽象的位置與暴露的型別仍須遵守架構邊界。
-- 公開入口的團隊慣例依[模組責任與公開入口](module-boundaries.md#公開入口)制定，不將統一入口解讀為每個類別都需要介面。
+- 公開入口的團隊慣例依[模組責任與公開入口](module-boundaries.md#public-entry-points)制定，不將統一入口解讀為每個類別都需要介面。
 
 <a id="composition"></a>
 ## 建立與組裝
@@ -25,7 +25,7 @@
 - 沒有 DI 容器的小專案可在啟動入口手動組裝，不為此強制引入框架。
 - DTO、值物件與領域實體仍可依業務需要建立，不要求所有物件都由容器管理。
 
-可測試性要求見[本文件驗收](#acceptance)。例外依[規範治理](../workflow/rule-governance.md#例外核准)處理。
+可測試性要求見[本文件驗收](#acceptance)。例外依[規範治理](../workflow/rule-governance.md#exception-approval)處理。
 
 <a id="deferred-dependencies"></a>
 ## 延後建立與依賴取得
@@ -54,4 +54,4 @@
 | 契約 | 驗收內容 |
 | --- | --- |
 | <a id="acceptance-explicit-dependencies"></a>[明確取得依賴](#explicit-dependencies) | 核對服務與外部能力可從明確依賴辨識，沒有隱藏的全域查找。工廠或提供者具有明確責任，延後或按次建立的實例符合所需生命週期。 |
-| <a id="acceptance-interface-purpose"></a>[介面與抽象](#介面與抽象) | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 |
+| <a id="acceptance-interface-purpose"></a>[介面與抽象](#interfaces) | 審查介面的能力、多型或架構用途與依賴方向，確認沒有僅為 DI 建立無用途介面，也未省略必要隔離。 |

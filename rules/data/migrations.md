@@ -27,11 +27,11 @@
 - 執行前確認篩選條件、預期筆數與影響，先預覽或試跑。
 - 依資料量分批，限制交易大小與速率，避免長時間鎖定或耗盡資源。
 - 記錄處理進度，中斷後必須可安全續跑，不重複產生副作用。
-- 線上資料仍在變動時，明確處理併發衝突，避免舊資料覆蓋較新修改，並遵守[交易與併發控制](transactions.md#併發修改)。
+- 線上資料仍在變動時，明確處理併發衝突，避免舊資料覆蓋較新修改，並遵守[交易與併發控制](transactions.md#concurrent-updates)。
 - 破壞性操作事先定義備份或其他可行恢復方式，依專案權限流程核准。
 - 完成後核對實際筆數、失敗項目與資料完整性，不只以腳本正常結束判定成功。
 
-遷移及大量操作依[本文件驗收](#acceptance)測試相容、恢復與續跑。例外及架構影響依[規範治理](../workflow/rule-governance.md#例外核准)處理。
+遷移及大量操作依[本文件驗收](#acceptance)測試相容、恢復與續跑。例外及架構影響依[規範治理](../workflow/rule-governance.md#exception-approval)處理。
 
 <a id="acceptance"></a>
 ## 驗收
@@ -40,7 +40,7 @@
 
 <a id="資料庫行為與遷移驗證"></a>
 
-涉及[資料約束與查詢](../data/persistence.md#資料庫完整性約束)的保證，依[資料庫行為驗證](persistence.md#acceptance)。
+涉及[資料約束與查詢](../data/persistence.md#database-integrity-constraints)的保證，依[資料庫行為驗證](persistence.md#acceptance)。
 
-- [資料遷移](../data/migrations.md#新舊版本相容)使用具有代表性的既有資料驗證，包含新舊版本相容及適用的失敗恢復情境。
+- [資料遷移](../data/migrations.md#version-compatibility)使用具有代表性的既有資料驗證，包含新舊版本相容及適用的失敗恢復情境。
 - 大量操作依風險驗證分批、安全續跑與結果核對。

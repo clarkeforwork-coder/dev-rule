@@ -52,7 +52,7 @@
 <a id="shared-component-responsibility"></a>
 ### 共用元件的責任
 
-委派及非同步的有效期依[有效期與關閉契約](#resource-close-contract)及其[驗收](#acceptance-close-contract)。工作提交、取消與整體結果依[併發與非同步](concurrency-and-async.md#契約要求)；操作與清理失敗依[清理與補償失敗](error-handling.md#清理與補償失敗)。
+委派及非同步的有效期依[有效期與關閉契約](#resource-close-contract)及其[驗收](#acceptance-close-contract)。工作提交、取消與整體結果依[併發與非同步](concurrency-and-async.md#contract-requirements)；操作與清理失敗依[清理與補償失敗](error-handling.md#cleanup-and-compensation-failure)。
 
 <a id="acceptance"></a>
 <a id="驗收要求"></a>

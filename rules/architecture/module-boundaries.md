@@ -18,7 +18,7 @@
 - 入口可以是介面、應用服務或模組匯出項目。是否增加包裝層由專案架構統一決定，不強制增加只有轉呼叫用途的元件。
 - 語言上的公開可見性不必然代表模組公開 API；因框架需要而公開的內部類別仍不得被其他模組任意引用。
 - 優先以語言、模組或建置工具限制存取；工具不足時以架構檢查與審查補足。
-- 資料交換遵循[邊界物件](boundary-objects.md#隔離與拆分)，契約所有權遵循[共用型別管理](shared-types.md#型別所有權與共用條件)。
+- 資料交換遵循[邊界物件](boundary-objects.md#separation)，契約所有權遵循[共用型別管理](shared-types.md#type-ownership)。
 
 <a id="cross-module-workflows"></a>
 ## 跨模組流程
@@ -28,4 +28,4 @@
 - 不強制建立獨立協調服務，可依架構放在應用服務、使用案例或工作流程元件。
 - 採事件協作時，即使沒有中央協調者，也必須記錄整體流程、各步驟責任、終止條件與失敗處理，不能失去管理歸屬。
 
-跨模組查詢見[資料存取邊界](../data/persistence.md#模組邊界)，一致性責任見[交易邊界](../data/transactions.md#管理責任)。
+跨模組查詢見[資料存取邊界](../data/persistence.md#module-boundaries)，一致性責任見[交易邊界](../data/transactions.md#transaction-ownership)。

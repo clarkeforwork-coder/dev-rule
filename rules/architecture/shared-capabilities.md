@@ -25,4 +25,4 @@
 - 共用元件不得反向依賴業務模組，也不得累積模組專屬的條件分支。
 - 不為尚未出現的需求預先建立通用框架。
 
-共用型別的條件與所有權見[共用型別管理](shared-types.md#型別所有權與共用條件)。身分與授權要求見[安全共通規範](../quality/security.md#授權與資料範圍)。各模組的稽核事件清單與保存保證見[日誌、稽核與可觀測性](../quality/observability.md#必要稽核事件與內容)。
+共用型別的條件與所有權見[共用型別管理](shared-types.md#type-ownership)。身分與授權要求見[安全共通規範](../quality/security.md#authorization-and-data-scope)。各模組的稽核事件清單與保存保證見[日誌、稽核與可觀測性](../quality/observability.md#required-audit-events)。
