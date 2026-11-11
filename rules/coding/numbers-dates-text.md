@@ -4,6 +4,7 @@
 
 相關共同要求：[型別安全](type-safety.md)、[領域建模](domain-modeling.md)、[API 操作語意與介面設計](../interfaces/api-contracts.md)、[資料契約](../interfaces/data-contracts.md)。必要例外依[規範治理](../workflow/rule-governance.md)處理。
 
+<a id="contract-requirements"></a>
 ## 契約要求
 
 <a id="numeric-representation"></a>
@@ -90,16 +91,22 @@
 
 文字比較、大小寫轉換及正規化須明訂適用範圍、地區設定與等價規則，不無意依賴系統預設。搜尋比對與原值保存可採不同表示，但不得以未經契約允許的轉換改變識別、相等性或原始內容。去除空白、Unicode 正規化及全形半形轉換均依用途決定，不將協定代碼規則直接套用到自然語言資料。領域值的正規化、驗證及相等性關係依[領域建模](domain-modeling.md#value-normalization)統一維護。
 
+<a id="acceptance"></a>
+<a id="驗收要求"></a>
+## 驗收
+
+驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
+
 <a id="data-boundary-verification"></a>
 <a id="nt-14"></a>
+<a id="邊界與環境差異驗收"></a>
 
 ### 邊界與環境差異驗收
 
 數值、日期時間或文字處理規則新增及變更時，須依影響驗證邊界值、非法輸入、精度與格式轉換，以及適用的時區、地區與編碼差異。涉及儲存或傳輸時，須確認實際轉換路徑維持契約語意，不僅測試一般輸入。不要求每個欄位測試所有情境，也不重測標準函式庫本身。
 
-## 驗收要求
-
-依變更影響及實際採用能力驗證，測試層級與案例維護依[共通測試策略](../quality/testing.md)；不要求每個操作涵蓋全部情境，也不重測語言標準函式庫本身。
+<a id="supplementary-contract-acceptance"></a>
+### 補充契約驗收
 
 | 契約 | 驗收內容 |
 | --- | --- |
