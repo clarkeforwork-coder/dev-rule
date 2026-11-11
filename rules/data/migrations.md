@@ -40,7 +40,7 @@
 
 <a id="資料庫行為與遷移驗證"></a>
 
-涉及[資料約束與查詢](../data/persistence.md#database-integrity-constraints)的保證，依[資料庫行為驗證](persistence.md#acceptance)。
+依[資料庫行為驗證](persistence.md#acceptance)。
 
 - [資料遷移](../data/migrations.md#version-compatibility)使用具有代表性的既有資料驗證，包含新舊版本相容及適用的失敗恢復情境。
 - 大量操作依風險驗證分批、安全續跑與結果核對。

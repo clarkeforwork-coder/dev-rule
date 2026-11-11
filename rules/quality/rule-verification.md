@@ -136,7 +136,7 @@
 | 共通測試策略補充契約 | [共通測試策略補充契約](../quality/testing.md#acceptance) |
 | 規範治理補充契約 | [規範治理補充契約](../workflow/rule-governance.md#supplementary-contract-acceptance) |
 
-其他語言依其適用規範補足；共同要求的效力依[規範索引](../README.md#規範效力)。跨主題驗收（共同把關、審查清單、動態限制與文件驗證、檢查配置與門檻）仍由本文件維護。
+其他語言依其適用規範補足；共同要求的效力依[規範索引](../README.md#規範效力)。跨主題驗收（共同把關、審查清單、動態限制與文件驗證、檢查配置與門檻）仍由本文件維護，不在本文件重複維護各主題摘要。
 
 <a id="document-verification"></a>
 <a id="nd-07"></a>

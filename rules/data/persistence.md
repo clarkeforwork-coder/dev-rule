@@ -49,7 +49,7 @@
 
 <a id="資料庫行為與遷移驗證"></a>
 
-涉及[資料約束與查詢](../data/persistence.md#database-integrity-constraints)、[交易與鎖定](../data/transactions.md#isolation-and-locking)的保證，必須以與正式環境相容的實際資料庫行為驗證，不能只靠 Mock 或記憶體替代品判定正確，不要求連線正式資料庫。
+涉及資料約束與查詢、[交易與鎖定](../data/transactions.md#isolation-and-locking)的保證，必須以與正式環境相容的實際資料庫行為驗證，不能只靠 Mock 或記憶體替代品判定正確，不要求連線正式資料庫。
 
 - 驗證唯一性等約束、交易回滾與錯誤轉換。
 - 依專案實際使用的能力選擇測試，不要求每個資料存取方法套用全部情境。

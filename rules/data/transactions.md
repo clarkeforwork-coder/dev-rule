@@ -47,6 +47,6 @@
 
 <a id="資料庫行為與遷移驗證"></a>
 
-涉及[交易與鎖定](../data/transactions.md#isolation-and-locking)的保證，依[資料庫行為驗證](persistence.md#acceptance)。
+涉及交易與鎖定的保證，依[資料庫行為驗證](persistence.md#acceptance)。
 
 - 驗證併發修改能保護業務條件，以及衝突、死鎖與逾時是否依策略處理。

@@ -121,7 +121,7 @@
 
 <a id="錯誤處理驗證與驗收"></a>
 
-依操作風險、實際邊界、副作用與重要業務流程，驗證[錯誤處理](../coding/error-handling.md#failure-classification)的適用失敗路徑，不只測試成功流程，也不要求每個函式套用所有故障情境。
+依操作風險、實際邊界、副作用與重要業務流程，驗證錯誤處理的適用失敗路徑，不只測試成功流程，也不要求每個函式套用所有故障情境。
 
 - 預期業務失敗回傳正確結果，技術故障與程式缺陷不被誤分類或吞掉。
 - 逾時、結果未知與取消不被誤報為成功或確定失敗。
@@ -129,7 +129,7 @@
 - 必要資源確實釋放，原始錯誤未被清理錯誤覆蓋。
 - 對外回應不洩漏敏感資訊，內部保留必要診斷資訊。
 
-測試程式碼同樣遵守[型別安全](../coding/type-safety.md#acceptance)，具體要求見[測試程式碼](type-safety.md#acceptance)。
+測試程式碼同樣遵守[型別安全](type-safety.md#acceptance)，具體要求見[測試程式碼](type-safety.md#acceptance)。
 
 <a id="supplementary-contract-acceptance"></a>
 ### 補充契約驗收

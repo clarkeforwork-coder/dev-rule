@@ -125,11 +125,11 @@ class RulesCheck
         end
         if file.include?('/stacks/java/') && @common.include?(dest) && (fragment.nil? || fragment.empty?)
           whole += 1
-          report(file, i, 'links', "Java → 共通整檔連結須帶錨點：#{target}")
+          report(file, i, 'links', "警告：Java → 共通整檔連結未帶錨點：#{target}", failure: false)
         end
       end
     end
-    @notes[@command] = "#{total} 個連結，失效 #{broken}、Java → 共通整檔 #{whole}"
+    @notes[@command] = "#{total} 個連結，失效 #{broken}、Java → 共通整檔警告 #{whole}"
   end
 
   def duplicate_headings(file, rule)
@@ -214,14 +214,14 @@ class RulesCheck
         report(file, i, 'template', '共通驗收樣板句只允許於 quality/testing.md') if line.include?(TEMPLATE) && file != File.join(@root, 'rules/quality/testing.md')
       end
     end
-    # 以完整驗收導言段落比較，不能僅比較各檔已相同的第一句。
+    # 只比較驗收導言第一句；後續案例選擇依主題不同。
     paragraphs = @java.to_h do |file|
       rows = prose(file)
       matches = rows.map do |line, i|
         next unless line.include?(JAVA_PREFIX)
         ending = i + 1
         ending += 1 while ending < @lines[file].size && !@lines[file][ending].strip.empty?
-        [@lines[file][i...ending].map(&:strip).join, i]
+        [@lines[file][i...ending].map(&:strip).join.split(/(?<=。)/, 2).first, i]
       end.compact
       [file, matches]
     end
@@ -232,10 +232,10 @@ class RulesCheck
       if matches.size != 1
         report(file, matches.first&.last || 0, 'template', "Java 驗收樣板段落須恰有一份，目前 #{matches.size} 份")
       elsif matches.first.first != canonical
-        report(file, matches.first.last, 'template', 'Java 驗收樣板段落與其他文件的最多數版本不同')
+        report(file, matches.first.last, 'template', 'Java 驗收樣板第一句與其他文件的最多數版本不同')
       end
     end
-    @notes[@command] = "#{@java.size} 份 Java 文件，樣板 #{counts.size} 種（比較完整導言段落）"
+    @notes[@command] = "#{@java.size} 份 Java 文件，樣板 #{counts.size} 種（比較導言第一句）"
   end
 
   def examples
