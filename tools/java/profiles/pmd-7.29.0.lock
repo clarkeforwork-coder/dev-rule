@@ -1,0 +1,23 @@
+# SHA-256  Maven Central URL（PMD Java CLI 必要執行期，不含 Designer 與其他語言）
+e9f2e3cb9f1acc61b6d403b96449f2f24773bf02de54921aea8158ac887f0c04 https://repo.maven.apache.org/maven2/net/sourceforge/pmd/pmd-cli/7.29.0/pmd-cli-7.29.0.jar
+f73a3236b8d312eb90fdc3c5ef33252f873bc152f1a764e64736dfb726d62962 https://repo.maven.apache.org/maven2/net/sourceforge/pmd/pmd-core/7.29.0/pmd-core-7.29.0.jar
+d4299d5b5f951f4812657a26f95790b77dbb6c84a80c8ae04e0c87db5fde2966 https://repo.maven.apache.org/maven2/net/sourceforge/pmd/pmd-java/7.29.0/pmd-java-7.29.0.jar
+d3ef575e3e4979678dc01bf1dcce51021493b4d11fb7f1be8ad982877c16a1c0 https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar
+2f39bed943d624dfa8f4102d0571283a10870b6aa36f197a8a506f147010c10f https://repo.maven.apache.org/maven2/org/slf4j/slf4j-simple/1.7.36/slf4j-simple-1.7.36.jar
+9e641fb142c5f0b0623d6222c09ea87523a41bf6bed48ac79940724010b989de https://repo.maven.apache.org/maven2/org/slf4j/jul-to-slf4j/1.7.36/jul-to-slf4j-1.7.36.jar
+dd3e8a13a2d669bf84fb8d834de35ce4875f27157698d206241ec8488aadcaf7 https://repo.maven.apache.org/maven2/org/antlr/antlr4-runtime/4.13.2/antlr4-runtime-4.13.2.jar
+b571af282f25d7301059f788b9a149aab8b5cdc14ef3d212dc5425d3dcbb9a97 https://repo.maven.apache.org/maven2/net/sf/saxon/Saxon-HE/12.10/Saxon-HE-12.10.jar
+b0c487ad2f3e558be8d829c916d2458d10aca6a5bafa7a4d0524b70845e48a5c https://repo.maven.apache.org/maven2/org/xmlresolver/xmlresolver/5.3.3/xmlresolver-5.3.3-data.jar
+1fe4d5b92f708dcdb82dbce12919e0171e6b5ca62c6dca6220483625098feb5f https://repo.maven.apache.org/maven2/org/xmlresolver/xmlresolver/5.3.3/xmlresolver-5.3.3.jar
+a2af247ec4db6eb8947e18e23e0433e4871a7c5d0a40e1f92e46ede54ae1defe https://repo.maven.apache.org/maven2/org/apache/commons/commons-lang3/3.21.0/commons-lang3-3.21.0.jar
+2b9a7b1f726fb86216dbd2c8321eabe0221dbd5b1be81c18e1cb53811b104758 https://repo.maven.apache.org/maven2/commons-io/commons-io/2.22.0/commons-io-2.22.0.jar
+ae4e6e10d59d0a1500317764b21881ad883f8550e33c66e6142f7032c6fb566c https://repo.maven.apache.org/maven2/org/ow2/asm/asm/9.11.1/asm-9.11.1.jar
+96d3dd843dc2911de01cdabcd50064cb9e860353102a0a78c96fd833d396fc7d https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.15.0/gson-2.15.0.jar
+4667724877f1d37a689202da191e23efa7657c62eef93ccdac406eccfe5cdd0a https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.50.0/error_prone_annotations-2.50.0.jar
+857658c8bdcbff794949a8d9922f88d63ee3751c203c7cd7d21ea97f9e745288 https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.55.1/checker-qual-3.55.1.jar
+2bbeef5797a241300c4f7513cd546239629ed7deda4fc0c31df90bb95f5f13ef https://repo.maven.apache.org/maven2/org/pcollections/pcollections/4.0.2/pcollections-4.0.2.jar
+0b4ceb5b8362d43c9c6c49b1bd57f1c5da54d3c5c7c305fa39c0a04462bb4799 https://repo.maven.apache.org/maven2/com/github/oowekyala/ooxml/nice-xml-messages/3.1/nice-xml-messages-3.1.jar
+f86e30fffd10d2b13b8caa8d4b237a7ee61f2ffccf5b1941de718b765d235bf8 https://repo.maven.apache.org/maven2/info/picocli/picocli/4.7.7/picocli-4.7.7.jar
+9979afcfc1967bacd98b3afc74499501028d294aa65fb3f9139cd79742111e81 https://repo.maven.apache.org/maven2/me/tongfei/progressbar/0.10.2/progressbar-0.10.2.jar
+fd68a98b32b1132035c62102e5df0b0fdc358e7c87a9f876ce7071450b4d10da https://repo.maven.apache.org/maven2/org/jline/jline-terminal/3.29.0/jline-terminal-3.29.0.jar
+19cfcc9d3c78a1c6cfe4c6c9599f16a657e4bf8da43940fc4b875373236dc258 https://repo.maven.apache.org/maven2/org/jline/jline-native/3.29.0/jline-native-3.29.0.jar

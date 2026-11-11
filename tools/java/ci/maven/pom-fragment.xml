@@ -1,0 +1,56 @@
+<!-- 將 properties、profiles、build 合併到專案 pom；此檔是可解析的範例，不是父 POM。
+     建置外掛檢查工作目錄整檔；新增行判定由 hooks/pre-commit 負責。
+     Maven 的執行 JDK 決定 Checkstyle 版本；targetJdk 對應專案 source level。 -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>example</groupId><artifactId>dev-rule-integration</artifactId><version>1.0.0</version>
+  <properties>
+    <dev-rule.root>${maven.multiModuleProjectDirectory}/vendor/dev-rule</dev-rule.root>
+    <checkstyle.version>10.26.1</checkstyle.version>
+    <pmd.version>7.29.0</pmd.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+  <profiles>
+    <profile>
+      <id>dev-rule-jdk8</id><activation><jdk>[1.8,1.9)</jdk></activation>
+      <properties><checkstyle.version>9.3</checkstyle.version></properties>
+    </profile>
+  </profiles>
+  <build><plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId><artifactId>maven-checkstyle-plugin</artifactId><version>3.6.0</version>
+      <dependencies><dependency>
+        <groupId>com.puppycrawl.tools</groupId><artifactId>checkstyle</artifactId><version>${checkstyle.version}</version>
+      </dependency></dependencies>
+      <configuration>
+        <configLocation>${dev-rule.root}/tools/java/checkstyle/checkstyle.xml</configLocation>
+        <suppressionsLocation>${dev-rule.root}/tools/java/checkstyle/suppressions.xml</suppressionsLocation>
+        <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+        <violationSeverity>error</violationSeverity>
+        <consoleOutput>true</consoleOutput>
+      </configuration>
+      <executions><execution><id>dev-rule-checkstyle</id><phase>verify</phase><goals><goal>check</goal></goals></execution></executions>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId><artifactId>maven-pmd-plugin</artifactId><version>3.28.0</version>
+      <dependencies>
+        <dependency><groupId>net.sourceforge.pmd</groupId><artifactId>pmd-core</artifactId><version>${pmd.version}</version></dependency>
+        <dependency><groupId>net.sourceforge.pmd</groupId><artifactId>pmd-java</artifactId><version>${pmd.version}</version></dependency>
+        <dependency><groupId>net.sourceforge.pmd</groupId><artifactId>pmd-javascript</artifactId><version>${pmd.version}</version></dependency>
+        <dependency><groupId>net.sourceforge.pmd</groupId><artifactId>pmd-jsp</artifactId><version>${pmd.version}</version></dependency>
+      </dependencies>
+      <configuration>
+        <rulesets><ruleset>${dev-rule.root}/tools/java/pmd/ruleset.xml</ruleset></rulesets>
+        <targetJdk>${maven.compiler.source}</targetJdk>
+        <includeTests>true</includeTests>
+        <failurePriority>2</failurePriority>
+        <printFailingErrors>true</printFailingErrors>
+      </configuration>
+      <executions><execution><id>dev-rule-pmd</id><phase>verify</phase><goals><goal>check</goal></goals></execution></executions>
+    </plugin>
+  </plugins></build>
+</project>

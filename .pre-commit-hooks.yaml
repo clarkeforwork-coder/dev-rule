@@ -1,0 +1,8 @@
+- id: dev-rule-java
+  name: dev-rule Java 新增違規檢查
+  language: script
+  entry: tools/java/hooks/pre-commit
+  files: '\.java$'
+  pass_filenames: false
+  require_serial: true
+  stages: [pre-commit]
