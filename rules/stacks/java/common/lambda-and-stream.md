@@ -10,7 +10,7 @@
 
 ### 意圖與可讀性優先
 
-依[程式碼設計與公開介面](../../../coding/code-design.md#函式責任與參數)、[命名與可讀性](../../../coding/naming.md#操作與判斷)執行。Java Lambda／Stream 不強制取代迴圈；複雜或獨立責任採具名方法或清楚流程，不要求每個 Lambda 都抽方法。
+依[程式碼設計與公開介面](../../../coding/code-design.md#function-responsibilities)、[命名與可讀性](../../../coding/naming.md#operations-and-predicates)執行。Java Lambda／Stream 不強制取代迴圈；複雜或獨立責任採具名方法或清楚流程，不要求每個 Lambda 都抽方法。
 
 **違反**
 
@@ -290,11 +290,11 @@ orders.stream().filter(Order::isCancellable);
 
 上述片段僅示範篩選條件的表達，尚未消費結果，不代表已完成驗證或執行取消操作。
 
-數值歸約涉及精度與捨入時依[數值、日期時間與文字處理](numbers-dates-text.md)；平行處理的量測依[效能與資源使用](../../../quality/performance.md#效能承諾與量測)。
+數值歸約涉及精度與捨入時依[數值、日期時間與文字處理](numbers-dates-text.md)；平行處理的量測依[效能與資源使用](../../../quality/performance.md#performance-measurement)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 

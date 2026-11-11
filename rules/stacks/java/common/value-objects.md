@@ -12,7 +12,7 @@
 
 ### 建立專屬型別的條件
 
-依[領域建模](../../../coding/domain-modeling.md#專屬型別)執行。Java 的 `OrderId` 與 `CustomerId` 須維持不同業務型別；一般描述性資料不要求機械式包裝。
+依[領域建模](../../../coding/domain-modeling.md#dedicated-types)執行。Java 的 `OrderId` 與 `CustomerId` 須維持不同業務型別；一般描述性資料不要求機械式包裝。
 
 **違反**
 
@@ -35,7 +35,7 @@ record Order(OrderId orderId, CustomerId customerId) {}
 
 ### 建立時保護不變條件
 
-依[領域建模](../../../coding/domain-modeling.md#專屬型別)、[資料驗證](../../../coding/validation.md#責任分工)執行。Java 建構子或工廠維持一致驗證；合法 `OrderId` 不代表訂單存在或已取得存取權。
+依[領域建模](../../../coding/domain-modeling.md#dedicated-types)、[資料驗證](../../../coding/validation.md#validation-responsibilities)執行。Java 建構子或工廠維持一致驗證；合法 `OrderId` 不代表訂單存在或已取得存取權。
 
 **違反**
 
@@ -263,17 +263,17 @@ class OrderIdCodec {
 
 ### 業務保證的測試
 
-依[領域建模](../../../coding/domain-modeling.md#模型驗證與還原)、[共通測試策略](../../../quality/testing.md#層級與案例選擇)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[本文件驗收要求](#驗收要求)驗證，不機械式測試每個產生的方法。
+依[領域建模](../../../coding/domain-modeling.md#model-validation-restoration)、[共通測試策略](../../../quality/testing.md#test-levels-and-cases)執行。Java 的 `equals()`、`hashCode()`、`record` 自動產生方法與還原路徑依[本文件驗收要求](#驗收要求)驗證，不機械式測試每個產生的方法。
 
 <a id="java-closing-requirements"></a>
 
 ## 補充要求
 
-映射與歷史資料處理另見[資料映射](../../../architecture/data-mapping.md#轉換要求)及[資料遷移](../../../data/migrations.md#新舊版本相容)；敏感資料與診斷輸出依[安全規範](../../../quality/security.md#敏感資料與副本)及[日誌、稽核與可觀測性](../../../quality/observability.md#診斷日誌與追蹤)。
+映射與歷史資料處理另見[資料映射](../../../architecture/data-mapping.md#conversion-requirements)及[資料遷移](../../../data/migrations.md#version-compatibility)；敏感資料與診斷輸出依[安全規範](../../../quality/security.md#sensitive-data-and-copies)及[日誌、稽核與可觀測性](../../../quality/observability.md#diagnostic-logging-and-tracing)。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的值型別與實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依受影響的值型別與實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
@@ -286,7 +286,7 @@ class OrderIdCodec {
 
 | 對應要求 | 語言增量驗收 |
 | --- | --- |
-| <a id="acceptance-java-value-validity"></a>[專屬型別](../../../coding/domain-modeling.md#專屬型別)、[建立入口](../../../coding/code-design.md#construction-entrypoints)、[驗證責任](../../../coding/validation.md#責任分工) | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |
+| <a id="acceptance-java-value-validity"></a>[專屬型別](../../../coding/domain-modeling.md#dedicated-types)、[建立入口](../../../coding/code-design.md#construction-entrypoints)、[驗證責任](../../../coding/validation.md#validation-responsibilities) | 審查專屬型別能否阻止業務概念混用，相關介面有無退回一般字串或數字。驗證合法值、邊界值及不合法值，確認建立成功後符合自身規則，且未將格式有效誤當成存在性或授權成立。 |
 | <a id="acceptance-java-final-references"></a>[不可變性](#java-value-immutability) | 檢查 final 欄位仍可能指向可變內容的路徑；不得以欄位修飾詞作為不可變性證據。 |
 | <a id="acceptance-java-value-equality"></a>[值相等的條件](#java-value-equality) | 驗證不同實例的相等值及具代表性的不相等值，相等物件的雜湊值須相同。適用時確認作為集合元素或映射鍵的行為符合契約，不要求不相等物件一定具有不同雜湊值。 |
 | <a id="acceptance-java-generated-representation"></a>[一般類別與 record](#java-value-implementation)、[診斷字串與交換格式](#java-diagnostic-representation) | 核對實作形式符合支援版本，產生的方法與手寫方法均遵循相等性、不可變性及揭露契約。確認診斷字串未被默認當成交換格式，對外映射符合約定且未洩漏敏感值。 |

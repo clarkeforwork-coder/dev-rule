@@ -1,5 +1,6 @@
 # 共通機制與程式碼共用
 
+<a id="technical-business-responsibilities"></a>
 ## 技術機制與業務判斷
 
 可共用的技術機制集中處理，與業務語意相關的判斷留在負責模組。
@@ -14,6 +15,7 @@
 
 集中處理不得隱藏關鍵業務規則。API、背景工作、事件處理等不同入口都不得繞過必要檢查。
 
+<a id="shared-code"></a>
 ## 共用程式碼
 
 - 依責任與變更原因決定是否抽取，不只因實作相似就共用。
@@ -23,4 +25,4 @@
 - 共用元件不得反向依賴業務模組，也不得累積模組專屬的條件分支。
 - 不為尚未出現的需求預先建立通用框架。
 
-共用型別的條件與所有權見[共用型別管理](shared-types.md)。身分與授權要求見[安全共通規範](../quality/security.md)。各模組的稽核事件清單與保存保證見[日誌、稽核與可觀測性](../quality/observability.md)。
+共用型別的條件與所有權見[共用型別管理](shared-types.md#type-ownership)。身分與授權要求見[安全共通規範](../quality/security.md#authorization-and-data-scope)。各模組的稽核事件清單與保存保證見[日誌、稽核與可觀測性](../quality/observability.md#required-audit-events)。

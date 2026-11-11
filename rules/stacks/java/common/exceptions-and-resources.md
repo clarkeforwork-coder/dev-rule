@@ -276,11 +276,11 @@ class Example {
 
 ## 補充要求
 
-故障日誌與對外回應仍須遵守[日誌、稽核與可觀測性](../../../quality/observability.md#診斷日誌與追蹤)及[資料契約](../../../interfaces/data-contracts.md#對外錯誤契約)，不因保留例外原因而直接對外揭露內部資訊。
+故障日誌與對外回應仍須遵守[日誌、稽核與可觀測性](../../../quality/observability.md#diagnostic-logging-and-tracing)及[資料契約](../../../interfaces/data-contracts.md#public-error-contract)，不因保留例外原因而直接對外揭露內部資訊。
 
 ## 驗收要求
 
-共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響及實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#層級與案例選擇)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
+共同驗收與 Java 語言增量均須經實際採用的 Java 型別、API、版本與框架銜接路徑執行，不因引用共通驗收而略過。依變更影響及實際使用路徑選擇案例，測試層級及證據依[共通測試策略](../../../quality/testing.md#test-levels-and-cases)與[規範驗證](../../../quality/rule-verification.md#verification-coverage)。
 
 ### 共同驗收
 
