@@ -18,17 +18,35 @@
 
 版本與相容性要求須寫入受版本控制的建置設定，本機與 CI 遵循一致規則。編譯時須限制允許的語言功能、標準 API 及產物位元碼格式。具體設定方式依適用 Java 版本及建置工具制定。
 
+**版本差異**
+
+- Java 8：JDK 8 的 `javac` 沒有 `--release`，以 JDK 8 平台類別搭配 `-source 8 -target 8` 限制語言、API 與位元碼；交叉編譯須配置目標平台的 `-bootclasspath`，仍須把完整設定納入版本控制。（[JEP 247](https://openjdk.org/jeps/247)）
+- Java 11：可用自 Java 9 引入的 `--release N` 同時限制語言、標準 API 與位元碼，例如目標為 Java 8 時使用 `--release 8`；仍須確認建置工具實際傳入此設定，不能只設 `-source`／`-target`。（[JEP 247](https://openjdk.org/jeps/247)）
+- Java 17 起：可沿用 `--release N` 指定編譯器支援的目標版本；仍須限制語言、標準 API 與位元碼，且不得把編譯通過當作目標執行環境的行為驗證。（[JEP 247](https://openjdk.org/jeps/247)）
+
 <a id="java-runtime-verification"></a>
 
 ### 執行版本驗證
 
 每個承諾支援的執行版本須有實際驗證依據，涵蓋適用的產物啟動、關鍵行為與依賴載入。函式庫須在使用端執行環境驗證載入與關鍵功能。驗證深度依風險決定，結果記錄於 CI 或發布流程。
 
+**版本差異**
+
+- Java 8／11：Java 9 起 server 組態的預設 GC 從 Parallel 改為 G1，跨 Java 8 與 11 驗證時仍須核對實際 GC、記憶體與關鍵行為，不能用較新環境通過代替舊版證據；執行期差異，範例不驗證。（[JEP 248](https://openjdk.org/jeps/248)）
+- Java 17 起：CMS 自 Java 14 移除，沿用 CMS 設定可能影響啟動與 GC 選擇；仍須在每個承諾環境驗證實際啟動參數與關鍵行為；執行期差異，範例不驗證。（[JEP 363](https://openjdk.org/jeps/363)）
+- Java 21 起：Java 21 可選用分代 ZGC，仍須依實際選用的 GC 驗證記憶體與關鍵行為，不能以可選機制推定效能符合；執行期差異，範例不驗證。（[JEP 439](https://openjdk.org/jeps/439)）
+
 <a id="java-module-versions"></a>
 
 ### 多模組版本要求
 
 各模組可依部署與使用需求採不同版本要求，但須逐模組明訂編譯目標、支援範圍及依賴關係。共用模組須符合使用端承諾的相容範圍，並完成對應驗證。
+
+**版本差異**
+
+- Java 8：沒有自 Java 9 引入的 JPMS，以建置模組與 classpath 管理依賴，仍須逐模組明訂目標與使用端相容範圍；Multi-Release JAR 在 Java 8 使用根目錄類別，須驗證該路徑。（[JEP 261](https://openjdk.org/jeps/261)、[JEP 238](https://openjdk.org/jeps/238)）
+- Java 11：可採用 JPMS 或自 Java 9 引入的 Multi-Release JAR；仍須按實際 module-path／classpath 與所選版本類別驗證使用端，不以單一載入路徑通過代表全部相容。（[JEP 261](https://openjdk.org/jeps/261)、[JEP 238](https://openjdk.org/jeps/238)）
+- Java 17 起：可沿用 JPMS 與 Multi-Release JAR；仍須逐模組限制相容範圍，並驗證各承諾執行版本實際選取的類別與依賴。（[JEP 261](https://openjdk.org/jeps/261)、[JEP 238](https://openjdk.org/jeps/238)）
 
 <a id="java-group-notes-version-declarations"></a>
 
@@ -44,6 +62,11 @@
 
 新增或升級依賴時，須核對直接與間接依賴的 Java 版本要求。若超出專案承諾的執行範圍，須先決定保留相容版本、替換依賴或安排專案升級，完成相容性處置後才能採用。[第三方套件與依賴管理](../../../workflow/dependencies.md#build-changes)
 
+**版本差異**
+
+- Java 11：JDK 自 Java 11 移除 JAXB、JAX-WS、CORBA 等指定模組，仍須盤點直接與間接依賴，改用相容的外部依賴或替代實作後驗證；不得用 `--add-modules` 假設可恢復已移除模組。（[JEP 320](https://openjdk.org/jeps/320)）
+- Java 17 起：上述已移除模組仍須由相容外部依賴或替代實作承接，並核對其最低 Java 版本；不得因升級建置 JDK 而跳過既有使用端的相容性處置。（[JEP 320](https://openjdk.org/jeps/320)）
+
 <a id="java-build-upgrade"></a>
 
 ### 建置升級與支援範圍變更
@@ -55,6 +78,12 @@
 ### Preview 功能
 
 專案預設使用正式發布的語言功能與 API。採用 Preview 功能須由專案負責人核准，記錄用途、理由與影響範圍，明訂建置、測試、部署配套及後續升級的維護責任。環境配套無法滿足時，先採正式功能完成需求。
+
+**版本差異**
+
+- Java 8／11：沒有自 Java 12 引入的 Preview 機制，以正式功能完成需求，仍須維持專案承諾版本的語言與 API 限制。（[JEP 12](https://openjdk.org/jeps/12)）
+- Java 17 起：Java 17 的 pattern switch 為 Preview，不得使用於規範範例；專案採用仍須依本小節核准並配套相同版本的編譯、測試及部署設定。（[JEP 406](https://openjdk.org/jeps/406)、[JEP 12](https://openjdk.org/jeps/12)）
+- Java 21 起：Java 21 的 pattern switch 已正式發布，但 `StructuredTaskScope`、`ScopedValue`、string templates 與 unnamed patterns／variables 為 Preview，不得使用於規範範例；專案採用仍須依本小節核准並明訂升級維護責任。（[JEP 441](https://openjdk.org/jeps/441)、[JEP 453](https://openjdk.org/jeps/453)、[JEP 446](https://openjdk.org/jeps/446)、[JEP 430](https://openjdk.org/jeps/430)、[JEP 443](https://openjdk.org/jeps/443)）
 
 <a id="java-jdk-internals"></a>
 
@@ -86,6 +115,12 @@ class IntegerReader {
 }
 ```
 
+**版本差異**
+
+- Java 8：尚無模組強封裝，不能以反射成功證明符合公開 API 要求；仍須審查內部 API 與私有欄位存取，必要使用依例外流程核准；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
+- Java 11：部分 JDK 8 已存在套件仍預設允許 classpath 程式非法反射並警告；仍須個別核准必要存取，不得把警告或可執行視為授權；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
+- Java 17 起：強封裝使未開放套件的深層反射失敗，`--illegal-access` 無法恢復舊行為；仍須優先使用公開 API，必要的 `--add-opens`／`--add-exports` 逐項記錄核准範圍並於升級時重驗；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
+
 <a id="java-deprecated-api"></a>
 
 ### 棄用 API
@@ -114,6 +149,12 @@ class IntegerFactory {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有自 Java 9 引入的 `@Deprecated.forRemoval`，以 API 文件及遷移清單辨識移除風險；`Integer(int)` 此版尚未棄用，主違反範例的移除警告不能套用此版，仍須依實際棄用項目安排遷移與例外核准。（[JEP 277](https://openjdk.org/jeps/277)、[Integer Java 8 API](https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html)）
+- Java 11：可用自 Java 9 引入的 `forRemoval` 區分預定移除項目；`Integer(int)` 自 Java 9 棄用但此版尚未標為預定移除，仍須優先使用相容替代 API 並記錄必要例外。（[JEP 277](https://openjdk.org/jeps/277)、[JEP 390](https://openjdk.org/jeps/390)）
+- Java 17 起：`Integer(int)` 自 Java 16 標為預定移除，可利用移除警告辨識主違反範例的風險；仍須以 `Integer.valueOf` 等符合支援範圍的 API 遷移，不能只壓掉警告。（[JEP 390](https://openjdk.org/jeps/390)、[JEP 277](https://openjdk.org/jeps/277)）
+
 <a id="java-group-notes-dependency-versions"></a>
 
 ### 依賴、升級與特殊功能補充說明
@@ -128,11 +169,23 @@ Preview 的採用紀錄及其他例外均依[規範治理](../../../workflow/rul
 
 Java 版本變更須評估參與編譯、測試、分析及產物處理的工具，包含適用的建置工具、編譯外掛、註解處理器、測試執行器與覆蓋率工具。須確認必要檢查實際執行，且產生的程式碼或其他產物符合版本承諾。
 
+**版本差異**
+
+- Java 11：可用自 Java 9 引入的統一 GC 日誌 `-Xlog:gc*`；仍須確認日誌分析工具支援實際格式，不能以舊解析器未報錯推定檢查已執行；執行期差異，範例不驗證。（[JEP 271](https://openjdk.org/jeps/271)）
+- Java 17 起：可沿用統一 GC 日誌，仍須在工具升級時驗證採集與分析確實執行並保留結果；執行期差異，範例不驗證。（[JEP 271](https://openjdk.org/jeps/271)）
+- Java 21 起：Java 21 動態載入 agent 會發出警告，仍須核對測試、分析與覆蓋率工具的 agent 載入方式及實際執行結果，不得把未執行的檢查計為通過；執行期差異，範例不驗證。（[JEP 451](https://openjdk.org/jeps/451)）
+
 <a id="java-jdk-distribution"></a>
 
 ### JDK 發行商與完整版本
 
 專案須記錄實際使用的 JDK 發行商與完整版本。允許多種發行版本時須明訂支援範圍。修補更新或更換發行商時，依影響驗證相容性並保留紀錄，例如啟動參數、外部連線與關鍵流程。
+
+**版本差異**
+
+- Java 8／11：預設字元集可能依作業系統與地區設定而異，仍須記錄實際發行商、完整版本及相關啟動設定，並驗證外部文字交換與關鍵流程；執行期差異，範例不驗證。（[JEP 400](https://openjdk.org/jeps/400)）
+- Java 17 起：Java 17 仍使用環境相依的預設字元集，仍須核對實際環境與啟動設定，不得推定與 Java 21 相同；執行期差異，範例不驗證。（[JEP 400](https://openjdk.org/jeps/400)）
+- Java 21 起：自 Java 18 起標準 API 的預設字元集為 UTF-8（主控台 I/O 除外），仍須核對 `file.encoding` 等實際設定並驗證發行版本變更後的外部連線與關鍵流程；執行期差異，範例不驗證。（[JEP 400](https://openjdk.org/jeps/400)）
 
 <a id="java-artifact-traceability"></a>
 
