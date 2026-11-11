@@ -36,7 +36,7 @@ class Example {
 
 **版本差異**
 
-- Java 8：沒有 `List.of`（Java 9 引入），以 `Collections.singletonList` 建立此單元素清單；仍須明確宣告 `List<String>`，維持元素型別資訊。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#of(E)))
+- Java 8：沒有 `List.of`（Java 9 引入），以 `Collections.singletonList` 建立此單元素清單；仍須明確宣告 `List<String>`，維持元素型別資訊。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#of(E))）
 - Java 11：區域變數 `var` 自 Java 10 起、Lambda 參數 `var` 自 Java 11 起可編譯，但會省略要求的型別標註，不得使用；仍須明確宣告型別。（[JEP 286](https://openjdk.org/jeps/286)、[JEP 323](https://openjdk.org/jeps/323)）
 
 **符合（Java 8）**
@@ -45,7 +45,7 @@ class Example {
 // 區域變數明確宣告元素型別，使用舊版的單元素清單工廠。
 class Example {
     void prepare() {
-        java.util.List<String> names = java.util.Collections.singletonList("Ada");
+        List<String> names = Collections.singletonList("Ada");
     }
 }
 ```
@@ -78,7 +78,7 @@ class Example {
 
 **版本差異**
 
-- Java 8／11：沒有正式的 `record`（Java 16 正式發布），以具名一般類別承載訂單；欄位仍須宣告為 `Order`，維持已知業務型別的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以具名一般類別承載訂單；欄位仍須宣告為 `Order`，維持已知業務型別的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
@@ -154,7 +154,7 @@ class Example {
 
 **版本差異**
 
-- Java 8／11：沒有正式的 `record`（Java 16 正式發布），以具名一般類別搭配明確的 `Order` 參數契約，維持不靠向下轉型補回業務型別的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以具名一般類別搭配明確的 `Order` 參數契約，維持不靠向下轉型補回業務型別的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
 - Java 17 起：`instanceof` 型別模式自 Java 16 正式發布，可將型別測試、轉換與變數宣告合併；用它猜回先前遺失的業務型別仍會破壞契約，不得以模式語法掩蓋此設計，仍須保留業務型別。（[JEP 394](https://openjdk.org/jeps/394)）
 
 **符合（Java 8）**
@@ -258,7 +258,7 @@ class Example {
 
 **版本差異**
 
-- Java 8／11：沒有正式的 `record`（Java 16 正式發布），以具名一般類別宣告固定欄位與建構子；仍須保留各欄位型別，不得改用 `Map<String, Object>` 或 `Object[]`，維持資料結構的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以具名一般類別宣告固定欄位與建構子；仍須保留各欄位型別，不得改用 `Map<String, Object>` 或 `Object[]`，維持資料結構的同一保證。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
@@ -343,7 +343,7 @@ class Example {
 ```java
 // 只取遍歷順序的首項；呼叫端須提供非空集合，不要求索引操作。
 class Example {
-    String first(java.util.SequencedCollection<String> names) {
+    String first(SequencedCollection<String> names) {
         return names.getFirst();
     }
 }
@@ -388,7 +388,7 @@ class Example {
 // 匿名類別建構明寫型別參數，宣告端也保留元素型別。
 class Example {
     void prepare() {
-        java.util.List<String> names = new java.util.AbstractList<String>() {
+        List<String> names = new AbstractList<String>() {
             @Override public String get(int index) {
                 if (index != 0) throw new IndexOutOfBoundsException();
                 return "Ada";
@@ -405,7 +405,7 @@ class Example {
 // 匿名類別建構使用菱形運算子，宣告端仍保留元素型別。
 class Example {
     void prepare() {
-        java.util.List<String> names = new java.util.AbstractList<>() {
+        List<String> names = new AbstractList<>() {
             @Override public String get(int index) {
                 if (index != 0) throw new IndexOutOfBoundsException();
                 return "Ada";
@@ -448,7 +448,7 @@ class Example {
 
 **版本差異**
 
-- Java 8：沒有 `List.of`（Java 9 引入）及正式的 `record`（Java 16 正式發布），以 `Collections.singletonList` 與具名一般類別替代；回傳值仍須宣告 `List<Order>`，維持可直接使用元素型別的同一保證。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#of(E))、[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8：`record` 自 Java 16 起（JEP 395）；沒有 `List.of`（Java 9 引入）及 `record`，以 `Collections.singletonList` 與具名一般類別替代；回傳值仍須宣告 `List<Order>`，維持可直接使用元素型別的同一保證。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#of(E))、[JEP 395](https://openjdk.org/jeps/395)）
 - Java 11：可用 Java 9 引入的 `List.of` 建立不可修改清單，訂單仍以一般類別承載；回傳值仍須宣告 `List<Order>`，不得以萬用字元代替不可變性設計。（[List.of API @since 9](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#of(E))、[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
@@ -461,8 +461,8 @@ final class Order {
     String id() { return id; }
 }
 class Example {
-    java.util.List<Order> orders() {
-        return java.util.Collections.singletonList(new Order("A1"));
+    List<Order> orders() {
+        return Collections.singletonList(new Order("A1"));
     }
 }
 ```
@@ -477,8 +477,8 @@ final class Order {
     String id() { return id; }
 }
 class Example {
-    java.util.List<Order> orders() {
-        return java.util.List.of(new Order("A1"));
+    List<Order> orders() {
+        return List.of(new Order("A1"));
     }
 }
 ```

@@ -249,13 +249,13 @@ Java 版本變更須評估參與編譯、測試、分析及產物處理的工具
 | states-and-results.md | [處理完整性](states-and-results.md#java-exhaustive-result-handling) | 8、11、17、21 | 依版本以列舉分支、switch 運算式或 sealed 搭配 pattern switch 落實完整處理。 |
 | states-and-results.md | [穩定的外部代碼](states-and-results.md#java-stable-external-codes) | 8、11、17、21 | 依版本使用 switch 敘述或運算式維持固定代碼映射並拒絕未知值。 |
 | states-and-results.md | [封閉或允許擴充](states-and-results.md#java-model-extensibility) | 8、11、17、21 | 依版本以私有基底建構子與巢狀 final 子類別或 sealed／permits 保護封閉契約。 |
-| boundary-mapping.md | [明確控制欄位及來源](boundary-mapping.md#java-mapping-fields) | 8、11 | 替代：final 類別取代 record，明列欄位與可信來源。 |
-| boundary-mapping.md | [失敗明確回報](boundary-mapping.md#java-mapping-integrity) | 8、11 | 替代：final 類別取代 record，轉換失敗仍明確拋出。 |
+| boundary-mapping.md | [明確控制欄位及來源](boundary-mapping.md#java-mapping-fields) | 8、11 | final 類別取代 record，明列欄位與可信來源。 |
+| boundary-mapping.md | [失敗明確回報](boundary-mapping.md#java-mapping-integrity) | 8、11 | final 類別取代 record，轉換失敗仍明確拋出。 |
 | boundary-mapping.md | [保留更新意圖](boundary-mapping.md#java-update-intent) | 8、11、17、21 | 依版本以封閉巢狀類別、record／sealed 或 record pattern 與 pattern switch 表達更新意圖。 |
 | boundary-mapping.md | [集合與可變元素的隔離](boundary-mapping.md#java-mutable-isolation) | 8、11、17、21 | 依版本逐一複製並包裝、使用 copyOf 或 toList；reversed 仍是共享檢視。 |
-| boundary-mapping.md | [各方向分別定義](boundary-mapping.md#java-directional-mapping) | 8、11 | 替代：不同 final 類別維持輸入與輸出契約分離。 |
-| boundary-mapping.md | [明確維護責任](boundary-mapping.md#java-mapping-ownership) | 8、11 | 替代：final 類別搭配方法完成簡單映射，不強制 Mapper 層。 |
-| boundary-mapping.md | [驗證實際映射路徑](boundary-mapping.md#java-mapping-verification) | 8、11 | 替代：final 結果類別與存取方法，測試仍走實際映射。 |
+| boundary-mapping.md | [各方向分別定義](boundary-mapping.md#java-directional-mapping) | 8、11 | 不同 final 類別維持輸入與輸出契約分離。 |
+| boundary-mapping.md | [明確維護責任](boundary-mapping.md#java-mapping-ownership) | 8、11 | final 類別搭配方法完成簡單映射，不強制 Mapper 層。 |
+| boundary-mapping.md | [驗證實際映射路徑](boundary-mapping.md#java-mapping-verification) | 8、11 | final 結果類別與存取方法，測試仍走實際映射。 |
 | classes-and-construction.md | [建構期間的安全性](classes-and-construction.md#java-construction-safety) | 21 | 建置 JDK 21 可用 this-escape 輔助檢查，仍審查所有建構路徑。 |
 | classes-and-construction.md | [依需求選擇建立方式](classes-and-construction.md#java-construction-entrypoints) | 8、11、17、21 | 以一般類別建構子或 record 標準建構子集中驗證所有建立入口。 |
 | classes-and-construction.md | [`super` 呼叫與 `final` 的擴充限制](classes-and-construction.md#java-override-scope) | 8、11、17、21 | 依版本以可見性與審查或 sealed 限制繼承，仍以固定入口保留必要檢查。 |

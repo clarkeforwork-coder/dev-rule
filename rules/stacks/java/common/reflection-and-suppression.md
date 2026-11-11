@@ -85,7 +85,7 @@ class Example {
 
 - Java 8：沒有 Java 9 引入的模組封裝，須以公開 API、正式建構子及特殊存取審查維持同一封裝保證；反射成功仍不代表已獲核准；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
 - Java 11：預設仍容許未命名模組反射存取部分 JDK 8 已存在套件的內部成員，仍須逐項核准特殊存取，不得把警告或呼叫成功當成授權；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)）
-- Java 17 起：Java 16 起預設強封裝 JDK 內部實作，Java 17 起 `--illegal-access` 無法恢復寬鬆模式；必要的 `--add-opens` 仍須個別核准，且正式發布於 Java 16 的 record 之 final 欄位即使放寬存取也不能反射寫入，仍須走正式建立流程維持不變條件；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)、[JEP 395](https://openjdk.org/jeps/395)、[AccessibleObject API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/AccessibleObject.html#setAccessible(boolean))）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；Java 16 起預設強封裝 JDK 內部實作，Java 17 起 `--illegal-access` 無法恢復寬鬆模式；必要的 `--add-opens` 仍須個別核准，且 `record` 之 final 欄位即使放寬存取也不能反射寫入，仍須走正式建立流程維持不變條件；執行期差異，範例不驗證。（[JEP 403](https://openjdk.org/jeps/403)、[JEP 395](https://openjdk.org/jeps/395)、[AccessibleObject API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/reflect/AccessibleObject.html#setAccessible(boolean))）
 
 <a id="java-dynamic-contract-validation"></a>
 

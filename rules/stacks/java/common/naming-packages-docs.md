@@ -153,8 +153,8 @@ class TextReader {
 **符合（Java 8）**
 
 ```java
+import java.nio.ByteBuffer;
 // 保留整檔讀取契約，明確以 UTF-8 解碼並回報不合法的位元組。
-import java.io.IOException; import java.nio.ByteBuffer; import java.nio.file.*; import java.nio.charset.StandardCharsets;
 class TextReader {
     /**
      * 讀取整個檔案的 UTF-8 文字，並於返回前關閉自行取得的資源。
@@ -173,7 +173,6 @@ class TextReader {
 
 ```java
 // 用文件片段補充呼叫方式，仍保留完整契約並另外驗證片段。
-import java.io.IOException; import java.nio.file.*; import java.nio.charset.StandardCharsets;
 class TextReader {
     /** 讀取整個檔案的 UTF-8 文字，並於返回前關閉自行取得的資源。
      * {@snippet :

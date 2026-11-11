@@ -54,7 +54,7 @@ record Paid(String transactionId) implements Payment {
 
 **版本差異**
 
-- Java 8／11：沒有 `record`（Java 16 正式發布）與 `sealed`（Java 17 正式發布），以私有建構子的抽象類別及巢狀 `final` 子類別維持狀態型別的同一保證；必要資料仍須在子類別建構子驗證。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record` 與 `sealed`（Java 17 正式發布），以私有建構子的抽象類別及巢狀 `final` 子類別維持狀態型別的同一保證；必要資料仍須在子類別建構子驗證。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)）
 - Java 17 起：可用 `sealed` 限制狀態型別並以 `record` 承載各狀態資料；必要資料仍須在建構時驗證，`record` 不會自動拒絕空值。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)）
 
 **符合（Java 8）**
@@ -67,7 +67,7 @@ abstract class Payment {
     static final class Paid extends Payment {
         private final String transactionId;
         Paid(String transactionId) {
-            this.transactionId = java.util.Objects.requireNonNull(transactionId);
+            this.transactionId = Objects.requireNonNull(transactionId);
         }
         String transactionId() { return transactionId; }
     }

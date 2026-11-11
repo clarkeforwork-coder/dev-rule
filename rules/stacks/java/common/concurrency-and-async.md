@@ -38,7 +38,7 @@ class Work {
 
 **版本差異**
 
-- Java 21 起：可用 Java 21 正式提供的虛擬執行緒 executor，每個工作使用一條虛擬執行緒；仍須由負責元件管理執行資源，以下游共用的 `Semaphore` 限制並行存取，不以池化虛擬執行緒限制容量。（[JEP 444](https://openjdk.org/jeps/444)）
+- Java 21 起：可用 Java 21 正式提供的虛擬執行緒 executor，每個工作使用一條虛擬執行緒；仍須由負責元件管理執行資源，例如以下游共用的 `Semaphore` 限制並行存取，不以池化虛擬執行緒限制容量。（[JEP 444](https://openjdk.org/jeps/444)）
 
 **符合（Java 21）**
 
@@ -218,14 +218,16 @@ class Results {
 **符合（Java 8）**
 
 ```java
+import java.util.logging.Logger;
+import java.util.logging.Level;
 // 改用舊版日誌 API，仍記錄故障並回傳原成功或失敗的結果鏈。
 class Results {
-    private final java.util.logging.Logger logger =
-        java.util.logging.Logger.getLogger(Results.class.getName());
+    private final Logger logger =
+        Logger.getLogger(Results.class.getName());
     CompletableFuture<Integer> receive(CompletableFuture<Integer> work) {
         return work.whenComplete((Integer value, Throwable failure) -> {
             if (failure != null) {
-                logger.log(java.util.logging.Level.SEVERE, "背景工作未成功", failure);
+                logger.log(Level.SEVERE, "背景工作未成功", failure);
             }
         });
     }
@@ -301,7 +303,7 @@ class Execution {
 
 **版本差異**
 
-- Java 21 起：Java 21 的虛擬執行緒在 `synchronized` 區塊內執行阻塞操作會釘住載體執行緒，長時間或頻繁釘住會限制擴展性；仍須明確安排 executor 與阻塞位置，評估將這類持鎖阻塞改以 `ReentrantLock` 保護，不得假定虛擬執行緒使阻塞成本消失。（執行期差異，範例不驗證；[JEP 444](https://openjdk.org/jeps/444)）
+- Java 21 起：Java 21 的虛擬執行緒在 `synchronized` 區塊內執行阻塞操作會釘住載體執行緒，長時間或頻繁釘住會限制擴展性；仍須明確安排 executor 與阻塞位置，評估將這類持鎖阻塞改以 `ReentrantLock` 保護，不得假定虛擬執行緒使阻塞成本消失；執行期差異，範例不驗證。（[JEP 444](https://openjdk.org/jeps/444)）
 
 <a id="java-context-propagation"></a>
 
@@ -387,7 +389,7 @@ class Stock {
 
 **版本差異**
 
-- Java 21 起：Java 21 的虛擬執行緒在 `synchronized` 區塊內長時間阻塞會釘住載體執行緒；可評估改用主範例的 `ReentrantLock`，仍須保留完整原子範圍並於所有退出路徑釋放鎖，不得為避免釘住而把必要檢查移到鎖外。（執行期差異，範例不驗證；[JEP 444](https://openjdk.org/jeps/444)）
+- Java 21 起：Java 21 的虛擬執行緒在 `synchronized` 區塊內長時間阻塞會釘住載體執行緒；可評估改用主範例的 `ReentrantLock`，仍須保留完整原子範圍並於所有退出路徑釋放鎖，不得為避免釘住而把必要檢查移到鎖外；執行期差異，範例不驗證。（[JEP 444](https://openjdk.org/jeps/444)）
 
 ## 關閉與驗證
 
@@ -427,7 +429,7 @@ class Shutdown {
 
 **版本差異**
 
-- Java 21 起：自 Java 19 引入的 `ExecutorService.close()` 會等待至 executor 終止且沒有期限參數，try-with-resources 也會觸發此等待；仍須依關閉契約驗證實際終止，有期限的關閉須沿主範例使用 `shutdown` 與 `awaitTermination`，不得以 `close()` 取代期限控制。（執行期差異，範例不驗證；[`close` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html)）
+- Java 21 起：自 Java 19 引入的 `ExecutorService.close()` 會等待至 executor 終止且沒有期限參數，try-with-resources 也會觸發此等待；仍須依關閉契約驗證實際終止，有期限的關閉須沿主範例使用 `shutdown` 與 `awaitTermination`，不得以 `close()` 取代期限控制；執行期差異，範例不驗證。（[`close` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html)）
 
 <a id="java-controlled-verification"></a>
 

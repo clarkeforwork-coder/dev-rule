@@ -121,7 +121,7 @@ class RangeBuilder {
 
 **版本差異**
 
-- Java 8／11：沒有正式的 record（Java 16 正式發布），以一般類別的建構子集中驗證，讓 Builder 與工廠呼叫同一入口以維持同一保證；仍須拒絕無效物件。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以一般類別的建構子集中驗證，讓 Builder 與工廠呼叫同一入口以維持同一保證；仍須拒絕無效物件。（[JEP 395](https://openjdk.org/jeps/395)）
 - Java 17 起：可用 record 的緊湊標準建構子集中驗證，其他 record 建構子須委派至標準建構子；仍須在該入口檢查必要條件，record 自動產生的建構子不會代為檢查業務條件。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
@@ -183,7 +183,7 @@ class CashPayment extends Payment {
 **版本差異**
 
 - Java 8／11：沒有正式的 sealed（Java 17 正式發布），以 `final` 方法固定必要檢查，再以建構子可見性及審查限制允許的繼承範圍，維持同一保證；仍須確認子類別不能繞過必要檢查。（[JEP 409](https://openjdk.org/jeps/409)）
-- Java 17 起：可用 sealed 與 `permits` 限制直接子型別，但允許的子類別仍能覆寫非 `final` 方法；仍須保留不可繞過的檢查入口，並確認代理與繼承機制相容；record 自 Java 16 起正式提供且隱含 `final`，選用時同樣須確認擴充需求。（[JEP 409](https://openjdk.org/jeps/409)、[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 sealed 與 `permits` 限制直接子型別，但允許的子類別仍能覆寫非 `final` 方法；仍須保留不可繞過的檢查入口，並確認代理與繼承機制相容；`record` 隱含 `final`，選用時同樣須確認擴充需求。（[JEP 409](https://openjdk.org/jeps/409)、[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 17）**
 

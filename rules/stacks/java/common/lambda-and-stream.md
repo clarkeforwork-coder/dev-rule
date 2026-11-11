@@ -264,7 +264,7 @@ class Example {
 
 **版本差異**
 
-- Java 21 起：在 Java 21 的虛擬執行緒內啟用平行 Stream，仍會使用與虛擬執行緒排程器不同的 common ForkJoinPool 執行平行工作；仍須評估阻塞、資源競爭並以代表性負載確認收益，不得因呼叫端改用虛擬執行緒就直接啟用平行處理。執行期差異，範例不驗證。（[JEP 444](https://openjdk.org/jeps/444)）
+- Java 21 起：在 Java 21 的虛擬執行緒內啟用平行 Stream，仍會使用與虛擬執行緒排程器不同的 common ForkJoinPool 執行平行工作；仍須評估阻塞、資源競爭並以代表性負載確認收益，不得因呼叫端改用虛擬執行緒就直接啟用平行處理；執行期差異，範例不驗證。（[JEP 444](https://openjdk.org/jeps/444)）
 
 <a id="java-reduction-collection"></a>
 
@@ -338,13 +338,14 @@ class Example {
 **符合（Java 8）**
 
 ```java
+import java.nio.ByteBuffer;
 // 明確讀取並嚴格解碼，讓讀取與解碼失敗沿原契約傳遞。
 class Example {
     List<String> readAll(List<Path> paths) throws IOException {
         List<String> result = new ArrayList<>();
         for (Path path : paths) {
             result.add(StandardCharsets.UTF_8.newDecoder()
-                    .decode(java.nio.ByteBuffer.wrap(Files.readAllBytes(path))).toString());
+                    .decode(ByteBuffer.wrap(Files.readAllBytes(path))).toString());
         }
         return result;
     }

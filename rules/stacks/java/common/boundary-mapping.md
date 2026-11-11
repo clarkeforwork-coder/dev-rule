@@ -42,7 +42,7 @@ class Mapping {
 
 **版本差異**
 
-- Java 8／11：沒有 record（Java 16 正式發布），以具名 final 類別、建構子與存取方法表達邊界資料，仍須明列映射欄位並由伺服器取得可信來源。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以具名 final 類別、建構子與存取方法表達邊界資料，仍須明列映射欄位並由伺服器取得可信來源。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
@@ -105,14 +105,16 @@ class Mapping {
 
 **版本差異**
 
-- Java 8／11：沒有 record（Java 16 正式發布），以 final 類別及建構子表達目標型別，仍須明確拋出轉換失敗，不回傳缺少必要資料的半成品。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以 final 類別及建構子表達目標型別，仍須明確拋出轉換失敗，不回傳缺少必要資料的半成品。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
 ```java
 // 解析失敗明確回報外部金額格式不合法，不產生半成品。
 final class Amount {
-    private final BigDecimal value; Amount(BigDecimal value) { this.value = value; } BigDecimal value() { return value; }
+    private final BigDecimal value;
+    Amount(BigDecimal value) { this.value = value; }
+    BigDecimal value() { return value; }
 }
 class Mapping {
     Amount map(String value) {
@@ -168,7 +170,7 @@ class Update {
 **版本差異**
 
 - Java 8／11：沒有 record、sealed 與模式 `instanceof`，以私有建構子的抽象類別及巢狀 final 子類別封閉三種意圖，並以傳統 `instanceof` 與轉型取值；仍須一路保留未提供、清空及設定值。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)、[JEP 394](https://openjdk.org/jeps/394)）
-- Java 17 起：可用 Java 16 正式發布的 record、模式 `instanceof` 及 Java 17 正式發布的 sealed 表達三態；仍須分別傳遞與處理各意圖，不能合併成同一個 `null`。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 394](https://openjdk.org/jeps/394)、[JEP 409](https://openjdk.org/jeps/409)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record`、Java 16 正式發布的模式 `instanceof` 及 Java 17 正式發布的 sealed 表達三態；仍須分別傳遞與處理各意圖，不能合併成同一個 `null`。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 394](https://openjdk.org/jeps/394)、[JEP 409](https://openjdk.org/jeps/409)）
 - Java 21 起：可用正式的 record pattern 與 pattern switch 解構更新值，封閉三態的分支完整性由編譯器檢查；仍須保留未提供與清空的不同語意，解構不能代替來源驗證。（[JEP 440](https://openjdk.org/jeps/440)、[JEP 441](https://openjdk.org/jeps/441)）
 
 **符合（Java 8）**
@@ -326,7 +328,7 @@ class Mapping {
 
 **版本差異**
 
-- Java 8／11：沒有 record（Java 16 正式發布），以不同的 final 類別表達輸入與輸出契約，仍須分別定義各方向映射，不把遮罩值寫回業務物件。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以不同的 final 類別表達輸入與輸出契約，仍須分別定義各方向映射，不把遮罩值寫回業務物件。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
@@ -385,7 +387,7 @@ class Boundary {
 
 **版本差異**
 
-- Java 8／11：沒有 record（Java 16 正式發布），以 final 類別表達邊界資料，簡單轉換仍須按責任放在方法內，不因缺少 record 而增設 Mapper 介面。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以 final 類別表達邊界資料，簡單轉換仍須按責任放在方法內，不因缺少 record 而增設 Mapper 介面。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
@@ -393,11 +395,13 @@ class Boundary {
 // 單一邊界的簡單轉換直接使用方法，不強制增設 Mapper 層。
 final class Request {
     private final String name;
-    Request(String name) { this.name = name; } String name() { return name; }
+    Request(String name) { this.name = name; }
+    String name() { return name; }
 }
 final class Command {
     private final String name;
-    Command(String name) { this.name = name; } String name() { return name; }
+    Command(String name) { this.name = name; }
+    String name() { return name; }
 }
 class Boundary {
     Command accept(Request input) { return map(input); }
@@ -445,7 +449,7 @@ class MappingTest {
 
 **版本差異**
 
-- Java 8／11：沒有 record（Java 16 正式發布），以 final 類別及存取方法表達映射結果，測試仍須呼叫實際映射及適用的序列化／反序列化路徑。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record`，以 final 類別及存取方法表達映射結果，測試仍須呼叫實際映射及適用的序列化／反序列化路徑。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
@@ -453,7 +457,8 @@ class MappingTest {
 // 測試呼叫實際採用的映射方法並檢查欄位值。
 final class Command {
     private final int count;
-    Command(int count) { this.count = count; } int count() { return count; }
+    Command(int count) { this.count = count; }
+    int count() { return count; }
 }
 class Boundary {
     static Command map(String input) { return new Command(Integer.parseInt(input)); }

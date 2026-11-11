@@ -102,8 +102,8 @@ record Code(String value) {
 
 **版本差異**
 
-- Java 8／11：沒有 record 與 `instanceof` 型別模式，以 `final` 類別、傳統型別判斷與轉型實作相等及雜湊，維持同一保證；仍須以同一比較依據處理 `null`、相等與雜湊。（兩項功能自 Java 16 正式發布，[JEP 394](https://openjdk.org/jeps/394)、[JEP 395](https://openjdk.org/jeps/395)）
-- Java 17 起：可用 record 產生依同一 record 型別及元件判同的 `equals()` 與相容 `hashCode()`；仍須確認元件比較符合契約，陣列元件的預設比較是參考相等，自訂方法時也須維持完整相等與雜湊契約。（[JEP 395](https://openjdk.org/jeps/395)、[Record API](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html)，`@since 16`）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 record 與 `instanceof` 型別模式，以 `final` 類別、傳統型別判斷與轉型實作相等及雜湊，維持同一保證；仍須以同一比較依據處理 `null`、相等與雜湊。（`instanceof` 型別模式自 Java 16 正式發布，[JEP 394](https://openjdk.org/jeps/394)、[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 record 產生依同一 record 型別及元件判同的 `equals()` 與相容 `hashCode()`；仍須確認元件比較符合契約，陣列元件的預設比較是參考相等，自訂方法時也須維持完整相等與雜湊契約。（[JEP 395](https://openjdk.org/jeps/395)、[Record API](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html)，`@since 16`）
 
 **符合（Java 8）**
 
@@ -115,9 +115,9 @@ final class Code {
     @Override public boolean equals(Object other) {
         if (!(other instanceof Code)) return false;
         Code c = (Code) other;
-        return java.util.Objects.equals(value, c.value);
+        return Objects.equals(value, c.value);
     }
-    @Override public int hashCode() { return java.util.Objects.hashCode(value); }
+    @Override public int hashCode() { return Objects.hashCode(value); }
 }
 ```
 
@@ -165,13 +165,12 @@ class Example {
 
 - Java 8：沒有 `List.of`，以複製後的清單加上 `Collections.unmodifiableList` 維持同一保證；仍須避免可變來源或元素改變鍵的相等與雜湊，唯讀檢視本身不能隔離來源修改。（[List.of API](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html#of(E))，`@since 9`）
 - Java 11：可用自 Java 9 起的 `List.of` 建立不可修改清單，或自 Java 10 起的 `List.copyOf` 隔離來源清單的結構變更；仍須確保元素的比較依據穩定，兩者皆不會深層複製元素。（[List API](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html)，`of @since 9`、`copyOf @since 10`）
-- Java 17 起：可用 record 宣告鍵，但其元件欄位的 `final` 不會凍結可變元件；仍須防禦複製並保持元件比較依據穩定，避免自動產生的雜湊隨內容改變。（record 自 Java 16 正式發布，[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 record 宣告鍵，但其元件欄位的 `final` 不會凍結可變元件；仍須防禦複製並保持元件比較依據穩定，避免自動產生的雜湊隨內容改變。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
 ```java
 // 複製清單後封裝，整數元素的比較依據也保持不變。
-import java.util.*;
 class Example {
     void run() {
         List<Integer> key = Collections.unmodifiableList(
@@ -186,7 +185,6 @@ class Example {
 
 ```java
 // 將來源清單複製為不可修改清單，整數元素保持穩定。
-import java.util.*;
 class Example {
     void run() {
         List<Integer> source = new ArrayList<>(List.of(1));
@@ -201,7 +199,6 @@ class Example {
 
 ```java
 // 清單元件先複製，確保 record 鍵的相等與雜湊保持穩定。
-import java.util.*;
 record Key(List<Integer> values) {
     Key { values = List.copyOf(values); }
 }
@@ -286,7 +283,7 @@ class Child extends Base {}
 **版本差異**
 
 - Java 8／11：沒有 sealed 型別，需要限制擴充時可用私有建構子與巢狀子類別維持同一保證；仍須明訂允許相等的具體型別並維持對稱與遞移契約。（sealed 自 Java 17 正式發布，[JEP 409](https://openjdk.org/jeps/409)）
-- Java 17 起：可用 `sealed` 與 `permits` 限制直接子型別；仍須明訂跨型別相等範圍，封閉繼承集合不會自動產生正確的 `equals()` 或 `hashCode()`，自 Java 16 起的 record 則隱含為 `final`，其預設相等性只接受同一 record 型別。（[JEP 409](https://openjdk.org/jeps/409)、[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `sealed` 與 `permits` 限制直接子型別；仍須明訂跨型別相等範圍，封閉繼承集合不會自動產生正確的 `equals()` 或 `hashCode()`，`record` 則隱含為 `final`，其預設相等性只接受同一 record 型別。（[JEP 409](https://openjdk.org/jeps/409)、[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
@@ -347,14 +344,13 @@ record Product(long id, int price) {
 
 **版本差異**
 
-- Java 8／11：沒有 record，以一般類別宣告欄位及存取方法，並以用途明確的 `Comparator` 維持同一保證；仍須區分情境排序與自然順序，不因改用類別就加入 `Comparable`。（record 自 Java 16 正式發布，[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 record，以一般類別宣告欄位及存取方法，並以用途明確的 `Comparator` 維持同一保證；仍須區分情境排序與自然順序，不因改用類別就加入 `Comparable`。（[JEP 395](https://openjdk.org/jeps/395)）
 - Java 17 起：可用 record 宣告產品資料；仍須明訂排序契約，record 自動產生的成員不包含 `Comparable` 實作或情境比較器。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
 ```java
 // 一般類別保留價格與識別碼存取方法，由促銷比較器定義情境排序。
-import java.util.Comparator;
 final class Product {
     private final long id;
     private final int price;
@@ -429,24 +425,24 @@ class Example {
 
 **版本差異**
 
-- Java 8／11：沒有 record，以一般類別手寫相等與雜湊，並以相同欄位組合比較器維持同一保證；仍須確認排序集合的比較為零與約定的相等性一致，不合併應保留的訂單。（record 自 Java 16 正式發布，[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 record，以一般類別手寫相等與雜湊，並以相同欄位組合比較器維持同一保證；仍須確認排序集合的比較為零與約定的相等性一致，不合併應保留的訂單。（[JEP 395](https://openjdk.org/jeps/395)）
 - Java 17 起：可用 record 產生依元件判同的相等與雜湊；仍須自行設計排序比較器，使比較為零符合集合判同契約，record 不會產生自然順序。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
 ```java
 // 相等與排序都依金額及識別碼，保留同金額的不同訂單。
-import java.util.*;
 class Example {
     static final class Order {
-        final long id; final int amount;
+        final long id;
+        final int amount;
         Order(long id, int amount) { this.id = id; this.amount = amount; }
         @Override public boolean equals(Object o) { return o instanceof Order && id == ((Order) o).id && amount == ((Order) o).amount; }
         @Override public int hashCode() { return Objects.hash(id, amount); }
     }
     Set<Order> orders() {
-        Set<Order> orders = new TreeSet<>(Comparator.comparingInt((Order o) -> o.amount).thenComparingLong(o -> o.id));
-        orders.add(new Order(1, 100)); orders.add(new Order(2, 100));
+        Set<Order> orders = new TreeSet<>(Comparator.comparingInt((Order o) -> o.amount).thenComparingLong((Order o) -> o.id));
+        Collections.addAll(orders, new Order(1, 100), new Order(2, 100));
         return orders;
     }
 }

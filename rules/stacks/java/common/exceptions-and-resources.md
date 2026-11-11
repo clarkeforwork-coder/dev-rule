@@ -36,16 +36,17 @@ class Example {
 
 **版本差異**
 
-- Java 8：沒有 `Files.readString`（Java 11 引入），以 `Files.readAllBytes` 搭配 UTF-8 `CharsetDecoder` 維持同一保證；解碼器預設回報無效輸入，仍須以 `IOException` 表達讀取或解碼故障（[`Files.readString` API `@since 11`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#readString(java.nio.file.Path))、[`CharsetDecoder` API `@since 1.4`](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/CharsetDecoder.html)）。
+- Java 8：沒有 `Files.readString`（Java 11 引入），以 `Files.readAllBytes` 搭配 UTF-8 `CharsetDecoder` 維持同一保證；解碼器預設回報無效輸入，仍須以 `IOException` 表達讀取或解碼故障。（[`Files.readString` API `@since 11`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#readString(java.nio.file.Path))、[`CharsetDecoder` API `@since 1.4`](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/CharsetDecoder.html)）
 
 **符合（Java 8）**
 
 ```java
+import java.nio.ByteBuffer;
 // 使用 IOException 明確表達讀取的技術故障。
 class Example {
     String read(Path path) throws IOException {
         return StandardCharsets.UTF_8.newDecoder()
-                .decode(java.nio.ByteBuffer.wrap(Files.readAllBytes(path))).toString();
+                .decode(ByteBuffer.wrap(Files.readAllBytes(path))).toString();
     }
 }
 ```
@@ -89,16 +90,17 @@ class Example {
 
 **版本差異**
 
-- Java 8：沒有 `Files.readString`（Java 11 引入），以 `Files.readAllBytes` 搭配 UTF-8 `CharsetDecoder` 維持同一保證；解碼器預設回報無效輸入，仍須保留受檢查契約並交由呼叫端明確處置（[`Files.readString` API `@since 11`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#readString(java.nio.file.Path))、[`CharsetDecoder` API `@since 1.4`](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/CharsetDecoder.html)）。
+- Java 8：沒有 `Files.readString`（Java 11 引入），以 `Files.readAllBytes` 搭配 UTF-8 `CharsetDecoder` 維持同一保證；解碼器預設回報無效輸入，仍須保留受檢查契約並交由呼叫端明確處置。（[`Files.readString` API `@since 11`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#readString(java.nio.file.Path))、[`CharsetDecoder` API `@since 1.4`](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/CharsetDecoder.html)）
 
 **符合（Java 8）**
 
 ```java
+import java.nio.ByteBuffer;
 // 讀取故障維持受檢查契約，呼叫端明確捕捉並交給故障處置元件。
 class Example {
     String read(Path path) throws IOException {
         return StandardCharsets.UTF_8.newDecoder()
-                .decode(java.nio.ByteBuffer.wrap(Files.readAllBytes(path))).toString();
+                .decode(ByteBuffer.wrap(Files.readAllBytes(path))).toString();
     }
     void display(Path path, Consumer<IOException> reportFailure) {
         try { System.out.println(read(path)); }
@@ -147,18 +149,19 @@ class Example {
 
 **版本差異**
 
-- Java 8：沒有 `Files.readString`（Java 11 引入），以 `Files.readAllBytes` 搭配 UTF-8 `CharsetDecoder` 維持同一保證；解碼器預設回報無效輸入，仍須只將 `NoSuchFileException` 轉成缺值，其餘故障依原分類傳遞（[`Files.readString` API `@since 11`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#readString(java.nio.file.Path))、[`CharsetDecoder` API `@since 1.4`](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/CharsetDecoder.html)）。
+- Java 8：沒有 `Files.readString`（Java 11 引入），以 `Files.readAllBytes` 搭配 UTF-8 `CharsetDecoder` 維持同一保證；解碼器預設回報無效輸入，仍須只將 `NoSuchFileException` 轉成缺值，其餘故障依原分類傳遞。（[`Files.readString` API `@since 11`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html#readString(java.nio.file.Path))、[`CharsetDecoder` API `@since 1.4`](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/CharsetDecoder.html)）
 
 **符合（Java 8）**
 
 ```java
+import java.nio.ByteBuffer;
 // 僅將檔案不存在轉為缺值，其餘故障依原分類傳遞。
 class Example {
     Optional<Integer> read(Path path) throws IOException {
         String value;
         try {
             value = StandardCharsets.UTF_8.newDecoder()
-                .decode(java.nio.ByteBuffer.wrap(Files.readAllBytes(path))).toString();
+                .decode(ByteBuffer.wrap(Files.readAllBytes(path))).toString();
         } catch (NoSuchFileException failure) {
             return Optional.empty();
         }
@@ -246,9 +249,9 @@ class Example {
 
 **版本差異**
 
-- Java 8：既有資源變數須在 `try-with-resources` 中宣告別名，以維持同一關閉保證；仍須由擁有者關閉，不能因別名而接管借用資源（[JEP 213，Java 9 引入既有變數語法](https://openjdk.org/jeps/213)）。
-- Java 11：可用 Java 9 起的 `try (input)` 直接管理 `final` 或 effectively final 既有變數；仍須確認關閉所有權，取得後立即進入受管理範圍（[JEP 213](https://openjdk.org/jeps/213)）。
-- Java 21 起：可將自行擁有的 `ExecutorService`（Java 19 起）及 `HttpClient`（Java 21 起）納入 `try-with-resources`；仍須依整體生命週期關閉，不得在單次請求結束時關閉共享實例（[`ExecutorService.close` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#close())、[`HttpClient.close` API `@since 21`](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#close())）。
+- Java 8：既有資源變數須在 `try-with-resources` 中宣告別名，以維持同一關閉保證；仍須由擁有者關閉，不能因別名而接管借用資源。（[JEP 213，Java 9 引入既有變數語法](https://openjdk.org/jeps/213)）
+- Java 11：可用 Java 9 起的 `try (input)` 直接管理 `final` 或 effectively final 既有變數；仍須確認關閉所有權，取得後立即進入受管理範圍。（[JEP 213](https://openjdk.org/jeps/213)）
+- Java 21 起：可將自行擁有的 `ExecutorService`（Java 19 起）及 `HttpClient`（Java 21 起）納入 `try-with-resources`；仍須依整體生命週期關閉，不得在單次請求結束時關閉共享實例。（[`ExecutorService.close` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#close())、[`HttpClient.close` API `@since 21`](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#close())、[`HttpClient` 關閉的 Implementation Note](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#closing)）
 
 **符合（Java 8）**
 
@@ -339,8 +342,8 @@ class Example {
 
 **版本差異**
 
-- Java 8：既有資源須在 `try-with-resources` 中宣告別名，以維持操作例外與 suppressed 清理例外的同一保證；仍須保留兩者關係，不改回會覆蓋原故障的 `finally`（[JEP 213，Java 9 引入既有變數語法](https://openjdk.org/jeps/213)）。
-- Java 11：可用 Java 9 起的 `try (resource)` 管理 `final` 或 effectively final 既有變數；仍須保留操作失敗與 suppressed 清理失敗，語法簡化不改變故障關係（[JEP 213](https://openjdk.org/jeps/213)）。
+- Java 8：既有資源須在 `try-with-resources` 中宣告別名，以維持操作例外與 suppressed 清理例外的同一保證；仍須保留兩者關係，不改回會覆蓋原故障的 `finally`。（[JEP 213，Java 9 引入既有變數語法](https://openjdk.org/jeps/213)）
+- Java 11：可用 Java 9 起的 `try (resource)` 管理 `final` 或 effectively final 既有變數；仍須保留操作失敗與 suppressed 清理失敗，語法簡化不改變故障關係。（[JEP 213](https://openjdk.org/jeps/213)）
 
 **符合（Java 8）**
 
@@ -417,9 +420,9 @@ class Example {
 
 **版本差異**
 
-- Java 8：`ExecutorService` 尚未實作 `AutoCloseable`（Java 19 才加入），以擁有者在 `finally` 發出 `shutdown()` 並依契約執行 `awaitTermination`／取消及逾時回報，維持同一生命週期保證；仍須等工作停止使用資源後才釋放資源，此方式也適用 Java 11／17（[`ExecutorService.close` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#close())）。
-- Java 11：Java 11 引入的 `HttpClient` 在 Java 11／17 沒有關閉客戶端的 API，以長生命週期擁有者管理共用客戶端、追蹤請求完成並關閉回應串流，維持同一所有權保證；仍須讓資源有效期涵蓋實際使用，不能虛構 `close()` 或以丟棄參照代替必要清理（[`HttpClient` API `@since 11`、`close` API `@since 21`](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#close())）。
-- Java 21 起：`ExecutorService.close()`（Java 19 起）與 `HttpClient.close()`（Java 21 起）會等待終止，沒有逾時參數，未消耗或關閉的 HTTP 回應串流也可能阻礙關閉；不得將 `close()` 當成有期限的取消，仍須按契約安排等待、逾時處置及資源釋放順序；執行期差異，範例不驗證（[`ExecutorService.close` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#close())、[`HttpClient.close` API `@since 21`](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#close())）。
+- Java 8：`ExecutorService` 尚未實作 `AutoCloseable`（Java 19 才加入），以擁有者在 `finally` 發出 `shutdown()` 並依契約執行 `awaitTermination`／取消及逾時回報，維持同一生命週期保證；仍須等工作停止使用資源後才釋放資源，此方式也適用 Java 11／17。（[`ExecutorService.close` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#close())）
+- Java 11：Java 11 引入的 `HttpClient` 在 Java 11／17 沒有關閉客戶端的 API，以長生命週期擁有者管理共用客戶端、追蹤請求完成並關閉回應串流，維持同一所有權保證；仍須讓資源有效期涵蓋實際使用，不能虛構 `close()` 或以丟棄參照代替必要清理。（[`HttpClient` API `@since 11`、`close` API `@since 21`](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#close())）
+- Java 21 起：`ExecutorService.close()`（Java 19 起）與 `HttpClient.close()`（Java 21 起）會等待終止，沒有逾時參數，未消耗或關閉的 HTTP 回應串流也可能阻礙關閉；不得將 `close()` 當成有期限的取消，仍須按契約安排等待、逾時處置及資源釋放順序；執行期差異，範例不驗證。（[`ExecutorService.close` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#close())、[`HttpClient.close` API `@since 21`](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#close())、[`HttpClient` 關閉的 Implementation Note](https://docs.oracle.com/en/java/javase/21/docs/api/java.net.http/java/net/http/HttpClient.html#closing)）
 
 <a id="java-failure-coverage"></a>
 

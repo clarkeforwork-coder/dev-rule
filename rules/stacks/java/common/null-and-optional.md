@@ -164,8 +164,8 @@ sealed interface NicknameChange {
 
 **版本差異**
 
-- Java 8／11：沒有正式的 record 與 sealed，以私有建構子的抽象類別及巢狀 final 子類別分別表達保留、清空與設定，維持完整狀態的同一保證；設定值仍須驗證非空。（[JEP 395：Java 16](https://openjdk.org/jeps/395)、[JEP 409：Java 17](https://openjdk.org/jeps/409)）
-- Java 17 起：可用 Java 16 正式發布的 record 與 Java 17 正式發布的 sealed 限定狀態型別；仍須分別表達保留、清空與設定，不能以 Optional 混合多種狀態。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有正式的 record 與 sealed，以私有建構子的抽象類別及巢狀 final 子類別分別表達保留、清空與設定，維持完整狀態的同一保證；設定值仍須驗證非空。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409：Java 17](https://openjdk.org/jeps/409)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record` 與 Java 17 正式發布的 sealed 限定狀態型別；仍須分別表達保留、清空與設定，不能以 Optional 混合多種狀態。（[JEP 395](https://openjdk.org/jeps/395)、[JEP 409](https://openjdk.org/jeps/409)）
 
 **符合（Java 8）**
 
@@ -277,8 +277,8 @@ record Name(String value) {
 
 **版本差異**
 
-- Java 8／11：沒有 Java 16 正式發布的 record 緊湊建構子，以一般類別的建構子維持建立時驗證非空的同一保證；內部仍須依已成立的契約使用值。（[JEP 395](https://openjdk.org/jeps/395)）
-- Java 17 起：可用自 Java 16 起正式提供的 record 緊湊建構子集中驗證；record 不會自動拒絕 null，建立時仍須明確驗證非空。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 8／11：`record` 自 Java 16 起（JEP 395）；沒有 `record` 緊湊建構子，以一般類別的建構子維持建立時驗證非空的同一保證；內部仍須依已成立的契約使用值。（[JEP 395](https://openjdk.org/jeps/395)）
+- Java 17 起：`record` 自 Java 16 起（JEP 395）；可用 `record` 緊湊建構子集中驗證；record 不會自動拒絕 null，建立時仍須明確驗證非空。（[JEP 395](https://openjdk.org/jeps/395)）
 
 **符合（Java 8）**
 
