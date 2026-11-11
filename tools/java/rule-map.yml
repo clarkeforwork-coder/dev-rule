@@ -1,0 +1,5631 @@
+# Java 規則對照表：每筆為一個小節 × 一條工具規則；人工審查每小節一筆。
+# id: JV-<文件縮寫>-<三位流水>，建立後不重編；新增採該文件最大流水號加一。
+# rule: 儲存庫相對路徑#java-錨點；title: 規範小節標題。
+# level: error / warn（條文要求，非工具預設或啟用門檻）。
+# tier: pre-commit / ci-compile / ci-bytecode / ci-arch / ci-build / test / manual。
+# tool: pmd / checkstyle / javac / errorprone / spotbugs / archunit / jdeps / jdeprscan / maven-enforcer / gradle / none。
+# check: 正式規則 ID 或 custom:<PascalCase>；設定與例外在 note；none 表示人工。
+# xpath: 僅 PMD 自訂規則；逐字保留來源 custom_xpath 的字串值。
+# versions: 適用 Java 版本，不代表逐版實證；實證版本另載於 note。
+# status: verified 正反例成功；partial 局部成功或已知漏報；candidate 未實證或失敗；manual 人工／待實作測試。
+# false_positive_risk: low / medium / high；note: 審查、例外、設定與證據限制。
+# source: 來源盤點 ID 的陣列；合併時保留全部來源。
+# 縮寫表：
+# TG: types-and-generics
+# LS: lambda-and-stream
+# NP: naming-packages-docs
+# CC: classes-and-construction
+# NO: null-and-optional
+# VO: value-objects
+# SR: states-and-results
+# BM: boundary-mapping
+# CO: collections-and-ownership
+# ER: exceptions-and-resources
+# EH: equality-hashing-ordering
+# ND: numbers-dates-text
+# CA: concurrency-and-async
+# RS: reflection-and-suppression
+# VP: version-policy
+---
+- id: JV-TG-001
+  rule: rules/stacks/java/common/types-and-generics.md#java-explicit-types
+  title: 明確宣告型別
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: RegexpSinglelineJava
+  versions:
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 純文字規則，format="(^|[\s(,])var\s+[A-Za-z_$][\w$]*\s*(=|:|\)|,)"，ignoreComments=true；同時抓區域變數
+    var 與 Lambda 的 (var x)；字串常值內出現同樣文字會誤報（罕見）；PMD 版較準確；若 pre-commit 只跑一個工具，二選一即可；；實證版本：17、11、8；設定：(id=NoVar)。
+  source:
+  - inv-claude-a
+- id: JV-TG-002
+  rule: rules/stacks/java/common/types-and-generics.md#java-explicit-types
+  title: 明確宣告型別
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/codestyle.xml/UseExplicitTypes
+  versions:
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 只抓區域變數／for／try 資源的 var；Lambda 參數 var 由 custom:NoInferredLambdaParameterType
+    補；Java 8 無 var，規則在 8 無意義但執行無誤報；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-TG-003
+  rule: rules/stacks/java/common/types-and-generics.md#java-explicit-types
+  title: 明確宣告型別
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「保留必要的泛型資訊」中與業務語意相關的部分（宣告型別是否足以表達契約）仍需人工；raw type 部分見 java-generic-type-information。"
+  source:
+  - inv-claude-a
+- id: JV-TG-004
+  rule: rules/stacks/java/common/types-and-generics.md#java-generic-type-information
+  title: 禁止 raw type 與不必要的型別抽象
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xlint:rawtypes"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: '本小節自身的違反範例是以 Object 隱藏業務型別，非 raw type，javac 抓不到（屬人工）；raw type 禁令以 java-diamond-construction
+    的違反範例實證：-Xlint:rawtypes 抓到「found raw type: List」；搭配 -Werror 讓 CI 失敗；；實證版本：17、8。'
+  source:
+  - inv-claude-a
+- id: JV-TG-005
+  rule: rules/stacks/java/common/types-and-generics.md#java-generic-type-information
+  title: 禁止 raw type 與不必要的型別抽象
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:RawGenericType
+  xpath: |-
+    //ClassType[not(TypeArguments)]
+      [not(parent::TypeExpression)][not(parent::ClassLiteral)][not(ancestor::Annotation)][not(ancestor::ImportDeclaration)]
+      [pmd-java:typeIsExactly('java.util.Collection') or pmd-java:typeIsExactly('java.util.List') or pmd-java:typeIsExactly('java.util.ArrayList')
+       or pmd-java:typeIsExactly('java.util.LinkedList') or pmd-java:typeIsExactly('java.util.Set') or pmd-java:typeIsExactly('java.util.HashSet')
+       or pmd-java:typeIsExactly('java.util.LinkedHashSet') or pmd-java:typeIsExactly('java.util.TreeSet') or pmd-java:typeIsExactly('java.util.SortedSet')
+       or pmd-java:typeIsExactly('java.util.NavigableSet') or pmd-java:typeIsExactly('java.util.Map') or pmd-java:typeIsExactly('java.util.HashMap')
+       or pmd-java:typeIsExactly('java.util.LinkedHashMap') or pmd-java:typeIsExactly('java.util.TreeMap') or pmd-java:typeIsExactly('java.util.SortedMap')
+       or pmd-java:typeIsExactly('java.util.NavigableMap') or pmd-java:typeIsExactly('java.util.concurrent.ConcurrentHashMap')
+       or pmd-java:typeIsExactly('java.util.concurrent.ConcurrentMap') or pmd-java:typeIsExactly('java.util.Map$Entry') or pmd-java:typeIsExactly('java.util.Queue')
+       or pmd-java:typeIsExactly('java.util.Deque') or pmd-java:typeIsExactly('java.util.ArrayDeque') or pmd-java:typeIsExactly('java.util.PriorityQueue')
+       or pmd-java:typeIsExactly('java.util.Iterator') or pmd-java:typeIsExactly('java.util.ListIterator') or pmd-java:typeIsExactly('java.lang.Iterable')
+       or pmd-java:typeIsExactly('java.util.Optional') or pmd-java:typeIsExactly('java.util.stream.Stream') or pmd-java:typeIsExactly('java.util.Comparator')
+       or pmd-java:typeIsExactly('java.lang.Comparable') or pmd-java:typeIsExactly('java.util.function.Function') or pmd-java:typeIsExactly('java.util.function.BiFunction')
+       or pmd-java:typeIsExactly('java.util.function.Supplier') or pmd-java:typeIsExactly('java.util.function.Consumer') or pmd-java:typeIsExactly('java.util.function.BiConsumer')
+       or pmd-java:typeIsExactly('java.util.function.Predicate') or pmd-java:typeIsExactly('java.util.function.BiPredicate') or pmd-java:typeIsExactly('java.util.function.UnaryOperator')
+       or pmd-java:typeIsExactly('java.util.function.BinaryOperator') or pmd-java:typeIsExactly('java.util.concurrent.Future') or pmd-java:typeIsExactly('java.util.concurrent.CompletableFuture')
+       or pmd-java:typeIsExactly('java.util.concurrent.Callable') or pmd-java:typeIsExactly('java.lang.Class') or pmd-java:typeIsExactly('java.lang.ThreadLocal')
+       or pmd-java:typeIsExactly('java.util.concurrent.atomic.AtomicReference') or pmd-java:typeIsExactly('java.lang.ref.WeakReference') or pmd-java:typeIsExactly('java.util.Enumeration')]
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: pre-commit 近似版（不編譯）：只認白名單內的 JDK 泛型型別，專案自訂泛型須加入白名單；完整檢查以 javac -Xlint:rawtypes
+    為準；本小節自身違反範例（Object）抓不到；以 java-diamond-construction／java-type-safety-warnings
+    的 raw type 違反範例與合成範例（List raw、Map<String, List>、Comparable raw）實證抓到，instanceof
+    List／List.class／List.of() 不誤報；第一版用 typeIs(Comparable) 會把 String 當 raw 誤報，已改 typeIsExactly；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-TG-006
+  rule: rules/stacks/java/common/types-and-generics.md#java-generic-type-information
+  title: 禁止 raw type 與不必要的型別抽象
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「以 Object、萬用字元或無必要的泛型隱藏已知型別」需知道業務上已知什麼型別，工具無法判斷；本小節違反範例（Object order 欄位）無任何工具抓到。"
+  source:
+  - inv-claude-a
+- id: JV-TG-007
+  rule: rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation
+  title: 輸入與輸出的型別關聯
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:GenericMethodReturnsObject
+  xpath: "//MethodDeclaration[TypeParameters]/ClassType[pmd-java:typeIsExactly('java.lang.Object')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 啟發式：宣告型別參數的方法卻回傳 Object；只涵蓋本小節範例的形狀；回傳 Map<String, Object> 或接受 List<?> 再轉型等其他失去關聯的寫法抓不到；反射／序列化工具方法可能合理回傳
+    Object，需 @SuppressWarnings("PMD.GenericMethodReturnsObject")；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-TG-008
+  rule: rules/stacks/java/common/types-and-generics.md#java-input-output-type-relation
+  title: 輸入與輸出的型別關聯
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 泛型簽章是否「實際連結」輸入與輸出，須對照呼叫端契約判斷。
+  source:
+  - inv-claude-a
+- id: JV-TG-009
+  rule: rules/stacks/java/common/types-and-generics.md#java-business-type-casts
+  title: 不得以向下轉型補回業務型別
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:DowncastFromObject
+  xpath: |-
+    (//CastExpression[ClassType][*[2][pmd-java:typeIsExactly('java.lang.Object')]]
+     | //InfixExpression[@Operator = 'instanceof'][*[1][pmd-java:typeIsExactly('java.lang.Object')]])
+     [not(ancestor::MethodDeclaration[@Name = 'equals' and @Arity = 1])]
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: high
+  note: 對靜態型別恰為 Object 的運算式做轉型或 instanceof（含 Java 16+ 型別模式，違反（Java 17）範例也抓到）；equals(Object)
+    排除；只抓「從 Object 猜回」；從較寬的業務型別向下轉型（例如 (CashPayment) payment）需要型別階層資訊，本規則不抓；邊界層（JNDI、反序列化、Map<String,
+    Object> 取值、框架回呼）會大量命中，須以套件層級 exclude 或 @SuppressWarnings 配合例外流程；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-TG-010
+  rule: rules/stacks/java/common/types-and-generics.md#java-business-type-casts
+  title: 不得以向下轉型補回業務型別
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 是否「補回遺失的業務型別」、外部資料是否已在邊界驗證、第三方 API 限制的例外核准，均需人工。
+  source:
+  - inv-claude-a
+- id: JV-TG-011
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings
+  title: 型別安全警告
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: SuppressWarnings
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: format="^\s*(rawtypes|unchecked|all)\s*$"；既有程式碼與工具生成碼常見此類抑制，需 SuppressionFilter
+    或依規範治理的例外清單；Lombok／MapStruct 生成碼請以 generated 目錄排除；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-TG-012
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings
+  title: 型別安全警告
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: SuppressWarningsWithoutExplanation
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 預設關閉，需 -Xep:SuppressWarningsWithoutExplanation:WARN；語意較弱（只要求附說明，不禁止），適合作為已核准例外的「必須附核准理由」檢查；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-TG-013
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings
+  title: 型別安全警告
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xlint:rawtypes,unchecked -Werror"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 涵蓋「不得留下 raw type 或 unchecked 警告」；違反範例因已被 @SuppressWarnings 抑制，javac 無警告（抓不到），抑制本身由下列
+    Checkstyle／PMD 規則抓；移除抑制後 javac 對同一段碼報 rawtypes 與 unchecked（見報告）；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-TG-014
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings
+  title: 型別安全警告
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:NoSuppressTypeSafetyWarnings
+  xpath: "//Annotation[pmd-java:typeIs('java.lang.SuppressWarnings')]//StringLiteral[@ConstValue
+    = ('rawtypes', 'unchecked', 'all')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 與 Checkstyle SuppressWarnings 等價，二選一；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-TG-015
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-safety-warnings
+  title: 型別安全警告
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「關閉檢查」（例如建置設定移除 -Xlint）與例外核准紀錄需在 CI 設定審查與例外流程確認。"
+  source:
+  - inv-claude-a
+- id: JV-TG-016
+  rule: rules/stacks/java/common/types-and-generics.md#java-group-notes-explicit-types
+  title: 本組補充說明
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 治理流程條文（漸進導入、工具產生碼、個別例外），無範例；「測試不得透過不安全轉型偽造有效物件」可將 custom:DowncastFromObject
+    與 -Xlint:unchecked 同樣套用到測試原始碼集。
+  source:
+  - inv-claude-a
+- id: JV-TG-017
+  rule: rules/stacks/java/common/types-and-generics.md#java-business-data-shape
+  title: 業務資料結構
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ObjectValuedDataShape
+  xpath: |-
+    //(MethodDeclaration|FieldDeclaration|FormalParameter|RecordComponent)
+      /(ClassType[pmd-java:typeIs('java.util.Map')]/TypeArguments/ClassType[2][pmd-java:typeIsExactly('java.lang.Object')]
+        | ArrayType[ClassType[pmd-java:typeIsExactly('java.lang.Object')]])
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 回傳值、欄位、參數或 record 元件型別為 Map<?, Object> 或 Object[]；JSON／框架 Model（Spring Model
+    attributes、JDBC 列）在邊界層合法，需對邊界套件 exclude；真正動態映射改用明確值型別即可通過；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-TG-018
+  rule: rules/stacks/java/common/types-and-generics.md#java-business-data-shape
+  title: 業務資料結構
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「固定欄位」與「真正動態」的判斷依業務；其他以通用容器承載固定欄位的寫法（List<String> 當欄位序列）工具抓不到。"
+  source:
+  - inv-claude-a
+- id: JV-TG-019
+  rule: rules/stacks/java/common/types-and-generics.md#java-generic-capabilities
+  title: 型別能力與約束
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 違反範例是對型別變數 T 做 (Number) 轉型；PMD 7 XPath 沒有「運算式型別是型別變數」的判斷函式（typeIs/typeIsExactly
+    對 T 無法區分），javac／Error Prone／SpotBugs 亦無對應檢查，故全部小節為人工。
+  source:
+  - inv-claude-a
+- id: JV-TG-020
+  rule: rules/stacks/java/common/types-and-generics.md#java-collection-declarations
+  title: 集合與映射的宣告型別
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: IllegalType
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 預設 illegalClassNames 不含 ArrayList／LinkedList（只有 HashMap/HashSet/LinkedHashMap/LinkedHashSet/TreeMap/TreeSet），須自行加入
+    ArrayList, LinkedList, ArrayDeque, PriorityQueue, ConcurrentHashMap, CopyOnWriteArrayList
+    等並含完整名稱；未加之前違反範例抓不到；；實證版本：17、21。
+  source:
+  - inv-claude-a
+- id: JV-TG-021
+  rule: rules/stacks/java/common/types-and-generics.md#java-collection-declarations
+  title: 集合與映射的宣告型別
+  level: warn
+  tier: ci-compile
+  tool: errorprone
+  check: NonApiType
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 預設開啟（WARNING）；只看非 private 方法的參數與回傳型別，訊息「Prefer a java.util.List instead」；；實證版本：17、21。
+  source:
+  - inv-claude-a
+- id: JV-TG-022
+  rule: rules/stacks/java/common/types-and-generics.md#java-collection-declarations
+  title: 集合與映射的宣告型別
+  level: warn
+  tier: pre-commit
+  tool: pmd
+  check: category/java/bestpractices.xml/LooseCoupling
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 符合（Java 21）的 SequencedCollection 以 --use-version java-21 解析無誤報；規則也檢查區域變數與欄位（ArrayList<String>
+    list = new ArrayList<>() 會被抓），可用 allowedTypes 放寬；條文用「不應」故 warn；；實證版本：17、21。
+  source:
+  - inv-claude-a
+- id: JV-TG-023
+  rule: rules/stacks/java/common/types-and-generics.md#java-collection-declarations
+  title: 集合與映射的宣告型別
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「不得過度泛化迫使使用端轉型」與可修改性／排序保證是否另行明訂，需人工對照使用端。"
+  source:
+  - inv-claude-a
+- id: JV-TG-024
+  rule: rules/stacks/java/common/types-and-generics.md#java-diamond-construction
+  title: 允許建構端使用菱形運算子
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xlint:rawtypes"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: '違反範例報「[rawtypes] found raw type: List」；符合（Java 8）明寫型別參數的匿名類別與符合（Java 11）匿名類別菱形均無警告；；實證版本：17、8、11。'
+  source:
+  - inv-claude-a
+- id: JV-TG-025
+  rule: rules/stacks/java/common/types-and-generics.md#java-diamond-construction
+  title: 允許建構端使用菱形運算子
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:RawGenericType
+  xpath: |-
+    //ClassType[not(TypeArguments)]
+      [not(parent::TypeExpression)][not(parent::ClassLiteral)][not(ancestor::Annotation)][not(ancestor::ImportDeclaration)]
+      [pmd-java:typeIsExactly('java.util.Collection') or pmd-java:typeIsExactly('java.util.List') or pmd-java:typeIsExactly('java.util.ArrayList')
+       or pmd-java:typeIsExactly('java.util.LinkedList') or pmd-java:typeIsExactly('java.util.Set') or pmd-java:typeIsExactly('java.util.HashSet')
+       or pmd-java:typeIsExactly('java.util.LinkedHashSet') or pmd-java:typeIsExactly('java.util.TreeSet') or pmd-java:typeIsExactly('java.util.SortedSet')
+       or pmd-java:typeIsExactly('java.util.NavigableSet') or pmd-java:typeIsExactly('java.util.Map') or pmd-java:typeIsExactly('java.util.HashMap')
+       or pmd-java:typeIsExactly('java.util.LinkedHashMap') or pmd-java:typeIsExactly('java.util.TreeMap') or pmd-java:typeIsExactly('java.util.SortedMap')
+       or pmd-java:typeIsExactly('java.util.NavigableMap') or pmd-java:typeIsExactly('java.util.concurrent.ConcurrentHashMap')
+       or pmd-java:typeIsExactly('java.util.concurrent.ConcurrentMap') or pmd-java:typeIsExactly('java.util.Map$Entry') or pmd-java:typeIsExactly('java.util.Queue')
+       or pmd-java:typeIsExactly('java.util.Deque') or pmd-java:typeIsExactly('java.util.ArrayDeque') or pmd-java:typeIsExactly('java.util.PriorityQueue')
+       or pmd-java:typeIsExactly('java.util.Iterator') or pmd-java:typeIsExactly('java.util.ListIterator') or pmd-java:typeIsExactly('java.lang.Iterable')
+       or pmd-java:typeIsExactly('java.util.Optional') or pmd-java:typeIsExactly('java.util.stream.Stream') or pmd-java:typeIsExactly('java.util.Comparator')
+       or pmd-java:typeIsExactly('java.lang.Comparable') or pmd-java:typeIsExactly('java.util.function.Function') or pmd-java:typeIsExactly('java.util.function.BiFunction')
+       or pmd-java:typeIsExactly('java.util.function.Supplier') or pmd-java:typeIsExactly('java.util.function.Consumer') or pmd-java:typeIsExactly('java.util.function.BiConsumer')
+       or pmd-java:typeIsExactly('java.util.function.Predicate') or pmd-java:typeIsExactly('java.util.function.BiPredicate') or pmd-java:typeIsExactly('java.util.function.UnaryOperator')
+       or pmd-java:typeIsExactly('java.util.function.BinaryOperator') or pmd-java:typeIsExactly('java.util.concurrent.Future') or pmd-java:typeIsExactly('java.util.concurrent.CompletableFuture')
+       or pmd-java:typeIsExactly('java.util.concurrent.Callable') or pmd-java:typeIsExactly('java.lang.Class') or pmd-java:typeIsExactly('java.lang.ThreadLocal')
+       or pmd-java:typeIsExactly('java.util.concurrent.atomic.AtomicReference') or pmd-java:typeIsExactly('java.lang.ref.WeakReference') or pmd-java:typeIsExactly('java.util.Enumeration')]
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: XPath 同 java-generic-type-information 的 custom:RawGenericType；菱形 <> 的 TypeArguments
+    節點存在（Diamond=true），不會被誤判為 raw type；；實證版本：17、8、11。
+  source:
+  - inv-claude-a
+- id: JV-TG-026
+  rule: rules/stacks/java/common/types-and-generics.md#java-generic-return-types
+  title: 泛型回傳值
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:UnboundedWildcardReturnType
+  xpath: "//MethodDeclaration/ClassType[not(pmd-java:typeIs('java.lang.Class'))]//WildcardType[not(*)]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 只抓回傳型別中的無界 ?（含巢狀），Class<?> 排除；有上下界的萬用字元（契約確實需要）不抓；反射／序列化工具層回傳 List<?> 可能合理，需
+    suppress；；實證版本：17、8、11。
+  source:
+  - inv-claude-a
+- id: JV-TG-027
+  rule: rules/stacks/java/common/types-and-generics.md#java-generic-return-types
+  title: 泛型回傳值
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 有界萬用字元是否「契約確實需要」、是否以萬用字元取代不可變性設計，需人工。
+  source:
+  - inv-claude-a
+- id: JV-TG-028
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-parameter-names
+  title: 泛型參數命名
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: ClassTypeParameterName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 四個模組都設 format="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"：允許單字母與角色名（Source、Decoded），拒絕編號型
+    T1／T2／T3；Checkstyle 預設 format 會把符合範例的 Source／Decoded／Result 判為違規（google_checks
+    實測誤報），必須覆寫；既有程式碼的 E1／K2 與 Google 式 FooT 會被拒，需調整 format；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-TG-029
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-parameter-names
+  title: 泛型參數命名
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: InterfaceTypeParameterName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 四個模組都設 format="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"：允許單字母與角色名（Source、Decoded），拒絕編號型
+    T1／T2／T3；Checkstyle 預設 format 會把符合範例的 Source／Decoded／Result 判為違規（google_checks
+    實測誤報），必須覆寫；既有程式碼的 E1／K2 與 Google 式 FooT 會被拒，需調整 format；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-TG-030
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-parameter-names
+  title: 泛型參數命名
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: MethodTypeParameterName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 四個模組都設 format="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"：允許單字母與角色名（Source、Decoded），拒絕編號型
+    T1／T2／T3；Checkstyle 預設 format 會把符合範例的 Source／Decoded／Result 判為違規（google_checks
+    實測誤報），必須覆寫；既有程式碼的 E1／K2 與 Google 式 FooT 會被拒，需調整 format；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-TG-031
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-parameter-names
+  title: 泛型參數命名
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: RecordTypeParameterName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 四個模組都設 format="^[A-Z]$|^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"：允許單字母與角色名（Source、Decoded），拒絕編號型
+    T1／T2／T3；Checkstyle 預設 format 會把符合範例的 Source／Decoded／Result 判為違規（google_checks
+    實測誤報），必須覆寫；既有程式碼的 E1／K2 與 Google 式 FooT 會被拒，需調整 format；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-TG-032
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-parameter-names
+  title: 泛型參數命名
+  level: warn
+  tier: pre-commit
+  tool: pmd
+  check: category/java/codestyle.xml/TypeParameterNamingConventions
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: high
+  note: 不採用：PMD 7.29 此規則沒有 pattern 屬性可設定（設定會報 Cannot set non-existent property），預設只允許單一大寫字母，符合範例的
+    Source／Decoded／Result 也被抓；Error Prone 的 TypeParameterNaming 同樣與符合範例衝突；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-TG-033
+  rule: rules/stacks/java/common/types-and-generics.md#java-type-parameter-names
+  title: 泛型參數命名
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 名稱是否足以辨識責任與關聯、複雜契約是否補充說明，依驗收表「不僅依名稱長度判定」需人工。
+  source:
+  - inv-claude-a
+- id: JV-LS-001
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-intent-readability
+  title: 意圖與可讀性優先
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: LambdaBodyLength
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 啟發式，max=3（預設 10 抓不到 5 行的違反範例）；閾值武斷：多行 Lambda 不等於混入獨立責任，java-failure-classification
+    的 4 行 try/catch 違反範例也被抓到；只能當提示，不能當判定；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-LS-002
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-intent-readability
+  title: 意圖與可讀性優先
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 責任是否獨立、意圖是否清楚屬語意判斷。
+  source:
+  - inv-claude-a
+- id: JV-LS-003
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types
+  title: 明確的參數型別
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: RegexpSinglelineJava
+  versions:
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 只涵蓋 (var value) -> 形式（違反（Java 11）範例抓到）；主範例省略型別的 value -> 純文字無法判斷，抓不到；Regexp
+    同 java-explicit-types；；實證版本：17、11、8；設定：(id=NoVar)。
+  source:
+  - inv-claude-a
+- id: JV-LS-004
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types
+  title: 明確的參數型別
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:NoInferredLambdaParameterType
+  xpath: "//LambdaParameter[@TypeInferred = true()]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 同時抓省略型別（value ->）與 (var value) ->（違反（Java 11）範例，@VarKeyword=true）；明確型別 (String
+    value) 的 @TypeInferred=false；內建 UseExplicitTypes 不抓 Lambda 參數的 var；誤報低，但既有程式碼幾乎全部省略
+    Lambda 參數型別，命中量極大，需基準線或只對新增／修改行報告；；實證版本：17、11、8。
+  source:
+  - inv-claude-a
+- id: JV-LS-005
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-lambda-parameter-types
+  title: 明確的參數型別
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 方法參考是否「型別契約完整且意圖清楚」需人工。
+  source:
+  - inv-claude-a
+- id: JV-LS-006
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects
+  title: 中間操作不隱藏業務副作用
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: ReturnValueIgnored
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 預設開啟（ERROR）；違反範例的 .count() 結果被丟棄（只為觸發 peek 副作用而消費）被抓：「Return value of 'count'
+    must be used」；只涵蓋「用終端操作當副作用觸發器」這種形狀；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-LS-007
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects
+  title: 中間操作不隱藏業務副作用
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:StreamPeekUsage
+  xpath: "//MethodCall[@MethodName = 'peek'][*[1][pmd-java:typeIs('java.util.stream.BaseStream')]]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 抓所有 Stream.peek；peek 的官方用途是除錯記錄，純 log 的 peek 會誤報，需 suppress 或團隊約定不用 peek；其他中間操作（filter／map）內的副作用無法靜態判斷；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-LS-008
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-intermediate-side-effects
+  title: 中間操作不隱藏業務副作用
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: forEach 內寫入／外部呼叫的順序、失敗與部分成功保證需人工。
+  source:
+  - inv-claude-a
+- id: JV-LS-009
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-result-accumulation
+  title: 明確累積結果
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ForEachAccumulatesExternalState
+  xpath: |-
+    //MethodCall[@MethodName = ('forEach', 'forEachOrdered')]
+      [*[1][pmd-java:typeIs('java.util.stream.BaseStream') or pmd-java:typeIs('java.lang.Iterable') or pmd-java:typeIs('java.util.Map')]]
+      /ArgumentList/LambdaExpression
+      [.//MethodCall[@MethodName = ('add', 'addAll', 'put', 'putAll', 'putIfAbsent', 'offer', 'push', 'append', 'remove', 'merge', 'compute', 'computeIfAbsent')]
+         [*[1][self::VariableAccess or self::FieldAccess]
+              [pmd-java:typeIs('java.util.Collection') or pmd-java:typeIs('java.util.Map') or pmd-java:typeIs('java.lang.StringBuilder')]
+              [not(@Name = ancestor::LambdaExpression//LambdaParameter/VariableId/@Name)]]]
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: Stream／Iterable／Map 的 forEach Lambda 內對外部集合、Map 或 StringBuilder 呼叫修改方法；符合範例（collect）與符合（Java
+    17）（toList）均乾淨；抓不到以方法參考（result::add）累積、計數器／旗標（int[] 或 AtomicInteger）累積的寫法；forEach
+    刻意寫入外部 Map（groupingBy 難以表達時）會被抓，需 suppress；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-LS-010
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-result-accumulation
+  title: 明確累積結果
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 跨元素狀態的順序與管理責任需人工。
+  source:
+  - inv-claude-a
+- id: JV-LS-011
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-lazy-short-circuit
+  title: 延遲與短路範圍
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: ReturnValueIgnored
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 只涵蓋「不得把流程建立視為工作完成」：以合成範例 values.stream().filter(...); 無終端操作實證抓到「Return value
+    of 'filter' must be used」；本小節的違反範例（allMatch 短路、takeWhile 前綴）是契約語意，工具抓不到；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-LS-012
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-lazy-short-circuit
+  title: 延遲與短路範圍
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: allMatch／anyMatch／findFirst／takeWhile 是否符合「每筆都處理」的契約，只有知道契約才能判斷；驗收表要求以空／單筆／多筆／短路案例測試。
+  source:
+  - inv-claude-a
+- id: JV-LS-013
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-parallel-stream-adoption
+  title: 平行處理的採用條件
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ParallelStreamUsage
+  xpath: |-
+    //MethodCall[(@MethodName = 'parallelStream' and *[1][pmd-java:typeIs('java.util.Collection')])
+              or (@MethodName = 'parallel' and *[1][pmd-java:typeIs('java.util.stream.BaseStream')])]
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 本小節沒有規範範例，以合成範例實證（parallelStream() 與 stream().parallel() 各抓到一次，stream().count()
+    乾淨）；所有平行處理都會被報，已核准者須 @SuppressWarnings("PMD.ParallelStreamUsage") 並附量測依據，這正是條文要求的例外流程；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-LS-014
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-parallel-stream-adoption
+  title: 平行處理的採用條件
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 資料隔離、順序、歸約、失敗語意與代表性負載量測只能靠測試與效能證據；Java 21 虛擬執行緒下的 common ForkJoinPool 行為屬執行期差異。
+  source:
+  - inv-claude-a
+- id: JV-LS-015
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-reduction-collection
+  title: 歸約與收集契約
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 違反範例 reduce(1, Integer::sum) 的錯誤在於單位元素語意；PMD／Error Prone／SpotBugs 全規則掃描皆未報任何相關規則；硬寫「reduce
+    第一參數為非 0 數字常值」只能抓此一形狀，不採用；驗收表要求以不同分段方式測試（tier test）；初始值、累積與合併結果以空資料、單筆、多筆與分段（parallel）案例測試。
+  source:
+  - inv-claude-a
+- id: JV-LS-016
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-failure-classification
+  title: 維持錯誤分類
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:LambdaCatchWithoutRethrow
+  xpath: "//CatchClause[ancestor::LambdaExpression][not(Block//ThrowStatement)]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: Lambda 內的 catch 沒有任何 throw（吞錯或回傳替代值）；允許部分成功且保留各筆結果的流程（catch 後記錄到結果物件）會被抓，需
+    suppress；內建 EmptyCatchBlock／AvoidCatchingGenericException 抓不到此範例（catch 非空、型別具體）；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-LS-017
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-failure-classification
+  title: 維持錯誤分類
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 錯誤分類是否維持、原始原因是否保留、邊界轉換是否符合契約需人工。
+  source:
+  - inv-claude-a
+- id: JV-LS-018
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-stream-consumption
+  title: 明確消費範圍
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:StreamVariableReused
+  xpath: |-
+    //VariableId[@LocalVariable = true()][pmd-java:typeIs('java.util.stream.BaseStream')]
+      [let $n := @Name return count(ancestor::MethodDeclaration//VariableAccess[@Name = $n][@AccessType = 'READ']) > 1]
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 型別為 Stream 的區域變數在同一方法內被讀取兩次以上（XPath 3.1 let）；Stream 變數重新指派（s = s.filter(...)）或先
+    try-with-resources 再消費一次的合法寫法會誤報；欄位型 Stream 與跨方法共用不抓；SpotBugs／Error Prone 2.52
+    皆無「重用已消費 Stream」檢查；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-LS-019
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-stream-consumption
+  title: 明確消費範圍
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 快照一致性、外部資源有效期與關閉責任需人工對照契約。
+  source:
+  - inv-claude-a
+- id: JV-LS-020
+  rule: rules/stacks/java/common/lambda-and-stream.md#java-execution-verification
+  title: 執行語意驗收
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 驗收條文，無範例；要求的是測試案例涵蓋（資料邊界、短路、順序、歸約、失敗、資源、平行），屬測試層。
+  source:
+  - inv-claude-a
+- id: JV-NP-001
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: AbbreviationAsWordInName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 對應「團隊須統一縮寫慣例」：allowedAbbreviationLength=1 禁止連續大寫（HTTPClient→HttpClient）；規範範例沒有縮寫案例，故
+    violation_caught 無法實證（false），全部範例無誤報；既有 URL／ID／DTO 類名會大量命中，需 allowedAbbreviations
+    清單；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-NP-002
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: ConstantName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-003
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: LambdaParameterName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-004
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: LocalFinalVariableName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-005
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: LocalVariableName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-006
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: MemberName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-007
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: MethodName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-008
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: PackageName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-009
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: ParameterName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-010
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: PatternVariableName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-011
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: RecordComponentName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-012
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: StaticVariableName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-013
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: TypeName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 違反範例三處各由 TypeName（order_limit）、ConstantName（maxOrders）、MethodName（Accepts）抓到；ConstantName
+    只看 static final 欄位，符合「不以 final 機械式判定常數」；但 private static final Logger logger 之類非常數的
+    static final 物件也會被要求全大寫，需設 applyToPrivate=false 或以 format 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-014
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: IdentifierName
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: medium
+  note: 預設關閉，需 -Xep:IdentifierName:WARN；抓到 order_limit 與 Accepts（maxOrders 未報，EP 不檢查常數形式）；比
+    Checkstyle 嚴（禁止底線分隔的測試方法名），只適合作 CI 補充；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-NP-015
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/codestyle.xml/ClassNamingConventions
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 與 Checkstyle 等價，二選一；FieldNamingConventions 對 static final 以 constantPattern
+    檢查，同樣會要求 Logger 常數全大寫；ClassNamingConventions 預設另要求工具類名稱以 Utils/Helper 等結尾（utilityClassPattern），與本組
+    java-specific-responsibility 的「名稱須與責任一致」無衝突但會額外報告，可設 utilityClassPattern 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-016
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/codestyle.xml/FieldNamingConventions
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 與 Checkstyle 等價，二選一；FieldNamingConventions 對 static final 以 constantPattern
+    檢查，同樣會要求 Logger 常數全大寫；ClassNamingConventions 預設另要求工具類名稱以 Utils/Helper 等結尾（utilityClassPattern），與本組
+    java-specific-responsibility 的「名稱須與責任一致」無衝突但會額外報告，可設 utilityClassPattern 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-017
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/codestyle.xml/FormalParameterNamingConventions
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 與 Checkstyle 等價，二選一；FieldNamingConventions 對 static final 以 constantPattern
+    檢查，同樣會要求 Logger 常數全大寫；ClassNamingConventions 預設另要求工具類名稱以 Utils/Helper 等結尾（utilityClassPattern），與本組
+    java-specific-responsibility 的「名稱須與責任一致」無衝突但會額外報告，可設 utilityClassPattern 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-018
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/codestyle.xml/LocalVariableNamingConventions
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 與 Checkstyle 等價，二選一；FieldNamingConventions 對 static final 以 constantPattern
+    檢查，同樣會要求 Logger 常數全大寫；ClassNamingConventions 預設另要求工具類名稱以 Utils/Helper 等結尾（utilityClassPattern），與本組
+    java-specific-responsibility 的「名稱須與責任一致」無衝突但會額外報告，可設 utilityClassPattern 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-019
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/codestyle.xml/MethodNamingConventions
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 與 Checkstyle 等價，二選一；FieldNamingConventions 對 static final 以 constantPattern
+    檢查，同樣會要求 Logger 常數全大寫；ClassNamingConventions 預設另要求工具類名稱以 Utils/Helper 等結尾（utilityClassPattern），與本組
+    java-specific-responsibility 的「名稱須與責任一致」無衝突但會額外報告，可設 utilityClassPattern 放寬；；實證版本：17；原盤點合併多模組，未獨立證明命中的模組保守列
+    candidate。
+  source:
+  - inv-claude-a
+- id: JV-NP-020
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: NM_METHOD_NAMING_CONVENTION
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: "-effort:max -low 下抓到 Accepts（Nm）；類別名 order_limit 與常數未報；只是 CI 的二次保險，pre-commit
+    層已足夠；；實證版本：17。"
+  source:
+  - inv-claude-a
+- id: JV-NP-021
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-naming-form
+  title: 一致的命名形式
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「以業務概念與責任表達含義」、「不強制 I 前綴」與版本差異中的關鍵字限制（_、var、yield、record、sealed 不能作型別名）：後者由
+    javac 以編譯錯誤擋下，前者需人工。"
+  source:
+  - inv-claude-a
+- id: JV-NP-022
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-specific-responsibility
+  title: 名稱表達具體責任
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 違反範例 DateUtils 計算訂單總額，名稱與責任不一致屬語意；PMD／Checkstyle／EP 全規則掃描皆無相關命中。
+  source:
+  - inv-claude-a
+- id: JV-NP-023
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries
+  title: 套件與架構邊界
+  level: error
+  tier: ci-arch
+  tool: archunit
+  check: custom:InternalPackageNotPublic
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order 反向依賴與
+    com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
+    FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-NP-024
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries
+  title: 套件與架構邊界
+  level: error
+  tier: ci-arch
+  tool: archunit
+  check: custom:NestedStorageNotPublic
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order 反向依賴與
+    com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
+    FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-NP-025
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries
+  title: 套件與架構邊界
+  level: error
+  tier: ci-arch
+  tool: archunit
+  check: custom:SharedPackageNoBusinessDependency
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order 反向依賴與
+    com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
+    FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。
+  source:
+  - inv-claude-a
+- id: JV-NP-026
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries
+  title: 套件與架構邊界
+  level: error
+  tier: ci-build
+  tool: jdeps
+  check: "--check"
+  versions:
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: low
+  note: unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens
+    與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與 Enforcer。
+  source:
+  - inv-claude-a
+- id: JV-NP-027
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries
+  title: 套件與架構邊界
+  level: error
+  tier: ci-build
+  tool: jdeps
+  check: "-jdkinternals"
+  versions:
+  - 8
+  status: candidate
+  false_positive_risk: low
+  note: unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens
+    與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與 Enforcer。
+  source:
+  - inv-claude-a
+- id: JV-NP-028
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries
+  title: 套件與架構邊界
+  level: error
+  tier: ci-build
+  tool: maven-enforcer
+  check: bannedDependencies
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: low
+  note: unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens
+    與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與 Enforcer。
+  source:
+  - inv-claude-a
+- id: JV-NP-029
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-package-boundaries
+  title: 套件與架構邊界
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 套件責任劃分、什麼算公開契約、共用套件的責任是否明確，需架構審查；工具只能檢查已定義的邊界。
+  source:
+  - inv-claude-a
+- id: JV-NP-030
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract
+  title: 補足契約資訊
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: JavadocMethod
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: validateThrows=true、allowMissingParamTags=false、allowMissingReturnTag=false；違反範例報缺
+    @param path、@return、@throws IOException，符合（Java 21）的 {@snippet} 解析無誤報；注意 accessModifiers
+    以方法的有效可見性判斷：範例類別是 package-private，驗證時需含 package；實際專案設 public, protected 即可；既有程式碼缺標籤者眾，需
+    scope 限制或基準線；；實證版本：17、8、21。
+  source:
+  - inv-claude-a
+- id: JV-NP-031
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract
+  title: 補足契約資訊
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: MissingJavadocMethod
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: medium
+  note: 只抓「完全沒有 Javadoc」（scope=public）；本小節違反範例有 Javadoc 故抓不到，但在 java-package-boundaries
+    範例的 public save 方法實證會報；Checkstyle 10.26.1 對同一設定未報這三筆（版本差異，見報告）；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-NP-032
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract
+  title: 補足契約資訊
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xdoclint:missing"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: high
+  note: "-Xdoclint:all/private 對違反範例報 no @param for path／no @return／no @throws for
+    IOException；但 missing 群組同時要求類別本身有 Javadoc，三個符合範例都因 TextReader 類別無註解被報 no comment（誤報）；只在團隊要求每個公開型別都有
+    Javadoc 時才適合，否則只開 reference,syntax（見 java-document-verification）；；實證版本：17、8、21。"
+  source:
+  - inv-claude-a
+- id: JV-NP-033
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-javadoc-contract
+  title: 補足契約資訊
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: Javadoc 是否「只重述名稱」、前置條件／結果／失敗／副作用／生命週期是否與實作一致，需人工；工具只能檢查標籤存在。
+  source:
+  - inv-claude-a
+- id: JV-NP-034
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-rename-impact
+  title: 重新命名與搬移的影響
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 流程條文，無範例；直接引用由編譯擋下；設定、反射、序列化名稱、外部使用端與 module-info 的 exports／opens／uses／provides
+    需以變更清單人工核對（ArchUnit 可額外檢查「反射存取的類別名稱是否存在」但屬專案自訂）。
+  source:
+  - inv-claude-a
+- id: JV-NP-035
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-document-verification
+  title: 形式與語意分別驗收
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xdoclint:reference,syntax,html"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 本小節無規範範例，以合成範例 {@link NoSuchType#read} 實證 -Xdoclint:reference 報「reference
+    not found」；java-javadoc-contract 的四個範例（含 Java 21 {@snippet}）在 reference 群組下乾淨；；實證版本：17、8、21。
+  source:
+  - inv-claude-a
+- id: JV-NP-036
+  rule: rules/stacks/java/common/naming-packages-docs.md#java-document-verification
+  title: 形式與語意分別驗收
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 可執行範例須在承諾支援的版本編譯與測試：儲存庫 scripts/check-rules.rb examples 以 javac --release
+    N 做的正是這件事；{@snippet file=...} 引用的外部範例檔需納入測試原始碼集；語意是否正確仍需人工。
+  source:
+  - inv-claude-a
+- id: JV-CC-001
+  rule: rules/stacks/java/common/classes-and-construction.md#java-interface-purpose
+  title: 介面或具體類別的契約依賴
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 無範例；是否需要介面隔離屬架構判斷；ArchUnit 只能檢查已定義的層間依賴，無法判斷「單一實作是否該抽介面」。
+  source:
+  - inv-claude-a
+- id: JV-CC-002
+  rule: rules/stacks/java/common/classes-and-construction.md#java-construction-safety
+  title: 建構期間的安全性
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xlint:this-escape"
+  versions:
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 如版本差異所述只對模組外（無模組時為套件外）可建立子類別的情況警告：規範違反範例的 Base 與其建構子都是 package-private，javac
+    21 不報；把類別與建構子改 public 的合成範例會報「possible 'this' escape before subclass is fully
+    initialized」；只能當 CI（JDK 21 建置）補充，不能取代 PMD／SpotBugs；Error Prone 2.52.0 沒有 ConstructorInvokesOverridable／ConstructorLeaksThis（實測回報
+    not a valid checker name）；；實證版本：21。
+  source:
+  - inv-claude-a
+- id: JV-CC-003
+  rule: rules/stacks/java/common/classes-and-construction.md#java-construction-safety
+  title: 建構期間的安全性
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/ConstructorCallsOverridableMethod
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: '違反範例報「Overridable method called during object construction: Base.initialize()」；符合範例（private
+    initialize）乾淨；框架要求建構子呼叫 init 的少數情況需 suppress；；實證版本：17。'
+  source:
+  - inv-claude-a
+- id: JV-CC-004
+  rule: rules/stacks/java/common/classes-and-construction.md#java-construction-safety
+  title: 建構期間的安全性
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: SpotBugs 4.10.5 將此 bug 列為 Low priority，必須以 -low（或 threshold=Low）執行才會報，預設門檻會漏掉；同一範例另報
+    UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR（High）；this 外洩到執行緒可由 SC_START_IN_CTOR
+    補（未實證，範例無此形狀）；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-CC-005
+  rule: rules/stacks/java/common/classes-and-construction.md#java-construction-safety
+  title: 建構期間的安全性
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 事件註冊、回呼發布、背景工作啟動是否在生命週期條件滿足後才執行，需審查建構與啟動路徑。
+  source:
+  - inv-claude-a
+- id: JV-CC-006
+  rule: rules/stacks/java/common/classes-and-construction.md#java-explicit-dependencies
+  title: 明確取得依賴
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/design.xml/MutableStaticState
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: medium
+  note: 違反範例的 static Supplier<Runnable> jobs（可變靜態登錄）被抓；符合範例（建構子注入）乾淨；只涵蓋「可變靜態欄位」這一種隱藏依賴來源；static
+    final 登錄、getInstance() 單例、全域容器查詢抓不到，故 warn；快取類非 final static 欄位會命中；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-CC-007
+  rule: rules/stacks/java/common/classes-and-construction.md#java-explicit-dependencies
+  title: 明確取得依賴
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 全域容器查詢、靜態服務登錄、單例取用屬語意；可依專案框架以 ArchUnit 禁止依賴特定 ServiceLocator／ApplicationContext
+    類別（專案自訂，未實證）。
+  source:
+  - inv-claude-a
+- id: JV-CC-008
+  rule: rules/stacks/java/common/classes-and-construction.md#java-construction-entrypoints
+  title: 依需求選擇建立方式
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「build 不得產出無效物件」需知道業務不變量（start<=end）；違反與符合範例的差異只在 record 緊湊建構子有無檢查，PMD／EP／SpotBugs
+    全規則掃描均無相關命中；以無效組合呼叫每個建立入口（建構子、工廠、Builder.build）確認拒絕，屬單元測試。"
+  source:
+  - inv-claude-a
+- id: JV-CC-009
+  rule: rules/stacks/java/common/classes-and-construction.md#java-override-scope
+  title: "`super` 呼叫與 `final` 的擴充限制"
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: DesignForExtension
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: high
+  note: 意圖相符（非 final 的可覆寫 public/protected 方法需 final／abstract／空實作或 Javadoc 說明），但只看
+    public/protected：規範違反範例的 pay 是 package-private 故抓不到；合成 public 版會報；真實專案幾乎所有 public
+    非 final 方法都命中，等於強制 final-by-default，與條文「不一律強制 final」不合，不建議啟用；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-CC-010
+  rule: rules/stacks/java/common/classes-and-construction.md#java-override-scope
+  title: "`super` 呼叫與 `final` 的擴充限制"
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: MissingSuperCall
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 預設開啟，但只在基底方法標了 @OverridingMethodsMustInvokeSuper（或 @CallSuper）時檢查；規範違反範例無註解故抓不到；合成範例加註解後報「This
+    method overrides Payment#pay ... but does not call the super method」，有呼叫 super
+    的子類乾淨；條文本身要求不依賴子類記得呼叫 super，此規則是「若採用 super 慣例則強制」的補充；；實證版本：17。
+  source:
+  - inv-claude-a
+- id: JV-CC-011
+  rule: rules/stacks/java/common/classes-and-construction.md#java-override-scope
+  title: "`super` 呼叫與 `final` 的擴充限制"
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 哪些檢查是「必要業務檢查」、擴充範圍是否符合需求、代理與繼承機制是否相容，需人工；sealed／permits 與 final 是否合適亦然。
+  source:
+  - inv-claude-a
+- id: JV-CC-012
+  rule: rules/stacks/java/common/classes-and-construction.md#java-lifecycle-verification
+  title: 契約與生命週期驗收
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 驗收條文，無範例；建構、繼承、覆寫與框架代理的實際路徑以測試驗證。
+  source:
+  - inv-claude-a
+- id: JV-NO-001
+  rule: rules/stacks/java/common/null-and-optional.md#java-query-absence
+  title: 查詢的正常缺值
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/ReturnEmptyCollectionRatherThanNull
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 只涵蓋集合／陣列／Map 的直接 return null；單筆正常缺值的業務分類仍人工；合法可空第三方介面需有明訂例外；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17。
+  source:
+  - inv-codex-a
+- id: JV-NO-002
+  rule: rules/stacks/java/common/null-and-optional.md#java-query-absence
+  title: 查詢的正常缺值
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 查詢是否允許正常缺值、必要結果不存在及技術故障分類由契約決定；集合回傳 null 可局部自動檢查，單筆回傳型別不可只憑方法名稱推定；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-003
+  rule: rules/stacks/java/common/null-and-optional.md#java-optional-nonnull
+  title: Optional 本身非空
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:OptionalReturnNull
+  xpath: "//ReturnStatement/NullLiteral[ancestor::MethodDeclaration[1]/ClassType[pmd-java:typeIs('java.util.Optional')]][not(ancestor::LambdaExpression)]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 只涵蓋 java.util.Optional 方法直接 return null；間接變數回傳、欄位與參數為缺口，補強反例已證明 indirectNull
+    不被抓；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：17。
+  source:
+  - inv-codex-a
+- id: JV-NO-004
+  rule: rules/stacks/java/common/null-and-optional.md#java-optional-nonnull
+  title: Optional 本身非空
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: NP_OPTIONAL_RETURN_NULL
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 涵蓋直接回傳 null 的 Optional；官方也包含 Guava Optional，但本次只驗 java.util.Optional；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：17。
+  source:
+  - inv-codex-a
+- id: JV-NO-005
+  rule: rules/stacks/java/common/null-and-optional.md#java-optional-nonnull
+  title: Optional 本身非空
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 自動規則僅涵蓋直接回傳 null；欄位、參數及間接資料流，以及 Optional.empty 是否掩蓋失敗，仍須契約與行為審查；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-006
+  rule: rules/stacks/java/common/null-and-optional.md#java-optional-access
+  title: 取值與缺值處置
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 必須識別已成立的不變條件及跨分支支配關係；全面禁止 Optional.get 會誤報 Java 8、11 的符合範例，缺值處理是否符合業務語意需審查；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-007
+  rule: rules/stacks/java/common/null-and-optional.md#java-optional-positions
+  title: 使用位置與狀態表達
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: Optional 參數與欄位並非全面禁止；三態是否必要取決於更新契約，不能機械式套用禁 Optional 欄位規則；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-008
+  rule: rules/stacks/java/common/null-and-optional.md#java-container-nulls
+  title: 集合內容的空值
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: filter(Objects::nonNull) 可依明訂契約合法使用；未知容器元素與邊界契約無法靠通用 XPath 判定，須確認拒絕或替換語意並做輸入測試；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-009
+  rule: rules/stacks/java/common/null-and-optional.md#java-nonnull-validation
+  title: 非空驗證的位置
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 未提供一致的空值標註、非空預設及可信內部契約範圍；不能要求每個 record 都有 requireNonNull，須審查邊界及建立入口；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-010
+  rule: rules/stacks/java/common/null-and-optional.md#java-null-contract-tools
+  title: 工具可辨識的契約
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 本節無 Java 範例且尚未選定空值標註套件；需專案選定 NullAway／Checker Framework 或 SpotBugs 可理解的契約後另立規則與測試，不能把普通
+    javac 視為非空檢查器；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-011
+  rule: rules/stacks/java/common/null-and-optional.md#java-third-party-optional
+  title: 第三方空值行為
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 第三方 load 的非空契約只存在範例註解，Optional.ofNullable 本身合法；必須核對第三方文件及契約測試；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-012
+  rule: rules/stacks/java/common/null-and-optional.md#java-null-contract-evolution
+  title: 空值契約變更
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 無獨立 Java 範例；須比較契約歷史及呼叫端影響，單一版本 AST 無法證明相容性；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-013
+  rule: rules/stacks/java/common/null-and-optional.md#java-nonnull-default
+  title: 預設非空與明確語意
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 需先定義專案可空標註及範圍；不能將所有 null 比較視為違規，非空預設為 warn，可空位置須明訂語意為 error；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-NO-014
+  rule: rules/stacks/java/common/null-and-optional.md#java-api-absence
+  title: API 邊界的缺值轉換
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 以實際序列化路徑斷言欄位省略／JSON null 與契約相符；Map 放入 Optional 未必就是對外序列化，靜態型別不能證明；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-001
+  rule: rules/stacks/java/common/value-objects.md#java-dedicated-value-types
+  title: 建立專屬型別的條件
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 業務識別概念不同需要專屬型別，普通資料則不需包裝；javac 能阻止已建模型別混用，不能判斷是否應建模，原違反範例可編譯；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-002
+  rule: rules/stacks/java/common/value-objects.md#java-value-construction-invariants
+  title: 建立時保護不變條件
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 列舉建構子、工廠等建立路徑並輸入零、負值測試拒絕；不變條件內容取決於契約，通用缺少建構子規則會誤報合法 record；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-003
+  rule: rules/stacks/java/common/value-objects.md#java-value-immutability
+  title: 不可變性
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: EI_EXPOSE_REP
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17、21。
+  source:
+  - inv-codex-a
+- id: JV-VO-004
+  rule: rules/stacks/java/common/value-objects.md#java-value-immutability
+  title: 不可變性
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: EI_EXPOSE_REP2
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17、21。
+  source:
+  - inv-codex-a
+- id: JV-VO-005
+  rule: rules/stacks/java/common/value-objects.md#java-value-immutability
+  title: 不可變性
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 在傳入後及取出後修改集合並斷言內部值不變；SpotBugs EI_EXPOSE_REP／EI_EXPOSE_REP2 在原範例皆未命中，不得宣稱已涵蓋，反向檢視亦未被抓到；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-006
+  rule: rules/stacks/java/common/value-objects.md#java-value-equality
+  title: 值相等的條件
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/OverrideBothEqualsAndHashcode
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: low
+  note: 淘汰候選：規則容許兩個方法都不覆寫，原違反剛好是此情形；也不能判斷跨幣別等業務相等條件；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17。
+  source:
+  - inv-codex-a
+- id: JV-VO-007
+  rule: rules/stacks/java/common/value-objects.md#java-value-equality
+  title: 值相等的條件
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 測同型別同值相等、跨型別不相等與雜湊一致；原違反是 equals/hashCode 都未覆寫，OverrideBothEqualsAndHashcode
+    不會抓到，未讀欄位警告不算本條實證；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-008
+  rule: rules/stacks/java/common/value-objects.md#java-value-normalization
+  title: 正規化規則
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 測不同建立入口與大小寫等價值；規範允許不同正規化政策，不能用缺少 toUpperCase 等語法推定違反；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-009
+  rule: rules/stacks/java/common/value-objects.md#java-value-operations
+  title: 運算責任
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 值物件與領域元件責任及外部政策由架構決定；未提供領域套件或註解範圍，不能捏造 ArchUnit 分層規則；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-010
+  rule: rules/stacks/java/common/value-objects.md#java-value-restoration
+  title: 資料還原
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 以非法歷史值走實際持久化、反序列化及還原入口；布林參數本身不一定是驗證旁路，須驗證路徑共用保證；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-011
+  rule: rules/stacks/java/common/value-objects.md#java-value-implementation
+  title: 一般類別與 record
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 需敏感資料分類才能判定 record 自動 toString 是否洩漏；全面禁止 record 或要求所有 record 遮罩會改變條文；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-012
+  rule: rules/stacks/java/common/value-objects.md#java-diagnostic-representation
+  title: 診斷字串與交換格式
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: toString 是否成為穩定交換格式需呼叫端及契約證據；方法名 encode 不是可靠界線，須審查格式版本與揭露範圍；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-VO-013
+  rule: rules/stacks/java/common/value-objects.md#java-value-test-coverage
+  title: 業務保證的測試
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 本節無 Java 範例；審查測試是否涵蓋實際相等性、不可變性及還原風險，不以產生方法的行覆蓋率替代；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-SR-001
+  rule: rules/stacks/java/common/states-and-results.md#java-explicit-state-types
+  title: 明確的狀態型別
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 多個 boolean 可能是獨立業務面向，無法一般化為違規；需確認互斥狀態及不合法組合；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-SR-002
+  rule: rules/stacks/java/common/states-and-results.md#java-required-state-data
+  title: 各狀態的必要資料
+  level: warn
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 必要資料由每一狀態的契約決定；enum 與 nullable 欄位搭配未必違反，應審查是否可建立缺資料狀態；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-SR-003
+  rule: rules/stacks/java/common/states-and-results.md#java-business-state-transitions
+  title: 業務操作控制轉換
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 公開 setter 是否繞過業務操作依模型與驗證內容而定；全面禁止 setState 或 public setter 會誤報且容易改名繞過；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-SR-004
+  rule: rules/stacks/java/common/states-and-results.md#java-typed-business-failures
+  title: 具型別的業務失敗
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: IOException 在此契約是技術故障，但其他介面可依法轉成外部結果；須審查故障分類與責任，不機械禁止 catch 回傳；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-SR-005
+  rule: rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling
+  title: 處理完整性
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xlint:all"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: low
+  note: 淘汰候選：原違反及所有符合範例皆編譯成功且無 lint；真正缺失 switch expression 分支是語言編譯錯誤而非某個 -Xlint 規則，default
+    會掩蓋之；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：11、17、21。
+  source:
+  - inv-codex-a
+- id: JV-SR-006
+  rule: rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling
+  title: 處理完整性
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/bestpractices.xml/ExhaustiveSwitchHasDefault
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: high
+  note: 淘汰或需例外：以完整 switch 出現 default 為判斷；詳見每版本實測，不能直接等同禁止未知結果當成功；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：11、17、21。
+  source:
+  - inv-codex-a
+- id: JV-SR-007
+  rule: rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling
+  title: 處理完整性
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/bestpractices.xml/NonExhaustiveSwitch
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: low
+  note: 淘汰候選：內建規則不檢查 switch expression；原違反由 default 滿足語法完整性，未命中；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：11、17、21。
+  source:
+  - inv-codex-a
+- id: JV-SR-008
+  rule: rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling
+  title: 處理完整性
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:EnumDefaultHidesCases
+  xpath: "//(SwitchStatement | SwitchExpression)[@EnumSwitch = true()][@ExhaustiveEnumSwitch
+    = false()][*/SwitchLabel[@Default = true()]]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: high
+  note: 僅審查候選：抓 enum 缺少明列常數且有 default；不判斷成功語意；補強測試顯示 default throw 也會被抓，不能直接作阻擋門檻，須核定完整明列契約及例外；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：11、17、21。
+  source:
+  - inv-codex-a
+- id: JV-SR-009
+  rule: rules/stacks/java/common/states-and-results.md#java-exhaustive-result-handling
+  title: 處理完整性
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: default 是否把未知狀態當成功屬業務語意；窮盡檢查只能補強分支結構，自訂候選規則無法辨認允許的未知狀態拒絕；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-SR-010
+  rule: rules/stacks/java/common/states-and-results.md#java-stable-external-codes
+  title: 穩定的外部代碼
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:EnumOrdinalAtBoundary
+  xpath: "//MethodCall[pmd-java:matchesSig('java.lang.Enum#ordinal()')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: medium
+  note: 只可套用已確認屬外部代碼的映射來源檔或以理由抑制；XPath 本身不識別邊界，內部 ordinal 索引可合法且已實測誤報，禁止全域直接阻擋；不能證明代碼穩定性；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17。
+  source:
+  - inv-codex-a
+- id: JV-SR-011
+  rule: rules/stacks/java/common/states-and-results.md#java-stable-external-codes
+  title: 穩定的外部代碼
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: ordinal 的外部使用可在已核定邊界範圍掃描；名稱穩定性、代碼相容性及未知值映射仍需審查與測試；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-SR-012
+  rule: rules/stacks/java/common/states-and-results.md#java-model-extensibility
+  title: 封閉或允許擴充
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 封閉或開放是契約決策；不能要求所有介面 sealed，javac 只在已宣告 sealed 後檢查 permits，原違反範例不會報錯；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-SR-013
+  rule: rules/stacks/java/common/states-and-results.md#java-model-acceptance
+  title: 模型驗收
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 本節無 Java 範例；需以真實模型與副作用斷言測試狀態轉換、未知代碼、擴充及處理完整性；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-BM-001
+  rule: rules/stacks/java/common/boundary-mapping.md#java-mapping-fields
+  title: 明確控制欄位及來源
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 租戶可信來源及允許傳遞欄位需契約與信任邊界；僅靠 tenantId 等名稱無法可靠區分可信資料；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-BM-002
+  rule: rules/stacks/java/common/boundary-mapping.md#java-mapping-integrity
+  title: 失敗明確回報
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 經實際映射路徑輸入不合法金額並斷言失敗；null 參數可依其他契約合法存在，不以所有 catch 內建構 null 一律違規；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-BM-003
+  rule: rules/stacks/java/common/boundary-mapping.md#java-update-intent
+  title: 保留更新意圖
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 對省略、清空與設定值分別走反序列化及更新路徑；三態需求及空字串語意取決於契約，Optional 或 Map.get 本身非錯誤；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-BM-004
+  rule: rules/stacks/java/common/boundary-mapping.md#java-mutable-isolation
+  title: 集合與可變元素的隔離
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: EI_EXPOSE_REP
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、11、17、21。
+  source:
+  - inv-codex-a
+- id: JV-BM-005
+  rule: rules/stacks/java/common/boundary-mapping.md#java-mutable-isolation
+  title: 集合與可變元素的隔離
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: EI_EXPOSE_REP2
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、11、17、21。
+  source:
+  - inv-codex-a
+- id: JV-BM-006
+  rule: rules/stacks/java/common/boundary-mapping.md#java-mutable-isolation
+  title: 集合與可變元素的隔離
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 修改快照中可變元素並檢查來源隔離；SpotBugs EI 規則沒有抓到原範例的淺層複製或 reversed 檢視，須行為測試；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-BM-007
+  rule: rules/stacks/java/common/boundary-mapping.md#java-directional-mapping
+  title: 各方向分別定義
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 輸入及輸出契約的遮罩與可更新欄位不同；工具反向生成是否合法需核對方向規則，不能一般禁止成對映射；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-BM-008
+  rule: rules/stacks/java/common/boundary-mapping.md#java-mapping-ownership
+  title: 明確維護責任
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: Mapper 介面及包裝層有無實際責任或共用需求依系統脈絡決定；不能全面禁止一行方法或介面；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-BM-009
+  rule: rules/stacks/java/common/boundary-mapping.md#java-mapping-verification
+  title: 驗證實際映射路徑
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 測試是否經實際部署的映射與序列化路徑需要配置及呼叫關係；不能僅以出現 Boundary.map 或測試方法名稱判定；人工／測試責任不是已實作自動規則；不計入工具涵蓋率。
+  source:
+  - inv-codex-a
+- id: JV-CO-001
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-collection-ownership
+  title: 明確定義修改權與參考關係
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 違反與符合範例的程式碼完全相同，只差 Javadoc 所宣稱的契約；只能由人審查契約與實作是否一致；實測 SpotBugs EI_EXPOSE_REP／EI_EXPOSE_REP2（4.10.5）對
+    List 欄位的回傳不報，PMD MethodReturnsInternalArray 只看陣列；Error Prone ImmutableMemberCollection
+    反而對 Java 21 符合範例報「prefer Immutable types」，屬誤報，不採用；；實證版本：17、21。
+  source:
+  - inv-claude-b
+- id: JV-CO-002
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-snapshots-and-views
+  title: 區分不可修改與不可變快照
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 違反範例 List.copyOf(source)／source.reversed() 是否算隔離快照，取決於元素型別是否可變與契約宣稱；PMD／SpotBugs／Error
+    Prone 對違反範例皆無報；可借用 Error Prone Java8ApiChecker 擋住 Java 8 目標使用 copyOf／toList()（屬版本政策文件範圍，非本節語意）；；實證版本：17、8、11、21。
+  source:
+  - inv-claude-b
+- id: JV-CO-003
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-order-and-duplicates
+  title: 順序與重複資料
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ListFromHashSetLosesOrder
+  xpath: "//ConstructorCall[pmd-java:typeIs('java.util.List')]/ArgumentList/ConstructorCall[pmd-java:typeIsExactly('java.util.HashSet')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 只抓「List ← HashSet 建構」這一種失去順序與重複值的寫法；Set.of／Map.of 不保證順序、SequencedSet 不保留重複等屬契約判斷，見同節
+    manual 筆；；誤報風險說明：刻意用 HashSet 去重再排序的寫法也會被報；用 LinkedHashSet／TreeSet 表達意圖者不報；建議 warn
+    並允許 @SuppressWarnings；；實證版本：17、21。
+  source:
+  - inv-claude-b
+- id: JV-CO-004
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-order-and-duplicates
+  title: 順序與重複資料
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 選用 List／Set／Map 是否符合契約的順序與重複語意、Java 11 的 Set.of／Map.of 不承載順序契約、Java 21 SequencedCollection
+    的重複值契約，皆需對照契約人工審查；；實證版本：17、21。
+  source:
+  - inv-claude-b
+- id: JV-CO-005
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation
+  title: 遍歷期間的修改
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: ModifyCollectionInEnhancedForLoop
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: Error Prone 預設 WARNING，需 -Xep:ModifyCollectionInEnhancedForLoop:ERROR；Error
+    Prone 2.52.0 須 JDK 21 執行（2.32–2.42 需 17、≤2.31 需 11）；；誤報風險說明：修改後立即 break 的常見寫法仍會被報（samples/SubClauses.java:56
+    實測亦報）；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-CO-006
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation
+  title: 遍歷期間的修改
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:CatchConcurrentModification
+  xpath: "//CatchParameter//ClassType[pmd-java:typeIs('java.util.ConcurrentModificationException')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 對應子句「未拋出遍歷修改例外不代表安全，也不得捕捉後直接重跑」；規範無此違反範例，以自製樣本實證；；誤報風險說明：捕捉 CME 幾乎只用於重跑或忽略；若為記錄後重新拋出可抑制；；實證版本：17；補充實證：samples/SubClauses3.java:7
+    caught。
+  source:
+  - inv-claude-b
+- id: JV-CO-007
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-traversal-mutation
+  title: 遍歷期間的修改
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ModifyCollectionInForeach
+  xpath: "//MethodCall[@MethodName = ('add','addAll','remove','removeAll','removeIf','retainAll','clear','set','sort','put','putAll','putIfAbsent','replaceAll')][*[1][self::VariableAccess
+    or self::FieldAccess]/@Name = ancestor::ForeachStatement/*[2][self::VariableAccess
+    or self::FieldAccess]/@Name][not(ancestor::LambdaExpression[ancestor::ForeachStatement])]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 'PMD 7 XPath；pre-commit 層的對應規則；；誤報風險說明：同 Error Prone，remove 後 break 會被報；只比對變數名稱，被遍歷集合若是方法回傳值（for
+    (x : get())）則抓不到；；實證版本：17。'
+  source:
+  - inv-claude-b
+- id: JV-CO-008
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity
+  title: 複合操作的原子性
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ConcurrentMapCheckThenAct
+  xpath: "//IfStatement[(UnaryExpression[@Operator='!']/MethodCall[@MethodName='containsKey']
+    | MethodCall[@MethodName='containsKey'] | InfixExpression[@Operator=('==','!=')][NullLiteral]/MethodCall[@MethodName='get'])[*[1][pmd-java:typeIs('java.util.concurrent.ConcurrentMap')]]/*[1]/@Name
+    = *[position() > 1]//MethodCall[@MethodName=('put','remove','replace')]/*[1][self::VariableAccess
+    or self::FieldAccess]/@Name]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: SpotBugs AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION 對規範違反範例（欄位型別 ConcurrentMap
+    介面）不報，只對宣告為 ConcurrentHashMap 的欄位報（samples/SubClauses.java:33），故 pre-commit 以本規則為主；；誤報風險說明：containsKey／get==null
+    後接 put／remove／replace 的同鍵檢查再寫入；在已持鎖區段內屬合理寫法時需抑制；只看 ConcurrentMap 型別的接收者，宣告為 Map
+    介面者抓不到；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-CO-009
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity
+  title: 複合操作的原子性
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 偵測器只針對具體類別 ConcurrentHashMap 的呼叫序列；規範違反範例以 ConcurrentMap 介面宣告欄位，實測漏報；可留作 CI
+    補強，不可作為唯一依據；；實證版本：17；補充實證：samples/SubClauses.java:33 caught（欄位宣告為 ConcurrentHashMap
+    時）。
+  source:
+  - inv-claude-b
+- id: JV-CO-010
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-compound-atomicity
+  title: 複合操作的原子性
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 跨鍵、多集合或多步驟操作是否需要原子性，取決於契約；工具只能抓單一 Map 的 check-then-act 樣式；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-CO-011
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation
+  title: 限制資料累積
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:SortedBeforeLimit
+  xpath: "//MethodCall[@MethodName='limit']/MethodCall[1][@MethodName='sorted'][pmd-java:typeIs('java.util.stream.Stream')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 與 UnboundedStreamStatefulOp 互補：本規則不看來源是否無界，只看「先排序再截取」；；誤報風險說明：有限來源的 sorted().limit(n)
+    只是效能問題而非無界累積，會被報；建議 warn；；實證版本：17、8、11。
+  source:
+  - inv-claude-b
+- id: JV-CO-012
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation
+  title: 限制資料累積
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:UnboundedStreamStatefulOp
+  xpath: "//MethodCall[@MethodName=('sorted','distinct')][descendant::MethodCall[TypeExpression/ClassType[pmd-java:typeIs('java.util.stream.BaseStream')]][@MethodName='generate'
+    or (@MethodName='iterate' and ArgumentList/@Size=2)]][not(descendant::MethodCall[@MethodName=('limit','takeWhile')])]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: Java 11 符合範例用三參數 iterate（有停止條件）→ 不報；Java 8／17 符合範例 limit 在 sorted 之前 → 不報；；誤報風險說明：只針對
+    Stream.generate／二參數 Stream.iterate 這類確定無界的來源，且 limit／takeWhile 不在 sorted／distinct
+    之前；；實證版本：17、8、11。
+  source:
+  - inv-claude-b
+- id: JV-CO-013
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-bounded-accumulation
+  title: 限制資料累積
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: Iterator 或非 Stream 來源是否有界、分組／去重的保留資料成本是否可接受，需依資料規模契約人工核對；；實證版本：17、8、11。
+  source:
+  - inv-claude-b
+- id: JV-CO-014
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime
+  title: 延遲讀取的資源責任
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: StreamResourceLeak
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 對應子句「關閉責任」：Files.lines／list／walk 等資源型 Stream 未以 try-with-resources 關閉；規範違反範例有關閉（只是關太早），本規則不報，改由自訂規則涵蓋；預設
+    WARNING，需升為 ERROR；；實證版本：17、8；補充實證：samples/SubClauses2.java:11 caught（Files.lines
+    未關閉）。
+  source:
+  - inv-claude-b
+- id: JV-CO-015
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-lazy-resource-lifetime
+  title: 延遲讀取的資源責任
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:LazyStreamReturnedFromTryWithResources
+  xpath: "//TryStatement[@TryWithResources = true()]/Block//ReturnStatement[not(ancestor::LambdaExpression[ancestor::TryStatement[@TryWithResources
+    = true()]])][not(ancestor::ClassBody[ancestor::TryStatement])]/*[pmd-java:typeIs('java.util.stream.BaseStream')
+    or pmd-java:typeIs('java.util.Iterator') or pmd-java:typeIs('java.util.Spliterator')][descendant-or-self::VariableAccess/@Name
+    = ancestor::TryStatement[@TryWithResources = true()][1]/ResourceList/Resource//VariableId/@Name]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 回傳型別為 List 等已收集結果者不報（符合範例）；；誤報風險說明：回傳的 Stream／Iterator 必須直接引用 try-with-resources
+    的資源變數才報；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-CO-016
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-batch-failure-state
+  title: 批次修改的失敗保證
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 違反與符合都呼叫 replaceAll，差別只在是否先複製；「約定失敗時值不變」寫在 Javadoc，工具無法得知契約；PMD ImmutableField
+    對違反範例報 values 可為 final，屬無關雜訊；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-CO-017
+  rule: rules/stacks/java/common/collections-and-ownership.md#java-collection-verification
+  title: 所有權與行為驗收
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 驗收小節，無範例；要求以實際集合操作測試，不屬靜態工具範圍。
+  source:
+  - inv-claude-b
+- id: JV-ER-001
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification
+  title: 明確的故障分類
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: IllegalThrows
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: IllegalThrows 預設只含 Error／RuntimeException／Throwable，須改 illegalClassNames 才會抓
+    Exception；實測 Checkstyle 12.3.1 與 10.26.1 皆可；；誤報風險說明：同上；ignoreOverriddenMethods
+    預設 true 可略過帶 @Override 的框架方法；；實證版本：17、8；設定：[illegalClassNames=Exception,Throwable,java.lang.Exception,java.lang.Throwable]。
+  source:
+  - inv-claude-b
+- id: JV-ER-002
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification
+  title: 明確的故障分類
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/bestpractices.xml/PreserveStackTrace
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: medium
+  note: 對應子句「需要邊界轉換時，須保留原始原因」；Error Prone UnusedException（預設關閉）同樣本亦報；；誤報風險說明：刻意不帶原因（例如對外隱藏內部資訊）需抑制；；實證版本：17、8；補充實證：samples/SubClauses.java:8
+    caught（catch 後 throw new X(msg) 未帶 cause）。
+  source:
+  - inv-claude-b
+- id: JV-ER-003
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification
+  title: 明確的故障分類
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/design.xml/AvoidThrowingRawExceptionTypes
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 對應子句「沒有明確語意的 RuntimeException」；規範無此違反範例；對應 SpotBugs THROWS_METHOD_THROWS_RUNTIMEEXCEPTION（同樣本實測亦報）與
+    Error Prone ThrowSpecificExceptions（預設關閉，同樣本實測報）；；實證版本：17、8；補充實證：samples/SubClauses.java:12
+    caught（throw new RuntimeException(cause)）。
+  source:
+  - inv-claude-b
+- id: JV-ER-004
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification
+  title: 明確的故障分類
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/design.xml/SignatureDeclareThrowsException
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 只抓 throws java.lang.Exception；throws Throwable 另見 Checkstyle IllegalThrows
+    筆；；誤報風險說明：測試方法、實作框架介面（Callable.call、AutoCloseable.close 等）常宣告 throws Exception；設
+    IgnoreJUnitCompletely=true，覆寫框架方法者需 @SuppressWarnings("PMD.SignatureDeclareThrowsException")；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ER-005
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification
+  title: 明確的故障分類
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: SpotBugs 4.7 起新增的 THROWS 系列；；誤報風險說明：同 PMD；為 BAD_PRACTICE 類低優先，需 -low 或 priority
+    設定才顯示；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ER-006
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-exception-classification
+  title: 明確的故障分類
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「既有標準例外足以表達時不強制自訂」「不將預期業務失敗改用例外表示」「不改變故障語意」屬契約判斷；；實證版本：17、8。"
+  source:
+  - inv-claude-b
+- id: JV-ER-007
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-checked-unchecked
+  title: Checked 與 Unchecked 的選擇
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 違反範例（包成 UncheckedIOException 再 getCause 處理）語法與慣用寫法皆合法，是否「只為省略宣告」只能由契約判斷；PMD／Checkstyle／SpotBugs／Error
+    Prone（含全部關閉檢查）對違反範例皆無相關報告（僅 SystemPrintln／Varifier 等雜訊）；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ER-008
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope
+  title: 捕捉範圍與處置相符
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: IllegalCatch
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: high
+  note: 條文對 Exception 是「優先捕捉具體例外」→ warn；對 Throwable／Error 是「不得」→ 另一筆 error；預設 illegalClassNames
+    含 Error, Exception, RuntimeException, Throwable 及 java.lang.*，建議拆成兩個 IllegalCatch
+    實例設不同 severity；；誤報風險說明：框架入口層、排程、執行緒邊界依條文「最外層入口可統一處理」本就允許 catch (Exception)；須以
+    SuppressionFilter／SuppressionXpathFilter 排除入口層 package，或在入口類別以 @SuppressWarnings("checkstyle:IllegalCatch")
+    註明；；實證版本：17、8；設定：[illegalClassNames=Exception,RuntimeException]；規範違反範例只 catch
+    Exception，Throwable／Error 以自製樣本實證；；誤報風險說明：執行緒／執行器最外層記錄後重新拋出的 catch (Throwable)
+    需抑制；；實證版本：17、8；補充實證：samples/SubClauses.java:16,19 caught；設定：[illegalClassNames=Throwable,Error,java.lang.Throwable,java.lang.Error]。
+  source:
+  - inv-claude-b
+- id: JV-ER-009
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope
+  title: 捕捉範圍與處置相符
+  level: warn
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/AvoidCatchingGenericException
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: high
+  note: PMD 7.29 的此規則一併涵蓋 Exception／RuntimeException／NullPointerException／Throwable／Error（樣本
+    Throwable、Error 亦報），無法分級，故 Throwable／Error 的 error 等級改由自訂 CatchThrowableOrError
+    承擔；AvoidCatchingThrowable 自 7.18.0 起標記 deprecated，8.0 移除，不建議新設定採用；；誤報風險說明：同 IllegalCatch；入口層需
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ER-010
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope
+  title: 捕捉範圍與處置相符
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:CatchThrowableOrError
+  xpath: "//CatchParameter//ClassType[pmd-java:typeIsExactly('java.lang.Throwable')
+    or pmd-java:typeIsExactly('java.lang.Error')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: 取代已棄用的 AvoidCatchingThrowable 並加入 Error；；誤報風險說明：同上；；實證版本：17、8；補充實證：samples/SubClauses.java:16,19（經
+    AvoidCatchingGenericException 同位置實證；本規則 XPath 與 PMD 已棄用的 AvoidCatchingThrowable
+    相同形式）。
+  source:
+  - inv-claude-b
+- id: JV-ER-011
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope
+  title: 捕捉範圍與處置相符
+  level: warn
+  tier: ci-bytecode
+  tool: spotbugs
+  check: REC_CATCH_EXCEPTION
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: STYLE 類，需 -low；；誤報風險說明：只在 try 內沒有方法宣告 throws Exception 時報；入口層仍會報；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ER-012
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-catch-scope
+  title: 捕捉範圍與處置相符
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「不得將不同來源的故障一律轉成同一業務結果」「不得假裝恢復成功」「縮小 try 範圍」需對照處置責任人工審查；工具只能抓捕捉型別太廣；；實證版本：17、8。"
+  source:
+  - inv-claude-b
+- id: JV-ER-013
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-interruption
+  title: 保留中斷意圖
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: RegexpMultiline
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: Checkstyle 無內建規則；純文字 regex 作為不解析 AST 時的最低限度檢查；；誤報風險說明：只抓空 catch 區塊）；；實證版本：17；設定：[format=catch\s*\(\s*(final\s+)?InterruptedException\s+\w+\s*\)\s*\{\s*\}]。
+  source:
+  - inv-claude-b
+- id: JV-ER-014
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-interruption
+  title: 保留中斷意圖
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: InterruptedExceptionSwallowed
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 預設關閉；針對 catch (Exception／Throwable) 連帶吞掉中斷與 throws Exception 隱藏中斷，不針對明確 catch
+    InterruptedException 的空區塊（規範違反範例由 EmptyCatch／自訂規則抓）；；實證版本：17；補充實證：samples/SubClauses2.java:8（catch
+    (Exception) 吞掉 sleep 的中斷）與 SubClauses.java:59（throws Exception 隱藏 InterruptedException）caught。
+  source:
+  - inv-claude-b
+- id: JV-ER-015
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-interruption
+  title: 保留中斷意圖
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/EmptyCatchBlock
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 只抓空 catch；吞掉後有其他敘述的情況由自訂規則涵蓋；Error Prone EmptyCatch（預設 WARNING）對違反範例亦報；；誤報風險說明：通用規則；allowCommentedBlocks
+    可放寬有註解者；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ER-016
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-interruption
+  title: 保留中斷意圖
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:SwallowedInterruptedException
+  xpath: "//CatchClause[CatchParameter//ClassType[pmd-java:typeIs('java.lang.InterruptedException')]][not(Block//MethodCall[@MethodName='interrupt'])][not(Block//ThrowStatement)][not(Block//MethodCall[@MethodName=('cancel','shutdownNow')])]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 等同 Sonar S2142 的語意；；誤報風險說明：以其他取消機制（例如設定旗標後 return）處理者會被報，需抑制；多重捕捉亦涵蓋（樣本 catch
+    (InterruptedException | ExecutionException) + cancel 不報）；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ER-017
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-interruption
+  title: 保留中斷意圖
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「不得自動重試」「必要清理不得掩蓋中斷意圖」「依明確取消契約處理」需人工核對；；實證版本：17。"
+  source:
+  - inv-claude-b
+- id: JV-ER-018
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-resource-management
+  title: 優先使用語言資源管理機制
+  level: warn
+  tier: pre-commit
+  tool: pmd
+  check: category/java/bestpractices.xml/UseTryWithResources
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 只抓 try／finally 內呼叫 close() 的寫法；本節違反範例沒有 finally 所以不報（在 java-suppressed-failures
+    違反範例有報）；列入作為「優先使用 try-with-resources」的樣式提醒；；實證版本：17、8、11、21。
+  source:
+  - inv-claude-b
+- id: JV-ER-019
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-resource-management
+  title: 優先使用語言資源管理機制
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/CloseResource
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: high
+  note: Java 8 別名寫法 try (InputStream owned = input) 與 Java 11 try (input) 實測皆不誤報；Java
+    21 ExecutorService 範例在 JDK 21 執行期下亦不報；；誤報風險說明：借用資源、回傳資源給呼叫端、框架管理的 Connection 等依條文本就不該關閉，CloseResource
+    仍會報；需用 closeTargets／allowedResourceTypes／closeNotInFinally 屬性與 @SuppressWarnings("PMD.CloseResource")
+    細調；；實證版本：17、8、11、21。
+  source:
+  - inv-claude-b
+- id: JV-ER-020
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-resource-management
+  title: 優先使用語言資源管理機制
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: OS_OPEN_STREAM_EXCEPTION_PATH
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 訊息「may fail to close stream on exception」精確對應條文「涵蓋正常完成及例外退出」；OBL_UNSATISFIED_OBLIGATION
+    對此範例未報；；誤報風險說明：只對 java.io 串流類型追蹤例外路徑；非串流的 AutoCloseable 不報（漏報而非誤報）；；實證版本：17、8、11、21。
+  source:
+  - inv-claude-b
+- id: JV-ER-021
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-resource-management
+  title: 優先使用語言資源管理機制
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「借用或框架管理的資源不得擅自關閉」「其他生命週期須明訂釋放方式」「Java 21 共享 ExecutorService／HttpClient 不得在單次請求結束時關閉」屬所有權契約，工具無法判斷誰擁有資源；；實證版本：17、8、11、21。"
+  source:
+  - inv-claude-b
+- id: JV-ER-022
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures
+  title: 保留操作與清理失敗
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: Finally
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 預設關閉，需 -Xep:Finally:ERROR；；實證版本：17、8、11；補充實證：samples/SubClauses.java:24,28
+    與 SubClauses2.java:15 caught。
+  source:
+  - inv-claude-b
+- id: JV-ER-023
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures
+  title: 保留操作與清理失敗
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xlint:finally"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 搭配 -Werror 或解析警告；javac 8／11／17／21 皆支援；；實證版本：17、8、11；補充實證：samples/SubClauses.java:24,28
+    caught（finally clause cannot complete normally）。
+  source:
+  - inv-claude-b
+- id: JV-ER-024
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures
+  title: 保留操作與清理失敗
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/bestpractices.xml/UseTryWithResources
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 違反範例 finally { resource.close(); } 被報「Consider using a try-with-resources
+    statement」；三個符合範例（含 Java 8 別名、Java 11 try (resource)）皆不報；注意 javac -Xlint:try 反而對符合範例報「resource
+    never referenced in body」，對此規範樣式不宜啟用；；實證版本：17、8、11。
+  source:
+  - inv-claude-b
+- id: JV-ER-025
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures
+  title: 保留操作與清理失敗
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/DoNotThrowExceptionInFinally
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 對應子句「其他控制流程掩蓋原結果」（finally 中 throw）；；實證版本：17、8、11；補充實證：samples/SubClauses.java:28
+    caught。
+  source:
+  - inv-claude-b
+- id: JV-ER-026
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures
+  title: 保留操作與清理失敗
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/ReturnFromFinallyBlock
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 對應子句「不得以 finally 中的 return 掩蓋原結果」；規範無此違反範例；；實證版本：17、8、11；補充實證：samples/SubClauses.java:24
+    caught。
+  source:
+  - inv-claude-b
+- id: JV-ER-027
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-suppressed-failures
+  title: 保留操作與清理失敗
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 自行清理時是否維持故障關係（addSuppressed）、單獨清理失敗的完成判定與回報方式，需依資源契約人工審查；；實證版本：17、8、11。
+  source:
+  - inv-claude-b
+- id: JV-ER-028
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-resource-close-contract
+  title: 有效期與關閉契約
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ResourceCapturedByAsyncTask
+  xpath: "//TryStatement[@TryWithResources = true()]/Block//MethodCall[@MethodName=('runAsync','supplyAsync','submit','execute','schedule','scheduleAtFixedRate','scheduleWithFixedDelay','invokeAll','invokeAny','thenRunAsync','thenApplyAsync','thenAcceptAsync','thenComposeAsync','whenCompleteAsync','handleAsync','start')]/ArgumentList/*[self::LambdaExpression
+    or self::MethodReference][descendant-or-self::*[self::VariableAccess or self::MethodReference]/@Name
+    = ancestor::TryStatement[@TryWithResources = true()][1]/ResourceList/Resource//VariableId/@Name]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 規範違反範例 CompletableFuture.runAsync(lambda 使用 input, executor) 被報；；誤報風險說明：在
+    try 內同步等待結果的 executor.submit(() -> input.read()).get() 也會被報（samples/SubClauses.java:61
+    實測報）；此類需抑制；Java 21 符合範例（ExecutorService 本身是資源、lambda 不引用它）不報；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ER-029
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-resource-close-contract
+  title: 有效期與關閉契約
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「不無依據假設 close() 可重複呼叫」、Java 8／11 的 shutdown／awaitTermination 契約、Java 21 close()
+    無逾時等版本差異為執行期語意，規範亦註明範例不驗證；；實證版本：17。"
+  source:
+  - inv-claude-b
+- id: JV-ER-030
+  rule: rules/stacks/java/common/exceptions-and-resources.md#java-failure-coverage
+  title: 失敗路徑驗收
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 驗收小節，無範例；要求測試涵蓋失敗、中斷、部分初始化與清理路徑。
+  source:
+  - inv-claude-b
+- id: JV-EH-001
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-comparison-semantics
+  title: 明訂比較語意
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 哪些欄位屬於約定的識別語意無法由程式碼得知；所有工具對違反範例只有無關雜訊（PMD UnusedPrivateField、SpotBugs URF_UNREAD_FIELD
+    反而出現在符合範例）；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-002
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract
+  title: 相等與雜湊契約
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: EqualsHashCode
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 同 PMD OverrideBothEqualsAndHashcode；；實證版本：17、8；補充實證：samples/SubClauses3.java:15
+    與 SubClauses.java:53（只覆寫 hashCode）caught。
+  source:
+  - inv-claude-b
+- id: JV-EH-003
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract
+  title: 相等與雜湊契約
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: EqualsUsingHashCode
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 精確對應條文「不得反過來以雜湊值相同判定相等」；預設 WARNING，需升 ERROR；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-004
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract
+  title: 相等與雜湊契約
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/OverrideBothEqualsAndHashcode
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 對應子句「須同時設計相容的 hashCode()」；本節違反範例兩者皆有實作（錯在語意），故不報；Checkstyle EqualsHashCode
+    行為相同（同樣本實證）；；實證版本：17、8；補充實證：samples/SubClauses3.java:15（只覆寫 equals）caught；規範 java-cross-type-equality
+    違反範例的 Child 亦被報。
+  source:
+  - inv-claude-b
+- id: JV-EH-005
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract
+  title: 相等與雜湊契約
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: HE_EQUALS_NO_HASHCODE
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: HE 系列（HE_EQUALS_NO_HASHCODE／HE_HASHCODE_NO_EQUALS／HE_HASHCODE_USE_OBJECT_EQUALS）；注意：子類別只覆寫
+    equals 而 hashCode 繼承自已覆寫的父類別時（java-cross-type-equality 違反範例）SpotBugs 與 Error Prone
+    EqualsHashCode 皆不報，只有 PMD／Checkstyle 報；；實證版本：17、8；補充實證：samples/SubClauses3.java:15
+    caught；HE_HASHCODE_USE_OBJECT_EQUALS 於 SubClauses.java:53 caught。
+  source:
+  - inv-claude-b
+- id: JV-EH-006
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-equality-hash-contract
+  title: 相等與雜湊契約
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 自反、對稱、遞移、一致性與 null 處理只能以測試驗證（建議 EqualsVerifier 一類測試庫，對應 acceptance-java-equality-hash-contract）；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-007
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-hash-collection-stability
+  title: 雜湊集合中的穩定性
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 違反範例在 add 之後 key.set(0, 2)，需跨敘述追蹤「此物件目前是雜湊集合成員」，PMD／SpotBugs／Error Prone 皆無此分析（實測僅
+    UC_USELESS_OBJECT 雜訊，且同時出現於符合範例）；Error Prone ImmutableMemberCollection 對 Java
+    17 符合範例（record Key 已防禦複製）報建議改用 Guava Immutable 型別，屬誤報；；實證版本：17、8、11。
+  source:
+  - inv-claude-b
+- id: JV-EH-008
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle
+  title: Entity 識別碼的生命週期
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:IdentityEqualsWithStateHashCode
+  xpath: "//ClassDeclaration[ClassBody/MethodDeclaration[@Name='equals'][FormalParameters/@Size=1]/Block[@Size=1]/ReturnStatement/InfixExpression[@Operator='=='][ThisExpression]][ClassBody/MethodDeclaration[@Name='hashCode'][FormalParameters/@Size=0][.//VariableAccess[@Name
+    = ancestor::ClassDeclaration[1]/ClassBody/FieldDeclaration/VariableDeclarator/VariableId[@Final
+    = false()]/@Name] or .//FieldAccess[ThisExpression][@Name = ancestor::ClassDeclaration[1]/ClassBody/FieldDeclaration/VariableDeclarator/VariableId[@Final
+    = false()]/@Name]]]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 只涵蓋違反範例這一種「身分相等＋可變狀態雜湊」組合；；誤報風險說明：樣式很窄（equals 為 this == other 且 hashCode 讀取非
+    final 欄位），幾乎必為錯；但涵蓋面也窄；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-EH-009
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-entity-identity-lifecycle
+  title: Entity 識別碼的生命週期
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 是否有跨實例相等需求、識別碼配發時機與集合使用期間是否重疊，需人工對照 ORM／領域設計；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-EH-010
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality
+  title: 跨型別相等範圍
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: EqualsHashCode
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 同上，間接命中；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-011
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality
+  title: 跨型別相等範圍
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: EqualsGetClass
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: high
+  note: Error Prone 預設 WARNING 且與條文「不一律指定使用 instanceof 或 getClass()」衝突，必須 -Xep:EqualsGetClass:OFF；列出以供合併時排除；；誤報風險說明：對本節三個符合範例（以
+    getClass() 約定僅同一具體型別相等）全部誤報「Prefer instanceof to getClass」，且不報違反範例；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-012
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality
+  title: 跨型別相等範圍
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/OverrideBothEqualsAndHashcode
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 違反範例因 Child 只覆寫 equals 而被報（間接命中，抓的是雜湊契約而非對稱性）；Checkstyle EqualsHashCode 同樣命中違反範例
+    11 行；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-013
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality
+  title: 跨型別相等範圍
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 唯一直接偵測「父子型別各自 instanceof 破壞對稱」的內建規則；三個符合範例（getClass、私有建構子、sealed）皆不報；；誤報風險說明：只在子類別以
+    instanceof 子型別覆寫父類別 instanceof 父型別的 equals 時報；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-014
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-cross-type-equality
+  title: 跨型別相等範圍
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 依契約決定哪些具體型別可相等、新增子型別或欄位時是否仍對稱遞移，需人工審查與測試（acceptance-java-cross-type-equality）；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-015
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-ordering-choice
+  title: 自然順序與情境排序
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 自然順序是否「明確且普遍適用」屬領域判斷；違反範例在語法與契約形式上與一般 Comparable 實作無異，所有工具無報；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-016
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations
+  title: 比較關係一致
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: BadComparable
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 只涵蓋縮窄轉型造成的符號翻轉；不涵蓋 int 相減溢位；ComparisonContractViolated（實驗性）對自製不對稱 compareTo
+    樣本未報；；實證版本：17；補充實證：samples/SubClauses.java:47 caught（Possible sign flip from narrowing
+    conversion）。
+  source:
+  - inv-claude-b
+- id: JV-EH-017
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations
+  title: 比較關係一致
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ComparatorBySubtraction
+  xpath: "//InfixExpression[@Operator='-'][pmd-java:typeIs('int') or pmd-java:typeIs('long')
+    or pmd-java:typeIs('float') or pmd-java:typeIs('double')][parent::LambdaExpression[pmd-java:typeIs('java.util.Comparator')]
+    or parent::CastExpression/parent::LambdaExpression[pmd-java:typeIs('java.util.Comparator')]
+    or parent::ReturnStatement[ancestor::LambdaExpression[1][pmd-java:typeIs('java.util.Comparator')]]
+    or parent::CastExpression/parent::ReturnStatement[ancestor::LambdaExpression[1][pmd-java:typeIs('java.util.Comparator')]]
+    or parent::ReturnStatement[not(ancestor::LambdaExpression)][ancestor::MethodDeclaration[1][@Name=('compare','compareTo')][FormalParameters/@Size
+    = (1,2)]] or parent::CastExpression/parent::ReturnStatement[not(ancestor::LambdaExpression)][ancestor::MethodDeclaration[1][@Name=('compare','compareTo')]]]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: Error Prone 對 Integer 相減無對應檢查；只有 BadComparable 抓「long 相減後縮窄成 int」（同樣本 47 行報），對規範違反範例不報；；誤報風險說明：比較兩個已知有界的小整數（例如
+    enum ordinal 相減）技術上不會溢位但仍會被報；；實證版本：17；補充實證：samples/SubClauses.java:47 compareTo
+    中 (int)(rank - other.rank) 亦 caught。
+  source:
+  - inv-claude-b
+- id: JV-EH-018
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-comparator-relations
+  title: 比較關係一致
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 方向一致、遞移性、同次排序不依賴持續變動的時間／設定／外部查詢，需測試與審查（acceptance-java-comparator-relations）；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-EH-019
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-sorted-key-equivalence
+  title: 比較為零與相等性
+  level: warn
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/OverrideBothEqualsAndHashCodeOnComparable
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: medium
+  note: 'PMD 7.17.0 新增；只涵蓋子句「自然順序原則上應與相等性一致」的最低限度（Comparable 類別缺 equals／hashCode）；規範違反範例是
+    record 加情境 Comparator，不報；SpotBugs Eq: ''defines compareTo and uses Object.equals''
+    於同樣本亦報；；誤報風險說明：僅作排序用、不放入集合的 Comparable 類別也會被報；；實證版本：17、8；補充實證：samples/SubClauses.java:47（implements
+    Comparable 卻未覆寫 equals／hashCode）caught。'
+  source:
+  - inv-claude-b
+- id: JV-EH-020
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-sorted-key-equivalence
+  title: 比較為零與相等性
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: TreeSet／TreeMap 的比較器是否該加入次要識別依據，取決於「集合是否須保留不同訂單」的契約；違反與符合只差 thenComparingLong，工具無法判定；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-EH-021
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-sorted-collection-stability
+  title: 排序集合中的穩定性
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 同 java-hash-collection-stability：需跨敘述追蹤物件是否為排序集合成員；所有工具無報；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-EH-022
+  rule: rules/stacks/java/common/equality-hashing-ordering.md#java-relationship-coverage
+  title: 關係與集合行為驗收
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 驗收小節，無範例。
+  source:
+  - inv-claude-b
+- id: JV-ND-001
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-numeric-representation
+  title: 依語意選擇數值型別
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: record Amount(double value) 是否違反，取決於契約是否要求精確十進位；以欄位／型別名稱（amount、price、money）配
+    double 的名稱啟發式可寫成 XPath，但誤報高且會被繞過，不建議列為工具規則；所有工具對違反範例無報；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ND-002
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources
+  title: 從精確來源建立
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: RegexpSinglelineJava
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 純文字替代方案，供不跑 PMD 的最輕量 pre-commit；；誤報風險說明：變數型別為 double 時 regex 看不出來）；；實證版本：17；設定：[format=new\s+BigDecimal\(\s*(\(double\)|\(float\)|Double\.parseDouble|Float\.parseFloat|Double\.valueOf|Float\.valueOf|[0-9]+\.[0-9]+[dDfF]?\s*\))]。
+  source:
+  - inv-claude-b
+- id: JV-ND-003
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources
+  title: 從精確來源建立
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: PMD 7 實作為 matchesSig('java.math.BigDecimal#new(double)')，不限字面值，故 new BigDecimal(Double.parseDouble(text))
+    也被報（規則名稱易誤導）；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ND-004
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources
+  title: 從精確來源建立
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:BigDecimalFromFloatingPoint
+  xpath: "//ConstructorCall[pmd-java:typeIs('java.math.BigDecimal')]/ArgumentList/*[1][pmd-java:typeIs('double')
+    or pmd-java:typeIs('float') or pmd-java:typeIs('java.lang.Double') or pmd-java:typeIs('java.lang.Float')]
+    | //MethodCall[@MethodName='valueOf'][TypeExpression/ClassType[pmd-java:typeIs('java.math.BigDecimal')]]/ArgumentList/*[1][pmd-java:typeIs('double')
+    or pmd-java:typeIs('float') or pmd-java:typeIs('java.lang.Double') or pmd-java:typeIs('java.lang.Float')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 內建規則的超集：加上 valueOf(double)；SpotBugs DMI_BIGDECIMAL_CONSTRUCTED_FROM_DOUBLE
+    只針對無法精確表示的字面常數，對違反範例不報；；誤報風險說明：BigDecimal.valueOf(double) 在來源本來就是量測 double 時合理；若只要內建規則的建構子部分，可不採用本規則；；實證版本：17；補充實證：samples/SubClauses.java:43
+    BigDecimal.valueOf(double) caught。
+  source:
+  - inv-claude-b
+- id: JV-ND-005
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-exact-numeric-sources
+  title: 從精確來源建立
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: "「建立後仍須驗證業務限制」需對照契約；；實證版本：17。"
+  source:
+  - inv-claude-b
+- id: JV-ND-006
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-rounding-policy
+  title: 明訂捨入規則
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:BigDecimalWithoutRoundingMode
+  xpath: "//MethodCall[*[1][pmd-java:typeIs('java.math.BigDecimal')]][(@MethodName='divide'
+    and ArgumentList/@Size = 1) or (@MethodName='setScale' and ArgumentList/@Size
+    = 1)]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 規範違反範例是把 scale 與 RoundingMode 交給呼叫端決定（語意違反），工具抓不到；本規則只涵蓋「讓 API 預設決定」的子句；；誤報風險說明：單參數
+    divide 遇非終止小數會拋 ArithmeticException、單參數 setScale 遇需捨入會拋例外，幾乎總是未明訂捨入；；實證版本：17；補充實證：samples/SubClauses.java:40,41
+    divide(b)／setScale(2) caught。
+  source:
+  - inv-claude-b
+- id: JV-ND-007
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-rounding-policy
+  title: 明訂捨入規則
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 捨入時機與由哪個元件負責屬設計契約；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ND-008
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks
+  title: 範圍與轉換檢查
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: NarrowingCompoundAssignment
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 對應子句「縮窄轉型」的複合指派型式；預設 WARNING；IntLongMath（int 乘法溢位後指派給 long，同樣本 11 行報）與 SpotBugs
+    ICAST_INTEGER_MULTIPLY_CAST_TO_LONG（同樣本報）對應子句「整數溢位回繞」；；實證版本：17、21；補充實證：samples/SubClauses3.java:11
+    total += 10L caught。
+  source:
+  - inv-claude-b
+- id: JV-ND-009
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks
+  title: 範圍與轉換檢查
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:NarrowingPrimitiveCast
+  xpath: "//CastExpression[not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')]
+    and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')])
+    or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')])
+    or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')])]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: high
+  note: 條文「須明確檢查」字面為 error，但實務誤報高；Java 21 違反範例 Math.clamp 屬語意（clamp 本身是合法 API），不報；；誤報風險說明：位元運算、序列化、影像／音訊處理等大量合法縮窄轉型會被報；已排除
+    hashCode 方法內（樣本 53 行不報）；建議先以 warn 導入並允許逐處抑制，或限縮為 long→int；；實證版本：17、21。
+  source:
+  - inv-claude-b
+- id: JV-ND-010
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks
+  title: 範圍與轉換檢查
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: ICAST_INTEGER_MULTIPLY_CAST_TO_LONG
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: ICAST 系列只涵蓋特定溢位樣式；對規範違反範例 (int) longValue 無對應偵測器；；實證版本：17、21；補充實證：samples/SubClauses3.java:11
+    caught。
+  source:
+  - inv-claude-b
+- id: JV-ND-011
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks
+  title: 範圍與轉換檢查
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: Java 21 Math.clamp 是否掩蓋超限、小數捨棄是否可接受，依契約判斷；；實證版本：17、21。
+  source:
+  - inv-claude-b
+- id: JV-ND-012
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence
+  title: BigDecimal 判同語意
+  level: error
+  tier: ci-compile
+  tool: errorprone
+  check: BigDecimalEquals
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: medium
+  note: 預設關閉；record 自動產生的 equals 不會被報（違反範例不報）；；誤報風險說明：Java 8 符合範例在 equals() 內呼叫 value.equals(...)（已先
+    stripTrailingZeros）實測不報；equals 方法以外的 BigDecimal.equals 會報，契約視 scale 為語意時需抑制；；實證版本：17、8；補充實證：samples/SubClauses2.java:5
+    a.equals(b) caught。
+  source:
+  - inv-claude-b
+- id: JV-ND-013
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence
+  title: BigDecimal 判同語意
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:BigDecimalRecordWithoutNormalization
+  xpath: "//RecordDeclaration[RecordComponentList/RecordComponent/ClassType[pmd-java:typeIs('java.math.BigDecimal')]][not(RecordBody/MethodDeclaration[@Name='equals'])][not(RecordBody/*[self::CompactConstructorDeclaration
+    or self::ConstructorDeclaration]//MethodCall[@MethodName=('stripTrailingZeros','setScale')])]"
+  versions:
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: high
+  note: 寬鬆版啟發式；被 ComparableBigDecimalRecordEqualsMismatch 取代；；誤報風險說明：實測誤報 numbers-dates-text.md
+    java-numeric-representation 的符合範例 record Amount(BigDecimal value)；小數位數是否屬語意需契約決定；不建議採用，列出以記錄已試過；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ND-014
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence
+  title: BigDecimal 判同語意
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ComparableBigDecimalRecordEqualsMismatch
+  xpath: "//RecordDeclaration[ImplementsList/ClassType[pmd-java:typeIs('java.lang.Comparable')]][RecordComponentList/RecordComponent/ClassType[pmd-java:typeIs('java.math.BigDecimal')]][RecordBody/MethodDeclaration[@Name='compareTo']//MethodCall[@MethodName='compareTo'][*[1][pmd-java:typeIs('java.math.BigDecimal')]]][not(RecordBody/MethodDeclaration[@Name='equals'])][not(RecordBody/*[self::CompactConstructorDeclaration
+    or self::ConstructorDeclaration]//MethodCall[@MethodName=('stripTrailingZeros','setScale')])]"
+  versions:
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 只適用 record（Java 16+）；Java 8 符合範例為一般類別、自行實作三者，不在範圍（實測不報）；；誤報風險說明：record 以 BigDecimal.compareTo
+    排序卻沿用自動 equals，compareTo==0 與 equals 必然不一致；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ND-015
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-decimal-equivalence
+  title: BigDecimal 判同語意
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 1.0 與 1.00 是否相同屬契約；工具只能抓「排序與相等明顯不一致」的樣式；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ND-016
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-temporal-representation
+  title: 依業務語意選擇時間型別
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: IllegalType
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: medium
+  note: 對應子句「優先使用 java.time」；IllegalType 以程式碼中的名稱比對，須同時列簡名與全名；規範違反範例 LocalDateTime
+    冒充時點屬語意，不報；；誤報風險說明：JDBC／舊框架邊界必須使用 java.sql.Timestamp 等型別，需在邊界層抑制；；實證版本：17、8；補充實證：samples/SubClauses.java:36,37,38
+    Date／Calendar 欄位與參數 caught；設定：[illegalClassNames=Date,Calendar,GregorianCalendar,SimpleDateFormat,DateFormat,Timestamp,java.util.Date,java.util.Calendar,java.util.GregorianCalendar,java.text.SimpleDateFormat,java.text.DateFormat,java.sql.Date,java.sql.Time,java.sql.Timestamp]。
+  source:
+  - inv-claude-b
+- id: JV-ND-017
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-temporal-representation
+  title: 依業務語意選擇時間型別
+  level: warn
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/ReplaceJavaUtilDate
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: medium
+  note: PMD 7.16.0 新增；只涵蓋 java.util.Date；Error Prone JavaUtilDate（預設關閉）同樣本 36 行亦報；；誤報風險說明：同上；；實證版本：17、8；補充實證：samples/SubClauses.java:36,38
+    caught。
+  source:
+  - inv-claude-b
+- id: JV-ND-018
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-temporal-representation
+  title: 依業務語意選擇時間型別
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: LocalDateTime 是否被當成唯一時點只能由業務語意判斷；以欄位名稱（*At、timestamp）配 LocalDateTime 的啟發式誤報高，不建議；；實證版本：17、8。
+  source:
+  - inv-claude-b
+- id: JV-ND-019
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods
+  title: 區分時間長度與日曆規則
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: RegexpSinglelineJava
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: high
+  note: 純文字替代方案；；誤報風險說明：regex 看不到接收者型別，對 Instant／逾時設定等所有 Duration.ofDays／ofHours 都報；只宜作提醒；；實證版本：17；設定：[format=Duration\.of(Days|Hours)\(]。
+  source:
+  - inv-claude-b
+- id: JV-ND-020
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods
+  title: 區分時間長度與日曆規則
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:DurationUsedForCalendarDay
+  xpath: "//MethodCall[@MethodName=('plus','minus')][*[1][pmd-java:typeIs('java.time.ZonedDateTime')
+    or pmd-java:typeIs('java.time.LocalDateTime') or pmd-java:typeIs('java.time.OffsetDateTime')]]/ArgumentList/MethodCall[TypeExpression/ClassType[pmd-java:typeIs('java.time.Duration')]][@MethodName='ofDays'
+    or (@MethodName='ofHours' and ArgumentList/NumericLiteral[@ValueAsLong mod 24
+    = 0])] | //MethodCall[@MethodName='plusHours' or @MethodName='minusHours'][*[1][pmd-java:typeIs('java.time.ZonedDateTime')]][ArgumentList/NumericLiteral[@ValueAsLong
+    mod 24 = 0]]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 符合範例 start.plus(Period.ofDays(1)) 不報；；誤報風險說明：契約真的要「恰好 24 小時後」時屬合法；只抓字面常數倍數，變數小時數抓不到；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ND-021
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-durations-calendar-periods
+  title: 區分時間長度與日曆規則
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 營業日、時區缺口／重疊處理等業務日曆規則需人工審查；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ND-022
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-clock-source
+  title: 可控制的時間基準
+  level: warn
+  tier: pre-commit
+  tool: checkstyle
+  check: RegexpSinglelineJava
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 純文字替代方案；Checkstyle 10.26.1／12.3.1 皆可；；誤報風險說明：同上；；實證版本：17、8、11、21；設定：[format=\b(Instant|LocalDate|LocalDateTime|LocalTime|ZonedDateTime|OffsetDateTime|OffsetTime|Year|YearMonth|MonthDay)\.now\(\s*\)|System\.currentTimeMillis\(\)|new\s+Date\(\s*\)]。
+  source:
+  - inv-claude-b
+- id: JV-ND-023
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-clock-source
+  title: 可控制的時間基準
+  level: warn
+  tier: ci-compile
+  tool: errorprone
+  check: JavaTimeDefaultTimeZone
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 預設關閉；只針對依賴預設時區的 now()（LocalDate／LocalDateTime／ZonedDateTime 等），Instant.now()
+    無時區不報，故規範違反範例不報；可與自訂規則互補涵蓋「明確的時區轉換」共通要求；；實證版本：17；補充實證：samples/SubClauses2.java:13
+    LocalDate.now() caught。
+  source:
+  - inv-claude-b
+- id: JV-ND-024
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-clock-source
+  title: 可控制的時間基準
+  level: warn
+  tier: pre-commit
+  tool: pmd
+  check: custom:NowWithoutClock
+  xpath: "//MethodCall[@MethodName='now'][ArgumentList/@Size = 0][TypeExpression/ClassType[pmd-java:typeIs('java.time.temporal.TemporalAccessor')]]
+    | //MethodCall[pmd-java:matchesSig('java.lang.System#currentTimeMillis()')] |
+    //ConstructorCall[pmd-java:matchesSig('java.util.Date#new()')] | //MethodCall[pmd-java:matchesSig('java.util.Calendar#getInstance()')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: Instant.now(clock)、source.instant() 不報；實測 PMD 在 JDK 8／11／17／21 執行期下結果一致；；誤報風險說明：測試碼、日誌時間戳、非業務用途的計時會被報；以
+    package／測試來源集排除，或在組態／Clock 供應者處抑制；System.nanoTime 等單調來源刻意不報；；實證版本：17、8、11、21；補充實證：samples/SubClauses.java:36,50,51
+    new Date()／currentTimeMillis()／LocalDate.now() caught。
+  source:
+  - inv-claude-b
+- id: JV-ND-025
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-clock-source
+  title: 可控制的時間基準
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 耗時與等待期限是否使用單調來源、Clock 是否真的從外部注入到實際取時路徑，需審查與測試（acceptance-java-clock-injection）；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ND-026
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting
+  title: 解析與輸出契約
+  level: error
+  tier: pre-commit
+  tool: checkstyle
+  check: RegexpSinglelineJava
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 純文字替代方案；；實證版本：17；設定：[format=ResolverStyle\.(SMART|LENIENT)\b]。
+  source:
+  - inv-claude-b
+- id: JV-ND-027
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting
+  title: 解析與輸出契約
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/SimpleDateFormatNeedsLocale
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 對應子句「明訂地區」的舊 API 版本；Error Prone DefaultLocale（預設關閉）同樣本亦報；；實證版本：17；補充實證：samples/SubClauses.java:38
+    caught。
+  source:
+  - inv-claude-b
+- id: JV-ND-028
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting
+  title: 解析與輸出契約
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:DateTimeFormatterPatternNotStrict
+  xpath: "//MethodCall[@MethodName='ofPattern'][TypeExpression/ClassType[pmd-java:typeIs('java.time.format.DateTimeFormatter')]][ArgumentList/@Size
+    = 1 or not(ancestor::MethodCall[@MethodName='withResolverStyle'][ArgumentList/FieldAccess/@Name='STRICT'])]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: high
+  note: 涵蓋條文「須明訂格式、地區…不允許寬鬆修正」的預設 SMART 情況（未呼叫 withResolverStyle）；注意 STRICT 必須搭配 uuuu
+    而非 yyyy，否則解析失敗；可另加 XPath 檢查 STRICT 鏈上的字面樣式含 yyyy；；誤報風險說明：只用於格式化輸出的 formatter 不需要
+    STRICT；formatter 存成欄位後另行 withResolverStyle 也會被報；ofPattern 未給 Locale 在純數字 ISO 樣式下影響有限；建議
+    warn；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ND-029
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting
+  title: 解析與輸出契約
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:LenientDateTimeResolver
+  xpath: "//MethodCall[@MethodName='withResolverStyle']/ArgumentList/FieldAccess[@Name=('SMART','LENIENT')][TypeExpression/ClassType[pmd-java:typeIs('java.time.format.ResolverStyle')]]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: "；誤報風險說明：明確指定 SMART／LENIENT 幾乎都是刻意放寬，與條文「不允許寬鬆修正非法日期」直接衝突；；實證版本：17。"
+  source:
+  - inv-claude-b
+- id: JV-ND-030
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-temporal-parsing-formatting
+  title: 解析與輸出契約
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 時區／偏移與精度是否符合契約、Java 9+ CLDR 地區資料造成的輸出差異（規範註明執行期差異，範例不驗證）需人工核對既有資料；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ND-031
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-text-length-units
+  title: 長度與截取單位
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: substring／length() 是否作用於使用者可見的 Unicode 文字屬語意；全面禁用 String.substring／length
+    誤報極高；所有工具對違反範例無報；；實證版本：17。
+  source:
+  - inv-claude-b
+- id: JV-ND-032
+  rule: rules/stacks/java/common/numbers-dates-text.md#java-boundary-verification
+  title: 邊界與環境差異驗收
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 驗收小節，無範例；JEP 400 預設字元集差異屬執行期；若要工具化，Error Prone DefaultCharset 對應同文件組標題引用的共通要求「明確指定字元編碼」，本次未針對該共通條文實測。
+  source:
+  - inv-claude-b
+- id: JV-CA-001
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-execution-resources
+  title: 統一管理執行資源
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/multithreading.xml/DoNotUseThreads
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: high
+  note: 拒絕整體採用：主範例通過，但 Java 21 符合例誤報 4 處，連 ExecutorService 型別也禁止；與規範允許擁有者建立 executor
+    衝突；改用 NoUnmanagedThread；實證：bad-17=1, good-17=0, good-21=4；詳 pmd-results.json；；實證版本：17、21。
+  source:
+  - inv-codex-b
+- id: JV-CA-002
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-execution-resources
+  title: 統一管理執行資源
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:NoUnmanagedThread
+  xpath: "//ConstructorCall[pmd-java:typeIs('java.lang.Thread')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 採用：限定非資源管理元件；ThreadFactory、測試基礎設施及核准擁有者需精確例外；不涵蓋 Thread.ofVirtual().start
+    等其他建立 API，也不證明容量管理；實證：bad-17=1, good-17=0, good-21=0；詳 pmd-results.json；；實證版本：17、21。
+  source:
+  - inv-codex-b
+- id: JV-CA-003
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-execution-resources
+  title: 統一管理執行資源
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 資源擁有者、框架容許建立點及下游容量須依架構審查；語法僅能找出直接建立 Thread；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-004
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-visibility-sharing
+  title: 可見性與共享資料
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: VO_VOLATILE_INCREMENT
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: SpotBugs 4.8.6／JDK 17 分析 --release 17 原範例：違反 1、符合 0；只證明該錯誤模式，不代表完整併發安全；非標準跨方法鎖擁有權轉移需要核准抑制；；實證版本：17。
+  source:
+  - inv-codex-b
+- id: JV-CA-005
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-visibility-sharing
+  title: 可見性與共享資料
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 跨執行緒交付、整體物件不變條件與原子範圍需設計審查；volatile 遞增只是可辨識子模式；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-006
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-deadline-budget
+  title: 等待期限與逾時處置
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 以可控制完成時間驗證同一預算耗用及逾時處置；XPath 無法可靠追蹤跨方法的時間預算；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-007
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-cancellation-propagation
+  title: 取消傳遞與實際停止
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 取消是否傳到全部子工作、是否遵守中斷契約及真正停止，須執行受控工作驗證；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-008
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-result-reception
+  title: "`Future` 與 `CompletableFuture` 的結果鏈"
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: exceptionally 的常數替代值是否是核准降級取決於契約；禁止整個 API 會誤報合法恢復；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-009
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-task-completion
+  title: 多工作組合的完成條件
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: anyOf 與 allOf 都有合法用途；須按全部成功／首個成功契約測試失敗、取消與不同完成順序；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-010
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-execution-location
+  title: 執行位置與阻塞行為
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 需已知 executor 容量與跨呼叫提交關係；用受控單執行緒 executor 驗證不阻塞，另審查持鎖阻塞；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-011
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-context-propagation
+  title: 明確傳遞與清理脈絡
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 需跨工作重用同一執行緒測試正常、拋錯及巢狀呼叫後的清理／還原；僅搜尋 remove 會漏掉合法還原及誤認錯誤接收者；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-012
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-lock-scope
+  title: 鎖定範圍與取得策略
+  level: error
+  tier: ci-bytecode
+  tool: spotbugs
+  check: UL_UNRELEASED_LOCK
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: SpotBugs 4.8.6／JDK 17 分析 --release 17 原範例：違反 1、符合 0；只證明該錯誤模式，不代表完整併發安全；非標準跨方法鎖擁有權轉移需要核准抑制；；實證版本：17。
+  source:
+  - inv-codex-b
+- id: JV-CA-013
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-lock-scope
+  title: 鎖定範圍與取得策略
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: SpotBugs 僅涵蓋漏解鎖；必要檢查是否位於正確原子範圍及鎖取得策略仍須依不變條件審查；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-014
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-controlled-shutdown
+  title: 受控關閉
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: shutdown、awaitTermination、close 的出現不證明終止；須驗證未完成、逾時、中斷時仍保留工作資源；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-CA-015
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-controlled-verification
+  title: 可控制的併發驗收
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:NoFixedSleepInConcurrencyTest
+  xpath: "//MethodCall[pmd-java:matchesSig('java.lang.Thread#sleep(long)') or pmd-java:matchesSig('java.lang.Thread#sleep(long,int)')]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 條件式採用：只套用併發驗收測試來源；正常程式退避、延遲模擬或測試刻意控制計時可能合法，須允許精確例外；只抓 Thread.sleep(long/int)，不涵蓋其他間接等待；實證：bad-17=1,
+    good-17=0, good-21=0；詳 pmd-results.json；；實證版本：17、21。
+  source:
+  - inv-codex-b
+- id: JV-CA-016
+  rule: rules/stacks/java/common/concurrency-and-async.md#java-controlled-verification
+  title: 可控制的併發驗收
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 測試是否控制交錯且驗證實際結果須審查；禁測試中的固定 sleep 只能涵蓋一個常見錯誤模式；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-RS-001
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-type-contract
+  title: 明確需求與型別契約
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 必要性、責任元件及業務邊界沒有通用可推導定義；全面禁止反射不符合允許受控整合的條文；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-RS-002
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation
+  title: 維持封裝與不變條件
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:ReviewReflectiveFieldWrite
+  xpath: "//MethodCall[@MethodName = ('set','setBoolean','setByte','setChar','setShort','setInt','setLong','setFloat','setDouble')][*[1][pmd-java:typeIs('java.lang.reflect.Field')]]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: high
+  note: 條件式採用：標出 Field 寫入供封裝審查，不能從語法判定業務不變條件；序列化框架與合法映射需逐點核准；未配置例外前不適合整個儲存庫直接阻擋；實證：bad-17=1,
+    good-17=0；詳 pmd-results.json；；實證版本：17。
+  source:
+  - inv-codex-b
+- id: JV-RS-003
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-reflective-encapsulation
+  title: 維持封裝與不變條件
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: Field 寫入是否繞過建立不變條件、特殊存取是否獲准，須依領域驗證及例外紀錄審查；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-RS-004
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-contract-validation
+  title: 使用前驗證契約
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: instanceof 只驗證型別；能力及契約版本需要提供不相容外掛的執行測試，不能用轉型語法當完整驗證；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-RS-005
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure
+  title: 區分故障與執行結果
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/bestpractices.xml/PreserveStackTrace
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 採用：保留反射包裝的原始原因；訊息分類與跨 helper 的傳遞仍須審查；實證：bad-17=1, good-17=0；詳 pmd-results.json；；實證版本：17。
+  source:
+  - inv-codex-b
+- id: JV-RS-006
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-reflection-failure
+  title: 區分故障與執行結果
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 保留原因鏈可局部檢查；反射存取故障、目標業務結果與失敗分類仍須依契約審查；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-RS-007
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression
+  title: 限定檢查抑制
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/bestpractices.xml/UnnecessaryWarningSuppression
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: high
+  note: 拒絕作為本條覆蓋：外層 serial 違反例沒有命中；此內建規則不等同 javac 所有警告範圍驗證；改用局部 MisplacedSerialSuppression
+    並人工審查；實證：bad-17=0, good-17=0, good-8=0, good-11=0；詳 pmd-results.json；；實證版本：8、11、17。
+  source:
+  - inv-codex-b
+- id: JV-RS-008
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression
+  title: 限定檢查抑制
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: custom:MisplacedSerialSuppression
+  xpath: "//ClassDeclaration[not(pmd-java:typeIs('java.io.Serializable'))]/ModifierList/Annotation[pmd-java:typeIs('java.lang.SuppressWarnings')][.//StringLiteral[@ConstValue
+    = 'serial']]"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 採用局部模式：非 Serializable 類別本身沒有 serial 需求，應把 serial 抑制移至需要的內層型別；仍不能證明其他抑制的最小範圍、核准理由；實證：bad-17=1,
+    good-17=0, good-8=0, good-11=0；詳 pmd-results.json；；實證版本：8、11、17。
+  source:
+  - inv-codex-b
+- id: JV-RS-009
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-warning-suppression
+  title: 限定檢查抑制
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 核准原因、具體規則與最小必要範圍需審查；自訂規則只抓非 Serializable 類別上的 serial 抑制；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-RS-010
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-generated-code
+  title: 產生碼不擴大豁免
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 來源可重建性、產生碼與手寫銜接邊界、排除範圍及真實型別契約須審查並重建驗證；一般受檢查轉型不會產生 unchecked 警告；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-RS-011
+  rule: rules/stacks/java/common/reflection-and-suppression.md#java-dynamic-verification
+  title: 驗證限制實際有效
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 須在實際 module-path／classpath 與開放選項下執行允許及拒絕路徑；靜態工具不能證明存取控制生效；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-001
+  rule: rules/stacks/java/common/version-policy.md#java-version-declarations
+  title: 分別記錄版本資訊
+  level: error
+  tier: ci-build
+  tool: maven-enforcer
+  check: requireJavaVersion
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: unverified：無建置範例與專案 POM，本次僅查官方規則；限制執行 Maven 的 JDK 範圍，不保證 toolchain compiler、產物目標或部署版本。
+  source:
+  - inv-codex-b
+- id: JV-VP-002
+  rule: rules/stacks/java/common/version-policy.md#java-version-declarations
+  title: 分別記錄版本資訊
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 建置／目標／API／執行承諾的文件完整性及函式庫使用端契約，不能由 requireJavaVersion 一項推斷；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-003
+  rule: rules/stacks/java/common/version-policy.md#java-build-compatibility
+  title: 建置設定落實限制
+  level: error
+  tier: ci-build
+  tool: gradle
+  check: JavaCompile.options.release
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: unverified：無 Gradle 專案，未實跑 Gradle；固定 toolchain 與 options.release，release 使用支援該旗標的
+    compiler；以新版 compiler 產生 Java 8 目標也適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-004
+  rule: rules/stacks/java/common/version-policy.md#java-build-compatibility
+  title: 建置設定落實限制
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "--release"
+  versions:
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: unverified（原規範無 Java 對照範例）：補充 List.of 負例／Collections.singletonList 正例以 --release
+    8 在 11／17／21 通過預期；8 用真正 JDK 8 的 -source 8 -target 8；不得把補充實驗算原範例涵蓋。
+  source:
+  - inv-codex-b
+- id: JV-VP-005
+  rule: rules/stacks/java/common/version-policy.md#java-build-compatibility
+  title: 建置設定落實限制
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 須審查受控建置設定、本機與 CI 一致性及 compiler 實際參數；--release 的負向案例另附補充實驗；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-006
+  rule: rules/stacks/java/common/version-policy.md#java-runtime-verification
+  title: 執行版本驗證
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 每個承諾執行環境均須跑啟動、依賴載入與關鍵功能；--release 編譯不替代執行；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-007
+  rule: rules/stacks/java/common/version-policy.md#java-module-versions
+  title: 多模組版本要求
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 逐模組與使用端驗證依賴、位元碼、JPMS 及 multi-release JAR 真正選取路徑；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-008
+  rule: rules/stacks/java/common/version-policy.md#java-group-notes-version-declarations
+  title: 版本宣告與相容性補充說明
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 此為前述要求的情境說明，沒有新增可獨立檢查的 Java 語法規則；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-009
+  rule: rules/stacks/java/common/version-policy.md#java-dependency-versions
+  title: 依賴版本要求
+  level: error
+  tier: ci-build
+  tool: gradle
+  check: ResolutionStrategy.failOnVersionConflict
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: unverified：無 Gradle 建置範例；搭配版本 constraints／reject 及 dependency locking；failOnVersionConflict
+    並非 Java 最低版本驗證。
+  source:
+  - inv-codex-b
+- id: JV-VP-010
+  rule: rules/stacks/java/common/version-policy.md#java-dependency-versions
+  title: 依賴版本要求
+  level: error
+  tier: ci-build
+  tool: maven-enforcer
+  check: bannedDependencies
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: unverified：無依賴建置範例；可對已知不相容 GAV／版本區間禁用，searchTransitive=true；不能自動推導所有套件最低 JDK。
+  source:
+  - inv-codex-b
+- id: JV-VP-011
+  rule: rules/stacks/java/common/version-policy.md#java-dependency-versions
+  title: 依賴版本要求
+  level: error
+  tier: ci-build
+  tool: maven-enforcer
+  check: dependencyConvergence
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: unverified：無依賴建置範例；檢查同一依賴的版本路徑收斂，僅輔助依賴治理，不證明相容最低 JDK。
+  source:
+  - inv-codex-b
+- id: JV-VP-012
+  rule: rules/stacks/java/common/version-policy.md#java-dependency-versions
+  title: 依賴版本要求
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 依賴版本上限／最低 JDK 及超出承諾時的處置需依套件資料審查；版本收斂本身不保證 Java 相容；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-013
+  rule: rules/stacks/java/common/version-policy.md#java-build-upgrade
+  title: 建置升級與支援範圍變更
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 使用端影響、回退需求、通知及支援範圍決策是變更治理資料，不存在通用程式語法規則；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-014
+  rule: rules/stacks/java/common/version-policy.md#java-preview-features
+  title: Preview 功能
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xlint:preview"
+  versions:
+  - 17
+  - 21
+  status: candidate
+  false_positive_risk: medium
+  note: unverified：原小節無 Java 對照範例，未執行 Preview 案例；預設不傳 --enable-preview，獲准才開啟並用 -Xlint:preview
+    盤點；不可用 warning 判定核准。
+  source:
+  - inv-codex-b
+- id: JV-VP-015
+  rule: rules/stacks/java/common/version-policy.md#java-preview-features
+  title: Preview 功能
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 核准、用途、維護責任及部署配套需審查；不加 --enable-preview 可阻擋語法/API，但不能判定是否獲准；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-016
+  rule: rules/stacks/java/common/version-policy.md#java-jdk-internals
+  title: JDK 內部實作與存取限制
+  level: error
+  tier: ci-build
+  tool: jdeps
+  check: "--jdk-internals"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: partial
+  false_positive_risk: low
+  note: 已驗證不涵蓋本節反射範例：違反與符合皆無輸出；8 使用 -jdkinternals，11+ 使用 --jdk-internals；額外 sun.misc.Unsafe
+    欄位控制案例四版均偵測靜態內部依賴，該控制案例不計規範涵蓋率；須搭配反射與啟動選項審查；；實證版本：8、11、17、21。
+  source:
+  - inv-codex-b
+- id: JV-VP-017
+  rule: rules/stacks/java/common/version-policy.md#java-jdk-internals
+  title: JDK 內部實作與存取限制
+  level: error
+  tier: pre-commit
+  tool: pmd
+  check: category/java/errorprone.xml/AvoidAccessibilityAlteration
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: medium
+  note: 採用局部模式：抓 setAccessible(true)，不能涵蓋 trySetAccessible、命令列開放或全部 JDK 內部實作；內建 PrivilegedAction
+    排除也可能漏報，不能當核准；實證：bad-17=1, good-17=0；詳 pmd-results.json；；實證版本：17。
+  source:
+  - inv-codex-b
+- id: JV-VP-018
+  rule: rules/stacks/java/common/version-policy.md#java-jdk-internals
+  title: JDK 內部實作與存取限制
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 需核對例外核准、依賴、--add-opens／--add-exports 及升級重驗；靜態依賴分析不看見字串反射；未宣稱執行完整驗收；verified
+    為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-019
+  rule: rules/stacks/java/common/version-policy.md#java-deprecated-api
+  title: 棄用 API
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xlint:deprecation"
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 以實際 JDK 重跑 Integer(int)：8 未棄用所以合法無警告；11 命中 deprecation；17／21 使用 removal（另列）；此列正向涵蓋以
+    11 為實證，Java 8 的其他棄用 API 未測，不將 8 的零命中視為漏報；例外須精確限定，抑制會遮蔽診斷；；實證版本：11。
+  source:
+  - inv-codex-b
+- id: JV-VP-020
+  rule: rules/stacks/java/common/version-policy.md#java-deprecated-api
+  title: 棄用 API
+  level: error
+  tier: ci-compile
+  tool: javac
+  check: "-Xlint:removal"
+  versions:
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: Integer(int) 在 JDK 17／21 命中 removal；JDK 11 此建構子只有 deprecation，不應要求 removal
+    命中；JDK 8 沒有 removal 類別；；實證版本：17、21。
+  source:
+  - inv-codex-b
+- id: JV-VP-021
+  rule: rules/stacks/java/common/version-policy.md#java-deprecated-api
+  title: 棄用 API
+  level: error
+  tier: ci-build
+  tool: jdeprscan
+  check: "--release"
+  versions:
+  - 11
+  - 17
+  - 21
+  status: verified
+  false_positive_risk: low
+  note: 各 JDK 對其本版 bytecode 掃描：11 偵測 deprecated，17／21 多出 forRemoval=true；符合例無棄用使用；只掃
+    Java SE API；第三方棄用 API 不涵蓋；此工具回傳 0 不等於無違規，CI 必須檢查報告；；實證版本：11、17、21。
+  source:
+  - inv-codex-b
+- id: JV-VP-022
+  rule: rules/stacks/java/common/version-policy.md#java-deprecated-api
+  title: 棄用 API
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 工具僅辨識棄用／移除狀態；相容替代方案、既有遷移安排與核准適用範圍仍需審查；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-023
+  rule: rules/stacks/java/common/version-policy.md#java-group-notes-dependency-versions
+  title: 依賴、升級與特殊功能補充說明
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 此為例外治理與漸進導入引用，須核對治理紀錄，不是新的程式規則；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-024
+  rule: rules/stacks/java/common/version-policy.md#java-toolchain-compatibility
+  title: 建置與驗證工具相容性
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 版本變更須驗證編譯、測試、分析、處理器與覆蓋率確實執行；本報告的執行期矩陣只是局部工具證據；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-025
+  rule: rules/stacks/java/common/version-policy.md#java-jdk-distribution
+  title: JDK 發行商與完整版本
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 須保留發行商、完整修補版本及設定，並核對變更測試紀錄；版本數字檢查不涵蓋行為；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-026
+  rule: rules/stacks/java/common/version-policy.md#java-artifact-traceability
+  title: 產物與執行環境追溯
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 發布產物識別、建置來源與實際部署環境關聯需發布流程紀錄；本次未指定任何專案發布系統；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-027
+  rule: rules/stacks/java/common/version-policy.md#java-example-baseline
+  title: 支援版本與主範例基線
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 版本差異不得改變要求是規範語意審查；範例 --release 可驗證語法/API 但不驗證需求等價；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-028
+  rule: rules/stacks/java/common/version-policy.md#java-version-lifecycle
+  title: 新版本納入與版本退場
+  level: error
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 納入與退場是影響盤點、工具鏈驗證及支援決策，不能僅依 JDK 最新版自動更新；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
+- id: JV-VP-029
+  rule: rules/stacks/java/common/version-policy.md#java-version-differences-index
+  title: 版本差異索引
+  level: warn
+  tier: manual
+  tool: none
+  check: none
+  versions:
+  - 8
+  - 11
+  - 17
+  - 21
+  status: manual
+  false_positive_risk: low
+  note: 此為版本差異索引，需核對連結與摘要語意；不是新增 Java 靜態規則；未宣稱執行完整驗收；verified 為不適用。
+  source:
+  - inv-codex-b
