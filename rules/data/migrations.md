@@ -38,8 +38,6 @@
 
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
 
-<a id="資料庫行為與遷移驗證"></a>
-
 依[資料庫行為驗證](persistence.md#acceptance)。
 
 - [資料遷移](../data/migrations.md#version-compatibility)使用具有代表性的既有資料驗證，包含新舊版本相容及適用的失敗恢復情境。

@@ -146,8 +146,8 @@ Java 版本變更須評估參與編譯、測試、分析及產物處理的工具
 
 ### 共同驗收
 
-- [檢查配置可重現](../../../quality/rule-verification.md#acceptance-check-configuration)。
-- [實際執行範圍](../../../quality/rule-verification.md#acceptance-check-execution)。
+- [檢查配置可重現](../../../quality/rule-verification.md#reproducible-check-configuration)。
+- [實際執行範圍](../../../quality/rule-verification.md#actual-check-scope)。
 
 ### Java 語言增量驗收
 

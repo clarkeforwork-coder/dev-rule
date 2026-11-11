@@ -69,14 +69,11 @@
 合併前的審查、必要檢查與核准有效性依[Git、PR 與程式碼審查](../workflow/git-pr-review.md#merge-conditions-branch-protection)核對。
 
 <a id="controlled-interleaving"></a>
-<a id="併發驗證"></a>
-<a id="ca-12"></a>
 ### 可控制的併發驗收
 
 併發與非同步流程須依風險，以可控制的交錯、完成條件及故障情境驗證正確性，不以固定睡眠或偶然成功作為主要證據。測試須有期限與診斷資訊，並搭配同步設計審查；壓力測試可補充驗證，但不能單獨證明執行緒安全。
 
 <a id="supplementary-contract-acceptance"></a>
-<a id="supplemental-contract-acceptance"></a>
 ### 補充契約驗收
 
 | 契約 | 驗收內容 |

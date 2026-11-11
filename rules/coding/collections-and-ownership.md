@@ -5,43 +5,36 @@
 相關共同要求：[程式碼設計與公開介面](code-design.md)、[併發與非同步](concurrency-and-async.md)、[資源與元件生命週期](resource-lifecycle.md)、[錯誤處理](error-handling.md)、[效能與資源使用](../quality/performance.md)。必要例外依[規範治理](../workflow/rule-governance.md)處理。
 
 <a id="collection-contracts"></a>
-<a id="跨主題契約"></a>
 ## 契約要求
 
 共享集合複合操作的原子性依[併發與非同步](concurrency-and-async.md#compound-atomicity)；大量資料累積依[效能與資源使用](../quality/performance.md#bounded-accumulation)；延遲讀取的所有權及關閉依[資源生命週期](resource-lifecycle.md#lazy-resource-lifetime)。批次修改依[多步驟與部分成功](error-handling.md#partial-success)及[失敗後狀態](error-handling.md#failure-state-guarantee)。
 
 <a id="collection-ownership"></a>
-<a id="co-01"></a>
 ### 明確定義修改權與參考關係
 
 集合的接收與回傳契約須明訂修改權、參考保留及快照或檢視語意，涵蓋集合本身與元素。須能辨識接收方是否保留傳入參考、提供方是否仍可修改，以及來源變更是否反映到結果。實作須維持約定的所有權與隔離，不得讓外部修改繞過必要的業務規則；不要求所有集合都複製。
 
 <a id="snapshots-and-views"></a>
-<a id="co-02"></a>
 ### 區分不可修改與不可變快照
 
 不得將不可修改的集合介面或包裝直接視為不可變快照。需要快照時，須依元素可變性建立足夠的隔離；僅複製集合外層不一定隔離可變元素。提供唯讀檢視時，須明訂來源變更是否可見，不得讓實際行為違反契約。
 
 <a id="order-and-duplicates"></a>
-<a id="co-03"></a>
 ### 順序與重複資料
 
 集合契約須明訂所需的順序保證與重複資料處理方式，選用或轉換集合時不得意外改變這些語意。建立映射遇到重複鍵時，須依明確規則拒絕、合併或取代，不得默默遺失資料；不得僅為去重而移除契約允許的重複項目。
 
 <a id="traversal-mutation"></a>
-<a id="co-04"></a>
 ### 遍歷期間的修改
 
 遍歷期間需要修改集合時，須使用符合集合契約的操作方式，並明確界定處理範圍。可依需求使用支援的移除機制，或先產生結果再統一套用。不得依賴未拋例外來推定安全，也不得以捕捉遍歷修改例外後直接重跑來掩蓋問題。涉及併發修改時，須另行保障一致性與副作用安全。
 
 <a id="acceptance"></a>
-<a id="驗收要求"></a>
 ## 驗收
 
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
 
 <a id="collection-verification"></a>
-<a id="co-09"></a>
 ### 所有權與行為驗收
 
 集合相關契約新增或變更時，須依影響驗證修改權、資料隔離、快照或檢視、順序與重複處理，以及適用的併發、批次失敗與資源生命週期，不僅比對成功結果中的元素內容。不要求每個集合測試全部情境或重測標準函式庫本身，重點是使用方式符合業務契約。

@@ -60,7 +60,6 @@
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
 
 <a id="public-event-contract-verification"></a>
-<a id="公開事件的契約驗證"></a>
 ### 公開事件的契約驗證
 
 每種公開事件至少有一個有效範例。發布方與消費方的測試須依事件命名與內容設計引用同一份契約，並分別驗證以下行為。

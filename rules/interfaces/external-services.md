@@ -52,7 +52,6 @@
 - 不要求所有整合採用同一套複雜機制，具體門檻與隔離方式由專案決定。
 
 <a id="accepted-and-completed"></a>
-<a id="acceptance-and-completion"></a>
 ## 接受與完成
 
 - 依契約區分已接受、處理中與已完成，不得把傳輸成功當作業務完成。
@@ -86,8 +85,6 @@
 ## 驗收
 
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
-
-<a id="外部整合與事件故障恢復驗證"></a>
 
 依實際採用的機制與風險，驗證外部整合與[事件流程](../interfaces/events.md#acceptance)中斷後能否恢復，以及恢復是否重複產生副作用。適用情境包括：
 

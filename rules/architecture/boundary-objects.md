@@ -34,7 +34,6 @@
 - 來源新增欄位不得自動擴大跨邊界傳遞範圍，映射要求見[資料映射](data-mapping.md#conversion-requirements)。
 
 <a id="acceptance"></a>
-<a id="契約驗收"></a>
 ## 驗收
 
 驗收案例的選擇與維護依[驗收共同原則](../quality/testing.md#acceptance-principles)。
