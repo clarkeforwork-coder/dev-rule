@@ -36,6 +36,29 @@ class Work {
 }
 ```
 
+**版本差異**
+
+- Java 21 起：可用 Java 21 正式提供的虛擬執行緒 executor，每個工作使用一條虛擬執行緒；仍須由負責元件管理執行資源，以下游共用的 `Semaphore` 限制並行存取，不以池化虛擬執行緒限制容量。（[JEP 444](https://openjdk.org/jeps/444)）
+
+**符合（Java 21）**
+
+```java
+// 擁有者建立並負責關閉 executor，業務工作共用下游容量限制並回傳結果。
+class Work {
+    ExecutorService createExecutor() {
+        return Executors.newVirtualThreadPerTaskExecutor();
+    }
+    Future<?> submit(ExecutorService executor, Semaphore capacity, Runnable task) {
+        return executor.submit(() -> {
+            capacity.acquire();
+            try { task.run(); }
+            finally { capacity.release(); }
+            return null;
+        });
+    }
+}
+```
+
 <a id="java-visibility-sharing"></a>
 
 ### 可見性與共享資料
@@ -100,6 +123,28 @@ class Waiting {
 }
 ```
 
+**版本差異**
+
+- Java 8：沒有自 Java 9 引入的 `CompletableFuture.orTimeout` 與 `completeOnTimeout`，以主範例的 `Future.get(timeout, unit)` 承接剩餘預算，維持同一保證；仍須由工作擁有者處置逾時後的底層工作。（[`orTimeout`／`completeOnTimeout` API `@since 9`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html)）
+- Java 11：可用自 Java 9 引入的 `orTimeout` 將逾時轉成例外完成，或在契約允許替代結果時用 `completeOnTimeout`；仍須承接剩餘預算並處置底層工作，不把結果逾時當成實際停止。（[`orTimeout`／`completeOnTimeout` API `@since 9`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html)）
+
+**符合（Java 11）**
+
+```java
+// 兩個結果鏈承接同一預算，擁有者保留底層工作控制物件處置逾時。
+class Waiting {
+    CompletableFuture<Void> await(CompletableFuture<?> first,
+            CompletableFuture<?> second, long budgetNanos) {
+        long start = System.nanoTime();
+        return first.orTimeout(Math.max(0, budgetNanos), TimeUnit.NANOSECONDS)
+            .thenCompose((Object value) -> {
+                long remaining = budgetNanos - (System.nanoTime() - start);
+                return second.orTimeout(Math.max(0, remaining), TimeUnit.NANOSECONDS);
+            }).thenApply((Object value) -> null);
+    }
+}
+```
+
 <a id="java-cancellation-propagation"></a>
 
 ### 取消傳遞與實際停止
@@ -129,6 +174,10 @@ class Cancellation {
 }
 ```
 
+**版本差異**
+
+- Java 21 起：Java 21 的 `StructuredTaskScope` 為 Preview，不得使用；仍須沿主範例的工作控制物件傳遞取消並追蹤實際停止，不把取消外層結果視為子工作已停止。（[JEP 453](https://openjdk.org/jeps/453)）
+
 <a id="java-result-reception"></a>
 
 ### `Future` 與 `CompletableFuture` 的結果鏈
@@ -156,6 +205,27 @@ class Results {
         return work.whenComplete((Integer value, Throwable failure) -> {
             if (failure != null) {
                 logger.log(System.Logger.Level.ERROR, "背景工作未成功", failure);
+            }
+        });
+    }
+}
+```
+
+**版本差異**
+
+- Java 8：沒有自 Java 9 引入的 `System.Logger`，以 `java.util.logging.Logger` 記錄故障，維持同一保證；仍須回傳 `whenComplete` 結果鏈，保留失敗原因及分類，不把失敗轉為成功。（[`System.Logger` API `@since 9`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/System.Logger.html)）
+
+**符合（Java 8）**
+
+```java
+// 改用舊版日誌 API，仍記錄故障並回傳原成功或失敗的結果鏈。
+class Results {
+    private final java.util.logging.Logger logger =
+        java.util.logging.Logger.getLogger(Results.class.getName());
+    CompletableFuture<Integer> receive(CompletableFuture<Integer> work) {
+        return work.whenComplete((Integer value, Throwable failure) -> {
+            if (failure != null) {
+                logger.log(java.util.logging.Level.SEVERE, "背景工作未成功", failure);
             }
         });
     }
@@ -192,6 +262,10 @@ class Completion {
 }
 ```
 
+**版本差異**
+
+- Java 21 起：Java 21 的 `StructuredTaskScope` 為 Preview，不得使用；仍須依契約以 `allOf` 等正式 API 組合工作並處置剩餘任務，不把第一個完成當成第一個成功。（[JEP 453](https://openjdk.org/jeps/453)）
+
 ## 執行位置、脈絡與同步
 
 <a id="java-execution-location"></a>
@@ -224,6 +298,10 @@ class Execution {
     }
 }
 ```
+
+**版本差異**
+
+- Java 21 起：Java 21 的虛擬執行緒在 `synchronized` 區塊內執行阻塞操作會釘住載體執行緒，長時間或頻繁釘住會限制擴展性；仍須明確安排 executor 與阻塞位置，評估將這類持鎖阻塞改以 `ReentrantLock` 保護，不得假定虛擬執行緒使阻塞成本消失。（執行期差異，範例不驗證；[JEP 444](https://openjdk.org/jeps/444)）
 
 <a id="java-context-propagation"></a>
 
@@ -261,6 +339,10 @@ class Context {
     }
 }
 ```
+
+**版本差異**
+
+- Java 21 起：Java 21 的 `ScopedValue` 為 Preview，不得使用；仍須明確傳遞脈絡，沿主範例設定、清理或還原 `ThreadLocal`，不把新脈絡載體當成自動傳遞保證。（[JEP 446](https://openjdk.org/jeps/446)）
 
 <a id="java-lock-scope"></a>
 
@@ -303,6 +385,10 @@ class Stock {
 }
 ```
 
+**版本差異**
+
+- Java 21 起：Java 21 的虛擬執行緒在 `synchronized` 區塊內長時間阻塞會釘住載體執行緒；可評估改用主範例的 `ReentrantLock`，仍須保留完整原子範圍並於所有退出路徑釋放鎖，不得為避免釘住而把必要檢查移到鎖外。（執行期差異，範例不驗證；[JEP 444](https://openjdk.org/jeps/444)）
+
 ## 關閉與驗證
 
 <a id="java-controlled-shutdown"></a>
@@ -339,6 +425,10 @@ class Shutdown {
 }
 ```
 
+**版本差異**
+
+- Java 21 起：自 Java 19 引入的 `ExecutorService.close()` 會等待至 executor 終止且沒有期限參數，try-with-resources 也會觸發此等待；仍須依關閉契約驗證實際終止，有期限的關閉須沿主範例使用 `shutdown` 與 `awaitTermination`，不得以 `close()` 取代期限控制。（執行期差異，範例不驗證；[`close` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html)）
+
 <a id="java-controlled-verification"></a>
 
 ### 可控制的併發驗收
@@ -369,6 +459,22 @@ class Verification {
         CountDownLatch done = new CountDownLatch(1);
         executor.execute(() -> { value.set(1); done.countDown(); });
         if (!done.await(1, TimeUnit.SECONDS)) throw new AssertionError("未完成");
+        if (value.get() != 1) throw new AssertionError();
+    }
+}
+```
+
+**版本差異**
+
+- Java 21 起：可用自 Java 19 引入的 `Thread.join(Duration)` 限時等待執行緒終止，仍須檢查其布林結果及工作的實際結果，不以等待呼叫返回推定成功。（[`join(Duration)` API `@since 19`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.html)）
+
+**符合（Java 21）**
+
+```java
+// 擁有者提供已啟動的工作執行緒及結果，以期限確認終止後再驗證結果。
+class Verification {
+    void verify(Thread worker, AtomicInteger value) throws InterruptedException {
+        if (!worker.join(Duration.ofSeconds(1))) throw new AssertionError("未完成");
         if (value.get() != 1) throw new AssertionError();
     }
 }
