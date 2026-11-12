@@ -1,3 +1,4 @@
+# 僅供參考的版本與雜湊紀錄；消費端建置目前不強制比對。
 # SHA-256 URL；JDK 工具隨執行 JDK，不是獨立下載。
 be757f04f006348df247dcf235ca45a292fe4472b969fddf38ec2c6a70c4d964 https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-enforcer-plugin/3.5.0/maven-enforcer-plugin-3.5.0.jar
 6a92458c544308e42ca534cfcbdb6f1947ea4a9ca8717e087cd671d31f2d9b0c https://repo.maven.apache.org/maven2/com/tngtech/archunit/archunit/1.4.1/archunit-1.4.1.jar
@@ -8,3 +9,4 @@ be757f04f006348df247dcf235ca45a292fe4472b969fddf38ec2c6a70c4d964 https://repo.ma
 9d9cc6aca9c0c8582cb3685850a65da8d25a7a41d32f26ae68d7a909244c469e https://repo.maven.apache.org/maven2/com/github/spotbugs/spotbugs-maven-plugin/4.8.6.6/spotbugs-maven-plugin-4.8.6.6.jar
 7a9cdf674fc1703d6382f5f330b3d110ea1b512b51f1652846d9e4e8a588d766 https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
 bd71102213493060956ec229d946beee57158dbd89d0e62b91bca0fa2c5f3531 https://services.gradle.org/distributions/gradle-8.14.3-bin.zip
+f3cc922574c6dfe64f82b564f468d94c6477e4ceb45bf5cfebbb66ba1858048e https://repo.maven.apache.org/maven2/org/codehaus/mojo/exec-maven-plugin/3.5.0/exec-maven-plugin-3.5.0.jar

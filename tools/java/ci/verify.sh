@@ -6,7 +6,8 @@ classes=$1; tests=$2; cpfile=$3; shift 3
 [ -n "$(find "$tests" -name RulesTemplateTest.class -print 2>/dev/null)" ] || {
     echo '缺少專案化 RulesTemplateTest.class，拒絕省略架構測試' >&2; exit 2;
 }
-version=$("$JAVA_HOME/bin/java" -version 2>&1 | sed -n '1s/.*version "\([0-9]*\).*/\1/p')
+version=$("$JAVA_HOME/bin/java" -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java.specification.version = //p' | sed 's/^1\.//')
+# --release 沿用執行 JDK 的 API 資料庫，才能發現目前平台的棄用；不代表編譯目標。
 cp=$(cat "$cpfile"):$classes:$tests
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT HUP INT TERM

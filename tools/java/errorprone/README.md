@@ -13,7 +13,7 @@
 
 ## 正式接入
 
-使用 [Maven 正式片段](../ci/maven/pom-fragment.xml)（compiler 3.13.0）或 [Gradle 正式片段](../ci/gradle/rules.gradle.kts)，不要另建 annotationProcessorPaths 或重複加入外掛。兩者都透過 `ci/compiler/javac.sh` 校驗 JAR 並保留既有 processor path；最終編譯參數寫入暫存 argfile，避免大量來源檔超過系統 argv 上限。
+使用 [Maven 正式片段](../ci/maven/pom-fragment.xml)（compiler 3.13.0）或 [Gradle 正式片段](../ci/gradle/rules.gradle.kts)，避免重複加入 Error Prone 外掛。Maven 可使用 `annotationProcessorPaths` 明訂處理器；原始參數有 processor path 時保留它，沒有時把 `-classpath` 附加到 processor path，Error Prone JAR 固定在最前，保留原生 javac 的 classpath 處理器探索。兩者都透過 `ci/compiler/javac.sh` 校驗 JAR 並保留既有 processor path；最終編譯參數寫入暫存 argfile，避免大量來源檔超過系統 argv 上限。
 
 `JAVA_HOME` 必須與實際編譯器相同；Gradle 的 `devRuleCompiler` 必須等於執行 Gradle 的 JDK，`devRuleRelease` 可指定較舊 API。JDK 8 bridge、其他版本 exports／opens 由共用入口管理。JDK 17 的 SuppressWarningsWithoutExplanation 未命中原範例，因此不啟用；JDK 21 仍為 partial，不代表可以靠補註解豁免條文。
 

@@ -132,7 +132,7 @@ public final class Baseline {
         catch (Exception e) { System.err.println("基準工具錯誤：" + e.getMessage()); System.exit(2); }
     }
     private static int run(String[] args) throws Exception {
-        require(args.length>0 && Arrays.asList("create", "check", "prune", "rekey").contains(args[0]), "用法：create|check|prune|rekey --baseline 檔 --pmd 報告／--checkstyle 報告 [--root 專案根] [--owner 負責人 --due YYYY-MM-DD]");
+        require(args.length>0 && Arrays.asList("create", "check", "prune", "rekey").contains(args[0]), "用法：create|check|prune|rekey --baseline 檔 --pmd 報告／--checkstyle 報告（兩者均可重複） [--allow-stale（僅 check）] [--root 專案根] [--owner 負責人 --due YYYY-MM-DD]");
         Map<String,String> options = new HashMap<String,String>();
         List<String[]> reports = new ArrayList<String[]>();
         boolean allowStale=false;
@@ -150,8 +150,10 @@ public final class Baseline {
         boolean create=args[0].equals("create");
         String owner=field(options.containsKey("--owner") ? options.get("--owner") : "");
         String due=field(options.containsKey("--due") ? options.get("--due") : "");
-        if (create) { require(!owner.trim().isEmpty(), "create 必須指定 --owner"); LocalDate.parse(due); }
+        if (create) { require(!owner.trim().isEmpty(), "create 必須指定 --owner"); require(!due.trim().isEmpty(), "create 必須指定 --due"); LocalDate.parse(due); }
         else require(owner.isEmpty() && due.isEmpty(), "--owner／--due 僅適用 create");
+        require(create ? !Files.exists(baseline) : Files.exists(baseline),
+            create ? "基準已存在，create 不覆寫：" + baseline : "基準不存在：" + baseline);
         Map<String,Entry> old=create ? new TreeMap<String,Entry>() : read(baseline);
         List<Entry> current=new ArrayList<Entry>();
         Set<Path> seen=new HashSet<Path>();
@@ -191,6 +193,7 @@ public final class Baseline {
             if (args[0].equals("prune") && errors==0) write(baseline,retained.values(),false);
             System.out.println("新增 error：" + errors + "；新增 warn：" + warnings + "；已清償：" + resolved + " 筆");
         }
+        System.out.println("判定：新增 error " + errors + " 筆；待移出 " + (create || args[0].equals("prune") && errors==0 ? 0 : resolved) + " 筆");
         return errors>0 || (args[0].equals("check") && resolved>0 && !allowStale) ? 1 : 0;
     }
 
@@ -233,11 +236,11 @@ public final class Baseline {
             System.out.println("重新定鍵配對：" + o.file + " " + o.rule + " " + o.hash + " → " + n.hash + " × " + o.count);
         }
         if (rejected) {
-            System.out.println("rekey 拒絕：存在無法配對項目，基準未修改");
+            System.out.println("判定：rekey 拒絕，存在無法配對項目，基準未修改");
             return 1;
         }
         if (moved>0) write(baseline,updated.values(),false);
-        System.out.println("已重新定鍵：" + moved + " 筆（保留負責人與期限）");
+        System.out.println("判定：已重新定鍵：" + moved + " 筆（保留負責人與期限）");
         return 0;
     }
 

@@ -18,7 +18,7 @@
 建置後對 class 目錄執行（完整 dependency classpath 以 `-auxclasspath` 提供）：
 
 ```sh
-java -jar /path/to/spotbugs-4.8.6/lib/spotbugs.jar -textui -effort:max -low \
+java -jar /path/to/spotbugs-4.8.6/lib/spotbugs.jar -textui -effort:default -low \
   -include vendor/dev-rule/tools/java/spotbugs/include.xml \
   -exclude vendor/dev-rule/tools/java/spotbugs/exclude.xml \
   -auxclasspath "$DEPENDENCY_CLASSPATH" -xml:withMessages -output spotbugs.xml target/classes
@@ -35,3 +35,20 @@ SpotBugs 原生訊息不能覆寫。`pattern-map.properties` 將 pattern 對應�
 ## 實證界線
 
 本庫 `ruby tools/java/tests/run-ci-tools.rb` 逐例先以 javac 編譯，再以已校驗 ZIP 中的 SpotBugs 分析；只計指定 pattern，缺失類別／工具錯誤非零退出。候選在此驗收明確載入，目的是記錄漏報與誤報，不表示正式啟用。partial 的 zero findings 不能當成條文已通過，尤其深層不可變性、複合原子操作及數值縮窄需要其他驗證。
+
+## effort 比較
+
+以 JDK 17.0.19、SpotBugs 4.8.6 重跑 `tests/run-ci-tools.rb` 的 16 筆 SpotBugs 映射（包含 candidate），只變更 effort：default 與 max 的逐例命中結果完全相同，皆為 8 筆正反例通過、0 筆工具錯誤／verified 回歸。建議新接入使用 default；目前正式 Maven／Gradle 片段仍保留 Max，收尾時可同步調整。
+
+| default 與 max 皆命中違反例，且符合例無誤報 | 兩者皆未命中原違反例 |
+| --- | --- |
+| NM_METHOD_NAMING_CONVENTION | EI_EXPOSE_REP（2 筆映射） |
+| MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR | EI_EXPOSE_REP2（2 筆映射） |
+| NP_OPTIONAL_RETURN_NULL | AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION |
+| REC_CATCH_EXCEPTION | THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION |
+| OS_OPEN_STREAM_EXCEPTION_PATH | HE_EQUALS_NO_HASHCODE |
+| EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC | ICAST_INTEGER_MULTIPLY_CAST_TO_LONG |
+| VO_VOLATILE_INCREMENT | |
+| UL_UNRELEASED_LOCK | |
+
+本組範例沒有需要 max 才命中的 pattern；未命中的 partial／candidate 並未因 max 改善，不能宣稱所有映射都可命中，也不能外推到其他專案程式形狀。`-low` 仍須保留。

@@ -5,7 +5,9 @@ import org.gradle.jvm.toolchain.JavaLanguageVersion
 // Gradle 8.14.3。每個 Java 子專案都必須 apply 此片段。
 val compilerVersion = providers.gradleProperty("devRuleCompiler").get().toInt()
 val releaseVersion = providers.gradleProperty("devRuleRelease").get().toInt()
-val banned = providers.gradleProperty("devRuleBanned").get().split(",")
+val banned = (providers.gradleProperty("devRuleBanned").orNull
+    ?: throw GradleException("缺少 devRuleBanned；請明訂禁用依賴，空白表示無禁用依賴"))
+    .split(",").map { it.trim() }.filter { it.isNotEmpty() }
 // JV-VP-003：toolchain 必須實際安裝；不默默回退到 daemon JDK。
 configure<JavaPluginExtension> {
     toolchain.languageVersion.set(JavaLanguageVersion.of(compilerVersion))

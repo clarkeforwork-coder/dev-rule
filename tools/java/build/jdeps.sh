@@ -5,7 +5,8 @@ set -eu
 java=${JAVA_HOME:+$JAVA_HOME/bin/}java
 tool=${JAVA_HOME:+$JAVA_HOME/bin/}jdeps
 flag=--jdk-internals
-case "$("$java" -version 2>&1)" in *'"1.8.'*) flag=-jdkinternals ;; esac
+version=$("$java" -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java.specification.version = //p')
+case "$version" in 1.8|8) flag=-jdkinternals ;; esac
 out=$(mktemp)
 trap 'rm -f "$out"' EXIT HUP INT TERM
 if ! LC_ALL=C "$tool" "$flag" "$@" >"$out" 2>&1; then cat "$out" >&2; exit 2; fi
@@ -15,4 +16,4 @@ if grep -q 'JDK internal API' "$out"; then
     exit 1
 fi
 # 未知診斷不能被當作乾淨結果（包括找不到輸入）。
-if [ -s "$out" ]; then cat "$out" >&2; exit 2; fi
+if grep -v '^Picked up ' "$out" | grep -q .; then cat "$out" >&2; exit 2; fi

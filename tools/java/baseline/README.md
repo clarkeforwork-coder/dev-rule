@@ -19,7 +19,7 @@ sh vendor/dev-rule/tools/java/baseline/run.sh check \
   --pmd target/pmd.xml --checkstyle target/checkstyle-result.xml
 ```
 
-`create` 要求負責人與 ISO 日期，不覆寫既有檔案。建立基準屬首次接入的審查動作；PR 不應重新 `create` 吸收新問題。`check` 不修改基準，列出新增診斷與已清償筆數。結束碼：0＝無新增 error 且無已清償項目，1＝新增 error 或待 prune，2＝輸入／設定／工具錯誤。`check --allow-stale` 可暫時容許已清償項目；CI 預設不加此旗標。PMD priority 1／2 與 Checkstyle error 阻擋；其餘支援等級只警告。所有子命令至少須指定一份報告；`--pmd`、`--checkstyle` 可重複指定不同報告，但不可重複傳入同一檔案。若基準含兩種工具就必須提供兩者報告。
+`create` 要求負責人與 ISO 日期，不覆寫既有檔案。建立基準屬首次接入的審查動作；PR 不應重新 `create` 吸收新問題。`check` 不修改基準，列出新增診斷與已清償筆數，最後以「判定」列出新增 error 與待移出數量。缺少 `--owner`／`--due`、建立時檔案已存在或檢查時基準不存在，均給具名錯誤。結束碼：0＝無新增 error 且無已清償項目，1＝新增 error 或待 prune，2＝輸入／設定／工具錯誤。`check --allow-stale` 可暫時容許已清償項目；CI 預設不加此旗標。PMD priority 1／2 與 Checkstyle error 阻擋；其餘支援等級只警告。所有子命令至少須指定一份報告；`--pmd`、`--checkstyle` 可重複指定不同報告，但不可重複傳入同一檔案。若基準含兩種工具就必須提供兩者報告。
 
 報告路徑、基準路徑相對於工作目錄；報告內相對來源路徑相對於專案根目錄（預設工作目錄，可用 `--root` 指定）。來源必須存在且位於根目錄內，包含符號連結解析後的位置。PMD XML 必須使用正式 ruleset，使訊息保留 `[JV-…]` 與規範錨點；PMD 的 `<suppressedviolation>` 略過並統計；其他未知診斷、工具錯誤與不合法 XML 不可納入基準。XML 禁止 DTD／外部實體。
 
@@ -72,7 +72,7 @@ Git hook 以 HEAD／index 的新增行決定範圍，可在提交前快速檢查
 
 Gradle 使用 `./gradlew -PdevRuleBaseline check`。`devRuleBaselineCheck` 依賴所有 PMD／Checkstyle task，收集各 source set 的 XML；NO-SOURCE 轉成明確空報告，防止讀入上次建置殘留報告。其他跳過狀態與缺少報告會失敗；建置工具仍負責解析與執行錯誤。首次產生報告時可執行 `./gradlew -PdevRuleBaseline checkstyleMain pmdMain checkstyleTest pmdTest`，再將所有非空 source set 的報告傳給 `create`。後續 CLI prune 同樣需完整範圍。
 
-`run.sh` 優先使用 `JAVA_HOME`，否則使用 PATH；請與建置使用同一個 JDK。編譯快取在 `$HOME/.cache/dev-rule-baseline`，可用 `DEV_RULE_BASELINE_CACHE` 改位置。快取鍵包含原始碼與 javac 版本，未改動時直接執行；此處 cksum 僅用於快取失效，不是下載工具的信任校驗。沒有外部 JAR 下載。也可直接執行：
+`run.sh` 優先使用 `JAVA_HOME`，否則使用 PATH；請與建置使用同一個 JDK。每次都以 `mktemp -d` 建立私有目錄重新編譯，結束後移除，沒有編譯快取或外部 JAR 下載。也可直接執行：
 
 ```sh
 javac -encoding UTF-8 -d /tmp/baseline-classes vendor/dev-rule/tools/java/baseline/Baseline.java

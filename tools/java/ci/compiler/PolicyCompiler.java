@@ -2,6 +2,8 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.regex.*;
 import java.security.MessageDigest;
 import java.util.*;
 
@@ -30,11 +32,22 @@ public final class PolicyCompiler {
                 command.add("-J--add-opens=jdk.compiler/com.sun.tools.javac." + part + "=ALL-UNNAMED");
         }
         String processor = artifact("ERRORPRONE").toString();
+        boolean explicitProcessor = false;
+        String classpath = null;
+        Path destination = null;
         for (int i = 0; i < original.size(); i++) {
             String arg = original.get(i);
-            if (arg.equals("-processorpath") || arg.equals("--processor-path")) processor += File.pathSeparator + original.get(++i);
-            else command.add(arg);
+            if (arg.equals("-processorpath") || arg.equals("--processor-path")) { explicitProcessor = true; processor += File.pathSeparator + original.get(++i); }
+            else if (arg.startsWith("--processor-path=")) { explicitProcessor = true; processor += File.pathSeparator + arg.substring(17); }
+            else {
+                command.add(arg);
+                if (arg.equals("-classpath") || arg.equals("-cp") || arg.equals("--class-path")) classpath = original.get(i + 1);
+                if (arg.startsWith("--class-path=")) classpath = arg.substring(13);
+                if (arg.equals("-d")) destination = Paths.get(original.get(i + 1));
+            }
         }
+        if (!explicitProcessor && classpath != null) processor += File.pathSeparator + classpath;
+        command.addAll(Arrays.asList("-Xmaxwarns", "2147483647", "-Xmaxerrs", "2147483647"));
         command.add("-processorpath"); command.add(processor);
         command.add("-XDcompilePolicy=simple");
         if (Integer.parseInt(version) >= 17) {
@@ -62,41 +75,58 @@ public final class PolicyCompiler {
         while ((line = reader.readLine()) != null) { log.append(line).append('\n'); }
         int code = process.waitFor();
         Files.deleteIfExists(argfile);
+        Map<String, List<Map<String, String>>> checks = new HashMap<String, List<Map<String, String>>>();
         Map<String, String> row = new HashMap<String, String>();
-        boolean violation = false;
         for (String item : Files.readAllLines(base.resolve("rule-map.yml"), StandardCharsets.UTF_8)) {
             if (item.startsWith("- id: ")) {
-                violation |= emit(row, log); row.clear(); row.put("id", item.substring(6));
+                index(checks, row); row = new HashMap<String, String>(); row.put("id", item.substring(6));
             } else if (item.matches("  (tool|check|title|rule|level|status): .*")) {
                 int at = item.indexOf(": "); String value = item.substring(at + 2);
                 if (value.startsWith("\"") || value.startsWith("'")) value = value.substring(1, value.length() - 1);
                 row.put(item.substring(2, at), value);
             }
         }
-        violation |= emit(row, log);
-        System.out.print(log.toString());
+        index(checks, row);
+        boolean violation = false;
+        Pattern token = Pattern.compile("\\[([^\\]]+)\\]");
+        for (String diagnostic : log.toString().split("\n")) {
+            StringBuilder annotated = new StringBuilder(diagnostic);
+            Set<Map<String, String>> matched = new LinkedHashSet<Map<String, String>>();
+            Matcher matcher = token.matcher(diagnostic);
+            while (matcher.find()) {
+                List<Map<String, String>> mappings = checks.get(matcher.group(1));
+                if (mappings != null) matched.addAll(mappings);
+            }
+            for (Map<String, String> mapping : matched) {
+                annotated.append(" [").append(mapping.get("id")).append("] ").append(mapping.get("title"))
+                    .append(" → ").append(mapping.get("rule"));
+                violation |= "error".equals(mapping.get("level"));
+            }
+            System.out.println(annotated);
+        }
+        // 政策失敗時移除輸出目錄內所有 class，保留資源及目錄；避免 Maven 誤判為最新。
+        // 不追蹤符號連結，也不刪除 -d 以外的檔案。
+        if (violation && destination != null && Files.isDirectory(destination)) {
+            Files.walkFileTree(destination, new SimpleFileVisitor<Path>() {
+                @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    if (file.toString().endsWith(".class") && attrs.isRegularFile()) Files.delete(file);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        }
         System.exit(code != 0 ? code : violation ? 1 : 0);
     }
-    private static boolean emit(Map<String, String> row, StringBuilder output) {
-        String log = output.toString();
-        String check = row.get("check"); boolean hit = false;
-        if (check != null && "javac".equals(row.get("tool")) && check.startsWith("-Xlint:")) {
-            for (String category : check.substring(7).split("[ ,]")) hit |= log.contains("[" + category + "]");
+    private static void index(Map<String, List<Map<String, String>>> checks, Map<String, String> row) {
+        String check = row.get("check");
+        if (check == null || "candidate".equals(row.get("status"))) return;
+        String[] names;
+        if ("javac".equals(row.get("tool")) && check.startsWith("-Xlint:")) names = check.substring(7).split("[ ,]+");
+        else if ("errorprone".equals(row.get("tool"))) names = new String[]{check};
+        else return;
+        for (String name : names) {
+            if (!checks.containsKey(name)) checks.put(name, new ArrayList<Map<String, String>>());
+            checks.get(name).add(row);
         }
-        if ("errorprone".equals(row.get("tool"))) hit = log.contains("[" + check + "]");
-        if (!hit || "candidate".equals(row.get("status"))) return false;
-        String diagnostic = "[" + row.get("id") + "] " + row.get("title") + " → " + row.get("rule");
-        // Maven 的 fork parser 會捨棄無位置的自由文字；附在原診斷位置後保留映射。
-        output.setLength(0);
-        for (String line : log.split("\n")) {
-            boolean matching = "errorprone".equals(row.get("tool")) && line.contains("[" + check + "]");
-            if ("javac".equals(row.get("tool")))
-                for (String category : check.substring(7).split("[ ,]")) matching |= line.contains("[" + category + "]");
-            output.append(line);
-            if (matching) output.append(" ").append(diagnostic);
-            output.append('\n');
-        }
-        return "error".equals(row.get("level"));
     }
     private static List<String> flags(String file) throws IOException {
         List<String> result = new ArrayList<String>();
