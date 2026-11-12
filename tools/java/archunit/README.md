@@ -2,13 +2,15 @@
 
 固定使用 ArchUnit 1.4.1（JDK 8／11／17／21 bytecode）。純核心 JAR 與 slf4j-api 2.0.17 的下載 URL、SHA-256 在 `profiles/jdk*.env`；測試腳本校驗雜湊。Maven／Gradle 專案須保留自身 dependency verification／鎖檔策略。
 
+JUnit 5 為預設；JUnit 4 僅供既有專案過渡（legacy）。兩份測試都未使用 @ArchTest，因此統一使用核心 archunit。
+
 ## 選擇測試框架
 
 把 `RulesTemplate.java` 與以下**其中一份** `RulesTemplateTest.java` 放進 `src/test/java`，兩檔加上相同的專案測試套件宣告：
 
-- JUnit 5 專案：`junit5/RulesTemplateTest.java`，test scope 加入 `com.tngtech.archunit:archunit-junit5:1.4.1` 與 `org.junit.jupiter:junit-jupiter:5.12.2`。Maven 正式片段預設提供這組依賴；Surefire 3.5.2 自動選用 JUnit Platform。
+- JUnit 5 專案：`junit5/RulesTemplateTest.java`，test scope 加入 `com.tngtech.archunit:archunit:1.4.1` 與 `org.junit.jupiter:junit-jupiter:5.12.2`。Maven 正式片段預設提供這組依賴；Surefire 3.5.2 自動選用 JUnit Platform。
 - JUnit 4 專案：`junit4/RulesTemplateTest.java`，test scope 加入 `com.tngtech.archunit:archunit:1.4.1` 與 `junit:junit:4.13.2`。Maven 設定 `-Ddev-rule.test-framework=junit4`（可寫入 `.mvn/maven.config`），由 profile 注入這組依賴；未指定或 `junit5` 則使用 JUnit 5。不要只在 POM properties 設定此選擇值，profile activation 不讀同一 POM 的屬性。
-- JUnit Platform 混跑 JUnit 4／5：另加入 test runtime `org.junit.vintage:junit-vintage-engine:5.12.2`；沒有 Vintage 時，JUnit 4 測試不會執行。版本應與專案的 JUnit BOM 對齊。
+- JUnit Platform 混跑 JUnit 4／5：另加入 test runtime `org.junit.vintage:junit-vintage-engine:5.12.2`；Maven 預設 profile 會拒絕有 JUnit 4 而沒有 Vintage 的依賴組合，避免靜默跳過測試。版本應與專案的 JUnit BOM 對齊。Maven profile BOM 預設 5.12.2 會優先於專案另 import 的 5.11.4；需要 5.11.4 時將 dev-rule.junit.version 設為 5.11.4，Jupiter／Vintage 不另寫版本。
 
 Gradle 片段不注入任何測試依賴、不設定測試框架。JUnit 5 消費端範例：
 
@@ -18,7 +20,7 @@ repositories { mavenCentral() }
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
+    testImplementation("com.tngtech.archunit:archunit:1.4.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 tasks.test { useJUnitPlatform() }

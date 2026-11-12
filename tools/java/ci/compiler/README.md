@@ -1,6 +1,6 @@
 # 編譯器包裝
 
-`javac.sh` 每次在私有暫存目錄編譯 Java 包裝器，不使用編譯快取；消費端不需要 Ruby／Python。最終參數以 argfile 傳給 javac，在消費端參數之後加入 `-Xmaxwarns 2147483647 -Xmaxerrs 2147483647`，避免前面的未映射警告截斷政策診斷。
+`javac.sh` 以 PolicyCompiler 原始碼 SHA-256＋JDK 版本為鍵，在專案 `target/dev-rule-tools/` 重用 Java 包裝器；Gradle 或自訂建置目錄由 `DEV_RULE_TOOLS_DIR` 指定。來源改動或 clean 後重編，先寫暫存目錄再原子 rename，不使用跨專案 class 快取；消費端不需要 Ruby／Python 或額外雜湊命令。最終參數以 argfile 傳給 javac，在消費端參數之後加入 `-Xmaxwarns 2147483647 -Xmaxerrs 2147483647`，避免前面的未映射警告截斷政策診斷。
 
 Error Prone JAR 放在 processor path 最前。明訂 `-processorpath`／`--processor-path` 時保留原值，未指定時使用 `-classpath`／`-cp`／`--class-path` 的值，保留 classpath annotation processor 探索。
 

@@ -2,6 +2,8 @@
 
 pre-commit 與 CI 層已實作，共用 [rule-map.yml](rule-map.yml) 的條文 ID、等級與錨點。IDE 可載入相同 PMD／Checkstyle 設定取得回饋；本庫不安裝 IDE 外掛，也不宣稱所有 IDE 具有相同診斷能力。CI 是合併門檻，不能以可略過的 hook 取代。
 
+JUnit 5 為預設；JUnit 4 僅供既有專案過渡（legacy）。
+
 ## 三層接入
 
 先把已審查 commit 固定在 `vendor/dev-rule`；升級規範與工具時一併檢視 CHANGELOG、映射及基準差異。消費端 CI 使用 JDK、Maven／Gradle、git、curl 與 POSIX shell，不需要 Ruby／Python；hook 另需要 Bash 3.2+、SHA-256 工具。Ruby 僅供本庫的產生器與測試。
@@ -47,7 +49,7 @@ repositories { mavenCentral() }
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
+    testImplementation("com.tngtech.archunit:archunit:1.4.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 tasks.test { useJUnitPlatform() }
@@ -63,9 +65,17 @@ devRuleRelease=17
 devRuleBanned=
 ```
 
-`devRuleBanned` 不可省略，空值或純空白表示無禁用依賴。`devRuleRoot` 相對於專案目錄解析，子目錄專案或外部工具建議傳絕對路徑。執行 `./gradlew clean check`。片段提供 `devRuleDependencies`、`devRuleClasspath`、`spotbugsMain`／`spotbugsTest` 及 `devRuleBytecode`，不需額外 SpotBugs Gradle 外掛。共用編譯入口讀取版本旗標及已校驗 Error Prone JAR；Gradle 保留 JavaCompile 的來源／輸出／classpath 宣告，以正式入口替換編譯 action，目前針對標準 Java source sets，不適用 Kotlin／Android／JPMS 模組或自訂編譯 action。所有 source set（含 apply 後註冊者）的非空 classesDirs 與 SpotBugs 報告都納入驗證。Gradle up-to-date 判定仍有效，輸入變動則清除該 task 輸出並全量重編；開發時可用 `-PdevRuleCompilerReplacement=off` 保留原生增量編譯，CI runner 明確覆寫為 `on`。首次接入須實測專案 annotation processors。
+`devRuleBanned` 不可省略，空值或純空白表示無禁用依賴。`devRuleRoot` 相對於專案目錄解析，子目錄專案或外部工具建議傳絕對路徑。執行 `./gradlew clean check`。片段提供 `devRuleDependencies`、`devRuleClasspath`、`spotbugsMain`／`spotbugsTest` 及 `devRuleBytecode`，不需額外 SpotBugs Gradle 外掛。共用編譯入口讀取版本旗標及已校驗 Error Prone JAR；Gradle 保留 JavaCompile 的來源／輸出／classpath 宣告，以正式入口替換編譯 action，目前針對標準 Java source sets，不適用 Kotlin／Android／JPMS 模組或自訂編譯 action。所有 source set（含 apply 後註冊者）的非空 classesDirs 與 SpotBugs 報告都納入驗證。Gradle up-to-date 判定仍有效，輸入變動則清除該 task 輸出並全量重編；開發時可用 `-PdevRuleCompilerReplacement=off` 保留原生增量編譯，CI runner 明確覆寫為 `on`。pre-commit hook 不含編譯期檢查，本機預設關閉會讓這類問題延到 CI 才發現；需要增量編譯者可設 off。首次接入須實測專案 annotation processors。
 
-Gradle 不注入測試依賴或強制框架；Maven 以 `dev-rule.test-framework` 選擇依賴，未指定或設 `junit5` 時預設 JUnit 5；JUnit 4 專案須傳 `-Ddev-rule.test-framework=junit4`（建議寫入 `.mvn/maven.config`），啟用 `archunit`＋`junit` 的 profile。此選擇屬性必須來自 Maven 命令列／啟動設定，不能只放在 POM 的 properties，因為 profile activation 不讀同一 POM 的屬性。選擇 `archunit/junit5/RulesTemplateTest.java` 或 `archunit/junit4/RulesTemplateTest.java`；混跑需 Vintage engine 5.12.2，依賴與 JUnit BOM 5.12.2 對齊。兩者均須依 [ArchUnit 說明](archunit/README.md) 建立專案化 `RulesTemplateTest`，明確選擇架構根套件與規則。不可因不適用而讓空匹配假通過。本機片段檢查整檔與完整 bytecode，不做 staged 行過濾。專案採用建置工具的 dependency verification／鎖檔；Error Prone 主 JAR 與 JDK 8 javac bridge 由共用入口依 profile SHA-256 校驗，快取每次重驗。
+Gradle 不注入測試依賴或強制框架；Maven 以 `dev-rule.test-framework` 選擇依賴，未指定或設 `junit5` 時預設 JUnit 5；JUnit 4 專案須傳 `-Ddev-rule.test-framework=junit4`（建議寫入 `.mvn/maven.config`），啟用 `archunit`＋`junit` 的 profile。此選擇屬性必須來自 Maven 命令列／啟動設定，不能只放在 POM 的 properties，因為 profile activation 不讀同一 POM 的屬性。選擇 `archunit/junit5/RulesTemplateTest.java` 或 `archunit/junit4/RulesTemplateTest.java`；混跑需 Vintage engine，版本由相同的 JUnit BOM（預設 5.12.2）管理。兩者均須依 [ArchUnit 說明](archunit/README.md) 建立專案化 `RulesTemplateTest`，明確選擇架構根套件與規則。不可因不適用而讓空匹配假通過。本機片段檢查整檔與完整 bytecode，不做 staged 行過濾。專案採用建置工具的 dependency verification／鎖檔；Error Prone 主 JAR 與 JDK 8 javac bridge 由共用入口依 profile SHA-256 校驗，快取每次重驗。
+
+### Maven 測試依賴對齊與 helper 快取
+
+預設 profile 以 `org.junit:junit-bom` import 管理 JUnit，`junit-jupiter` 不單獨指定版本；兩種框架一律只需 `com.tngtech.archunit:archunit:1.4.1`。有 `junit:junit` 卻沒有 Vintage 時，AntRun 3.1.0 在 validate 依 Maven 解析的 test 依賴座標拒絕建置，訊息指示選用 legacy profile 或加入 Vintage，消費端不需 Ruby／Python。Enforcer 的 bannedDependencies 無法用另一座標的存在作為豁免條件，因此採這個條件檢查。
+
+Maven 3.9.9 實測：專案另 import `junit-bom:5.11.4` 時，profile BOM 優先，Jupiter aggregator／api／engine 都解析為 5.12.2、Platform 為 1.12.2。專案要使用 5.11.4，須將 `dev-rule.junit.version` 設為 5.11.4（POM properties 或 `-Ddev-rule.junit.version=5.11.4`），讓片段 BOM 與專案一致；不要僅覆寫單一 JUnit artifact。Vintage 同樣不另寫版本，交給此 BOM 管理。
+
+PolicyCompiler、SpotbugsSummary、ArchitectureReports 與建置內的 Baseline 以來源 SHA-256＋JDK 版本為鍵，在 Maven `target/dev-rule-tools/` 或 Gradle `build/dev-rule-tools/` 重用；來源改動便重編，clean 刪除快取。呼叫端可設 `DEV_RULE_TOOLS_DIR`（自訂 Maven build directory 時亦須設定），不得指向跨專案共用目錄。Java 8 相容的 bootstrap 以完整來源查找自己的 SHA-256 目錄，原始碼未改不重編；SHA-256 由 Java 計算，無新增雜湊命令依賴。所有編譯產物先寫同檔案系統的暫存目錄，再原子 rename 公開；僅信任專案建置目錄內的 class，不使用全域 class 快取。
 
 ### GitHub Actions 五行 caller
 
@@ -79,7 +89,7 @@ jobs:
     with: {java-version: '17', build-tool: maven}
 ```
 
-只在 `uses` 指定單一已發布 SHA，工具取自該 workflow revision；checkout 後移至 `$RUNNER_TEMP/dev-rule`，runner 明確傳入 root，與 vendored revision 不同則警告。`.dev-rule-workflow` 為保留暫存目錄。Gradle 改 `build-tool: gradle`。workflow 只讀 contents、固定 Actions SHA，輸出 `java-rules-reports/` 報告與規範摘要。支援標準目錄、單 Java 模組且含測試的專案；多模組必須逐模組設定，不可只掃根目錄。首次建置後直接檢查 `RulesTemplateTest` 的 JUnit XML，JUnit 4／5 皆須 tests > 0 且 skipped < tests，不再補跑第二次測試。Maven 固定安裝 3.9.9；Gradle 使用專案 wrapper。依賴及已校驗工具使用快取，基準程式不快取。`java-version` 僅接受 8／11／17／21，`build-tool` 僅接受 maven／gradle；`project-directory` 拒絕絕對路徑與 `..`。`artifact-name` 可指定唯一名稱，非英數與 `._-` 字元會替換成 `-`，平行同名工作須自行避開衝突。詳細契約見 [workflow 說明](ci/github/README.md)。
+只在 `uses` 指定單一已發布 SHA，工具取自該 workflow revision；checkout 後移至 `$RUNNER_TEMP/dev-rule`，runner 明確傳入 root，與 vendored revision 不同則警告。`.dev-rule-workflow` 為保留暫存目錄。Gradle 改 `build-tool: gradle`。workflow 只讀 contents、固定 Actions SHA，輸出 `java-rules-reports/` 報告與規範摘要。支援標準目錄、單 Java 模組且含測試的專案；多模組必須逐模組設定，不可只掃根目錄。首次建置後直接檢查 `RulesTemplateTest` 的 JUnit XML，JUnit 4／5 皆須 tests > 0 且 skipped < tests，不再補跑第二次測試。Maven 固定安裝 3.9.9；Gradle 使用專案 wrapper。依賴及已校驗工具使用快取；Java helper 只在專案建置目錄重用，詳見下述快取契約。`java-version` 僅接受 8／11／17／21，`build-tool` 僅接受 maven／gradle；`project-directory` 拒絕絕對路徑與 `..`。`artifact-name` 可指定唯一名稱，非英數與 `._-` 字元會替換成 `-`，平行同名工作須自行避開衝突。詳細契約見 [workflow 說明](ci/github/README.md)。
 
 ## 工具版本與 JDK
 
@@ -93,7 +103,7 @@ jobs:
 | javac／jdeps | 隨 JDK | 隨 JDK | 隨 JDK | 隨 JDK |
 | jdeprscan | 不提供 | 隨 JDK | 隨 JDK | 隨 JDK |
 
-Maven 驗收 3.9.9、Gradle 8.14.3；Maven compiler 3.13.0、Checkstyle 3.6.0、PMD 3.28.0、SpotBugs 4.8.6.6、Enforcer 3.5.0、Surefire 3.5.2、JUnit Jupiter／BOM 5.12.2（JUnit 4 選項為 4.13.2）。URL／SHA-256 見 [profiles](profiles)、[建置工具鎖檔](build/tool-artifacts.lock) 與 PMD lock。建置工具 lock 僅供參考，Maven／Gradle 外掛相依未全面強制校驗；workflow 的 Maven 安裝器會讀取並驗證其中的 Maven SHA。JDK 8 Error Prone 另需已固定的 javac `9+181-r4173-1` bridge。工具執行 JDK 與產物 API 基線不同；不要只改 source／target 就宣稱跨版本 API 安全。
+Maven 驗收 3.9.9、Gradle 8.14.3；Maven compiler 3.13.0、Checkstyle 3.6.0、PMD 3.28.0、SpotBugs 4.8.6.6、Enforcer 3.5.0、Surefire 3.5.2、JUnit Jupiter／BOM 5.12.2（JUnit 4 選項為 4.13.2）。URL／SHA-256 見 [profiles](profiles)、[建置工具鎖檔](build/tool-artifacts.lock) 與 PMD lock。建置工具 lock 的外掛固定雜湊僅供參考，全面固定雜湊仍是下一期。Maven CI 以 strict checksums（-C）校驗下載完整性，僅防傳輸損毀，非固定雜湊；Gradle 需消費端自行啟用 `gradle/verification-metadata.xml`；workflow 的 Maven 安裝器會讀取並驗證其中的 Maven SHA。JDK 8 Error Prone 另需已固定的 javac `9+181-r4173-1` bridge。工具執行 JDK 與產物 API 基線不同；不要只改 source／target 就宣稱跨版本 API 安全。
 
 ## 診斷與精確基準
 
@@ -105,7 +115,7 @@ Maven 驗收 3.9.9、Gradle 8.14.3；Maven compiler 3.13.0、Checkstyle 3.6.0、
 
 未指定 processor path 時保留 classpath processor 探索，Error Prone 放在前面；政策失敗會清除 `-d` 下全部一般 class（包含既有 class），保留資源、不追蹤符號連結。版本辨識相容 `JAVA_TOOL_OPTIONS` 的 Picked up 訊息。
 
-CI 基準只涵蓋 PMD／Checkstyle。每次在獨立 mktemp 目錄編譯並清理，不使用 class 快取；參數錯誤提供用法與具名訊息，最後輸出判定行且保留原退出碼。先產生完整報告並審查既有違規，建立基準：
+CI 基準只涵蓋 PMD／Checkstyle。建置內以 `DEV_RULE_TOOLS_DIR` 指定專案快取，獨立呼叫才在 mktemp 目錄編譯並清理；參數錯誤提供用法與具名訊息，最後輸出判定行且保留原退出碼。先產生完整報告並審查既有違規，建立基準：
 
 ```sh
 mvn checkstyle:checkstyle pmd:pmd

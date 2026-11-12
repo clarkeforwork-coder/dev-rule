@@ -29,23 +29,22 @@ run() {
 [ -s "$base/errorprone/flags-jdk${JAVA_VERSION}.txt" ] || exit 2
 case "$BUILD_TOOL" in
 maven)
-    run verify "${MVN_BIN:-mvn}" -B "-Ddev-rule.root=$root" -Pdev-rule-baseline clean verify
+    export DEV_RULE_TOOLS_DIR=target/dev-rule-tools
+    run verify "${MVN_BIN:-mvn}" -B -C "-Ddev-rule.root=$root" -Pdev-rule-baseline clean verify
     set -- target/surefire-reports/TEST-*RulesTemplateTest.xml
     reports='target/pmd.xml target/checkstyle-result.xml target/spotbugsXml.xml'
     ;;
 gradle)
+    export DEV_RULE_TOOLS_DIR=build/dev-rule-tools
     run verify ./gradlew --no-daemon "-PdevRuleRoot=$root" -PdevRuleCompilerReplacement=on -PdevRuleBaseline clean check
     set -- build/test-results/*/TEST-*RulesTemplateTest.xml
     reports='build/reports/pmd/main.xml build/reports/pmd/test.xml build/reports/checkstyle/main.xml build/reports/checkstyle/test.xml build/reports/spotbugs/main.xml build/reports/spotbugs/test.xml'
     ;;
 *) echo '不支援的 build-tool' >&2; exit 2;;
 esac
-# 編譯到本次暫存目錄，JDK 8 也可用；不信任長存 class 快取。
-work=$(mktemp -d)
-trap 'rm -rf "$work"' EXIT HUP INT TERM
+. "$base/ci/helper-cache.sh"
 java_bin=${JAVA_HOME:+$JAVA_HOME/bin/}java
-javac_bin=${JAVA_HOME:+$JAVA_HOME/bin/}javac
-"$javac_bin" -encoding UTF-8 -d "$work" "$base/ci/github/ArchitectureReports.java"
+work=$(helper_classes "$base/ci/github/ArchitectureReports.java" "$DEV_RULE_TOOLS_DIR")
 run architecture "$java_bin" -cp "$work" ArchitectureReports "$@"
 for report in $reports; do
     if [ -f "$report" ]; then

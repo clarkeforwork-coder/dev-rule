@@ -102,7 +102,7 @@ public final class Baseline {
                 Entry e = new Entry(); e.tool=tool;
                 e.file=field(root.relativize(source).toString().replace('\\', '/'));
                 e.line=Integer.parseInt(v.getAttribute(tool.equals("pmd") ? "beginline" : "line"));
-                require(e.line>0 && e.line<=content.size(), "診斷行號不在來源內：" + name);
+                require(e.line>0 && (e.line<=content.size() || content.isEmpty() && e.line==1), "診斷行號不在來源內：" + name);
                 e.message=field((tool.equals("pmd") ? v.getTextContent() : v.getAttribute("message")).trim().replaceAll("[\\r\\n\\t]+", " "));
                 Matcher id = ID.matcher(e.message);
                 require(id.find() && e.message.startsWith("[JV-") && e.message.contains("→ rules/"), "缺少規範 ID／錨點：" + e.message);
@@ -120,7 +120,7 @@ public final class Baseline {
                 int before=e.line-2, after=e.line;
                 while (before>=0 && content.get(before).trim().isEmpty()) before--;
                 while (after<content.size() && content.get(after).trim().isEmpty()) after++;
-                e.hash=digest((before>=0 ? content.get(before).trim() : "") + "\n"
+                e.hash=content.isEmpty() ? digest("") : digest((before>=0 ? content.get(before).trim() : "") + "\n"
                     + content.get(e.line-1).trim() + "\n" + (after<content.size() ? content.get(after).trim() : ""));
                 result.add(e);
             }

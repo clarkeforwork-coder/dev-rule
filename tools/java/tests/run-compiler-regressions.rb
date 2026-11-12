@@ -7,6 +7,7 @@ require 'shellwords'
 base = File.expand_path('..', __dir__)
 jdk = ENV.fetch('JAVA_HOME')
 Dir.mktmpdir('compiler-regressions-') do |work|
+  wrapper_env = {'DEV_RULE_TOOLS_DIR'=>File.join(work, 'target/dev-rule-tools')}
   classes = File.join(work, 'runner')
   FileUtils.mkdir_p(classes)
   output, status = Open3.capture2e("#{jdk}/bin/javac", '-encoding', 'UTF-8', '-d', classes, "#{base}/ci/compiler/PolicyCompiler.java")
@@ -20,16 +21,16 @@ Dir.mktmpdir('compiler-regressions-') do |work|
   argfile = File.join(work, 'input.args')
   quote = ->(arg) { '"' + arg.gsub(/[\\"]/) { |c| '\\' + c } + '"' }
   File.write(argfile, ['-encoding', 'UTF-8', '-d', output_classes, source].map(&quote).join("\n"))
-  output, status = Open3.capture2e("#{base}/ci/compiler/javac.sh", "@#{argfile}")
+  output, status = Open3.capture2e(wrapper_env, "#{base}/ci/compiler/javac.sh", "@#{argfile}")
   diagnostics = output.lines.grep(/\[rawtypes\]/)
   abort "每行診斷或特殊路徑失敗：#{output}" unless status.exitstatus == 1 && diagnostics.size == 3 && diagnostics.all? { |s| s.include?('[JV-TG-024]') && s.include?(' → rules/') }
   puts 'PASS 正式編譯入口：空白／引號／中文路徑，三筆 raw type 各帶 ID 與錨點'
   abort '政策失敗後殘留 class' unless Dir["#{output_classes}/**/*.class"].empty?
-  output, status = Open3.capture2e("#{base}/ci/compiler/javac.sh", "@#{argfile}")
+  output, status = Open3.capture2e(wrapper_env, "#{base}/ci/compiler/javac.sh", "@#{argfile}")
   abort "重編未再次阻擋：#{output}" unless status.exitstatus == 1 && output.include?('[JV-TG-024]')
   puts 'PASS 政策失敗清除 class，第二次編譯仍阻擋'
   File.write(source, "class Probe {\n" + (1..150).map { |i| "sun.misc.Unsafe value#{i};\n" }.join + "java.util.List raw;\n}\n")
-  output, status = Open3.capture2e("#{base}/ci/compiler/javac.sh", '-Xmaxwarns', '1', '-d', output_classes, source)
+  output, status = Open3.capture2e(wrapper_env, "#{base}/ci/compiler/javac.sh", '-Xmaxwarns', '1', '-d', output_classes, source)
   abort "大量 Attr 警告截斷政策診斷：#{output}" unless status.exitstatus == 1 && output.lines.any? { |l| l.include?('[rawtypes]') && l.include?('[JV-TG-024]') }
   puts 'PASS 150 筆 Attr 未映射警告後的 rawtypes 仍帶 ID 並阻擋（覆寫消費端上限）'
   processor_dir = File.join(work, 'processor')
@@ -56,7 +57,7 @@ Dir.mktmpdir('compiler-regressions-') do |work|
   abort output unless status.success?
   File.write("#{processor_dir}/META-INF/services/javax.annotation.processing.Processor", "ProbeProcessor\n")
   File.write(source, 'class Probe {}')
-  output, status = Open3.capture2e("#{base}/ci/compiler/javac.sh", '-classpath', processor_dir, '-d', output_classes, source)
+  output, status = Open3.capture2e(wrapper_env, "#{base}/ci/compiler/javac.sh", '-classpath', processor_dir, '-d', output_classes, source)
   abort "classpath processor 未執行：#{output}" unless status.success? && File.exist?("#{output_classes}/processor-ran")
   puts 'PASS 未指定 processorpath 時保留 classpath annotation processor 探索'
   fake = File.join(work, 'fake-jdk')
@@ -111,7 +112,7 @@ Dir.mktmpdir('compiler-regressions-') do |work|
   output, status = Open3.capture2e({'JAVA_HOME'=>fake}, "#{jdk}/bin/java", '-cp', classes, 'PolicyCompiler', policy)
   abort "javac 退出碼遺失：#{output}" unless status.exitstatus == 2 && output.include?('invalid flag')
   File.write(source, 'class Probe { missing syntax }')
-  output, status = Open3.capture2e("#{base}/ci/compiler/javac.sh", '-d', output_classes, source)
+  output, status = Open3.capture2e(wrapper_env, "#{base}/ci/compiler/javac.sh", '-d', output_classes, source)
   abort "一般編譯錯誤退出碼錯誤：#{output}" unless status.exitstatus == 1
   puts 'PASS 已映射 warn 標註且退出 0、candidate 不標註、javac 編譯錯誤／參數錯誤退出碼保留'
   File.write(source, 'class Probe {}')
@@ -134,6 +135,7 @@ Dir.mktmpdir('compiler-regressions-') do |work|
   verify_base = File.join(work, 'verify')
   FileUtils.mkdir_p(["#{verify_base}/ci/github", "#{verify_base}/build", "#{verify_base}/tests"])
   FileUtils.cp("#{base}/ci/verify.sh", "#{verify_base}/ci/verify.sh")
+  %w[helper-cache.sh HelperCache.java].each { |name| FileUtils.cp("#{base}/ci/#{name}", "#{verify_base}/ci/#{name}") }
   FileUtils.cp("#{base}/ci/github/SpotbugsSummary.java", "#{verify_base}/ci/github/SpotbugsSummary.java")
   File.write("#{verify_base}/tests/RulesTemplateTest.class", '')
   File.write("#{verify_base}/cp", '')
@@ -141,7 +143,7 @@ Dir.mktmpdir('compiler-regressions-') do |work|
     File.write("#{verify_base}/build/#{tool}.sh", "#!/bin/sh\nprintf '%s\n' \"$*\" >> '#{verify_base}/scan-args'\n")
     File.chmod(0755, "#{verify_base}/build/#{tool}.sh")
   end
-  output, status = Open3.capture2e({'JAVA_TOOL_OPTIONS'=>'-Dfoo=bar'}, 'sh', "#{verify_base}/ci/verify.sh", output_classes, "#{verify_base}/tests", "#{verify_base}/cp")
+  output, status = Open3.capture2e({'JAVA_TOOL_OPTIONS'=>'-Dfoo=bar', 'DEV_RULE_TOOLS_DIR'=>File.join(verify_base, 'target/dev-rule-tools')}, 'sh', "#{verify_base}/ci/verify.sh", output_classes, "#{verify_base}/tests", "#{verify_base}/cp")
   abort "JAVA_TOOL_OPTIONS 干擾 verify：#{output}" unless status.success?
   if File.executable?("#{jdk}/bin/jdeprscan")
     abort 'verify API 版本解析錯誤' unless File.read("#{verify_base}/scan-args").include?("--release #{version}")

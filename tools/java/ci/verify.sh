@@ -9,9 +9,8 @@ classes=$1; tests=$2; cpfile=$3; shift 3
 version=$("$JAVA_HOME/bin/java" -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java.specification.version = //p' | sed 's/^1\.//')
 # --release 沿用執行 JDK 的 API 資料庫，才能發現目前平台的棄用；不代表編譯目標。
 cp=$(cat "$cpfile"):$classes:$tests
-work=$(mktemp -d)
-trap 'rm -rf "$work"' EXIT HUP INT TERM
-"${JAVA_HOME:?}/bin/javac" -encoding UTF-8 -d "$work" "$base/ci/github/SpotbugsSummary.java"
+. "$base/ci/helper-cache.sh"
+work=$(helper_classes "$base/ci/github/SpotbugsSummary.java" "${DEV_RULE_TOOLS_DIR:-target/dev-rule-tools}")
 result=0
 for report do
     "$JAVA_HOME/bin/java" -cp "$work" SpotbugsSummary "$report" "$base/spotbugs/pattern-map.properties" || result=1

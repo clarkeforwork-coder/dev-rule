@@ -158,6 +158,18 @@ homes.each do |jdk|
     File.binwrite(source, "\xA4\x40")
     output = call.call('非 UTF-8 帶檔名', 'check', 2)
     abort '未列來源檔名' unless output.include?('Sample.java') && output.include?('UTF-8')
+    File.delete(baseline)
+    write.call([], [1], [[1, 'error']])
+    File.write(source, '')
+    call.call('空檔建立 file 層級基準', 'create', 0, ['--owner', 'team-java', '--due', '2027-03-01'])
+    abort '空檔指紋應為空字串 SHA-256' unless File.read(baseline).include?('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+    call.call('空檔既有診斷通過', 'check', 0)
+    write.call([], [1, 1], [[1, 'error']])
+    File.write(source, '')
+    call.call('空檔新增診斷仍阻擋', 'check', 1)
+    write.call([], [2], [])
+    File.write(source, '')
+    call.call('空檔 line 2 仍拒絕', 'check', 2)
     puts '全部基準情境通過'
 
   end

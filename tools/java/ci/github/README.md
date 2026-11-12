@@ -13,7 +13,7 @@ apply(from = "$devRuleRoot/tools/java/ci/gradle/rules.gradle.kts")
 
 `run.sh` 只執行一次 `mvn -Pdev-rule-baseline clean verify` 或 `./gradlew -PdevRuleCompilerReplacement=on -PdevRuleBaseline clean check`，接著以 Java XML parser 驗證首次建置的 `RulesTemplateTest` JUnit XML，須 `tests > 0` 且 `skipped < tests`。Maven 讀 `target/surefire-reports/TEST-*RulesTemplateTest.xml`；Gradle 讀 `build/test-results/*/TEST-*RulesTemplateTest.xml`。缺少報告、零測試或全部略過均失敗，不再用第二次建置補跑。JUnit 5 專案需提供可實際執行架構測試的 engine／測試版本。
 
-Maven 一律使用 workflow 安裝的 3.9.9，不使用專案 `mvnw`；版本與 SHA-256 由 `build/tool-artifacts.lock` 供共用 `install-maven.sh` 讀取。Gradle 使用消費端 `./gradlew`，專案須提交 wrapper。setup-java 依建置工具快取依賴，另快取 `~/.cache/dev-rule`。
+Maven 一律使用 workflow 安裝的 3.9.9，不使用專案 `mvnw`；版本與 SHA-256 由 `build/tool-artifacts.lock` 供共用 `install-maven.sh` 讀取。Maven runner 加上 -C（strict checksums），僅校驗下載完整性、防傳輸損毀，並非固定外掛雜湊。Gradle 使用消費端 `./gradlew`，專案須提交 wrapper 並自行啟用 `gradle/verification-metadata.xml`。setup-java 依建置工具快取依賴，另快取 `~/.cache/dev-rule` 的已校驗下載 JAR；Java helper class 僅放專案 target／build 下的 dev-rule-tools，不跨專案共用。
 
 消費端不依賴 Ruby／Python。支援標準目錄的單 Java 模組，包含 main 與 test 原始碼；多模組／自訂 source sets 須擴充產物清單並逐模組驗證。JDK 8 無 jdeprscan；jdeps 限專案 class，jdeprscan 使用完整相依 classpath。
 

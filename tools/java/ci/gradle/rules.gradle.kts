@@ -69,6 +69,7 @@ if (providers.gradleProperty("devRuleBaseline").isPresent) {
             project.exec {
                 workingDir(project.projectDir)
                 environment("JAVA_HOME", toolLauncher.get().metadata.installationPath.asFile.absolutePath)
+                environment("DEV_RULE_TOOLS_DIR", layout.buildDirectory.dir("dev-rule-tools").get().asFile.absolutePath)
                 commandLine(arguments)
             }
         }
@@ -110,6 +111,7 @@ if (compilerReplacement == "on") {
             try {
                 project.exec {
                     environment("JAVA_HOME", compilerLauncher.get().metadata.installationPath.asFile.absolutePath)
+                    environment("DEV_RULE_TOOLS_DIR", layout.buildDirectory.dir("dev-rule-tools").get().asFile.absolutePath)
                     commandLine(arguments.take(2) + "@${argfile.absolutePath}")
                 }
             }
@@ -171,6 +173,7 @@ val bytecodeCheck = tasks.register("devRuleBytecode") {
             project.exec {
                 workingDir(project.projectDir)
                 environment("JAVA_HOME", compilerLauncher.get().metadata.installationPath.asFile.absolutePath)
+                environment("DEV_RULE_TOOLS_DIR", layout.buildDirectory.dir("dev-rule-tools").get().asFile.absolutePath)
                 commandLine(listOf("sh", devRuleRoot.resolve("tools/java/ci/verify.sh").absolutePath,
                     directory.absolutePath, architectureDirectory.absolutePath,
                     file(".java-rules-classpath").absolutePath) + if (index == 0) reports else emptyList())

@@ -47,7 +47,21 @@ Dir.mktmpdir('workflow-unit-') do |dir|
     run(dir, "architecture-tests-#{tests}-skipped-#{skipped}", checker + ["#{dir}/TEST-RulesTemplateTest.xml"], expected: expected)
   end
 end
+Dir.mktmpdir('helper-cache-test-') do |dir|
+  source = "#{dir}/PolicyCompiler.java"
+  FileUtils.cp("#{ROOT}/tools/java/ci/compiler/PolicyCompiler.java", source)
+  command = ['sh', '-c', 'base=$1; . "$base/ci/helper-cache.sh"; helper_classes "$2" "$3"', 'helper-test', "#{ROOT}/tools/java", source, "#{dir}/build/dev-rule-tools"]
+  first = run(dir, 'helper-first-compile', command)
+  reused = run(dir, 'helper-source-unchanged', command)
+  raise '來源不變卻重編' if reused.include?('dev-rule helper compile:')
+  raise '首次未編譯' unless first.include?('dev-rule helper compile: PolicyCompiler')
+  File.open(source, 'a') { |file| file.puts('// 回歸：來源改動必須重新編譯') }
+  changed = run(dir, 'helper-source-changed', command)
+  raise '來源變動未重新編譯' unless changed.include?('dev-rule helper compile: PolicyCompiler') && changed.lines.last != first.lines.last
+  puts 'PASS helper-source-sha256 首次=1、重用=0、改動來源=1'
+end
 skips = []
+
 available = lambda do |binary|
   binary.include?('/') ? File.executable?(binary) : ENV.fetch('PATH').split(File::PATH_SEPARATOR).any? { |path| File.executable?(File.join(path, binary)) }
 end
@@ -82,7 +96,7 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     .sub('[17,18)', "[#{major},#{major + 1})")
   File.write("#{dir}/pom.xml", pom)
   File.write("#{dir}/settings.gradle.kts", 'rootProject.name = "fixture"')
-  File.write("#{dir}/build.gradle.kts", "plugins { java }\nrepositories { mavenCentral() }\ndependencies { testImplementation(platform(\"org.junit:junit-bom:5.12.2\")); testImplementation(\"org.junit.jupiter:junit-jupiter\"); testImplementation(\"com.tngtech.archunit:archunit-junit5:1.4.1\"); testRuntimeOnly(\"org.junit.platform:junit-platform-launcher\") }\ntasks.test { useJUnitPlatform() }\napply(from = \"${property(\"devRuleRoot\")}/tools/java/ci/gradle/rules.gradle.kts\")\n")
+  File.write("#{dir}/build.gradle.kts", "plugins { java }\nrepositories { mavenCentral() }\ndependencies { testImplementation(platform(\"org.junit:junit-bom:5.12.2\")); testImplementation(\"org.junit.jupiter:junit-jupiter\"); testImplementation(\"com.tngtech.archunit:archunit:1.4.1\"); testRuntimeOnly(\"org.junit.platform:junit-platform-launcher\") }\ntasks.test { useJUnitPlatform() }\napply(from = \"${property(\"devRuleRoot\")}/tools/java/ci/gradle/rules.gradle.kts\")\n")
   File.write("#{dir}/gradle.properties", "devRuleCompiler=#{major}\ndevRuleRelease=#{major}\ndevRuleBanned=\norg.gradle.workers.max=2\n")
   {'maven'=>[mvn, '-B', "-Ddev-rule.root=#{ROOT}"], 'gradle'=>[gradle, '--no-daemon', '--console=plain', "-PdevRuleRoot=#{ROOT}"]}.each do |tool, cmd|
     unless available.call(cmd.first)
@@ -92,7 +106,16 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     File.write("#{src}/Hidden.java", good)
     full = tool == 'maven' ? %w[clean verify] : %w[clean check]
     compile = tool == 'maven' ? %w[clean test-compile] : %w[clean testClasses]
-    run(dir, "#{tool}-good", cmd + full)
+    trace = "#{OUT}/#{tool}-helper-compiles.txt"
+    FileUtils.rm_f(trace)
+    run(dir, "#{tool}-good", ['env', "DEV_RULE_HELPER_TRACE=#{trace}", *cmd, *full])
+    count = File.readlines(trace).count { |line| line.start_with?('PolicyCompiler ') }
+    raise "PolicyCompiler 編譯次數 #{count} 不等於 1" unless count == 1
+    puts "PASS #{tool}-helper-compilation-count PolicyCompiler=#{count}（DEV_RULE_HELPER_TRACE 記錄成功編譯）"
+    cache = "#{dir}/#{tool == 'maven' ? 'target' : 'build'}/dev-rule-tools"
+    compiled = Dir.glob("#{cache}/PolicyCompiler-*/PolicyCompiler.class")
+    raise 'PolicyCompiler 未使用單一原始碼快取' unless compiled.size == 1
+
     # 以兩種框架實際產生的首次建置 XML 驗證相同門檻。
     checker_dir = File.join(OUT, 'architecture-checker')
     FileUtils.mkdir_p(checker_dir)
@@ -105,9 +128,9 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     build_file = "#{dir}/#{tool == 'maven' ? 'pom.xml' : 'build.gradle.kts'}"
     original_build = File.read(build_file)
     junit4_build = if tool == 'maven'
-      original_build
+      original_build.sub('  <profiles>', '<dependencies><dependency><groupId>junit</groupId><artifactId>junit</artifactId><version>4.13.2</version><scope>test</scope></dependency></dependencies>' + "\n  <profiles>")
     else
-      original_build.sub(/dependencies \{.*?\}/, 'dependencies { testImplementation("junit:junit:4.13.2"); testImplementation("com.tngtech.archunit:archunit-junit4:1.4.1") }').sub('useJUnitPlatform()', 'useJUnit()')
+      original_build.sub(/dependencies \{.*?\}/, 'dependencies { testImplementation("junit:junit:4.13.2"); testImplementation("com.tngtech.archunit:archunit:1.4.1") }').sub('useJUnitPlatform()', 'useJUnit()')
     end
     File.write(build_file, junit4_build)
     File.write(test_file, test_source.sub('org.junit.jupiter.api.Test', 'org.junit.Test'))
@@ -120,13 +143,39 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
           @org.junit.Test public void ordinary() { org.junit.Assert.assertTrue(true); }
       }
     JAVA
+    if tool == 'maven'
+      output = run(dir, 'maven-junit4-no-flag', cmd + full, expected: 1)
+      raise '缺少 JUnit 4 選擇訊息' unless output.include?('JUnit 4 專案設 -Ddev-rule.test-framework=junit4') && output.include?('.mvn/maven.config') && output.include?('org.junit.vintage:junit-vintage-engine')
+      puts 'PASS maven-junit4-no-flag 訊息正確'
+    end
     run(dir, "#{tool}-junit4-good", junit4_cmd + full)
+
     ordinary_report = tool == 'maven' ? 'target/surefire-reports/TEST-com.example.OrdinaryTest.xml' : 'build/test-results/test/TEST-com.example.OrdinaryTest.xml'
     suite = REXML::Document.new(File.read("#{dir}/#{ordinary_report}")).root
     raise '專案 JUnit 4 測試未執行' unless suite.attributes['tests'] == '1' && suite.attributes['skipped'] == '0'
     puts "PASS #{tool}-junit4-original tests=1 skipped=0"
-    File.delete(ordinary_test)
     check_reports.call('junit4')
+    if tool == 'maven'
+      # 合併頂層 dependencies，避免兩個同層元素。
+      mixed = junit4_build.sub('</dependencies>', '<dependency><groupId>org.junit.vintage</groupId><artifactId>junit-vintage-engine</artifactId><scope>test</scope></dependency></dependencies>')
+      File.write(build_file, mixed)
+      File.write(test_file, test_source)
+      run(dir, 'maven-junit-mixed', cmd + full)
+      %w[OrdinaryTest RulesTemplateTest].each do |name|
+        suite = REXML::Document.new(File.read("#{dir}/target/surefire-reports/TEST-com.example.#{name}.xml")).root
+        raise "混用測試未執行：#{name}" unless suite.attributes['tests'] == '1' && suite.attributes['skipped'] == '0'
+        puts "PASS maven-junit-mixed #{name} tests=1 skipped=0"
+      end
+      project_bom = '<dependencyManagement><dependencies><dependency><groupId>org.junit</groupId><artifactId>junit-bom</artifactId><version>5.11.4</version><type>pom</type><scope>import</scope></dependency></dependencies></dependencyManagement>'
+      File.write(build_file, original_build.sub('  <profiles>', project_bom + '  <profiles>'))
+      output = run(dir, 'maven-project-junit-bom', cmd + ['dependency:tree', '-Dincludes=org.junit.jupiter:*,org.junit.platform:*'])
+      raise '專案 BOM 對齊回歸' unless output.include?('junit-jupiter:jar:5.12.2') && output.include?('junit-jupiter-api:jar:5.12.2') && output.include?('junit-jupiter-engine:jar:5.12.2') && output.include?('junit-platform-engine:jar:1.12.2')
+      puts output.lines.grep(/org.junit.(jupiter|platform)/)
+      output = run(dir, 'maven-project-junit-bom-aligned', cmd + ['-Ddev-rule.junit.version=5.11.4', 'dependency:tree', '-Dincludes=org.junit.jupiter:*,org.junit.platform:*'])
+      raise '指定 BOM 未對齊' unless output.include?('junit-jupiter:jar:5.11.4') && output.include?('junit-jupiter-api:jar:5.11.4') && output.include?('junit-jupiter-engine:jar:5.11.4') && output.include?('junit-platform-engine:jar:1.11.4')
+      puts output.lines.grep(/org.junit.(jupiter|platform)/)
+    end
+    File.delete(ordinary_test)
     File.write(build_file, original_build)
     File.write(test_file, test_source)
     if tool == 'gradle'

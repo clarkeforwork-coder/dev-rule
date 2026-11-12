@@ -14,7 +14,7 @@ Java 自動檢查工具放在 `tools/java/`，分為 IDE 即時回饋、pre-comm
 
 專案以已審查 commit SHA（或指向該提交的明確 tag）固定引用的規範與工具版本，升級時檢視 CHANGELOG、評估規則變動並驗證後採用；不以浮動分支作為版本承諾。
 
-GitHub 可重用 workflow 僅由 uses 的 revision 決定工具來源，runner 將中立 root 傳入建置；CI 強制政策編譯器並以首次建置的 JUnit XML 確認架構測試實際執行。JUnit 4／5 由專案選擇，Gradle 不強制測試框架；基準程式每次暫存編譯，不信任長存 class 快取。
+GitHub 可重用 workflow 僅由 uses 的 revision 決定工具來源，runner 將中立 root 傳入建置；CI 強制政策編譯器並以首次建置的 JUnit XML 確認架構測試實際執行。JUnit 5 為預設；JUnit 4 僅供既有專案過渡（legacy），Gradle 不強制測試框架。Java helper 以原始碼 SHA-256 與 JDK 版本在專案建置目錄重用，不使用跨專案 class 快取；基準獨立呼叫仍暫存編譯。
 
 ## 後果
 

@@ -72,7 +72,7 @@ Git hook 以 HEAD／index 的新增行決定範圍，可在提交前快速檢查
 
 Gradle 使用 `./gradlew -PdevRuleBaseline check`。`devRuleBaselineCheck` 依賴所有 PMD／Checkstyle task，收集各 source set 的 XML；NO-SOURCE 轉成明確空報告，防止讀入上次建置殘留報告。其他跳過狀態與缺少報告會失敗；建置工具仍負責解析與執行錯誤。首次產生報告時可執行 `./gradlew -PdevRuleBaseline checkstyleMain pmdMain checkstyleTest pmdTest`，再將所有非空 source set 的報告傳給 `create`。後續 CLI prune 同樣需完整範圍。
 
-`run.sh` 優先使用 `JAVA_HOME`，否則使用 PATH；請與建置使用同一個 JDK。每次都以 `mktemp -d` 建立私有目錄重新編譯，結束後移除，沒有編譯快取或外部 JAR 下載。也可直接執行：
+`run.sh` 優先使用 `JAVA_HOME`，否則使用 PATH；請與建置使用同一個 JDK。獨立呼叫時以 `mktemp -d` 建立私有目錄重新編譯，結束後移除；建置內設定 `JAVA_HOME` 與 `DEV_RULE_TOOLS_DIR` 時，才以來源 SHA-256＋JDK 版本在該專案建置目錄重用，沒有跨專案 class 快取或外部 JAR 下載。也可直接執行：
 
 ```sh
 javac -encoding UTF-8 -d /tmp/baseline-classes vendor/dev-rule/tools/java/baseline/Baseline.java

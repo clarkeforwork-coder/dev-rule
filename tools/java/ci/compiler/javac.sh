@@ -4,7 +4,6 @@ set -eu
 base=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 : "${JAVA_HOME:?請設定編譯器 JAVA_HOME}"
 if [ "$#" = 1 ] && [ "$1" = -version ]; then exec "$JAVA_HOME/bin/javac" -version; fi
-work=$(mktemp -d)
-trap 'rm -rf "$work"' EXIT HUP INT TERM
-"$JAVA_HOME/bin/javac" -encoding UTF-8 -d "$work" "$base/ci/compiler/PolicyCompiler.java"
+. "$base/ci/helper-cache.sh"
+work=$(helper_classes "$base/ci/compiler/PolicyCompiler.java" "${DEV_RULE_TOOLS_DIR:-target/dev-rule-tools}")
 "$JAVA_HOME/bin/java" -cp "$work" PolicyCompiler "$base" "$@"
