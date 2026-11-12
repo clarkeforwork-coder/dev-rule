@@ -5,12 +5,13 @@ import org.gradle.api.plugins.quality.PmdExtension
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JavaToolchainService
 
-// 在 build.gradle.kts：apply(from = "vendor/dev-rule/tools/java/ci/gradle/rules.gradle.kts")
+// 在 build.gradle.kts：
+// apply(from = file(providers.gradleProperty("devRuleRoot").getOrElse("vendor/dev-rule")).resolve("tools/java/ci/gradle/rules.gradle.kts"))
 // 使用 Gradle 8.14.3；執行 Gradle 的 JDK 須為 8/11/17/21。
-// 工具使用執行 Gradle 的 JDK，避免 Java 8 編譯 toolchain 意外啟動 Checkstyle 10。
+// Checkstyle／PMD 使用執行 Gradle 的 JDK，避免 Java 8 toolchain 意外啟動 Checkstyle 10。
 apply(plugin = "checkstyle")
 apply(plugin = "pmd")
-val devRuleRoot = rootProject.file(findProperty("devRuleRoot") ?: "vendor/dev-rule")
+val devRuleRoot = file(providers.gradleProperty("devRuleRoot").getOrElse("vendor/dev-rule"))
 val checkstyleVersion = if (JavaVersion.current() == JavaVersion.VERSION_1_8) "9.3" else "10.26.1"
 val toolLauncher = extensions.getByType<JavaToolchainService>().launcherFor {
     languageVersion.set(JavaLanguageVersion.of(JavaVersion.current().majorVersion))
@@ -78,42 +79,53 @@ if (providers.gradleProperty("devRuleBaseline").isPresent) {
 // CI 編譯、依賴、位元碼與架構測試共用正式政策。
 apply(from = devRuleRoot.resolve("tools/java/build/gradle-enforcer.gradle.kts"))
 val compilerVersion = providers.gradleProperty("devRuleCompiler").get().toInt()
-require(compilerVersion == JavaVersion.current().majorVersion.toInt()) {
-    "JAVA_HOME／Gradle 執行 JDK 必須等於 devRuleCompiler；devRuleRelease 可指定較舊 API 基線"
+val compilerLauncher = extensions.getByType<JavaToolchainService>().launcherFor {
+    languageVersion.set(JavaLanguageVersion.of(compilerVersion))
 }
-tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
-    // Gradle 會把 fork executable 當成 JDK/bin/javac 探測，不能直接指定 shell wrapper。
-    // 保留 JavaCompile 的來源／輸出／classpath 宣告，以共用入口替換編譯 action。
-    setActions(emptyList())
-    inputs.files(devRuleRoot.resolve("tools/java/ci/compiler"), devRuleRoot.resolve("tools/java/profiles"),
-        devRuleRoot.resolve("tools/java/errorprone"), devRuleRoot.resolve("tools/java/javac"), devRuleRoot.resolve("tools/java/rule-map.yml"))
-    doLast {
-        project.delete(destinationDirectory.get().asFile)
-        destinationDirectory.get().asFile.mkdirs()
-        val arguments = mutableListOf("sh", devRuleRoot.resolve("tools/java/ci/compiler/javac.sh").absolutePath,
-            "-encoding", options.encoding ?: "UTF-8", "-d", destinationDirectory.get().asFile.absolutePath,
-            "-classpath", classpath.asPath)
-        if (options.release.isPresent) arguments.addAll(listOf("--release", options.release.get().toString()))
-        else arguments.addAll(listOf("-source", sourceCompatibility, "-target", targetCompatibility))
-        options.annotationProcessorPath?.let { if (!it.isEmpty) arguments.addAll(listOf("-processorpath", it.asPath)) }
-        arguments.addAll(options.compilerArgs)
-        arguments.addAll(source.files.map { it.absolutePath })
-        val argfile = temporaryDir.resolve("javac.args")
-        argfile.writeText(arguments.drop(2).joinToString("\n") {
-            "\"" + it.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r") + "\""
-        }, Charsets.UTF_8)
-        try { project.exec { commandLine(arguments.take(2) + "@${argfile.absolutePath}") } }
-        finally { argfile.delete() }
+val compilerReplacement = providers.gradleProperty("devRuleCompilerReplacement").getOrElse("on")
+require(compilerReplacement in listOf("on", "off")) { "devRuleCompilerReplacement 只接受 on／off" }
+if (compilerReplacement == "on") {
+    tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
+        // Gradle 會把 fork executable 當成 JDK/bin/javac 探測，不能直接指定 shell wrapper。
+        // 保留 JavaCompile 的來源／輸出／classpath 宣告，以共用入口替換編譯 action。
+        setActions(emptyList())
+        inputs.files(devRuleRoot.resolve("tools/java/ci/compiler"), devRuleRoot.resolve("tools/java/profiles"),
+            devRuleRoot.resolve("tools/java/errorprone"), devRuleRoot.resolve("tools/java/javac"), devRuleRoot.resolve("tools/java/rule-map.yml"))
+        doLast {
+            project.delete(destinationDirectory.get().asFile)
+            destinationDirectory.get().asFile.mkdirs()
+            val arguments = mutableListOf("sh", devRuleRoot.resolve("tools/java/ci/compiler/javac.sh").absolutePath,
+                "-encoding", options.encoding ?: "UTF-8", "-d", destinationDirectory.get().asFile.absolutePath,
+                "-classpath", classpath.asPath)
+            if (options.release.isPresent) arguments.addAll(listOf("--release", options.release.get().toString()))
+            else arguments.addAll(listOf("-source", sourceCompatibility, "-target", targetCompatibility))
+            options.annotationProcessorPath?.let { if (!it.isEmpty) arguments.addAll(listOf("-processorpath", it.asPath)) }
+            arguments.addAll(options.compilerArgs)
+            arguments.addAll(source.files.map { it.absolutePath })
+            val argfile = temporaryDir.resolve("javac.args")
+            argfile.writeText(arguments.drop(2).joinToString("\n") {
+                "\"" + it.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r") + "\""
+            }, Charsets.UTF_8)
+            try {
+                project.exec {
+                    environment("JAVA_HOME", compilerLauncher.get().metadata.installationPath.asFile.absolutePath)
+                    commandLine(arguments.take(2) + "@${argfile.absolutePath}")
+                }
+            }
+            finally { argfile.delete() }
+        }
     }
 }
 val spotbugsRuntime = configurations.create("devRuleSpotbugs")
 dependencies.add(spotbugsRuntime.name, "com.github.spotbugs:spotbugs:4.8.6")
-dependencies.add("testImplementation", "com.tngtech.archunit:archunit:1.4.1")
-dependencies.add("testImplementation", "junit:junit:4.13.2")
+// 測試依賴與框架由消費專案選擇，座標及版本對齊見 archunit/README.md。
 val javaSources = extensions.getByType<org.gradle.api.tasks.SourceSetContainer>()
-val spotbugsTasks = javaSources.map { sources ->
-    tasks.register<JavaExec>("spotbugs" + sources.name.replaceFirstChar { it.uppercase() }) {
+val spotbugsTasks = mutableListOf<org.gradle.api.tasks.TaskProvider<JavaExec>>()
+javaSources.all {
+    val sources = this
+    spotbugsTasks.add(tasks.register<JavaExec>("spotbugs" + sources.name.replaceFirstChar { it.uppercase() }) {
         dependsOn(tasks.named(sources.classesTaskName))
+        javaLauncher.set(compilerLauncher)
         classpath = spotbugsRuntime
         mainClass.set("edu.umd.cs.findbugs.FindBugs2")
         val report = layout.buildDirectory.file("reports/spotbugs/${sources.name}.xml")
@@ -128,25 +140,44 @@ val spotbugsTasks = javaSources.map { sources ->
                 "-auxclasspath", sources.runtimeClasspath.asPath)
             args(sources.output.classesDirs.files.map { it.absolutePath })
         }
-    }
+    })
 }
 val dependencyCheck = tasks.register("devRuleDependencies") {
     doLast { configurations.filter { it.isCanBeResolved && it.name.endsWith("Classpath") }.forEach { it.resolve() } }
 }
 val classpathFile = tasks.register("devRuleClasspath") {
-    doLast { file(".java-rules-classpath").writeText(configurations.getByName("testRuntimeClasspath").asPath) }
+    doLast {
+        file(".java-rules-classpath").writeText(files(javaSources.map { it.runtimeClasspath }).asPath)
+    }
 }
-val bytecodeCheck = tasks.register<Exec>("devRuleBytecode") {
-    dependsOn(spotbugsTasks, classpathFile)
-    commandLine("sh", devRuleRoot.resolve("tools/java/ci/verify.sh").absolutePath,
-        layout.buildDirectory.dir("classes/java/main").get().asFile.absolutePath,
-        layout.buildDirectory.dir("classes/java/test").get().asFile.absolutePath,
-        file(".java-rules-classpath").absolutePath,
-        layout.buildDirectory.file("reports/spotbugs/main.xml").get().asFile.absolutePath,
-        layout.buildDirectory.file("reports/spotbugs/test.xml").get().asFile.absolutePath)
+val bytecodeCheck = tasks.register("devRuleBytecode") {
+    dependsOn(provider { spotbugsTasks.toList() }, classpathFile)
+    doLast {
+        val testDirectories = javaSources.getByName("test").output.classesDirs.files.filter { it.isDirectory }
+        check(testDirectories.isNotEmpty()) { "缺少 test classesDirs" }
+        val architectureDirectory = testDirectories.firstOrNull { directory ->
+            directory.walkTopDown().any { it.name == "RulesTemplateTest.class" }
+        } ?: error("缺少專案化 RulesTemplateTest.class")
+        val directories = javaSources.flatMap { it.output.classesDirs.files }.filter { directory ->
+            directory.isDirectory && directory.walkTopDown().any { it.extension == "class" }
+        }.distinct()
+        check(directories.isNotEmpty()) { "沒有可分析的 classesDirs" }
+        val reports = javaSources.map {
+            layout.buildDirectory.file("reports/spotbugs/${it.name}.xml").get().asFile.absolutePath
+        }
+        // verify.sh 的前兩個參數各接受一個目錄；逐目錄呼叫，所有報告只彙總一次。
+        directories.forEachIndexed { index, directory ->
+            project.exec {
+                workingDir(project.projectDir)
+                environment("JAVA_HOME", compilerLauncher.get().metadata.installationPath.asFile.absolutePath)
+                commandLine(listOf("sh", devRuleRoot.resolve("tools/java/ci/verify.sh").absolutePath,
+                    directory.absolutePath, architectureDirectory.absolutePath,
+                    file(".java-rules-classpath").absolutePath) + if (index == 0) reports else emptyList())
+            }
+        }
+    }
 }
 tasks.withType<Test>().configureEach {
-    useJUnit()
     testLogging { exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL }
 }
 tasks.named("check") { dependsOn(dependencyCheck, bytecodeCheck) }
