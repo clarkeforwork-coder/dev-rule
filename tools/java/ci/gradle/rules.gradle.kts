@@ -99,7 +99,8 @@ if (compilerReplacement == "on") {
                 "-classpath", classpath.asPath)
             if (options.release.isPresent) arguments.addAll(listOf("--release", options.release.get().toString()))
             else arguments.addAll(listOf("-source", sourceCompatibility, "-target", targetCompatibility))
-            options.annotationProcessorPath?.let { if (!it.isEmpty) arguments.addAll(listOf("-processorpath", it.asPath)) }
+            // 空值也須明確傳入，避免政策編譯器回退至 compile classpath 探索。
+            arguments.addAll(listOf("-processorpath", options.annotationProcessorPath?.asPath ?: ""))
             arguments.addAll(options.compilerArgs)
             arguments.addAll(source.files.map { it.absolutePath })
             val argfile = temporaryDir.resolve("javac.args")

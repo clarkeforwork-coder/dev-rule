@@ -6,6 +6,8 @@
 
 ### 修正
 
+- Maven 測試依賴改以 `dev-rule.test-framework` 選擇 JUnit 5（預設）或 JUnit 4，補上原有測試與架構測試回歸；Gradle 明確傳入空 processor path，讓替換編譯與原生 annotation processor 探索一致；補充消費端 CODEOWNERS 治理及門檻設定在專案內的限制。
+
 - 依 PR #11 審查修正：統一 workflow revision／root、JUnit 4／5 架構驗證、編譯與 Enforcer 門檻及無快取基準；14 階段驗證納入 JDK 8／11／17／21 矩陣，verified 78 筆，涵蓋 48／143 小節（33.57%）。
 
 - Java 基準新增 `rekey`：人工審查後，以同工具／檔案／規則的一對一等量配對更新上下文指紋，保留負責人與期限；無法配對時拒絕且不寫入，新增診斷列印指紋，並同步主 README 的嚴格檢查、涵蓋率與 demo CI 說明。

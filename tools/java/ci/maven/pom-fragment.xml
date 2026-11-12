@@ -19,6 +19,53 @@
     <dev-rule.boundary.banned>javax.servlet:javax.servlet-api</dev-rule.boundary.banned>
   </properties>
   <profiles>
+    <!-- 以 -Ddev-rule.test-framework=junit4 選用 JUnit 4；未指定預設 JUnit 5。 -->
+    <profile>
+      <id>dev-rule-junit5</id>
+      <activation>
+        <property>
+          <name>dev-rule.test-framework</name>
+          <value>!junit4</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.tngtech.archunit</groupId>
+          <artifactId>archunit-junit5</artifactId>
+          <version>1.4.1</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter</artifactId>
+          <version>5.12.2</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>dev-rule-junit4</id>
+      <activation>
+        <property>
+          <name>dev-rule.test-framework</name>
+          <value>junit4</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.tngtech.archunit</groupId>
+          <artifactId>archunit</artifactId>
+          <version>1.4.1</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.13.2</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
     <profile>
       <id>dev-rule-jdk8</id>
       <activation>
@@ -277,18 +324,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>com.tngtech.archunit</groupId>
-      <artifactId>archunit-junit5</artifactId>
-      <version>1.4.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>5.12.2</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 </project>

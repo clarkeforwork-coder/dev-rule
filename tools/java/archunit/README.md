@@ -7,7 +7,7 @@
 把 `RulesTemplate.java` 與以下**其中一份** `RulesTemplateTest.java` 放進 `src/test/java`，兩檔加上相同的專案測試套件宣告：
 
 - JUnit 5 專案：`junit5/RulesTemplateTest.java`，test scope 加入 `com.tngtech.archunit:archunit-junit5:1.4.1` 與 `org.junit.jupiter:junit-jupiter:5.12.2`。Maven 正式片段預設提供這組依賴；Surefire 3.5.2 自動選用 JUnit Platform。
-- JUnit 4 專案：`junit4/RulesTemplateTest.java`，test scope 加入 `com.tngtech.archunit:archunit-junit4:1.4.1` 與 `junit:junit:4.13.2`，取代 Maven 片段的 JUnit 5 依賴。
+- JUnit 4 專案：`junit4/RulesTemplateTest.java`，test scope 加入 `com.tngtech.archunit:archunit:1.4.1` 與 `junit:junit:4.13.2`。Maven 設定 `-Ddev-rule.test-framework=junit4`（可寫入 `.mvn/maven.config`），由 profile 注入這組依賴；未指定或 `junit5` 則使用 JUnit 5。不要只在 POM properties 設定此選擇值，profile activation 不讀同一 POM 的屬性。
 - JUnit Platform 混跑 JUnit 4／5：另加入 test runtime `org.junit.vintage:junit-vintage-engine:5.12.2`；沒有 Vintage 時，JUnit 4 測試不會執行。版本應與專案的 JUnit BOM 對齊。
 
 Gradle 片段不注入任何測試依賴、不設定測試框架。JUnit 5 消費端範例：
@@ -46,6 +46,8 @@ configurations.matching { it.name.startsWith("test") && it.name.endsWith("Classp
 ```
 
 這也包含 PMD 的 `testPmdAuxClasspath`；正式 runtime 的 logging binding 仍須由專案管理，使用 SLF4J 2 時應同步選擇相容的測試 binding。其他 source set 也加入 ArchUnit 時，應對齊該 source set 的 classpath。Maven Enforcer 3.5.0 的 dependency convergence／upper bound 檢查不包含 test scope，與 Gradle 不同。
+
+Gradle 明確傳入 annotation processor path，即使為空亦不從 implementation／compile classpath 探索 processor；需執行的 processor 請加入 `annotationProcessor`。Maven 未指定 processor path 時保留 classpath 探索。
 
 片段預設以共用政策編譯器替換 `JavaCompile` action；Gradle 的 up-to-date 判定仍有效，輸入變動後會刪除該 task 輸出並全量重編，不保留 javac 增量編譯。開發機可用 `-PdevRuleCompilerReplacement=off` 暫時保留原生 Gradle 編譯；`devRuleCompiler` 仍是數字 JDK 版本，toolchain／release 限制照常生效。CI 不得關閉替換，CI 入口須拒絕 `off` 或明確覆寫為 `on`。編譯及 bytecode 驗證的 `JAVA_HOME` 取自 `devRuleCompiler` toolchain，不依賴外部 shell 的同名環境變數。
 

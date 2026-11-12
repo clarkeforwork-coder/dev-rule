@@ -31,7 +31,7 @@ hook 讀取 index 快照，只阻擋 HEAD／index diff 的新增或修改行 err
 
 ### CI：Maven／Gradle
 
-Maven 合併 [正式 POM 片段](ci/maven/pom-fragment.xml) 的 properties、profiles、dependencies、build；勿再重複合併舊 github 額外片段。填寫：
+Maven 合併 [正式 POM 片段](ci/maven/pom-fragment.xml) 的 properties、profiles、build；勿再重複合併舊 github 額外片段。填寫：
 
 - `dev-rule.root`、專案 source／target（JDK 9+ 專案應另設 `maven.compiler.release` 為 API 基線）。
 - `dev-rule.java.range`：Maven 執行 JDK 的核准範圍，範例為 `[17,18)`。
@@ -65,7 +65,7 @@ devRuleBanned=
 
 `devRuleBanned` 不可省略，空值或純空白表示無禁用依賴。`devRuleRoot` 相對於專案目錄解析，子目錄專案或外部工具建議傳絕對路徑。執行 `./gradlew clean check`。片段提供 `devRuleDependencies`、`devRuleClasspath`、`spotbugsMain`／`spotbugsTest` 及 `devRuleBytecode`，不需額外 SpotBugs Gradle 外掛。共用編譯入口讀取版本旗標及已校驗 Error Prone JAR；Gradle 保留 JavaCompile 的來源／輸出／classpath 宣告，以正式入口替換編譯 action，目前針對標準 Java source sets，不適用 Kotlin／Android／JPMS 模組或自訂編譯 action。所有 source set（含 apply 後註冊者）的非空 classesDirs 與 SpotBugs 報告都納入驗證。Gradle up-to-date 判定仍有效，輸入變動則清除該 task 輸出並全量重編；開發時可用 `-PdevRuleCompilerReplacement=off` 保留原生增量編譯，CI runner 明確覆寫為 `on`。首次接入須實測專案 annotation processors。
 
-Gradle 不注入測試依賴或強制框架；Maven 預設 JUnit 5。選擇 `archunit/junit5/RulesTemplateTest.java` 或 `archunit/junit4/RulesTemplateTest.java`；混跑需 Vintage engine 5.12.2，依賴與 JUnit BOM 5.12.2 對齊。兩者均須依 [ArchUnit 說明](archunit/README.md) 建立專案化 `RulesTemplateTest`，明確選擇架構根套件與規則。不可因不適用而讓空匹配假通過。本機片段檢查整檔與完整 bytecode，不做 staged 行過濾。專案採用建置工具的 dependency verification／鎖檔；Error Prone 主 JAR 與 JDK 8 javac bridge 由共用入口依 profile SHA-256 校驗，快取每次重驗。
+Gradle 不注入測試依賴或強制框架；Maven 以 `dev-rule.test-framework` 選擇依賴，未指定或設 `junit5` 時預設 JUnit 5；JUnit 4 專案須傳 `-Ddev-rule.test-framework=junit4`（建議寫入 `.mvn/maven.config`），啟用 `archunit`＋`junit` 的 profile。此選擇屬性必須來自 Maven 命令列／啟動設定，不能只放在 POM 的 properties，因為 profile activation 不讀同一 POM 的屬性。選擇 `archunit/junit5/RulesTemplateTest.java` 或 `archunit/junit4/RulesTemplateTest.java`；混跑需 Vintage engine 5.12.2，依賴與 JUnit BOM 5.12.2 對齊。兩者均須依 [ArchUnit 說明](archunit/README.md) 建立專案化 `RulesTemplateTest`，明確選擇架構根套件與規則。不可因不適用而讓空匹配假通過。本機片段檢查整檔與完整 bytecode，不做 staged 行過濾。專案採用建置工具的 dependency verification／鎖檔；Error Prone 主 JAR 與 JDK 8 javac bridge 由共用入口依 profile SHA-256 校驗，快取每次重驗。
 
 ### GitHub Actions 五行 caller
 
@@ -150,3 +150,7 @@ Maven Enforcer 禁用版本對應 JV-VP-010，Gradle 對應 JV-VP-009；Gradle �
 partial 只涵蓋部分模式，candidate 預設停用；verified 不代表整個小節、所有版本與例外皆已自動化。四版 profile 都列入 CI 矩陣；本機實測與遠端執行是不同證據。JDK 8 沒有 jdeprscan，須另審棄用 API。jdeps 只掃專案 class 的直接靜態內部 API 使用，第三方 JAR、反射字串、JPMS 存取與部署矩陣另行審查。ArchUnit 不能推論執行期注入；併發、序列化、業務契約仍需測試與人工審查。
 
 本庫的 [demo-maven](tests/demo-maven) 是零違規最小專案，使用正式 Maven 片段與專案化 ArchUnit 測試；`.github/workflows/rules-check.yml` 的 `java-demo` job 以本次 commit 呼叫可重用 workflow，實際建置 demo 並上傳 `java-rules-reports`。2026-11-11 複核已確認 [GitHub run 43016989520](https://github.com/clarkeforwork-coder/dev-rule/actions/runs/43016989520) 的 `java-demo / rules` 成功且產生報告 artifact；此遠端實跑證據涵蓋修正前的 Maven demo；本次單一 workflow revision、checkout 與 artifact 行為尚待遠端驗收，Gradle workflow 亦無遠端實跑證據。另以 Ruby YAML parser 驗證 workflow 與 caller 契約，並以同一 shell runner 做本機驗證。IDE 外掛安裝與專案特定架構規則仍由採用端選定。
+
+## 治理建議
+
+門檻設定在專案內是這套整合的固有限制：消費端能修改基準、片段引用或架構測試，因此工具本身不能保證這些門檻未被放寬。建議在消費端 CODEOWNERS 納入 `dev-rule-baseline.tsv`、引用片段的 `pom.xml`／`build.gradle.kts`、`.mvn/maven.config`、CI workflow，以及專案實際的 `RulesTemplate.java`／`RulesTemplateTest.java` 路徑，並啟用需要 code owner 核准的分支保護。審查者須確認基準變更的理由、工具 revision、框架選擇與架構規則範圍，避免刪減測試或放寬門檻造成假通過。

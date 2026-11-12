@@ -105,16 +105,64 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     build_file = "#{dir}/#{tool == 'maven' ? 'pom.xml' : 'build.gradle.kts'}"
     original_build = File.read(build_file)
     junit4_build = if tool == 'maven'
-      original_build.sub('archunit-junit5', 'archunit-junit4').sub('<groupId>org.junit.jupiter</groupId>', '<groupId>junit</groupId>').sub('<artifactId>junit-jupiter</artifactId>', '<artifactId>junit</artifactId>').sub('<version>5.12.2</version>', '<version>4.13.2</version>')
+      original_build
     else
       original_build.sub(/dependencies \{.*?\}/, 'dependencies { testImplementation("junit:junit:4.13.2"); testImplementation("com.tngtech.archunit:archunit-junit4:1.4.1") }').sub('useJUnitPlatform()', 'useJUnit()')
     end
     File.write(build_file, junit4_build)
     File.write(test_file, test_source.sub('org.junit.jupiter.api.Test', 'org.junit.Test'))
-    run(dir, "#{tool}-junit4-good", cmd + full)
+    junit4_cmd = tool == 'maven' ? cmd + ['-Ddev-rule.test-framework=junit4'] : cmd
+    ordinary_test = "#{dir}/src/test/java/com/example/OrdinaryTest.java"
+    File.write(ordinary_test, <<~JAVA)
+      package com.example;
+      public final class OrdinaryTest {
+          /** 驗證專案原有的 JUnit 4 測試仍會執行。 */
+          @org.junit.Test public void ordinary() { org.junit.Assert.assertTrue(true); }
+      }
+    JAVA
+    run(dir, "#{tool}-junit4-good", junit4_cmd + full)
+    ordinary_report = tool == 'maven' ? 'target/surefire-reports/TEST-com.example.OrdinaryTest.xml' : 'build/test-results/test/TEST-com.example.OrdinaryTest.xml'
+    suite = REXML::Document.new(File.read("#{dir}/#{ordinary_report}")).root
+    raise '專案 JUnit 4 測試未執行' unless suite.attributes['tests'] == '1' && suite.attributes['skipped'] == '0'
+    puts "PASS #{tool}-junit4-original tests=1 skipped=0"
+    File.delete(ordinary_test)
     check_reports.call('junit4')
     File.write(build_file, original_build)
     File.write(test_file, test_source)
+    if tool == 'gradle'
+      processor_dir = "#{dir}/processor-classes"
+      FileUtils.mkdir_p("#{processor_dir}/META-INF/services")
+      File.write("#{dir}/ProbeProcessor.java", <<~JAVA)
+        import java.util.Set;
+        import javax.annotation.processing.*;
+        import javax.lang.model.SourceVersion;
+        import javax.lang.model.element.TypeElement;
+        @SupportedAnnotationTypes("*")
+        public class ProbeProcessor extends AbstractProcessor {
+            public SourceVersion getSupportedSourceVersion() { return SourceVersion.latestSupported(); }
+            public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment round) {
+                if (!round.processingOver()) {
+                    try { processingEnv.getFiler().createResource(javax.tools.StandardLocation.CLASS_OUTPUT, "", "processor-ran").openWriter().close(); }
+                    catch (java.io.IOException failure) { throw new RuntimeException(failure); }
+                }
+                return false;
+            }
+        }
+      JAVA
+      run(dir, 'gradle-processor-compile', ["#{JDK}/bin/javac", '-d', processor_dir, "#{dir}/ProbeProcessor.java"])
+      File.write("#{processor_dir}/META-INF/services/javax.annotation.processing.Processor", "ProbeProcessor\n")
+      run(dir, 'gradle-processor-jar', ["#{JDK}/bin/jar", 'cf', "#{dir}/processor.jar", '-C', processor_dir, '.'])
+      %w[implementation annotationProcessor].each do |configuration|
+        File.write(build_file, original_build + "\ndependencies { #{configuration}(files(\"processor.jar\")) }\n")
+        %w[on off].each do |replacement|
+          run(dir, "gradle-processor-#{configuration}-#{replacement}", cmd + ["-PdevRuleCompilerReplacement=#{replacement}", 'clean', 'compileJava'])
+          executed = File.exist?("#{dir}/build/classes/java/main/processor-ran")
+          raise "processor 探索分歧：#{configuration}/#{replacement}" unless executed == (configuration == 'annotationProcessor')
+          puts "PASS gradle-processor-#{configuration}-#{replacement} executed=#{executed}"
+        end
+      end
+      File.write(build_file, original_build)
+    end
     {
       'javac'=>["final class Hidden {\n java.util.List first;\n java.util.List second;\n java.util.List third;\n}", 'JV-TG-024'],
       'errorprone'=>['final class Hidden { void probe(String text) { text.trim(); } }', 'JV-LS-006']
