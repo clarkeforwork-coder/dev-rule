@@ -1,3 +1,0 @@
-<!-- 舊版額外 plugins 已整併至 ../maven/pom-fragment.xml。
-     請只合併完整片段的 properties、profiles、dependencies、build，勿重複宣告 plugins。 -->
-<plugins/>

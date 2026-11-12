@@ -11,7 +11,7 @@ OUT = File.expand_path(ARGV.fetch(0))
 FileUtils.mkdir_p(OUT)
 JDK = ENV.fetch('JAVA_HOME')
 major = Open3.capture2e("#{JDK}/bin/java", '-version').first[/version "(?:1\.)?(\d+)/, 1].to_i
-mvn = ENV.fetch('MAVEN_BIN', 'mvn')
+mvn = ENV.fetch('MVN_BIN', 'mvn')
 gradle = ENV.fetch('GRADLE_BIN', 'gradle')
 def run(dir, name, command, expected: 0, id: nil)
   output, status = Open3.capture2e(*command, chdir: dir)
@@ -24,9 +24,35 @@ def run(dir, name, command, expected: 0, id: nil)
   raise "#{name} 失敗：#{OUT}/#{name}.log" unless valid
   output
 end
+validator = ['sh', "#{ROOT}/tools/java/ci/github/validate-inputs.sh"]
+{'java-version'=>['JAVA_VERSION', '22'], 'build-tool'=>['BUILD_TOOL', 'ant'],
+ 'project-directory-absolute'=>['PROJECT_DIRECTORY', '/tmp/project'],
+ 'project-directory-parent'=>['PROJECT_DIRECTORY', 'app/../other']}.each do |name, (key, value)|
+  env = {'JAVA_VERSION'=>'17', 'BUILD_TOOL'=>'maven', 'PROJECT_DIRECTORY'=>'.', key=>value}
+  output, status = Open3.capture2e(env, *validator)
+  raise "輸入拒絕失敗：#{name}" unless status.exitstatus == 2 && output.include?(name.sub(/-(absolute|parent)$/, ''))
+  puts "PASS workflow 輸入拒絕 #{name} exit=#{status.exitstatus}"
+end
+run(ROOT, 'workflow-input-good', ['env', 'JAVA_VERSION=17', 'BUILD_TOOL=gradle', 'PROJECT_DIRECTORY=app', *validator])
+Dir.mktmpdir('workflow-unit-') do |dir|
+  summary = "#{dir}/summary.md"
+  File.write(summary, "```\n<script>test</script>\n````\n")
+  output = run(dir, 'summary-fence', ['sh', "#{ROOT}/tools/java/ci/github/summary.sh", summary])
+  raise 'summary fence 不足' unless output.start_with?("\n`````text\n") && output.end_with?("\n`````\n")
+  run(dir, 'architecture-checker-compile', ["#{JDK}/bin/javac", '-encoding', 'UTF-8', '-d', dir, "#{ROOT}/tools/java/ci/github/ArchitectureReports.java"])
+  checker = ["#{JDK}/bin/java", '-cp', dir, 'ArchitectureReports']
+  run(dir, 'architecture-missing', checker, expected: 1)
+  [[0, 0, 1], [2, 2, 1], [2, 1, 0], [1, 0, 0]].each do |tests, skipped, expected|
+    File.write("#{dir}/TEST-RulesTemplateTest.xml", %(<testsuite tests="#{tests}" skipped="#{skipped}"/>))
+    run(dir, "architecture-tests-#{tests}-skipped-#{skipped}", checker + ["#{dir}/TEST-RulesTemplateTest.xml"], expected: expected)
+  end
+end
+skips = []
+available = lambda do |binary|
+  binary.include?('/') ? File.executable?(binary) : ENV.fetch('PATH').split(File::PATH_SEPARATOR).any? { |path| File.executable?(File.join(path, binary)) }
+end
 Dir.mktmpdir('java-ci-integration-') do |dir|
-  FileUtils.mkdir_p("#{dir}/vendor")
-  File.symlink(ROOT, "#{dir}/vendor/dev-rule")
+  # 不提供 vendored 副本，確認兩種建置工具確實使用明確傳入的中立根目錄。
   src = "#{dir}/src/main/java/com/example/internal"
   FileUtils.mkdir_p(src)
   good = "package com.example.internal;\nfinal class Hidden {}\n"
@@ -56,9 +82,13 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     .sub('[17,18)', "[#{major},#{major + 1})")
   File.write("#{dir}/pom.xml", pom)
   File.write("#{dir}/settings.gradle.kts", 'rootProject.name = "fixture"')
-  File.write("#{dir}/build.gradle.kts", "plugins { java }\nrepositories { mavenCentral() }\napply(from = \"vendor/dev-rule/tools/java/ci/gradle/rules.gradle.kts\")\n")
+  File.write("#{dir}/build.gradle.kts", "plugins { java }\nrepositories { mavenCentral() }\napply(from = \"${property(\"devRuleRoot\")}/tools/java/ci/gradle/rules.gradle.kts\")\n")
   File.write("#{dir}/gradle.properties", "devRuleCompiler=#{major}\ndevRuleRelease=#{major}\ndevRuleBanned=no.such:artifact\norg.gradle.workers.max=2\n")
-  {'maven'=>[mvn, '-B'], 'gradle'=>[gradle, '--no-daemon', '--console=plain']}.each do |tool, cmd|
+  {'maven'=>[mvn, '-B', "-Ddev-rule.root=#{ROOT}"], 'gradle'=>[gradle, '--no-daemon', '--console=plain', "-PdevRuleRoot=#{ROOT}"]}.each do |tool, cmd|
+    unless available.call(cmd.first)
+      skips << "#{tool} 整合：請設定 #{tool == 'maven' ? 'MVN_BIN' : 'GRADLE_BIN'} 或加入 PATH"
+      next
+    end
     File.write("#{src}/Hidden.java", good)
     full = tool == 'maven' ? %w[clean verify] : %w[clean check]
     compile = tool == 'maven' ? %w[clean test-compile] : %w[clean testClasses]
@@ -119,13 +149,23 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     reports = tool == 'maven' ? %w[--pmd target/pmd.xml --checkstyle target/checkstyle-result.xml] : %w[--pmd build/reports/pmd/main.xml --pmd build/reports/pmd/test.xml --checkstyle build/reports/checkstyle/main.xml --checkstyle build/reports/checkstyle/test.xml]
     FileUtils.rm_f("#{dir}/dev-rule-baseline.tsv")
     baseline = ['sh', "#{ROOT}/tools/java/baseline/run.sh"]
+    output = run(dir, "#{tool}-baseline-missing-build", cmd + (tool == 'maven' ? %w[-Pdev-rule-baseline clean verify] : %w[-PdevRuleBaseline clean check]), expected: 1)
+    raise '缺少基準失敗未指出基準檔' unless output.include?('dev-rule-baseline.tsv')
     run(dir, "#{tool}-baseline-create", baseline + %w[create --baseline dev-rule-baseline.tsv --owner integration --due 2027-01-01] + reports)
     run(dir, "#{tool}-baseline-existing", baseline + %w[check --baseline dev-rule-baseline.tsv] + reports)
     run(dir, "#{tool}-baseline-build", cmd + (tool == 'maven' ? %w[-Pdev-rule-baseline clean verify] : %w[-PdevRuleBaseline clean check]))
-    run(dir, "#{tool}-workflow-runner", ['env', "PATH=#{File.dirname(mvn)}:#{ENV.fetch('PATH')}",
+    if tool == 'gradle'
+      output = run(dir, 'gradle-baseline-excluded-pmdMain', cmd + %w[-PdevRuleBaseline check -x pmdMain], expected: 1)
+      raise '未拒絕必要工作排除' unless output.include?('基準必要工作被排除')
+    end
+    run(dir, "#{tool}-workflow-runner", ['env', "MVN_BIN=#{mvn}", "PATH=#{File.dirname(mvn)}:#{ENV.fetch('PATH')}",
       "JAVA_VERSION=#{major}", "BUILD_TOOL=#{tool}", 'sh', "#{ROOT}/tools/java/ci/github/run.sh"])
     File.open("#{src}/Hidden.java", 'a') { |file| file.puts('final class Added { java.util.List<?> added() { return java.util.Collections.emptyList(); } }') }
+    run(dir, "#{tool}-workflow-runner-new", ['env', "MVN_BIN=#{mvn}", "JAVA_VERSION=#{major}", "BUILD_TOOL=#{tool}", 'sh', "#{ROOT}/tools/java/ci/github/run.sh"], expected: 1)
+    raise '新增違規未寫入 summary' unless File.read("#{dir}/java-rules-reports/summary.md").include?('[JV-')
     run(dir, "#{tool}-baseline-new-reports", cmd + report_tasks)
     run(dir, "#{tool}-baseline-new", baseline + %w[check --baseline dev-rule-baseline.tsv] + reports, expected: 1, id: 'JV-TG-026')
   end
 end
+puts skips.map { |message| "SKIP #{message}" }
+puts "整合總結：略過 #{skips.size} 個建置工具情境（不計為通過）"

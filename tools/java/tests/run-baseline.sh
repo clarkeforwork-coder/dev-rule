@@ -9,7 +9,7 @@ require 'cgi'
 base = ARGV.fetch(0)
 run = File.join(base, 'baseline/run.sh')
 homes = [ENV['JAVA_HOME'] || (`/usr/libexec/java_home -v 17`.strip if File.executable?('/usr/libexec/java_home'))]
-java8 = ENV['JAVA8_HOME'] || Dir['/private/tmp/{dev-rule-hook-assets,inv-codex-b/tools}/zulu8*/Contents/Home'].first
+java8 = ENV['JAVA8_HOME']
 homes << java8 if java8
 homes = homes.compact.uniq
 abort '請指定 JAVA_HOME；完整矩陣另指定 JAVA8_HOME' if homes.empty?
@@ -38,6 +38,50 @@ homes.each do |jdk|
     write.call(lines, [2], [[4, 'error']])
     call.call('建立既有違規', 'create', 0, ['--owner', 'team-java', '--due', '2027-03-01'])
     original = File.read(baseline)
+    # 每個拒絕案例獨立還原輸入，避免先前失敗掩蓋真正原因。
+    reject = lambda do |name, args, expected=2|
+      output, status = Open3.capture2e(env, run, *args, chdir: dir)
+      puts "#{name}（預期 #{expected}，實際 #{status.exitstatus}）\n#{output}"
+      abort "失敗：#{name}" unless status.exitstatus == expected && !output.strip.empty?
+    end
+    File.delete(baseline)
+    reject.call('create 缺 owner', ['create', '--baseline', baseline, '--pmd', pmd, '--due', '2027-03-01'])
+    reject.call('create 日期無效', ['create', '--baseline', baseline, '--pmd', pmd, '--owner', 'team', '--due', '2027-02-30'])
+    File.write(baseline, original)
+    row_index = original.lines.index { |line| !line.start_with?('#') && !line.strip.empty? }
+    fields = original.lines[row_index].chomp.split("\t", -1)
+    # 格式：tool、rule、path、fingerprint、level、count、owner、due、note。
+    {'空白負責人'=>[6, ''], '無效日期'=>[7, '2027-02-30'], '父目錄路徑'=>[2, '../Sample.java'], '絕對路徑'=>[2, source]}.each do |name, (index, value)|
+      lines_copy = original.lines
+      changed = fields.dup; changed[index] = value
+      lines_copy[row_index] = changed.join("\t") + "\n"
+      File.write(baseline, lines_copy.join)
+      call.call("拒絕#{name}", 'check', 2)
+    end
+    File.write(baseline, original.lines.each_with_index.map { |line, i| i == row_index ? "pmd\tJV-TG-005\n" : line }.join)
+    call.call('拒絕欄數不足', 'check', 2)
+    File.write(baseline, original + original.lines[row_index])
+    call.call('拒絕鍵重複', 'check', 2)
+    File.write(baseline, original)
+    reject.call('基準含 checkstyle 不得只傳 pmd', ['check', '--baseline', baseline, '--pmd', pmd])
+    reject.call('同報告不得傳兩次', ['check', '--baseline', baseline, '--pmd', pmd, '--pmd', pmd, '--checkstyle', cs])
+    Dir.mkdir(File.join(dir, 'subroot'))
+    pmd_content = File.read(pmd)
+    File.write(pmd, pmd_content.sub('name="Sample.java"', "name=\"#{source}\""))
+    reject.call('來源在 root 之外', ['check', '--baseline', baseline, '--root', File.join(dir, 'subroot'), '--pmd', pmd, '--checkstyle', cs])
+    File.write(pmd, pmd_content)
+    second = File.join(dir, 'second.xml')
+    File.write(second, '<pmd/>')
+    reject.call('兩份不同 pmd 可合併', ['check', '--baseline', baseline, '--pmd', pmd, '--pmd', second, '--checkstyle', cs], 0)
+    File.write(second, pmd_content)
+    reject.call('第二份 pmd 新增筆數不得漏掉', ['check', '--baseline', baseline, '--pmd', pmd, '--pmd', second, '--checkstyle', cs], 1)
+    File.delete(baseline)
+    write.call(lines, [2, 2], [[4, 'error']])
+    call.call('建立 count 2 基準', 'create', 0, ['--owner', 'team-java', '--due', '2027-03-01'])
+    write.call(lines, [2], [[4, 'error']])
+    call.call('count 2 部分 prune', 'prune', 0)
+    call.call('部分 prune 後通過', 'check', 0)
+    abort '部分 prune 未將 count 減為 1' unless File.read(baseline) == original
     File.write(baseline, original.sub('baseline-v2', 'baseline-v1'))
     call.call('拒絕舊版單行指紋', 'check', 2)
     File.write(baseline, original)
@@ -118,44 +162,5 @@ homes.each do |jdk|
 
   end
 end
-puts '提示：未設定 JAVA8_HOME，此次只驗證目前 JDK；完整驗收須另跑 JDK 8。' unless java8 || homes.any? { |h| h.include?('zulu8') }
-if ENV['BASELINE_BUILD_INTEGRATION'] == '1'
-require 'tmpdir'
-require 'fileutils'
-require 'open3'
-root=File.expand_path('../..', base)
-Dir.mktmpdir('c3-integration-') do |dir|
- FileUtils.mkdir_p("#{dir}/vendor"); File.symlink(root,"#{dir}/vendor/dev-rule")
- FileUtils.mkdir_p("#{dir}/src/main/java")
- src="#{dir}/src/main/java/Probe.java"
- File.write(src,"final class Probe { void consume(java.util.List values) {} }\n")
- FileUtils.cp("#{root}/tools/java/ci/maven/pom-fragment.xml", "#{dir}/pom.xml")
- File.write("#{dir}/settings.gradle.kts", "rootProject.name = \"baseline-probe\"\n")
- File.write("#{dir}/build.gradle.kts", "plugins { java }\nrepositories { mavenCentral() }\napply(from = \"vendor/dev-rule/tools/java/ci/gradle/rules.gradle.kts\")\n")
- baseline="#{dir}/dev-rule-baseline.tsv"
- env={'JAVA_HOME'=>homes.first}
- [['maven',[ENV.fetch('MAVEN_BIN', 'mvn'),'-B','-Pdev-rule-baseline','verify'],['target/pmd.xml','target/checkstyle-result.xml']], ['gradle',[ENV.fetch('GRADLE_BIN', 'gradle'),'-PdevRuleBaseline','check','--no-daemon','--console=plain'],['build/reports/pmd/main.xml','build/reports/checkstyle/main.xml']]].each do |tool,cmd,reports|
-  File.write(src,"final class Probe { void consume(java.util.List values) {} }\n")
-  File.delete(baseline) if File.exist?(baseline)
-  output,status=Open3.capture2e(env,*cmd,chdir:dir)
-  abort "#{tool} 未產生報告：#{output}" unless reports.all?{|p|File.file?("#{dir}/#{p}")}
-  puts "#{tool} 缺少基準 exit=#{status.exitstatus}"
-  abort '缺少基準竟通過' if status.success?
-  output,status=Open3.capture2e(env,"#{root}/tools/java/baseline/run.sh",'create','--baseline',baseline,'--pmd',reports[0],'--checkstyle',reports[1],'--owner','team-java','--due','2027-03-01',chdir:dir)
-  puts output; abort 'create 失敗' unless status.success?
-  output,status=Open3.capture2e(env,*cmd,chdir:dir)
-  puts "#{tool} 既有違規 exit=#{status.exitstatus}"
-  abort output unless status.success?
-  if tool == 'gradle'
-    output,status=Open3.capture2e(env,*cmd,'-x','pmdMain',chdir:dir)
-    puts "gradle 排除必要工作 exit=#{status.exitstatus}"
-    abort output if status.success? || !output.include?('基準必要工作被排除')
-  end
-  File.write(src,"final class Probe { void consume(java.util.List values) {} void another(java.util.List other) {} }\n")
-  output,status=Open3.capture2e(env,*cmd,chdir:dir)
-  puts "#{tool} 新增違規 exit=#{status.exitstatus}"
-  abort output if status.success? || !output.include?('新增 error：')
- end
-end
-end
+puts 'SKIP JDK 8 基準：未設定 JAVA8_HOME，此次只驗證目前 JDK；完整驗收須另跑 JDK 8。' unless java8 || homes.any? { |h| Open3.capture2e("#{h}/bin/java", '-version').first.include?('version "1.8.') }
 RUBY
