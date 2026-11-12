@@ -4,7 +4,21 @@
 
 ## [Unreleased]
 
+### 修正
+
+- 依 PR #11 第二份審查修正：拒絕 Maven 靜默略過 JUnit 4、統一 ArchUnit 核心與 JUnit BOM、補空檔基準及專案內 helper 快取，啟用 strict checksums、Maven CI 快取與 checkout 憑證隔離；JUnit 4 標為 legacy 過渡。複核補上兩種框架共用的 JUnit Platform 防護與遞移 JUnit 排除回歸、鎖逾時復原提示、Jupiter／Vintage BOM 優先序及離線／mirror 說明，移除不跑 Maven 的 job 快取並校正 baseline 快取環境需求。
+
+- Maven 測試依賴改以 `dev-rule.test-framework` 選擇 JUnit 5（預設）或 JUnit 4，補上原有測試與架構測試回歸；Gradle 明確傳入空 processor path，讓替換編譯與原生 annotation processor 探索一致；補充消費端 CODEOWNERS 治理及門檻設定在專案內的限制。
+
+- 依 PR #11 審查修正：統一 workflow revision／root、JUnit 4／5 架構驗證、編譯與 Enforcer 門檻及無快取基準；14 階段驗證納入 JDK 8／11／17／21 矩陣，verified 78 筆，涵蓋 48／143 小節（33.57%）。
+
+- Java 基準新增 `rekey`：人工審查後，以同工具／檔案／規則的一對一等量配對更新上下文指紋，保留負責人與期限；無法配對時拒絕且不寫入，新增診斷列印指紋，並同步主 README 的嚴格檢查、涵蓋率與 demo CI 說明。
+
+- Java CI 審閱修正：SpotBugs 低優先門檻與 error／warn 分流、基準 v2 上下文指紋及嚴格清償檢查、PMD 抑制相容、每行編譯診斷與 argfile 傳遞、固定 Maven 的可重用 workflow 與零違規示範專案；3 筆形狀巧合降 partial，明示剩餘漏報與人工審查界線。
+
 ### 新增
+
+- 完成 Java CI 層：四版 javac／Error Prone、SpotBugs、ArchUnit、jdeps／jdeprscan、Enforcer／Gradle 依賴限制、整合 Maven／Gradle 片段與固定 revision 的可重用 workflow；新增精確 PMD／Checkstyle 基準、可重跑正反例與端到端驗收，涵蓋率提升至 48／143 小節（33.57%）。
 
 - 加入 Java 自動檢查工具的 pre-commit 層（`tools/java/`）：規則對照表 `rule-map.yml`（每條工具規則對一個規範錨點）、PMD 7.29.0 規則集與自訂 XPath 規則、Checkstyle 10.26.1／9.3 設定、純 shell pre-commit hook（只檢查暫存的 `.java`、只阻擋新增違規、依 JDK 8／11／17／21 選工具）、`install.sh`、`.pre-commit-hooks.yaml`、Maven／Gradle 接入片段，以及以規範範例驗證工具的測試；CI 新增 `java-tools` job（#10）。
 

@@ -1,0 +1,91 @@
+name: Java 規範完整檢查
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        type: string
+        default: '17'
+      build-tool:
+        type: string
+        required: true
+      project-directory:
+        type: string
+        default: '.'
+      artifact-name:
+        description: 預設由專案目錄與 Java 版本產生；同目錄同版本的平行工作請明確指定不同名稱
+        type: string
+        default: ''
+permissions:
+  contents: read
+jobs:
+  rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: 驗證 workflow 來源
+        env:
+          WORKFLOW_REPOSITORY: ${{ job.workflow_repository }}
+          WORKFLOW_SHA: ${{ job.workflow_sha }}
+        run: |
+          test -n "$WORKFLOW_REPOSITORY" || { echo 'job.workflow_repository 為空，無法決定工具來源' >&2; exit 2; }
+          test -n "$WORKFLOW_SHA" || { echo 'job.workflow_sha 為空，無法固定工具版本' >&2; exit 2; }
+      # checkout 限制在 workspace 內；隨後移至與消費端無關的中立路徑。
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: ${{ job.workflow_repository }}
+          ref: ${{ job.workflow_sha }}
+          path: .dev-rule-workflow
+          persist-credentials: false
+      - name: 設定中立工具路徑
+        run: mv "$GITHUB_WORKSPACE/.dev-rule-workflow" "$RUNNER_TEMP/dev-rule"
+      - name: 驗證輸入
+        id: inputs
+        env:
+          JAVA_VERSION: ${{ inputs.java-version }}
+          BUILD_TOOL: ${{ inputs.build-tool }}
+          PROJECT_DIRECTORY: ${{ inputs.project-directory }}
+          ARTIFACT_NAME: ${{ inputs.artifact-name }}
+        run: |
+          sh "$RUNNER_TEMP/dev-rule/tools/java/ci/github/validate-inputs.sh"
+          name=${ARTIFACT_NAME:-java-rules-$PROJECT_DIRECTORY-jdk$JAVA_VERSION}
+          name=$(printf '%s' "$name" | LC_ALL=C tr -c 'A-Za-z0-9._-' '-')
+          printf 'artifact-name=%s\n' "$name" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.java-version }}
+          cache: ${{ inputs.build-tool }}
+          cache-dependency-path: |
+            ${{ inputs.project-directory }}/pom.xml
+            ${{ inputs.project-directory }}/**/*.gradle*
+            ${{ inputs.project-directory }}/**/gradle-wrapper.properties
+      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ~/.cache/dev-rule
+          key: dev-rule-${{ runner.os }}-${{ inputs.java-version }}-${{ job.workflow_sha }}
+      - name: 安裝固定 Maven
+        if: inputs.build-tool == 'maven'
+        run: sh "$RUNNER_TEMP/dev-rule/tools/java/ci/github/install-maven.sh"
+      - name: 編譯、靜態分析、架構及基準
+        env:
+          BUILD_TOOL: ${{ inputs.build-tool }}
+          JAVA_VERSION: ${{ inputs.java-version }}
+        working-directory: ${{ inputs.project-directory }}
+        run: sh "$RUNNER_TEMP/dev-rule/tools/java/ci/github/run.sh"
+      - name: 規範摘要與人工審查
+        if: always() && steps.inputs.outcome == 'success'
+        env:
+          PROJECT_DIRECTORY: ${{ inputs.project-directory }}
+        run: |
+          awk '/^## .*人工/{show=1} show {print}' "$RUNNER_TEMP/dev-rule/tools/java/coverage/coverage.md" > "$RUNNER_TEMP/java-rules-manual.md"
+          sh "$RUNNER_TEMP/dev-rule/tools/java/ci/github/summary.sh" "$PROJECT_DIRECTORY/java-rules-reports/summary.md" "$RUNNER_TEMP/java-rules-manual.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: 保存報告
+        if: always() && steps.inputs.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ steps.inputs.outputs.artifact-name }}
+          path: ${{ inputs.project-directory }}/java-rules-reports/
+          include-hidden-files: true
+          if-no-files-found: error

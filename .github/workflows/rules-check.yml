@@ -12,11 +12,13 @@ jobs:
   rules-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4 # v1.207.0
         with:
           ruby-version: '3.3'
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
           distribution: temurin
           java-version: '21'
@@ -27,17 +29,38 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: ['21', '8']
+        java: ['8', '11', '17', '21']
     steps:
-      - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4 # v1.207.0
         with:
           ruby-version: '3.3'
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
           distribution: temurin
+          cache: maven
+          cache-dependency-path: |
+            tools/java/ci/maven/pom-fragment.xml
+            tools/java/tests/demo-maven/pom.xml
           java-version: ${{ matrix.java }}
+      - name: 安裝固定 Maven
+        run: sh tools/java/ci/github/install-maven.sh
+      - uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
+        with:
+          gradle-version: '8.14.3'
       - name: 安裝 XML 標準函式庫
-        run: gem install rexml --no-document
+        run: gem install rexml --version 3.4.4 --no-document
       - name: 驗證 Java 工具與規範範例
-        run: tools/java/tests/run-all.sh
+        run: |
+          export MVN_BIN=$(command -v mvn) GRADLE_BIN=$(command -v gradle)
+          if [ '${{ matrix.java }}' = 8 ]; then export JAVA8_HOME=$JAVA_HOME; fi
+          tools/java/tests/run-all.sh
+
+  java-demo:
+    uses: ./.github/workflows/java-rules.yml
+    with:
+      build-tool: maven
+      java-version: '17'
+      project-directory: tools/java/tests/demo-maven

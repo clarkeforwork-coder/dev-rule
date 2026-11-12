@@ -9,9 +9,9 @@
 | 文件數 | 15 |
 | 小節數 | 143 |
 | 映射筆數 | 308 |
-| status：verified（筆） | 62 |
-| status：partial（筆） | 66 |
-| status：candidate（筆） | 40 |
+| status：verified（筆） | 78 |
+| status：partial（筆） | 55 |
+| status：candidate（筆） | 35 |
 | status：manual（筆） | 140 |
 | tier：pre-commit（筆） | 111 |
 | tier：ci-compile（筆） | 28 |
@@ -31,11 +31,11 @@
 | tool：maven-enforcer（筆） | 4 |
 | tool：gradle（筆） | 2 |
 | tool：none（筆） | 140 |
-| 本庫 PMD／Checkstyle verified 小節數 | 43 |
-| CI 層候選（映射筆數；不計涵蓋率） | 57 |
-| 涵蓋率（verified 小節／全部小節） | 43／143 = 30.07% |
+| 本庫 PMD／Checkstyle／CI 工具 verified 小節數 | 48 |
+| CI 層未 verified（映射筆數；不計涵蓋率） | 41 |
+| 涵蓋率（verified 小節／全部小節） | 48／143 = 33.57% |
 
-每小節只要有一筆本庫可重跑的 PMD／Checkstyle verified 即計入分子，同小節多規則不重複計數；status／tier／tool 欄則按映射筆數計算。partial、candidate、manual 均不計分子；verified 不代表整個小節、所有版本或所有合法例外都已自動驗證。
+每小節只要有一筆本庫可重跑的 PMD／Checkstyle／CI 工具 verified 即計入分子，同小節多規則不重複計數；status／tier／tool 欄則按映射筆數計算。partial、candidate、manual 均不計分子；verified 不代表整個小節、所有版本或所有合法例外都已自動驗證。
 
 manual 可與 verified 並存，表示該小節仍有工具無法替代的審查或尚待實作的契約測試；candidate 包含失敗候選，不是啟用建議。實證版本、合成範例與漏報限制見 rule-map.yml 的 note。
 
@@ -46,8 +46,8 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 明確控制欄位及來源 | java-mapping-fields | error | manual | none：none（JV-BM-001） | manual | — |
 | 失敗明確回報 | java-mapping-integrity | error | test | none：none（JV-BM-002） | manual | — |
 | 保留更新意圖 | java-update-intent | error | test | none：none（JV-BM-003） | manual | — |
-| 集合與可變元素的隔離 | java-mutable-isolation | error | ci-bytecode | spotbugs：EI_EXPOSE_REP（JV-BM-004） | candidate | 是（待本庫重跑） |
-| 集合與可變元素的隔離 | java-mutable-isolation | error | ci-bytecode | spotbugs：EI_EXPOSE_REP2（JV-BM-005） | candidate | 是（待本庫重跑） |
+| 集合與可變元素的隔離 | java-mutable-isolation | error | ci-bytecode | spotbugs：EI_EXPOSE_REP（JV-BM-004） | candidate | 是（未達 verified） |
+| 集合與可變元素的隔離 | java-mutable-isolation | error | ci-bytecode | spotbugs：EI_EXPOSE_REP2（JV-BM-005） | candidate | 是（未達 verified） |
 | 集合與可變元素的隔離 | java-mutable-isolation | error | test | none：none（JV-BM-006） | manual | — |
 | 各方向分別定義 | java-directional-mapping | error | manual | none：none（JV-BM-007） | manual | — |
 | 明確維護責任 | java-mapping-ownership | error | manual | none：none（JV-BM-008） | manual | — |
@@ -58,15 +58,15 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 小節 | 錨點 | 等級 | tier | 工具與規則 | status | CI層候選 |
 | --- | --- | --- | --- | --- | --- | --- |
 | 介面或具體類別的契約依賴 | java-interface-purpose | error | manual | none：none（JV-CC-001） | manual | — |
-| 建構期間的安全性 | java-construction-safety | error | ci-compile | javac：-Xlint:this-escape（JV-CC-002） | partial | 是（待本庫重跑） |
+| 建構期間的安全性 | java-construction-safety | error | ci-compile | javac：-Xlint:this-escape（JV-CC-002） | partial | 是（未達 verified） |
 | 建構期間的安全性 | java-construction-safety | error | pre-commit | pmd：category/java/errorprone.xml/ConstructorCallsOverridableMethod（JV-CC-003） | verified | — |
-| 建構期間的安全性 | java-construction-safety | error | ci-bytecode | spotbugs：MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR（JV-CC-004） | partial | 是（待本庫重跑） |
+| 建構期間的安全性 | java-construction-safety | error | ci-bytecode | spotbugs：MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR（JV-CC-004） | verified | 否（本庫已重跑） |
 | 建構期間的安全性 | java-construction-safety | error | manual | none：none（JV-CC-005） | manual | — |
 | 明確取得依賴 | java-explicit-dependencies | error | pre-commit | pmd：category/java/design.xml/MutableStaticState（JV-CC-006） | partial | — |
 | 明確取得依賴 | java-explicit-dependencies | error | manual | none：none（JV-CC-007） | manual | — |
 | 依需求選擇建立方式 | java-construction-entrypoints | error | test | none：none（JV-CC-008） | manual | — |
 | `super` 呼叫與 `final` 的擴充限制 | java-override-scope | warn | pre-commit | checkstyle：DesignForExtension（JV-CC-009） | candidate | — |
-| `super` 呼叫與 `final` 的擴充限制 | java-override-scope | error | ci-compile | errorprone：MissingSuperCall（JV-CC-010） | partial | 是（待本庫重跑） |
+| `super` 呼叫與 `final` 的擴充限制 | java-override-scope | error | ci-compile | errorprone：MissingSuperCall（JV-CC-010） | partial | 是（未達 verified） |
 | `super` 呼叫與 `final` 的擴充限制 | java-override-scope | error | manual | none：none（JV-CC-011） | manual | — |
 | 契約與生命週期驗收 | java-lifecycle-verification | error | test | none：none（JV-CC-012） | manual | — |
 
@@ -78,16 +78,16 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 區分不可修改與不可變快照 | java-snapshots-and-views | error | manual | none：none（JV-CO-002） | manual | — |
 | 順序與重複資料 | java-order-and-duplicates | error | pre-commit | pmd：custom:ListFromHashSetLosesOrder（JV-CO-003） | verified | — |
 | 順序與重複資料 | java-order-and-duplicates | error | manual | none：none（JV-CO-004） | manual | — |
-| 遍歷期間的修改 | java-traversal-mutation | error | ci-compile | errorprone：ModifyCollectionInEnhancedForLoop（JV-CO-005） | partial | 是（待本庫重跑） |
+| 遍歷期間的修改 | java-traversal-mutation | error | ci-compile | errorprone：ModifyCollectionInEnhancedForLoop（JV-CO-005） | verified | 否（本庫已重跑） |
 | 遍歷期間的修改 | java-traversal-mutation | error | pre-commit | pmd：custom:CatchConcurrentModification（JV-CO-006） | partial | — |
 | 遍歷期間的修改 | java-traversal-mutation | error | pre-commit | pmd：custom:ModifyCollectionInForeach（JV-CO-007） | verified | — |
 | 複合操作的原子性 | java-compound-atomicity | error | pre-commit | pmd：custom:ConcurrentMapCheckThenAct（JV-CO-008） | verified | — |
-| 複合操作的原子性 | java-compound-atomicity | error | ci-bytecode | spotbugs：AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION（JV-CO-009） | partial | 是（待本庫重跑） |
+| 複合操作的原子性 | java-compound-atomicity | error | ci-bytecode | spotbugs：AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION（JV-CO-009） | partial | 是（未達 verified） |
 | 複合操作的原子性 | java-compound-atomicity | error | manual | none：none（JV-CO-010） | manual | — |
 | 限制資料累積 | java-bounded-accumulation | warn | pre-commit | pmd：custom:SortedBeforeLimit（JV-CO-011） | verified | — |
 | 限制資料累積 | java-bounded-accumulation | error | pre-commit | pmd：custom:UnboundedStreamStatefulOp（JV-CO-012） | verified | — |
 | 限制資料累積 | java-bounded-accumulation | error | manual | none：none（JV-CO-013） | manual | — |
-| 延遲讀取的資源責任 | java-lazy-resource-lifetime | error | ci-compile | errorprone：StreamResourceLeak（JV-CO-014） | partial | 是（待本庫重跑） |
+| 延遲讀取的資源責任 | java-lazy-resource-lifetime | error | ci-compile | errorprone：StreamResourceLeak（JV-CO-014） | partial | 是（未達 verified） |
 | 延遲讀取的資源責任 | java-lazy-resource-lifetime | error | pre-commit | pmd：custom:LazyStreamReturnedFromTryWithResources（JV-CO-015） | verified | — |
 | 批次修改的失敗保證 | java-batch-failure-state | error | manual | none：none（JV-CO-016） | manual | — |
 | 所有權與行為驗收 | java-collection-verification | error | test | none：none（JV-CO-017） | manual | — |
@@ -99,7 +99,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 統一管理執行資源 | java-execution-resources | error | pre-commit | pmd：category/java/multithreading.xml/DoNotUseThreads（JV-CA-001） | candidate | — |
 | 統一管理執行資源 | java-execution-resources | warn | pre-commit | pmd：custom:NoUnmanagedThread（JV-CA-002） | partial | — |
 | 統一管理執行資源 | java-execution-resources | error | manual | none：none（JV-CA-003） | manual | — |
-| 可見性與共享資料 | java-visibility-sharing | error | ci-bytecode | spotbugs：VO_VOLATILE_INCREMENT（JV-CA-004） | partial | 是（待本庫重跑） |
+| 可見性與共享資料 | java-visibility-sharing | error | ci-bytecode | spotbugs：VO_VOLATILE_INCREMENT（JV-CA-004） | verified | 否（本庫已重跑） |
 | 可見性與共享資料 | java-visibility-sharing | error | manual | none：none（JV-CA-005） | manual | — |
 | 等待期限與逾時處置 | java-deadline-budget | error | test | none：none（JV-CA-006） | manual | — |
 | 取消傳遞與實際停止 | java-cancellation-propagation | error | test | none：none（JV-CA-007） | manual | — |
@@ -107,7 +107,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 多工作組合的完成條件 | java-task-completion | error | test | none：none（JV-CA-009） | manual | — |
 | 執行位置與阻塞行為 | java-execution-location | error | test | none：none（JV-CA-010） | manual | — |
 | 明確傳遞與清理脈絡 | java-context-propagation | error | test | none：none（JV-CA-011） | manual | — |
-| 鎖定範圍與取得策略 | java-lock-scope | error | ci-bytecode | spotbugs：UL_UNRELEASED_LOCK（JV-CA-012） | partial | 是（待本庫重跑） |
+| 鎖定範圍與取得策略 | java-lock-scope | error | ci-bytecode | spotbugs：UL_UNRELEASED_LOCK（JV-CA-012） | verified | 否（本庫已重跑） |
 | 鎖定範圍與取得策略 | java-lock-scope | error | manual | none：none（JV-CA-013） | manual | — |
 | 受控關閉 | java-controlled-shutdown | error | test | none：none（JV-CA-014） | manual | — |
 | 可控制的併發驗收 | java-controlled-verification | warn | pre-commit | pmd：custom:NoFixedSleepInConcurrencyTest（JV-CA-015） | verified | — |
@@ -119,20 +119,20 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | --- | --- | --- | --- | --- | --- | --- |
 | 明訂比較語意 | java-comparison-semantics | error | manual | none：none（JV-EH-001） | manual | — |
 | 相等與雜湊契約 | java-equality-hash-contract | error | pre-commit | checkstyle：EqualsHashCode（JV-EH-002） | partial | — |
-| 相等與雜湊契約 | java-equality-hash-contract | error | ci-compile | errorprone：EqualsUsingHashCode（JV-EH-003） | partial | 是（待本庫重跑） |
+| 相等與雜湊契約 | java-equality-hash-contract | error | ci-compile | errorprone：EqualsUsingHashCode（JV-EH-003） | verified | 否（本庫已重跑） |
 | 相等與雜湊契約 | java-equality-hash-contract | error | pre-commit | pmd：category/java/errorprone.xml/OverrideBothEqualsAndHashcode（JV-EH-004） | partial | — |
-| 相等與雜湊契約 | java-equality-hash-contract | error | ci-bytecode | spotbugs：HE_EQUALS_NO_HASHCODE（JV-EH-005） | partial | 是（待本庫重跑） |
+| 相等與雜湊契約 | java-equality-hash-contract | error | ci-bytecode | spotbugs：HE_EQUALS_NO_HASHCODE（JV-EH-005） | partial | 是（未達 verified） |
 | 相等與雜湊契約 | java-equality-hash-contract | error | test | none：none（JV-EH-006） | manual | — |
 | 雜湊集合中的穩定性 | java-hash-collection-stability | error | manual | none：none（JV-EH-007） | manual | — |
 | Entity 識別碼的生命週期 | java-entity-identity-lifecycle | error | pre-commit | pmd：custom:IdentityEqualsWithStateHashCode（JV-EH-008） | verified | — |
 | Entity 識別碼的生命週期 | java-entity-identity-lifecycle | error | manual | none：none（JV-EH-009） | manual | — |
 | 跨型別相等範圍 | java-cross-type-equality | error | pre-commit | checkstyle：EqualsHashCode（JV-EH-010） | verified | — |
-| 跨型別相等範圍 | java-cross-type-equality | error | ci-compile | errorprone：EqualsGetClass（JV-EH-011） | candidate | 是（待本庫重跑） |
+| 跨型別相等範圍 | java-cross-type-equality | error | ci-compile | errorprone：EqualsGetClass（JV-EH-011） | candidate | 是（未達 verified） |
 | 跨型別相等範圍 | java-cross-type-equality | error | pre-commit | pmd：category/java/errorprone.xml/OverrideBothEqualsAndHashcode（JV-EH-012） | verified | — |
-| 跨型別相等範圍 | java-cross-type-equality | error | ci-bytecode | spotbugs：EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC（JV-EH-013） | partial | 是（待本庫重跑） |
+| 跨型別相等範圍 | java-cross-type-equality | error | ci-bytecode | spotbugs：EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC（JV-EH-013） | verified | 否（本庫已重跑） |
 | 跨型別相等範圍 | java-cross-type-equality | error | manual | none：none（JV-EH-014） | manual | — |
 | 自然順序與情境排序 | java-ordering-choice | error | manual | none：none（JV-EH-015） | manual | — |
-| 比較關係一致 | java-comparator-relations | error | ci-compile | errorprone：BadComparable（JV-EH-016） | partial | 是（待本庫重跑） |
+| 比較關係一致 | java-comparator-relations | error | ci-compile | errorprone：BadComparable（JV-EH-016） | partial | 是（未達 verified） |
 | 比較關係一致 | java-comparator-relations | error | pre-commit | pmd：custom:ComparatorBySubtraction（JV-EH-017） | verified | — |
 | 比較關係一致 | java-comparator-relations | error | manual | none：none（JV-EH-018） | manual | — |
 | 比較為零與相等性 | java-sorted-key-equivalence | warn | pre-commit | pmd：category/java/errorprone.xml/OverrideBothEqualsAndHashCodeOnComparable（JV-EH-019） | partial | — |
@@ -148,26 +148,26 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 明確的故障分類 | java-exception-classification | error | pre-commit | pmd：category/java/bestpractices.xml/PreserveStackTrace（JV-ER-002） | partial | — |
 | 明確的故障分類 | java-exception-classification | error | pre-commit | pmd：category/java/design.xml/AvoidThrowingRawExceptionTypes（JV-ER-003） | partial | — |
 | 明確的故障分類 | java-exception-classification | error | pre-commit | pmd：category/java/design.xml/SignatureDeclareThrowsException（JV-ER-004） | verified | — |
-| 明確的故障分類 | java-exception-classification | error | ci-bytecode | spotbugs：THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION（JV-ER-005） | partial | 是（待本庫重跑） |
+| 明確的故障分類 | java-exception-classification | error | ci-bytecode | spotbugs：THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION（JV-ER-005） | partial | 是（未達 verified） |
 | 明確的故障分類 | java-exception-classification | error | manual | none：none（JV-ER-006） | manual | — |
 | Checked 與 Unchecked 的選擇 | java-checked-unchecked | error | manual | none：none（JV-ER-007） | manual | — |
 | 捕捉範圍與處置相符 | java-catch-scope | error | pre-commit | checkstyle：IllegalCatch[illegalClassNames=Throwable,Error]（JV-ER-008） | partial | — |
 | 捕捉範圍與處置相符 | java-catch-scope | warn | pre-commit | checkstyle：IllegalCatch[illegalClassNames=Exception,RuntimeException]（JV-ER-031） | verified | — |
 | 捕捉範圍與處置相符 | java-catch-scope | warn | pre-commit | pmd：category/java/errorprone.xml/AvoidCatchingGenericException（JV-ER-009） | verified | — |
 | 捕捉範圍與處置相符 | java-catch-scope | error | pre-commit | pmd：custom:CatchThrowableOrError（JV-ER-010） | partial | — |
-| 捕捉範圍與處置相符 | java-catch-scope | warn | ci-bytecode | spotbugs：REC_CATCH_EXCEPTION（JV-ER-011） | partial | 是（待本庫重跑） |
+| 捕捉範圍與處置相符 | java-catch-scope | warn | ci-bytecode | spotbugs：REC_CATCH_EXCEPTION（JV-ER-011） | verified | 否（本庫已重跑） |
 | 捕捉範圍與處置相符 | java-catch-scope | error | manual | none：none（JV-ER-012） | manual | — |
 | 保留中斷意圖 | java-interruption | error | pre-commit | checkstyle：RegexpMultiline（JV-ER-013） | verified | — |
-| 保留中斷意圖 | java-interruption | error | ci-compile | errorprone：InterruptedExceptionSwallowed（JV-ER-014） | partial | 是（待本庫重跑） |
+| 保留中斷意圖 | java-interruption | error | ci-compile | errorprone：InterruptedExceptionSwallowed（JV-ER-014） | partial | 是（未達 verified） |
 | 保留中斷意圖 | java-interruption | error | pre-commit | pmd：category/java/errorprone.xml/EmptyCatchBlock（JV-ER-015） | verified | — |
 | 保留中斷意圖 | java-interruption | error | pre-commit | pmd：custom:SwallowedInterruptedException（JV-ER-016） | verified | — |
 | 保留中斷意圖 | java-interruption | error | manual | none：none（JV-ER-017） | manual | — |
 | 優先使用語言資源管理機制 | java-resource-management | warn | pre-commit | pmd：category/java/bestpractices.xml/UseTryWithResources（JV-ER-018） | partial | — |
 | 優先使用語言資源管理機制 | java-resource-management | error | pre-commit | pmd：category/java/errorprone.xml/CloseResource（JV-ER-019） | verified | — |
-| 優先使用語言資源管理機制 | java-resource-management | error | ci-bytecode | spotbugs：OS_OPEN_STREAM_EXCEPTION_PATH（JV-ER-020） | partial | 是（待本庫重跑） |
+| 優先使用語言資源管理機制 | java-resource-management | error | ci-bytecode | spotbugs：OS_OPEN_STREAM_EXCEPTION_PATH（JV-ER-020） | verified | 否（本庫已重跑） |
 | 優先使用語言資源管理機制 | java-resource-management | error | manual | none：none（JV-ER-021） | manual | — |
-| 保留操作與清理失敗 | java-suppressed-failures | error | ci-compile | errorprone：Finally（JV-ER-022） | partial | 是（待本庫重跑） |
-| 保留操作與清理失敗 | java-suppressed-failures | error | ci-compile | javac：-Xlint:finally（JV-ER-023） | partial | 是（待本庫重跑） |
+| 保留操作與清理失敗 | java-suppressed-failures | error | ci-compile | errorprone：Finally（JV-ER-022） | partial | 是（未達 verified） |
+| 保留操作與清理失敗 | java-suppressed-failures | error | ci-compile | javac：-Xlint:finally（JV-ER-023） | partial | 是（未達 verified） |
 | 保留操作與清理失敗 | java-suppressed-failures | error | pre-commit | pmd：category/java/bestpractices.xml/UseTryWithResources（JV-ER-024） | verified | — |
 | 保留操作與清理失敗 | java-suppressed-failures | error | pre-commit | pmd：category/java/errorprone.xml/DoNotThrowExceptionInFinally（JV-ER-025） | partial | — |
 | 保留操作與清理失敗 | java-suppressed-failures | error | pre-commit | pmd：category/java/errorprone.xml/ReturnFromFinallyBlock（JV-ER-026） | partial | — |
@@ -185,12 +185,12 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 明確的參數型別 | java-lambda-parameter-types | error | pre-commit | checkstyle：RegexpSinglelineJava（JV-LS-003） | partial | — |
 | 明確的參數型別 | java-lambda-parameter-types | error | pre-commit | pmd：custom:NoInferredLambdaParameterType（JV-LS-004） | verified | — |
 | 明確的參數型別 | java-lambda-parameter-types | error | manual | none：none（JV-LS-005） | manual | — |
-| 中間操作不隱藏業務副作用 | java-intermediate-side-effects | error | ci-compile | errorprone：ReturnValueIgnored（JV-LS-006） | partial | 是（待本庫重跑） |
+| 中間操作不隱藏業務副作用 | java-intermediate-side-effects | error | ci-compile | errorprone：ReturnValueIgnored（JV-LS-006） | partial | 是（未達 verified） |
 | 中間操作不隱藏業務副作用 | java-intermediate-side-effects | error | pre-commit | pmd：custom:StreamPeekUsage（JV-LS-007） | verified | — |
 | 中間操作不隱藏業務副作用 | java-intermediate-side-effects | error | manual | none：none（JV-LS-008） | manual | — |
 | 明確累積結果 | java-result-accumulation | error | pre-commit | pmd：custom:ForEachAccumulatesExternalState（JV-LS-009） | verified | — |
 | 明確累積結果 | java-result-accumulation | error | manual | none：none（JV-LS-010） | manual | — |
-| 延遲與短路範圍 | java-lazy-short-circuit | error | ci-compile | errorprone：ReturnValueIgnored（JV-LS-011） | partial | 是（待本庫重跑） |
+| 延遲與短路範圍 | java-lazy-short-circuit | error | ci-compile | errorprone：ReturnValueIgnored（JV-LS-011） | partial | 是（未達 verified） |
 | 延遲與短路範圍 | java-lazy-short-circuit | error | manual | none：none（JV-LS-012） | manual | — |
 | 平行處理的採用條件 | java-parallel-stream-adoption | error | pre-commit | pmd：custom:ParallelStreamUsage（JV-LS-013） | partial | — |
 | 平行處理的採用條件 | java-parallel-stream-adoption | error | test | none：none（JV-LS-014） | manual | — |
@@ -218,28 +218,28 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 一致的命名形式 | java-naming-form | error | pre-commit | checkstyle：RecordComponentName（JV-NP-011） | candidate | — |
 | 一致的命名形式 | java-naming-form | error | pre-commit | checkstyle：StaticVariableName（JV-NP-012） | candidate | — |
 | 一致的命名形式 | java-naming-form | error | pre-commit | checkstyle：TypeName（JV-NP-013） | verified | — |
-| 一致的命名形式 | java-naming-form | error | ci-compile | errorprone：IdentifierName（JV-NP-014） | partial | 是（待本庫重跑） |
+| 一致的命名形式 | java-naming-form | error | ci-compile | errorprone：IdentifierName（JV-NP-014） | verified | 否（本庫已重跑） |
 | 一致的命名形式 | java-naming-form | error | pre-commit | pmd：category/java/codestyle.xml/ClassNamingConventions（JV-NP-015） | verified | — |
 | 一致的命名形式 | java-naming-form | error | pre-commit | pmd：category/java/codestyle.xml/FieldNamingConventions（JV-NP-016） | verified | — |
 | 一致的命名形式 | java-naming-form | error | pre-commit | pmd：category/java/codestyle.xml/FormalParameterNamingConventions（JV-NP-017） | candidate | — |
 | 一致的命名形式 | java-naming-form | error | pre-commit | pmd：category/java/codestyle.xml/LocalVariableNamingConventions（JV-NP-018） | candidate | — |
 | 一致的命名形式 | java-naming-form | error | pre-commit | pmd：category/java/codestyle.xml/MethodNamingConventions（JV-NP-019） | verified | — |
-| 一致的命名形式 | java-naming-form | error | ci-bytecode | spotbugs：NM_METHOD_NAMING_CONVENTION（JV-NP-020） | partial | 是（待本庫重跑） |
+| 一致的命名形式 | java-naming-form | error | ci-bytecode | spotbugs：NM_METHOD_NAMING_CONVENTION（JV-NP-020） | verified | 否（本庫已重跑） |
 | 一致的命名形式 | java-naming-form | error | manual | none：none（JV-NP-021） | manual | — |
 | 名稱表達具體責任 | java-specific-responsibility | error | manual | none：none（JV-NP-022） | manual | — |
-| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:InternalPackageNotPublic（JV-NP-023） | partial | 是（待本庫重跑） |
-| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:NestedStorageNotPublic（JV-NP-024） | partial | 是（待本庫重跑） |
-| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:SharedPackageNoBusinessDependency（JV-NP-025） | partial | 是（待本庫重跑） |
-| 套件與架構邊界 | java-package-boundaries | error | ci-build | jdeps：--check（JV-NP-026） | candidate | 是（待本庫重跑） |
-| 套件與架構邊界 | java-package-boundaries | error | ci-build | jdeps：-jdkinternals（JV-NP-027） | candidate | 是（待本庫重跑） |
-| 套件與架構邊界 | java-package-boundaries | error | ci-build | maven-enforcer：bannedDependencies（JV-NP-028） | candidate | 是（待本庫重跑） |
+| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:InternalPackageNotPublic（JV-NP-023） | partial | 是（未達 verified） |
+| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:NestedStorageNotPublic（JV-NP-024） | partial | 是（未達 verified） |
+| 套件與架構邊界 | java-package-boundaries | error | ci-arch | archunit：custom:SharedPackageNoBusinessDependency（JV-NP-025） | partial | 是（未達 verified） |
+| 套件與架構邊界 | java-package-boundaries | error | ci-build | jdeps：--check（JV-NP-026） | candidate | 是（未達 verified） |
+| 套件與架構邊界 | java-package-boundaries | error | ci-build | jdeps：-jdkinternals（JV-NP-027） | candidate | 是（未達 verified） |
+| 套件與架構邊界 | java-package-boundaries | error | ci-build | maven-enforcer：bannedDependencies（JV-NP-028） | partial | 是（未達 verified） |
 | 套件與架構邊界 | java-package-boundaries | error | manual | none：none（JV-NP-029） | manual | — |
 | 補足契約資訊 | java-javadoc-contract | warn | pre-commit | checkstyle：JavadocMethod（JV-NP-030） | verified | — |
 | 補足契約資訊 | java-javadoc-contract | error | pre-commit | checkstyle：MissingJavadocMethod（JV-NP-031） | partial | — |
-| 補足契約資訊 | java-javadoc-contract | error | ci-compile | javac：-Xdoclint:missing（JV-NP-032） | candidate | 是（待本庫重跑） |
+| 補足契約資訊 | java-javadoc-contract | error | ci-compile | javac：-Xdoclint:missing（JV-NP-032） | candidate | 是（未達 verified） |
 | 補足契約資訊 | java-javadoc-contract | error | manual | none：none（JV-NP-033） | manual | — |
 | 重新命名與搬移的影響 | java-rename-impact | error | manual | none：none（JV-NP-034） | manual | — |
-| 形式與語意分別驗收 | java-document-verification | error | ci-compile | javac：-Xdoclint:reference,syntax,html（JV-NP-035） | partial | 是（待本庫重跑） |
+| 形式與語意分別驗收 | java-document-verification | error | ci-compile | javac：-Xdoclint:reference,syntax,html（JV-NP-035） | candidate | 是（未達 verified） |
 | 形式與語意分別驗收 | java-document-verification | error | test | none：none（JV-NP-036） | manual | — |
 
 ## null-and-optional.md
@@ -249,7 +249,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 查詢的正常缺值 | java-query-absence | error | pre-commit | pmd：category/java/errorprone.xml/ReturnEmptyCollectionRatherThanNull（JV-NO-001） | verified | — |
 | 查詢的正常缺值 | java-query-absence | error | manual | none：none（JV-NO-002） | manual | — |
 | Optional 本身非空 | java-optional-nonnull | error | pre-commit | pmd：custom:OptionalReturnNull（JV-NO-003） | partial | — |
-| Optional 本身非空 | java-optional-nonnull | error | ci-bytecode | spotbugs：NP_OPTIONAL_RETURN_NULL（JV-NO-004） | partial | 是（待本庫重跑） |
+| Optional 本身非空 | java-optional-nonnull | error | ci-bytecode | spotbugs：NP_OPTIONAL_RETURN_NULL（JV-NO-004） | verified | 否（本庫已重跑） |
 | Optional 本身非空 | java-optional-nonnull | error | manual | none：none（JV-NO-005） | manual | — |
 | 取值與缺值處置 | java-optional-access | error | manual | none：none（JV-NO-006） | manual | — |
 | 使用位置與狀態表達 | java-optional-positions | error | manual | none：none（JV-NO-007） | manual | — |
@@ -272,11 +272,11 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 從精確來源建立 | java-exact-numeric-sources | error | manual | none：none（JV-ND-005） | manual | — |
 | 明訂捨入規則 | java-rounding-policy | error | pre-commit | pmd：custom:BigDecimalWithoutRoundingMode（JV-ND-006） | partial | — |
 | 明訂捨入規則 | java-rounding-policy | error | manual | none：none（JV-ND-007） | manual | — |
-| 範圍與轉換檢查 | java-numeric-range-checks | error | ci-compile | errorprone：NarrowingCompoundAssignment（JV-ND-008） | partial | 是（待本庫重跑） |
+| 範圍與轉換檢查 | java-numeric-range-checks | error | ci-compile | errorprone：NarrowingCompoundAssignment（JV-ND-008） | partial | 是（未達 verified） |
 | 範圍與轉換檢查 | java-numeric-range-checks | error | pre-commit | pmd：custom:NarrowingPrimitiveCast（JV-ND-009） | verified | — |
-| 範圍與轉換檢查 | java-numeric-range-checks | error | ci-bytecode | spotbugs：ICAST_INTEGER_MULTIPLY_CAST_TO_LONG（JV-ND-010） | partial | 是（待本庫重跑） |
+| 範圍與轉換檢查 | java-numeric-range-checks | error | ci-bytecode | spotbugs：ICAST_INTEGER_MULTIPLY_CAST_TO_LONG（JV-ND-010） | partial | 是（未達 verified） |
 | 範圍與轉換檢查 | java-numeric-range-checks | error | manual | none：none（JV-ND-011） | manual | — |
-| BigDecimal 判同語意 | java-decimal-equivalence | error | ci-compile | errorprone：BigDecimalEquals（JV-ND-012） | partial | 是（待本庫重跑） |
+| BigDecimal 判同語意 | java-decimal-equivalence | error | ci-compile | errorprone：BigDecimalEquals（JV-ND-012） | partial | 是（未達 verified） |
 | BigDecimal 判同語意 | java-decimal-equivalence | error | pre-commit | pmd：custom:BigDecimalRecordWithoutNormalization（JV-ND-013） | candidate | — |
 | BigDecimal 判同語意 | java-decimal-equivalence | error | pre-commit | pmd：custom:ComparableBigDecimalRecordEqualsMismatch（JV-ND-014） | verified | — |
 | BigDecimal 判同語意 | java-decimal-equivalence | error | manual | none：none（JV-ND-015） | manual | — |
@@ -287,7 +287,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 區分時間長度與日曆規則 | java-durations-calendar-periods | error | pre-commit | pmd：custom:DurationUsedForCalendarDay（JV-ND-020） | verified | — |
 | 區分時間長度與日曆規則 | java-durations-calendar-periods | error | manual | none：none（JV-ND-021） | manual | — |
 | 可控制的時間基準 | java-clock-source | warn | pre-commit | checkstyle：RegexpSinglelineJava（JV-ND-022） | verified | — |
-| 可控制的時間基準 | java-clock-source | warn | ci-compile | errorprone：JavaTimeDefaultTimeZone（JV-ND-023） | partial | 是（待本庫重跑） |
+| 可控制的時間基準 | java-clock-source | warn | ci-compile | errorprone：JavaTimeDefaultTimeZone（JV-ND-023） | partial | 是（未達 verified） |
 | 可控制的時間基準 | java-clock-source | warn | pre-commit | pmd：custom:NowWithoutClock（JV-ND-024） | verified | — |
 | 可控制的時間基準 | java-clock-source | error | manual | none：none（JV-ND-025） | manual | — |
 | 解析與輸出契約 | java-temporal-parsing-formatting | error | pre-commit | checkstyle：RegexpSinglelineJava（JV-ND-026） | verified | — |
@@ -322,7 +322,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 各狀態的必要資料 | java-required-state-data | error | manual | none：none（JV-SR-002） | manual | — |
 | 業務操作控制轉換 | java-business-state-transitions | error | manual | none：none（JV-SR-003） | manual | — |
 | 具型別的業務失敗 | java-typed-business-failures | error | manual | none：none（JV-SR-004） | manual | — |
-| 處理完整性 | java-exhaustive-result-handling | error | ci-compile | javac：-Xlint:all（JV-SR-005） | candidate | 是（待本庫重跑） |
+| 處理完整性 | java-exhaustive-result-handling | error | ci-compile | javac：-Xlint:all（JV-SR-005） | candidate | 是（未達 verified） |
 | 處理完整性 | java-exhaustive-result-handling | error | pre-commit | pmd：category/java/bestpractices.xml/ExhaustiveSwitchHasDefault（JV-SR-006） | candidate | — |
 | 處理完整性 | java-exhaustive-result-handling | error | pre-commit | pmd：category/java/bestpractices.xml/NonExhaustiveSwitch（JV-SR-007） | candidate | — |
 | 處理完整性 | java-exhaustive-result-handling | error | pre-commit | pmd：custom:EnumDefaultHidesCases（JV-SR-008） | partial | — |
@@ -339,7 +339,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 明確宣告型別 | java-explicit-types | error | pre-commit | checkstyle：RegexpSinglelineJava（JV-TG-001） | verified | — |
 | 明確宣告型別 | java-explicit-types | error | pre-commit | pmd：category/java/codestyle.xml/UseExplicitTypes（JV-TG-002） | verified | — |
 | 明確宣告型別 | java-explicit-types | error | manual | none：none（JV-TG-003） | manual | — |
-| 禁止 raw type 與不必要的型別抽象 | java-generic-type-information | error | ci-compile | javac：-Xlint:rawtypes（JV-TG-004） | partial | 是（待本庫重跑） |
+| 禁止 raw type 與不必要的型別抽象 | java-generic-type-information | error | ci-compile | javac：-Xlint:rawtypes（JV-TG-004） | partial | 是（未達 verified） |
 | 禁止 raw type 與不必要的型別抽象 | java-generic-type-information | error | pre-commit | pmd：custom:RawGenericType（JV-TG-005） | partial | — |
 | 禁止 raw type 與不必要的型別抽象 | java-generic-type-information | error | manual | none：none（JV-TG-006） | manual | — |
 | 輸入與輸出的型別關聯 | java-input-output-type-relation | error | pre-commit | pmd：custom:GenericMethodReturnsObject（JV-TG-007） | verified | — |
@@ -347,8 +347,8 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 不得以向下轉型補回業務型別 | java-business-type-casts | error | pre-commit | pmd：custom:DowncastFromObject（JV-TG-009） | verified | — |
 | 不得以向下轉型補回業務型別 | java-business-type-casts | error | manual | none：none（JV-TG-010） | manual | — |
 | 型別安全警告 | java-type-safety-warnings | error | pre-commit | checkstyle：SuppressWarnings（JV-TG-011） | verified | — |
-| 型別安全警告 | java-type-safety-warnings | error | ci-compile | errorprone：SuppressWarningsWithoutExplanation（JV-TG-012） | partial | 是（待本庫重跑） |
-| 型別安全警告 | java-type-safety-warnings | error | ci-compile | javac：-Xlint:rawtypes,unchecked -Werror（JV-TG-013） | partial | 是（待本庫重跑） |
+| 型別安全警告 | java-type-safety-warnings | error | ci-compile | errorprone：SuppressWarningsWithoutExplanation（JV-TG-012） | partial | 是（未達 verified） |
+| 型別安全警告 | java-type-safety-warnings | error | ci-compile | javac：-Xlint:rawtypes,unchecked -Werror（JV-TG-013） | partial | 是（未達 verified） |
 | 型別安全警告 | java-type-safety-warnings | error | pre-commit | pmd：custom:NoSuppressTypeSafetyWarnings（JV-TG-014） | verified | — |
 | 型別安全警告 | java-type-safety-warnings | error | manual | none：none（JV-TG-015） | manual | — |
 | 本組補充說明 | java-group-notes-explicit-types | error | manual | none：none（JV-TG-016） | manual | — |
@@ -356,10 +356,10 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | 業務資料結構 | java-business-data-shape | error | manual | none：none（JV-TG-018） | manual | — |
 | 型別能力與約束 | java-generic-capabilities | error | manual | none：none（JV-TG-019） | manual | — |
 | 集合與映射的宣告型別 | java-collection-declarations | warn | pre-commit | checkstyle：IllegalType（JV-TG-020） | verified | — |
-| 集合與映射的宣告型別 | java-collection-declarations | warn | ci-compile | errorprone：NonApiType（JV-TG-021） | partial | 是（待本庫重跑） |
+| 集合與映射的宣告型別 | java-collection-declarations | warn | ci-compile | errorprone：NonApiType（JV-TG-021） | verified | 否（本庫已重跑） |
 | 集合與映射的宣告型別 | java-collection-declarations | warn | pre-commit | pmd：category/java/bestpractices.xml/LooseCoupling（JV-TG-022） | verified | — |
 | 集合與映射的宣告型別 | java-collection-declarations | error | manual | none：none（JV-TG-023） | manual | — |
-| 允許建構端使用菱形運算子 | java-diamond-construction | error | ci-compile | javac：-Xlint:rawtypes（JV-TG-024） | partial | 是（待本庫重跑） |
+| 允許建構端使用菱形運算子 | java-diamond-construction | error | ci-compile | javac：-Xlint:rawtypes（JV-TG-024） | verified | 否（本庫已重跑） |
 | 允許建構端使用菱形運算子 | java-diamond-construction | error | pre-commit | pmd：custom:RawGenericType（JV-TG-025） | verified | — |
 | 泛型回傳值 | java-generic-return-types | error | pre-commit | pmd：custom:UnboundedWildcardReturnType（JV-TG-026） | verified | — |
 | 泛型回傳值 | java-generic-return-types | error | manual | none：none（JV-TG-027） | manual | — |
@@ -376,8 +376,8 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | --- | --- | --- | --- | --- | --- | --- |
 | 建立專屬型別的條件 | java-dedicated-value-types | error | manual | none：none（JV-VO-001） | manual | — |
 | 建立時保護不變條件 | java-value-construction-invariants | error | test | none：none（JV-VO-002） | manual | — |
-| 不可變性 | java-value-immutability | error | ci-bytecode | spotbugs：EI_EXPOSE_REP（JV-VO-003） | candidate | 是（待本庫重跑） |
-| 不可變性 | java-value-immutability | error | ci-bytecode | spotbugs：EI_EXPOSE_REP2（JV-VO-004） | candidate | 是（待本庫重跑） |
+| 不可變性 | java-value-immutability | error | ci-bytecode | spotbugs：EI_EXPOSE_REP（JV-VO-003） | candidate | 是（未達 verified） |
+| 不可變性 | java-value-immutability | error | ci-bytecode | spotbugs：EI_EXPOSE_REP2（JV-VO-004） | candidate | 是（未達 verified） |
 | 不可變性 | java-value-immutability | error | test | none：none（JV-VO-005） | manual | — |
 | 值相等的條件 | java-value-equality | error | pre-commit | pmd：category/java/errorprone.xml/OverrideBothEqualsAndHashcode（JV-VO-006） | candidate | — |
 | 值相等的條件 | java-value-equality | error | test | none：none（JV-VO-007） | manual | — |
@@ -392,27 +392,27 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 
 | 小節 | 錨點 | 等級 | tier | 工具與規則 | status | CI層候選 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 分別記錄版本資訊 | java-version-declarations | error | ci-build | maven-enforcer：requireJavaVersion（JV-VP-001） | candidate | 是（待本庫重跑） |
+| 分別記錄版本資訊 | java-version-declarations | error | ci-build | maven-enforcer：requireJavaVersion（JV-VP-001） | partial | 是（未達 verified） |
 | 分別記錄版本資訊 | java-version-declarations | error | manual | none：none（JV-VP-002） | manual | — |
-| 建置設定落實限制 | java-build-compatibility | error | ci-build | gradle：JavaCompile.options.release（JV-VP-003） | candidate | 是（待本庫重跑） |
-| 建置設定落實限制 | java-build-compatibility | error | ci-compile | javac：--release（JV-VP-004） | candidate | 是（待本庫重跑） |
+| 建置設定落實限制 | java-build-compatibility | error | ci-build | gradle：JavaCompile.options.release（JV-VP-003） | partial | 是（未達 verified） |
+| 建置設定落實限制 | java-build-compatibility | error | ci-compile | javac：--release（JV-VP-004） | candidate | 是（未達 verified） |
 | 建置設定落實限制 | java-build-compatibility | error | manual | none：none（JV-VP-005） | manual | — |
 | 執行版本驗證 | java-runtime-verification | error | test | none：none（JV-VP-006） | manual | — |
 | 多模組版本要求 | java-module-versions | error | test | none：none（JV-VP-007） | manual | — |
 | 版本宣告與相容性補充說明 | java-group-notes-version-declarations | error | manual | none：none（JV-VP-008） | manual | — |
-| 依賴版本要求 | java-dependency-versions | error | ci-build | gradle：ResolutionStrategy.failOnVersionConflict（JV-VP-009） | candidate | 是（待本庫重跑） |
-| 依賴版本要求 | java-dependency-versions | error | ci-build | maven-enforcer：bannedDependencies（JV-VP-010） | candidate | 是（待本庫重跑） |
-| 依賴版本要求 | java-dependency-versions | error | ci-build | maven-enforcer：dependencyConvergence（JV-VP-011） | candidate | 是（待本庫重跑） |
+| 依賴版本要求 | java-dependency-versions | error | ci-build | gradle：ResolutionStrategy.failOnVersionConflict（JV-VP-009） | partial | 是（未達 verified） |
+| 依賴版本要求 | java-dependency-versions | error | ci-build | maven-enforcer：bannedDependencies（JV-VP-010） | partial | 是（未達 verified） |
+| 依賴版本要求 | java-dependency-versions | error | ci-build | maven-enforcer：dependencyConvergence（JV-VP-011） | partial | 是（未達 verified） |
 | 依賴版本要求 | java-dependency-versions | error | manual | none：none（JV-VP-012） | manual | — |
 | 建置升級與支援範圍變更 | java-build-upgrade | error | manual | none：none（JV-VP-013） | manual | — |
-| Preview 功能 | java-preview-features | error | ci-compile | javac：-Xlint:preview（JV-VP-014） | candidate | 是（待本庫重跑） |
+| Preview 功能 | java-preview-features | error | ci-compile | javac：-Xlint:preview（JV-VP-014） | candidate | 是（未達 verified） |
 | Preview 功能 | java-preview-features | error | manual | none：none（JV-VP-015） | manual | — |
-| JDK 內部實作與存取限制 | java-jdk-internals | error | ci-build | jdeps：--jdk-internals（JV-VP-016） | partial | 是（待本庫重跑） |
+| JDK 內部實作與存取限制 | java-jdk-internals | error | ci-build | jdeps：--jdk-internals（JV-VP-016） | partial | 是（未達 verified） |
 | JDK 內部實作與存取限制 | java-jdk-internals | error | pre-commit | pmd：category/java/errorprone.xml/AvoidAccessibilityAlteration（JV-VP-017） | verified | — |
 | JDK 內部實作與存取限制 | java-jdk-internals | error | manual | none：none（JV-VP-018） | manual | — |
-| 棄用 API | java-deprecated-api | error | ci-compile | javac：-Xlint:deprecation（JV-VP-019） | partial | 是（待本庫重跑） |
-| 棄用 API | java-deprecated-api | error | ci-compile | javac：-Xlint:removal（JV-VP-020） | partial | 是（待本庫重跑） |
-| 棄用 API | java-deprecated-api | error | ci-build | jdeprscan：--release（JV-VP-021） | partial | 是（待本庫重跑） |
+| 棄用 API | java-deprecated-api | error | ci-compile | javac：-Xlint:deprecation（JV-VP-019） | verified | 否（本庫已重跑） |
+| 棄用 API | java-deprecated-api | error | ci-compile | javac：-Xlint:removal（JV-VP-020） | verified | 否（本庫已重跑） |
+| 棄用 API | java-deprecated-api | error | ci-build | jdeprscan：--release（JV-VP-021） | verified | 否（本庫已重跑） |
 | 棄用 API | java-deprecated-api | error | manual | none：none（JV-VP-022） | manual | — |
 | 依賴、升級與特殊功能補充說明 | java-group-notes-dependency-versions | error | manual | none：none（JV-VP-023） | manual | — |
 | 建置與驗證工具相容性 | java-toolchain-compatibility | error | test | none：none（JV-VP-024） | manual | — |
@@ -839,7 +839,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | rules/stacks/java/common/numbers-dates-text.md#java-numeric-range-checks | verified |
 
 ```xpath
-//CastExpression[not(*[2][@CompileTimeConstant = true()])][not(PrimitiveType[@Kind='char'])][not(PrimitiveType[@Kind='byte'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=255]])][not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')] and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')]) or (PrimitiveType[@Kind='float'] and *[2][pmd-java:typeIs('double')])] | //MethodCall[@MethodName='clamp'][TypeExpression/ClassType[@SimpleName='Math']][ArgumentList/FieldAccess[@Name='MIN_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]][ArgumentList/FieldAccess[@Name='MAX_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]]
+//CastExpression[not(*[2][@CompileTimeConstant = true()])][not(PrimitiveType[@Kind='char'])][not((PrimitiveType[@Kind='byte'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=255]]) or (PrimitiveType[@Kind='short'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=65535]]))][not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')] and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')]) or (PrimitiveType[@Kind='float'] and *[2][pmd-java:typeIs('double')])] | //MethodCall[@MethodName='clamp'][TypeExpression/ClassType[@SimpleName='Math']][ArgumentList/FieldAccess[@Name='MIN_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]][ArgumentList/FieldAccess[@Name='MAX_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]]
 ```
 
 ### custom:BigDecimalRecordWithoutNormalization
@@ -923,7 +923,7 @@ manual 可與 verified 並存，表示該小節仍有工具無法替代的審查
 | rules/stacks/java/common/concurrency-and-async.md#java-execution-resources | partial |
 
 ```xpath
-//ConstructorCall[pmd-java:typeIs('java.lang.Thread')][not(parent::ArgumentList/parent::MethodCall[@MethodName='addShutdownHook'][*[1][pmd-java:typeIs('java.lang.Runtime')]])][not(ancestor::MethodDeclaration[@Name='newThread'][ancestor::ClassDeclaration[pmd-java:typeIs('java.util.concurrent.ThreadFactory')]])]
+//ConstructorCall[pmd-java:typeIs('java.lang.Thread')][not(parent::ArgumentList/parent::MethodCall[@MethodName='addShutdownHook'][*[1][pmd-java:typeIs('java.lang.Runtime')]])][not(ancestor::MethodDeclaration[@Name='newThread'][parent::ClassBody/parent::*[self::ClassDeclaration or self::AnonymousClassDeclaration][pmd-java:typeIs('java.util.concurrent.ThreadFactory')]])][not(ancestor::LambdaExpression[pmd-java:typeIs('java.util.concurrent.ThreadFactory')])]
 ```
 
 ### custom:NoFixedSleepInConcurrencyTest

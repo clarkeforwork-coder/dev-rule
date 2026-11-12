@@ -1,0 +1,5 @@
+# JDK 17：實測可用 31 類（all／none 為控制鍵）
+# 可用：auxiliaryclass,cast,classfile,dep-ann,deprecation,divzero,empty,exports,fallthrough,finally,missing-explicit-ctor,module,opens,options,overloads,overrides,path,preview,processing,rawtypes,removal,requires-automatic,requires-transitive-automatic,serial,static,strictfp,synchronization,text-blocks,try,unchecked,varargs
+# 報告工作可另用 -Xlint:all；阻擋工作見 README.md。
+# 可選（尚無規範 ID，正式門檻不啟用）：varargs,overrides,divzero,empty,synchronization
+-Xlint:rawtypes,unchecked,finally,deprecation,removal

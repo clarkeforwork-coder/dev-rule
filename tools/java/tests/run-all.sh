@@ -6,7 +6,7 @@ result=0
 run() {
     printf '\n執行：'; printf '%s ' "$@"; printf '\n'
     local code=0
-    "$@" || code=$?
+    "$@" 2>&1 | tee -a "${work}/stages.txt" || code=$?
     printf '階段結束碼：%s\n' "${code}"
     if [ "${code}" -ne 0 ]; then result=1; fi
 }
@@ -29,5 +29,13 @@ run ruby "${base}/tests/run-checkstyle.rb" "${cs}"
 run ruby "${base}/tests/run-synthetic.rb"
 run /bin/bash "${base}/tests/run-version-parser.sh"
 run /bin/bash "${base}/tests/run-hook-failure.sh"
+run /bin/sh "${base}/tests/run-baseline.sh"
+run ruby "${base}/tests/run-compiler-regressions.rb"
+run ruby "${base}/tests/run-ci-tools.rb"
+run /bin/bash "${base}/tests/run-build-layer.sh"
+run ruby "${base}/build/run-enforcer-regressions.rb"
+run ruby "${base}/tests/run-ci-integration.rb" "${work}/integration"
+printf '\n略過情境總結：\n'
+grep '^SKIP' "${work}/stages.txt" || :
 printf '\n全部階段彙總結束碼：%s\n' "${result}"
 exit "${result}"

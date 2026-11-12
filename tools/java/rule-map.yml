@@ -8,7 +8,8 @@
 # check: 正式規則 ID 或 custom:<PascalCase>；同模組不同設定以 [屬性=值] 區分；none 表示人工。
 # xpath: 僅 PMD 自訂規則；逐字保留來源 custom_xpath 的字串值。
 # versions: 適用 Java 版本，不代表逐版實證；實證版本另載於 note。
-# status: verified 正反例成功；partial 局部成功或已知漏報；candidate 未實證或失敗；manual 人工／待實作測試。
+# status: verified 只保證本庫規範正反例形狀成功，語意仍由人工審查補足；partial 局部成功或已知漏報；candidate 未實證或失敗；manual 人工／待實作測試。
+# partial 的等級是命中後處置，不是涵蓋率承諾；原範例 0/N 仍須人工驗收，不能以零診斷宣告符合。
 # false_positive_risk: low / medium / high；note: 審查、例外、設定與證據限制。
 # source: 來源盤點 ID 的陣列；合併時保留全部來源。
 # 縮寫表：
@@ -95,9 +96,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    本小節自身的違反範例是以 Object 隱藏業務型別，非 raw type，javac 抓不到（屬人工）；raw type 禁令以 java-diamond-construction 的違反範例實證：-Xlint:rawtypes 抓到「found raw type: List」；搭配
-    -Werror 讓 CI 失敗；；實證版本：17、8。 來源：inventory-inv-claude-a.yml 第 4 筆（JV-TG-004）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/2；JDK 21：違反 0/1、符合誤報 0/2。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：本小節自身的違反範例是以 Object 隱藏業務型別，非 raw type，javac 抓不到（屬人工）；raw type 禁令以 java-diamond-construction 的違反範例實證：-Xlint:rawtypes 抓到「found raw type: List」；搭配 -Werror 讓 CI 失敗；；實證版本：17、8。 來源：inventory-inv-claude-a.yml 第 4 筆（JV-TG-004）。"
   source:
   - inv-claude-a
 - id: JV-TG-005
@@ -266,9 +265,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    預設關閉，需 -Xep:SuppressWarningsWithoutExplanation:WARN；語意較弱（只要求附說明，不禁止），適合作為已核准例外的「必須附核准理由」檢查；；實證版本：17。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml
-    第 14 筆（JV-TG-012）。
+  note: "形狀巧合：只要求抑制附解釋，不能判斷是否規避條文；JDK 17 未命中，因此停用該版旗標。 本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：預設關閉，需 -Xep:SuppressWarningsWithoutExplanation:WARN；語意較弱（只要求附說明，不禁止），適合作為已核准例外的「必須附核准理由」檢查；；實證版本：17。  來源：inventory-inv-claude-a.yml 第 14 筆（JV-TG-012）。"
   source:
   - inv-claude-a
 - id: JV-TG-013
@@ -285,9 +282,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    涵蓋「不得留下 raw type 或 unchecked 警告」；違反範例因已被 @SuppressWarnings 抑制，javac 無警告（抓不到），抑制本身由下列 Checkstyle／PMD 規則抓；移除抑制後 javac 對同一段碼報 rawtypes 與 unchecked（見報告）；；實證版本：17。
-    來源：inventory-inv-claude-a.yml 第 11 筆（JV-TG-013）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 0/1、符合誤報 0/1。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：涵蓋「不得留下 raw type 或 unchecked 警告」；違反範例因已被 @SuppressWarnings 抑制，javac 無警告（抓不到），抑制本身由下列 Checkstyle／PMD 規則抓；移除抑制後 javac 對同一段碼報 rawtypes 與 unchecked（見報告）；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 11 筆（JV-TG-013）。"
   source:
   - inv-claude-a
 - id: JV-TG-014
@@ -434,11 +429,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    預設開啟（WARNING）；只看非 private 方法的參數與回傳型別，訊息「Prefer a java.util.List instead」；；實證版本：17、21。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml 第 22
-    筆（JV-TG-021）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/2。 舊盤點限制（以本次重跑結果為準）：預設開啟（WARNING）；只看非 private 方法的參數與回傳型別，訊息「Prefer a java.util.List instead」；；實證版本：17、21。  來源：inventory-inv-claude-a.yml 第 22 筆（JV-TG-021）。"
   source:
   - inv-claude-a
 - id: JV-TG-022
@@ -489,11 +482,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    違反範例報「[rawtypes] found raw type: List」；符合（Java 8）明寫型別參數的匿名類別與符合（Java 11）匿名類別菱形均無警告；；實證版本：17、8、11。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml
-    第 24 筆（JV-TG-024）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/3；JDK 21：違反 1/1、符合誤報 0/3。 舊盤點限制（以本次重跑結果為準）：違反範例報「[rawtypes] found raw type: List」；符合（Java 8）明寫型別參數的匿名類別與符合（Java 11）匿名類別菱形均無警告；；實證版本：17、8、11。  來源：inventory-inv-claude-a.yml 第 24 筆（JV-TG-024）。"
   source:
   - inv-claude-a
 - id: JV-TG-025
@@ -736,7 +727,7 @@
   status: partial
   false_positive_risk: low
   note: >-
-    只比對 Lambda 參數的 \(\s*var\s+；不再比對區域變數 var。無型別的 value -> 仍無法由 regex 判斷；規範 Java 11 var 範例與合成正反例可重跑。 來源：inventory-inv-claude-a.yml 第 34 筆（JV-LS-003）。
+    只比對同一行以 var 起始且括號後接 -> 的 Lambda 參數；排除 enhanced-for 與區域變數 var；跨行參數仍可能漏報。無型別的 value -> 仍無法由 regex 判斷；規範 Java 11 var 範例與合成正反例可重跑。 來源：inventory-inv-claude-a.yml 第 34 筆（JV-LS-003）。
   source:
   - inv-claude-a
 - id: JV-LS-004
@@ -790,9 +781,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    預設開啟（ERROR）；違反範例的 .count() 結果被丟棄（只為觸發 peek 副作用而消費）被抓：「Return value of 'count' must be used」；只涵蓋「用終端操作當副作用觸發器」這種形狀；；實證版本：17。 本庫尚無可重跑測試，待 CI
-    層。 來源：inventory-inv-claude-a.yml 第 37 筆（JV-LS-006）。
+  note: "形狀巧合：命中的是 count 回傳值未使用，不能判定 peek 的副作用。 本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：預設開啟（ERROR）；違反範例的 .count() 結果被丟棄（只為觸發 peek 副作用而消費）被抓：「Return value of 'count' must be used」；只涵蓋「用終端操作當副作用觸發器」這種形狀；；實證版本：17。  來源：inventory-inv-claude-a.yml 第 37 筆（JV-LS-006）。"
   source:
   - inv-claude-a
 - id: JV-LS-007
@@ -891,9 +880,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    只涵蓋「不得把流程建立視為工作完成」：以合成範例 values.stream().filter(...); 無終端操作實證抓到「Return value of 'filter' must be used」；本小節的違反範例（allMatch 短路、takeWhile 前綴）是契約語意，工具抓不到；；實證版本：17。
-    來源：inventory-inv-claude-a.yml 第 41 筆（JV-LS-011）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/2、符合誤報 0/1；JDK 21：違反 0/2、符合誤報 0/1。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：只涵蓋「不得把流程建立視為工作完成」：以合成範例 values.stream().filter(...); 無終端操作實證抓到「Return value of 'filter' must be used」；本小節的違反範例（allMatch 短路、takeWhile 前綴）是契約語意，工具抓不到；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 41 筆（JV-LS-011）。"
   source:
   - inv-claude-a
 - id: JV-LS-012
@@ -1338,11 +1325,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: medium
-  note: >-
-    預設關閉，需 -Xep:IdentifierName:WARN；抓到 order_limit 與 Accepts（maxOrders 未報，EP 不檢查常數形式）；比 Checkstyle 嚴（禁止底線分隔的測試方法名），只適合作 CI 補充；；實證版本：17。 來源：inventory-inv-claude-a.yml
-    第 54 筆（JV-NP-014）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：預設關閉，需 -Xep:IdentifierName:WARN；抓到 order_limit 與 Accepts（maxOrders 未報，EP 不檢查常數形式）；比 Checkstyle 嚴（禁止底線分隔的測試方法名），只適合作 CI 補充；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 54 筆（JV-NP-014）。"
   source:
   - inv-claude-a
 - id: JV-NP-015
@@ -1457,10 +1442,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    -effort:max -low 下抓到 Accepts（Nm）；類別名 order_limit 與常數未報；只是 CI 的二次保險，pre-commit 層已足夠；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 56 筆（JV-NP-020）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：-effort:max -low 下抓到 Accepts（Nm）；類別名 order_limit 與常數未報；只是 CI 的二次保險，pre-commit 層已足夠；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 56 筆（JV-NP-020）。"
   source:
   - inv-claude-a
 - id: JV-NP-021
@@ -1512,10 +1496,11 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order 反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter
-    + ArchRuleDefinition）實證：違反版三條規則 FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml 第 59 筆（JV-NP-023）。
+  note: 前期研究（歷史）：規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order
+    反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
+    FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。  來源：inventory-inv-claude-a.yml
+    第 59 筆（JV-NP-023）。 第 3 期：tests/run-build-layer.sh 可重跑 ArchUnit 1.4.1 internal
+    可見性、分層、核心技術依賴與循環合成正反例（JDK 8／17）；套件與方向須依專案設定，仍非完整規範涵蓋。
   source:
   - inv-claude-a
 - id: JV-NP-024
@@ -1532,10 +1517,12 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order 反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter
-    + ArchRuleDefinition）實證：違反版三條規則 FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml 第 59 筆（JV-NP-024）。
+  note: 形狀巧合：只按 Storage 名稱尾綴判定可見性，換名即不涵蓋。 前期研究（歷史）：規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order
+    反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
+    FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。  來源：inventory-inv-claude-a.yml
+    第 59 筆（JV-NP-024）。 第 3 期：tests/run-build-layer.sh 直接抽取 java-package-boundaries
+    的 OrderService／OrderStorage 正反例，ArchUnit RulesTemplate.STORAGE 在 JDK 8／17 命中公開巢狀
+    Storage、符合例不誤報；不代表全部架構子句已驗證。
   source:
   - inv-claude-a
 - id: JV-NP-025
@@ -1552,10 +1539,11 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order 反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter
-    + ArchRuleDefinition）實證：違反版三條規則 FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml 第 59 筆（JV-NP-025）。
+  note: 前期研究（歷史）：規範範例沒有套件結構，故把違反／符合範例放進合成套件 com.example.order 並加 com.example.shared→order
+    反向依賴與 com.example.order.internal 公開類別，用 ArchUnit 1.4.1（ClassFileImporter + ArchRuleDefinition）實證：違反版三條規則
+    FAIL、符合版三條 PASS；執行期 JDK 8／11／17／21 均可（需 slf4j-api）；規則內容必須依專案架構撰寫（分層、internal 命名、共用模組清單），不是通用規則；；實證版本：17、8。  來源：inventory-inv-claude-a.yml
+    第 59 筆（JV-NP-025）。 第 3 期：tests/run-build-layer.sh 在 JDK 8／17 可重跑共用套件反向依賴合成正反例；業務與共用套件清單須依專案設定，未把合成資料計為完整規範
+    verified。
   source:
   - inv-claude-a
 - id: JV-NP-026
@@ -1571,9 +1559,10 @@
   - 21
   status: candidate
   false_positive_risk: low
-  note: >-
-    unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens 與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與
-    Enforcer。 來源：inventory-inv-claude-a.yml 第 60 筆（JV-NP-026）。
+  note: 前期研究（歷史）：unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens
+    與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與 Enforcer。 來源：inventory-inv-claude-a.yml
+    第 60 筆（JV-NP-026）。 第 3 期：build/jdeps.sh 只實作內部 API 掃描，未實作 JPMS --check 方向判定；不得以
+    Unsafe 測試宣稱本筆已驗證。
   source:
   - inv-claude-a
 - id: JV-NP-027
@@ -1587,9 +1576,10 @@
   - 8
   status: candidate
   false_positive_risk: low
-  note: >-
-    unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens 與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與
-    Enforcer。 來源：inventory-inv-claude-a.yml 第 60 筆（JV-NP-027）。
+  note: 前期研究（歷史）：unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens
+    與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與 Enforcer。 來源：inventory-inv-claude-a.yml
+    第 60 筆（JV-NP-027）。 第 3 期：JDK 8 Unsafe 控制案例可重跑，但 -jdkinternals 不證明專案套件／模組邊界；本筆保持
+    candidate，內部 API 證據歸 JV-VP-016。
   source:
   - inv-claude-a
 - id: JV-NP-028
@@ -1604,11 +1594,12 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: low
-  note: >-
-    unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens 與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與
-    Enforcer。 來源：inventory-inv-claude-a.yml 第 59／60／61 筆（小節對照）（JV-NP-028）。
+  note: 前期研究（歷史）：unverified：規範範例為單檔、無模組與建置依賴，無法以 jdeps 或 Enforcer 實證；適用於 Java 9+ 模組（exports／opens
+    與 requires 方向）與 Maven 多模組的依賴方向；Java 8 無模組系統只能靠 ArchUnit 與 Enforcer。 來源：inventory-inv-claude-a.yml
+    第 59／60／61 筆（小節對照）（JV-NP-028）。 第 3 期：tests/run-build-layer.sh 在 JDK 8／17 以獨立 dev-rule-boundaries
+    execution 實測 bannedDependencies 正反建置；合成依賴用於驗證機制，實際模組禁止方向須專案明訂。
   source:
   - inv-claude-a
 - id: JV-NP-029
@@ -1681,10 +1672,7 @@
   - 21
   status: candidate
   false_positive_risk: high
-  note: >-
-    -Xdoclint:all/private 對違反範例報 no @param for path／no @return／no @throws for IOException；但 missing 群組同時要求類別本身有 Javadoc，三個符合範例都因 TextReader 類別無註解被報
-    no comment（誤報）；只在團隊要求每個公開型別都有 Javadoc 時才適合，否則只開 reference,syntax（見 java-document-verification）；；實證版本：17、8、21。 來源：inventory-inv-claude-a.yml
-    第 64 筆（JV-NP-032）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 2/2；JDK 21：違反 1/1、符合誤報 3/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：-Xdoclint:all/private 對違反範例報 no @param for path／no @return／no @throws for IOException；但 missing 群組同時要求類別本身有 Javadoc，三個符合範例都因 TextReader 類別無註解被報 no comment（誤報）；只在團隊要求每個公開型別都有 Javadoc 時才適合，否則只開 reference,syntax（見 java-document-verification）；；實證版本：17、8、21。 來源：inventory-inv-claude-a.yml 第 64 筆（JV-NP-032）。"
   source:
   - inv-claude-a
 - id: JV-NP-033
@@ -1735,11 +1723,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: candidate
   false_positive_risk: low
-  note: >-
-    本小節無規範範例，以合成範例 {@link NoSuchType#read} 實證 -Xdoclint:reference 報「reference not found」；java-javadoc-contract 的四個範例（含 Java 21 {@snippet}）在 reference
-    群組下乾淨；；實證版本：17、8、21。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml 第 67 筆（JV-NP-035）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：原小節沒有此 JDK 可編譯的正反例配對；JDK 21：原小節沒有此 JDK 可編譯的正反例配對。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：本小節無規範範例，以合成範例 {@link NoSuchType#read} 實證 -Xdoclint:reference 報「reference not found」；java-javadoc-contract 的四個範例（含 Java 21 {@snippet}）在 reference 群組下乾淨；；實證版本：17、8、21。  來源：inventory-inv-claude-a.yml 第 67 筆（JV-NP-035）。"
   source:
   - inv-claude-a
 - id: JV-NP-036
@@ -1789,10 +1775,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    如版本差異所述只對模組外（無模組時為套件外）可建立子類別的情況警告：規範違反範例的 Base 與其建構子都是 package-private，javac 21 不報；把類別與建構子改 public 的合成範例會報「possible 'this' escape before subclass
-    is fully initialized」；只能當 CI（JDK 21 建置）補充，不能取代 PMD／SpotBugs；Error Prone 2.52.0 沒有 ConstructorInvokesOverridable／ConstructorLeaksThis（實測回報
-    not a valid checker name）；；實證版本：21。 來源：inventory-inv-claude-a.yml 第 72 筆（JV-CC-002）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：執行 JDK 8 不適用此映射；JDK 11：執行 JDK 11 不適用此映射；JDK 17：執行 JDK 17 不適用此映射；JDK 21：違反 0/1、符合誤報 0/1。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：如版本差異所述只對模組外（無模組時為套件外）可建立子類別的情況警告：規範違反範例的 Base 與其建構子都是 package-private，javac 21 不報；把類別與建構子改 public 的合成範例會報「possible 'this' escape before subclass is fully initialized」；只能當 CI（JDK 21 建置）補充，不能取代 PMD／SpotBugs；Error Prone 2.52.0 沒有 ConstructorInvokesOverridable／ConstructorLeaksThis（實測回報 not a valid checker name）；；實證版本：21。 來源：inventory-inv-claude-a.yml 第 72 筆（JV-CC-002）。"
   source:
   - inv-claude-a
 - id: JV-CC-003
@@ -1826,11 +1809,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    SpotBugs 4.10.5 將此 bug 列為 Low priority，必須以 -low（或 threshold=Low）執行才會報，預設門檻會漏掉；同一範例另報 UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR（High）；this
-    外洩到執行緒可由 SC_START_IN_CTOR 補（未實證，範例無此形狀）；；實證版本：17。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-a.yml 第 71 筆（JV-CC-004）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：SpotBugs 4.10.5 將此 bug 列為 Low priority，必須以 -low（或 threshold=Low）執行才會報，預設門檻會漏掉；同一範例另報 UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR（High）；this 外洩到執行緒可由 SC_START_IN_CTOR 補（未實證，範例無此形狀）；；實證版本：17。  來源：inventory-inv-claude-a.yml 第 71 筆（JV-CC-004）。"
   source:
   - inv-claude-a
 - id: JV-CC-005
@@ -1939,9 +1920,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    預設開啟，但只在基底方法標了 @OverridingMethodsMustInvokeSuper（或 @CallSuper）時檢查；規範違反範例無註解故抓不到；合成範例加註解後報「This method overrides Payment#pay ... but does not
-    call the super method」，有呼叫 super 的子類乾淨；條文本身要求不依賴子類記得呼叫 super，此規則是「若採用 super 慣例則強制」的補充；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 78 筆（JV-CC-010）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/2；JDK 21：違反 0/1、符合誤報 0/2。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：預設開啟，但只在基底方法標了 @OverridingMethodsMustInvokeSuper（或 @CallSuper）時檢查；規範違反範例無註解故抓不到；合成範例加註解後報「This method overrides Payment#pay ... but does not call the super method」，有呼叫 super 的子類乾淨；條文本身要求不依賴子類記得呼叫 super，此規則是「若採用 super 慣例則強制」的補充；；實證版本：17。 來源：inventory-inv-claude-a.yml 第 78 筆（JV-CC-010）。"
   source:
   - inv-claude-a
 - id: JV-CC-011
@@ -2047,11 +2026,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    涵蓋直接回傳 null 的 Optional；官方也包含 Guava Optional，但本次只驗 java.util.Optional；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：17。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-codex-a.yml
-    第 47 筆（JV-NO-004）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：涵蓋直接回傳 null 的 Optional；官方也包含 Guava Optional，但本次只驗 java.util.Optional；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：17。  來源：inventory-inv-codex-a.yml 第 47 筆（JV-NO-004）。"
   source:
   - inv-codex-a
 - id: JV-NO-005
@@ -2278,9 +2255,7 @@
   - 21
   status: candidate
   false_positive_risk: medium
-  note: >-
-    淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17、21。 來源：inventory-inv-codex-a.yml 第 53／54
-    筆（JV-VO-003）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/2；JDK 21：違反 0/2、符合誤報 0/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17、21。 來源：inventory-inv-codex-a.yml 第 53／54 筆（JV-VO-003）。"
   source:
   - inv-codex-a
 - id: JV-VO-004
@@ -2297,9 +2272,7 @@
   - 21
   status: candidate
   false_positive_risk: medium
-  note: >-
-    淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17、21。 來源：inventory-inv-codex-a.yml 第 53／54
-    筆（JV-VO-004）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/2；JDK 21：違反 0/2、符合誤報 0/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、17、21。 來源：inventory-inv-codex-a.yml 第 53／54 筆（JV-VO-004）。"
   source:
   - inv-codex-a
 - id: JV-VO-005
@@ -2543,9 +2516,7 @@
   - 21
   status: candidate
   false_positive_risk: low
-  note: >-
-    淘汰候選：原違反及所有符合範例皆編譯成功且無 lint；真正缺失 switch expression 分支是語言編譯錯誤而非某個 -Xlint 規則，default 會掩蓋之；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：11、17、21。 來源：inventory-inv-codex-a.yml
-    第 57 筆（JV-SR-005）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/2；JDK 21：違反 0/1、符合誤報 0/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：淘汰候選：原違反及所有符合範例皆編譯成功且無 lint；真正缺失 switch expression 分支是語言編譯錯誤而非某個 -Xlint 規則，default 會掩蓋之；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：11、17、21。 來源：inventory-inv-codex-a.yml 第 57 筆（JV-SR-005）。"
   source:
   - inv-codex-a
 - id: JV-SR-006
@@ -2760,9 +2731,7 @@
   - 21
   status: candidate
   false_positive_risk: medium
-  note: >-
-    淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、11、17、21。 來源：inventory-inv-codex-a.yml 第
-    55／56 筆（JV-BM-004）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/3；JDK 21：違反 0/2、符合誤報 0/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、11、17、21。 來源：inventory-inv-codex-a.yml 第 55／56 筆（JV-BM-004）。"
   source:
   - inv-codex-a
 - id: JV-BM-005
@@ -2779,9 +2748,7 @@
   - 21
   status: candidate
   false_positive_risk: medium
-  note: >-
-    淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、11、17、21。 來源：inventory-inv-codex-a.yml 第
-    55／56 筆（JV-BM-005）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/3；JDK 21：違反 0/2、符合誤報 0/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：淘汰候選：原始範例全數未命中，不能把 API 曝露參考檢查視為深層不可變性證明；不可變封裝與所有權移交需例外審查；已實跑；未通過違反命中或符合不誤報時屬淘汰候選，不是可啟用規則；；實證版本：8、11、17、21。 來源：inventory-inv-codex-a.yml 第 55／56 筆（JV-BM-005）。"
   source:
   - inv-codex-a
 - id: JV-BM-006
@@ -2942,11 +2909,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: medium
-  note: >-
-    Error Prone 預設 WARNING，需 -Xep:ModifyCollectionInEnhancedForLoop:ERROR；Error Prone 2.52.0 須 JDK 21 執行（2.32–2.42 需 17、≤2.31 需 11）；；誤報風險說明：修改後立即
-    break 的常見寫法仍會被報（原盤點子條文合成樣本（未隨庫保存） 實測亦報）；；實證版本：17。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-b.yml 第 5 筆（JV-CO-005）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：Error Prone 預設 WARNING，需 -Xep:ModifyCollectionInEnhancedForLoop:ERROR；Error Prone 2.52.0 須 JDK 21 執行（2.32–2.42 需 17、≤2.31 需 11）；；誤報風險說明：修改後立即 break 的常見寫法仍會被報（原盤點子條文合成樣本（未隨庫保存） 實測亦報）；；實證版本：17。  來源：inventory-inv-claude-b.yml 第 5 筆（JV-CO-005）。"
   source:
   - inv-claude-b
 - id: JV-CO-006
@@ -3028,9 +2993,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    偵測器只針對具體類別 ConcurrentHashMap 的呼叫序列；規範違反範例以 ConcurrentMap 介面宣告欄位，實測漏報；可留作 CI 補強，不可作為唯一依據；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存） caught（欄位宣告為 ConcurrentHashMap
-    時）。 來源：inventory-inv-claude-b.yml 第 9 筆（JV-CO-009）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 0/1、符合誤報 0/1。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：偵測器只針對具體類別 ConcurrentHashMap 的呼叫序列；規範違反範例以 ConcurrentMap 介面宣告欄位，實測漏報；可留作 CI 補強，不可作為唯一依據；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存） caught（欄位宣告為 ConcurrentHashMap 時）。 來源：inventory-inv-claude-b.yml 第 9 筆（JV-CO-009）。"
   source:
   - inv-claude-b
 - id: JV-CO-010
@@ -3123,9 +3086,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    對應子句「關閉責任」：Files.lines／list／walk 等資源型 Stream 未以 try-with-resources 關閉；規範違反範例有關閉（只是關太早），本規則不報，改由自訂規則涵蓋；預設 WARNING，需升為 ERROR；；實證版本：17、8；補充實證：原盤點子條文合成樣本（未隨庫保存）
-    caught（Files.lines 未關閉）。 來源：inventory-inv-claude-b.yml 第 15 筆（JV-CO-014）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/2；JDK 21：違反 0/1、符合誤報 0/2。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：對應子句「關閉責任」：Files.lines／list／walk 等資源型 Stream 未以 try-with-resources 關閉；規範違反範例有關閉（只是關太早），本規則不報，改由自訂規則涵蓋；預設 WARNING，需升為 ERROR；；實證版本：17、8；補充實證：原盤點子條文合成樣本（未隨庫保存） caught（Files.lines 未關閉）。 來源：inventory-inv-claude-b.yml 第 15 筆（JV-CO-014）。"
   source:
   - inv-claude-b
 - id: JV-CO-015
@@ -3280,9 +3241,7 @@
   - 21
   status: partial
   false_positive_risk: medium
-  note: >-
-    SpotBugs 4.7 起新增的 THROWS 系列；；誤報風險說明：同 PMD；為 BAD_PRACTICE 類低優先，需 -low 或 priority 設定才顯示；；實證版本：17、8。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-b.yml
-    第 22 筆（JV-ER-005）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/2；JDK 21：違反 0/1、符合誤報 0/2。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：SpotBugs 4.7 起新增的 THROWS 系列；；誤報風險說明：同 PMD；為 BAD_PRACTICE 類低優先，需 -low 或 priority 設定才顯示；；實證版本：17、8。  來源：inventory-inv-claude-b.yml 第 22 筆（JV-ER-005）。"
   source:
   - inv-claude-b
 - id: JV-ER-006
@@ -3411,10 +3370,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: medium
-  note: >-
-    STYLE 類，需 -low；；誤報風險說明：只在 try 內沒有方法宣告 throws Exception 時報；入口層仍會報；；實證版本：17、8。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-b.yml 第 31 筆（JV-ER-011）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/2；JDK 21：違反 1/1、符合誤報 0/2。 舊盤點限制（以本次重跑結果為準）：STYLE 類，需 -low；；誤報風險說明：只在 try 內沒有方法宣告 throws Exception 時報；入口層仍會報；；實證版本：17、8。  來源：inventory-inv-claude-b.yml 第 31 筆（JV-ER-011）。"
   source:
   - inv-claude-b
 - id: JV-ER-012
@@ -3467,9 +3425,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    預設關閉；針對 catch (Exception／Throwable) 連帶吞掉中斷與 throws Exception 隱藏中斷，不針對明確 catch InterruptedException 的空區塊（規範違反範例由 EmptyCatch／自訂規則抓）；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存）（catch
-    (Exception) 吞掉 sleep 的中斷）與 原盤點子條文合成樣本（未隨庫保存）（throws Exception 隱藏 InterruptedException）caught。 來源：inventory-inv-claude-b.yml 第 36 筆（JV-ER-014）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 0/1、符合誤報 0/1。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：預設關閉；針對 catch (Exception／Throwable) 連帶吞掉中斷與 throws Exception 隱藏中斷，不針對明確 catch InterruptedException 的空區塊（規範違反範例由 EmptyCatch／自訂規則抓）；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存）（catch (Exception) 吞掉 sleep 的中斷）與 原盤點子條文合成樣本（未隨庫保存）（throws Exception 隱藏 InterruptedException）caught。 來源：inventory-inv-claude-b.yml 第 36 筆（JV-ER-014）。"
   source:
   - inv-claude-b
 - id: JV-ER-015
@@ -3580,11 +3536,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    訊息「may fail to close stream on exception」精確對應條文「涵蓋正常完成及例外退出」；OBL_UNSATISFIED_OBLIGATION 對此範例未報；；誤報風險說明：只對 java.io 串流類型追蹤例外路徑；非串流的 AutoCloseable
-    不報（漏報而非誤報）；；實證版本：17、8、11、21。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-b.yml 第 39 筆（JV-ER-020）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/3；JDK 21：違反 1/1、符合誤報 0/4。 舊盤點限制（以本次重跑結果為準）：訊息「may fail to close stream on exception」精確對應條文「涵蓋正常完成及例外退出」；OBL_UNSATISFIED_OBLIGATION 對此範例未報；；誤報風險說明：只對 java.io 串流類型追蹤例外路徑；非串流的 AutoCloseable 不報（漏報而非誤報）；；實證版本：17、8、11、21。  來源：inventory-inv-claude-b.yml 第 39 筆（JV-ER-020）。"
   source:
   - inv-claude-b
 - id: JV-ER-021
@@ -3620,7 +3574,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: 預設關閉，需 -Xep:Finally:ERROR；；實證版本：17、8、11；補充實證：原盤點子條文合成樣本（未隨庫保存） 與 原盤點子條文合成樣本（未隨庫保存） caught。 來源：inventory-inv-claude-b.yml 第 46 筆（JV-ER-022）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/3；JDK 21：違反 0/1、符合誤報 0/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：預設關閉，需 -Xep:Finally:ERROR；；實證版本：17、8、11；補充實證：原盤點子條文合成樣本（未隨庫保存） 與 原盤點子條文合成樣本（未隨庫保存） caught。 來源：inventory-inv-claude-b.yml 第 46 筆（JV-ER-022）。"
   source:
   - inv-claude-b
 - id: JV-ER-023
@@ -3637,9 +3591,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    搭配 -Werror 或解析警告；javac 8／11／17／21 皆支援；；實證版本：17、8、11；補充實證：原盤點子條文合成樣本（未隨庫保存） caught（finally clause cannot complete normally）。 來源：inventory-inv-claude-b.yml
-    第 45 筆（JV-ER-023）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/3；JDK 21：違反 0/1、符合誤報 0/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：搭配 -Werror 或解析警告；javac 8／11／17／21 皆支援；；實證版本：17、8、11；補充實證：原盤點子條文合成樣本（未隨庫保存） caught（finally clause cannot complete normally）。 來源：inventory-inv-claude-b.yml 第 45 筆（JV-ER-023）。"
   source:
   - inv-claude-b
 - id: JV-ER-024
@@ -3822,9 +3774,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: 精確對應條文「不得反過來以雜湊值相同判定相等」；預設 WARNING，需升 ERROR；；實證版本：17、8。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-b.yml 第 54 筆（JV-EH-003）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/3；JDK 21：違反 1/1、符合誤報 0/3。 舊盤點限制（以本次重跑結果為準）：精確對應條文「不得反過來以雜湊值相同判定相等」；預設 WARNING，需升 ERROR；；實證版本：17、8。  來源：inventory-inv-claude-b.yml 第 54 筆（JV-EH-003）。"
   source:
   - inv-claude-b
 - id: JV-EH-004
@@ -3860,10 +3812,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    HE 系列（HE_EQUALS_NO_HASHCODE／HE_HASHCODE_NO_EQUALS／HE_HASHCODE_USE_OBJECT_EQUALS）；注意：子類別只覆寫 equals 而 hashCode 繼承自已覆寫的父類別時（java-cross-type-equality
-    違反範例）SpotBugs 與 Error Prone EqualsHashCode 皆不報，只有 PMD／Checkstyle 報；；實證版本：17、8；補充實證：原盤點子條文合成樣本（未隨庫保存） caught；HE_HASHCODE_USE_OBJECT_EQUALS
-    於 原盤點子條文合成樣本（未隨庫保存） caught。 來源：inventory-inv-claude-b.yml 第 57 筆（JV-EH-005）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/3；JDK 21：違反 0/1、符合誤報 0/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：HE 系列（HE_EQUALS_NO_HASHCODE／HE_HASHCODE_NO_EQUALS／HE_HASHCODE_USE_OBJECT_EQUALS）；注意：子類別只覆寫 equals 而 hashCode 繼承自已覆寫的父類別時（java-cross-type-equality 違反範例）SpotBugs 與 Error Prone EqualsHashCode 皆不報，只有 PMD／Checkstyle 報；；實證版本：17、8；補充實證：原盤點子條文合成樣本（未隨庫保存） caught；HE_HASHCODE_USE_OBJECT_EQUALS 於 原盤點子條文合成樣本（未隨庫保存） caught。 來源：inventory-inv-claude-b.yml 第 57 筆（JV-EH-005）。"
   source:
   - inv-claude-b
 - id: JV-EH-006
@@ -3975,9 +3924,7 @@
   - 21
   status: candidate
   false_positive_risk: high
-  note: >-
-    Error Prone 預設 WARNING 且與條文「不一律指定使用 instanceof 或 getClass()」衝突，必須 -Xep:EqualsGetClass:OFF；列出以供合併時排除；；誤報風險說明：對本節三個符合範例（以 getClass() 約定僅同一具體型別相等）全部誤報「Prefer
-    instanceof to getClass」，且不報違反範例；；實證版本：17、8。 來源：inventory-inv-claude-b.yml 第 65 筆（JV-EH-011）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 3/3；JDK 21：違反 0/1、符合誤報 3/3。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：Error Prone 預設 WARNING 且與條文「不一律指定使用 instanceof 或 getClass()」衝突，必須 -Xep:EqualsGetClass:OFF；列出以供合併時排除；；誤報風險說明：對本節三個符合範例（以 getClass() 約定僅同一具體型別相等）全部誤報「Prefer instanceof to getClass」，且不報違反範例；；實證版本：17、8。 來源：inventory-inv-claude-b.yml 第 65 筆（JV-EH-011）。"
   source:
   - inv-claude-b
 - id: JV-EH-012
@@ -4010,11 +3957,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    唯一直接偵測「父子型別各自 instanceof 破壞對稱」的內建規則；三個符合範例（getClass、私有建構子、sealed）皆不報；；誤報風險說明：只在子類別以 instanceof 子型別覆寫父類別 instanceof 父型別的 equals 時報；；實證版本：17、8。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-claude-b.yml 第 62 筆（JV-EH-013）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/3；JDK 21：違反 1/1、符合誤報 0/3。 舊盤點限制（以本次重跑結果為準）：唯一直接偵測「父子型別各自 instanceof 破壞對稱」的內建規則；三個符合範例（getClass、私有建構子、sealed）皆不報；；誤報風險說明：只在子類別以 instanceof 子型別覆寫父類別 instanceof 父型別的 equals 時報；；實證版本：17、8。  來源：inventory-inv-claude-b.yml 第 62 筆（JV-EH-013）。"
   source:
   - inv-claude-b
 - id: JV-EH-014
@@ -4065,9 +4010,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    只涵蓋縮窄轉型造成的符號翻轉；不涵蓋 int 相減溢位；ComparisonContractViolated（實驗性）對自製不對稱 compareTo 樣本未報；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存） caught（Possible sign flip
-    from narrowing conversion）。 來源：inventory-inv-claude-b.yml 第 69 筆（JV-EH-016）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 0/1、符合誤報 0/1。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：只涵蓋縮窄轉型造成的符號翻轉；不涵蓋 int 相減溢位；ComparisonContractViolated（實驗性）對自製不對稱 compareTo 樣本未報；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存） caught（Possible sign flip from narrowing conversion）。 來源：inventory-inv-claude-b.yml 第 69 筆（JV-EH-016）。"
   source:
   - inv-claude-b
 - id: JV-EH-017
@@ -4334,9 +4277,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    對應子句「縮窄轉型」的複合指派型式；預設 WARNING；IntLongMath（int 乘法溢位後指派給 long，同樣本 11 行報）與 SpotBugs ICAST_INTEGER_MULTIPLY_CAST_TO_LONG（同樣本報）對應子句「整數溢位回繞」；；實證版本：17、21；補充實證：原盤點子條文合成樣本（未隨庫保存）
-    total += 10L caught。 來源：inventory-inv-claude-b.yml 第 85 筆（JV-ND-008）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 0/2、符合誤報 0/1。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：對應子句「縮窄轉型」的複合指派型式；預設 WARNING；IntLongMath（int 乘法溢位後指派給 long，同樣本 11 行報）與 SpotBugs ICAST_INTEGER_MULTIPLY_CAST_TO_LONG（同樣本報）對應子句「整數溢位回繞」；；實證版本：17、21；補充實證：原盤點子條文合成樣本（未隨庫保存） total += 10L caught。 來源：inventory-inv-claude-b.yml 第 85 筆（JV-ND-008）。"
   source:
   - inv-claude-b
 - id: JV-ND-009
@@ -4347,7 +4288,7 @@
   tool: pmd
   check: custom:NarrowingPrimitiveCast
   xpath: >-
-    //CastExpression[not(*[2][@CompileTimeConstant = true()])][not(PrimitiveType[@Kind='char'])][not(PrimitiveType[@Kind='byte'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=255]])][not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')]
+    //CastExpression[not(*[2][@CompileTimeConstant = true()])][not(PrimitiveType[@Kind='char'])][not((PrimitiveType[@Kind='byte'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=255]]) or (PrimitiveType[@Kind='short'] and InfixExpression[@Operator='&'][NumericLiteral[@ValueAsInt=65535]]))][not(ancestor::MethodDeclaration[@Name='hashCode'])][(PrimitiveType[@Kind=('int','short','byte','char')]
     and *[2][pmd-java:typeIs('long') or pmd-java:typeIs('double') or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind='long'] and *[2][pmd-java:typeIs('double')
     or pmd-java:typeIs('float')]) or (PrimitiveType[@Kind=('short','byte','char')] and *[2][pmd-java:typeIs('int')]) or (PrimitiveType[@Kind='float']
     and *[2][pmd-java:typeIs('double')])] | //MethodCall[@MethodName='clamp'][TypeExpression/ClassType[@SimpleName='Math']][ArgumentList/FieldAccess[@Name='MIN_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]][ArgumentList/FieldAccess[@Name='MAX_VALUE'][TypeExpression/ClassType[@SimpleName='Integer']]]
@@ -4360,7 +4301,7 @@
   false_positive_risk: high
   note: >-
     原 XPath 僅偵測縮窄轉型；新增 Math.clamp 且引數含 Integer.MIN_VALUE／MAX_VALUE 的語法分支，涵蓋 Java 21 規範反例，Math.toIntExact 符合例仍乾淨。無法推論是否允許飽和截斷的業務契約，合法 clamp 與位元／影像轉型仍可能誤報，風險
-    high；經核准逐處抑制，不全面排除。hashCode 內縮窄轉型維持排除。 排除編譯期常數、char 轉換及 byte 的 0xFF 遮罩慣用式；補 double→float。 來源：inventory-inv-claude-b.yml 第 84 筆（JV-ND-009）。
+    high；經核准逐處抑制，不全面排除。hashCode 內縮窄轉型維持排除。 已知漏報：(short)(longValue & 0xFFFF) 未檢查運算元型別，需人工檢查。 排除編譯期常數、char 轉換及 byte 的 0xFF 與 short 的 0xFFFF 遮罩慣用式；補 double→float。 來源：inventory-inv-claude-b.yml 第 84 筆（JV-ND-009）。
   source:
   - inv-claude-b
 - id: JV-ND-010
@@ -4377,7 +4318,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: ICAST 系列只涵蓋特定溢位樣式；對規範違反範例 (int) longValue 無對應偵測器；；實證版本：17、21；補充實證：原盤點子條文合成樣本（未隨庫保存） caught。 來源：inventory-inv-claude-b.yml 第 86 筆（JV-ND-010）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 0/2、符合誤報 0/1。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：ICAST 系列只涵蓋特定溢位樣式；對規範違反範例 (int) longValue 無對應偵測器；；實證版本：17、21；補充實證：原盤點子條文合成樣本（未隨庫保存） caught。 來源：inventory-inv-claude-b.yml 第 86 筆（JV-ND-010）。"
   source:
   - inv-claude-b
 - id: JV-ND-011
@@ -4411,9 +4352,7 @@
   - 21
   status: partial
   false_positive_risk: medium
-  note: >-
-    預設關閉；record 自動產生的 equals 不會被報（違反範例不報）；；誤報風險說明：Java 8 符合範例在 equals() 內呼叫 value.equals(...)（已先 stripTrailingZeros）實測不報；equals 方法以外的 BigDecimal.equals
-    會報，契約視 scale 為語意時需抑制；；實證版本：17、8；補充實證：原盤點子條文合成樣本（未隨庫保存） a.equals(b) caught。 來源：inventory-inv-claude-b.yml 第 90 筆（JV-ND-012）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/2；JDK 21：違反 0/1、符合誤報 0/2。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：預設關閉；record 自動產生的 equals 不會被報（違反範例不報）；；誤報風險說明：Java 8 符合範例在 equals() 內呼叫 value.equals(...)（已先 stripTrailingZeros）實測不報；equals 方法以外的 BigDecimal.equals 會報，契約視 scale 為語意時需抑制；；實證版本：17、8；補充實證：原盤點子條文合成樣本（未隨庫保存） a.equals(b) caught。 來源：inventory-inv-claude-b.yml 第 90 筆（JV-ND-012）。"
   source:
   - inv-claude-b
 - id: JV-ND-013
@@ -4622,9 +4561,7 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    預設關閉；只針對依賴預設時區的 now()（LocalDate／LocalDateTime／ZonedDateTime 等），Instant.now() 無時區不報，故規範違反範例不報；可與自訂規則互補涵蓋「明確的時區轉換」共通要求；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存）
-    LocalDate.now() caught。 來源：inventory-inv-claude-b.yml 第 100 筆（JV-ND-023）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 0/1、符合誤報 0/2；JDK 21：違反 0/1、符合誤報 0/2。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。 舊盤點限制（以本次重跑結果為準）：預設關閉；只針對依賴預設時區的 now()（LocalDate／LocalDateTime／ZonedDateTime 等），Instant.now() 無時區不報，故規範違反範例不報；可與自訂規則互補涵蓋「明確的時區轉換」共通要求；；實證版本：17；補充實證：原盤點子條文合成樣本（未隨庫保存） LocalDate.now() caught。 來源：inventory-inv-claude-b.yml 第 100 筆（JV-ND-023）。"
   source:
   - inv-claude-b
 - id: JV-ND-024
@@ -4827,7 +4764,7 @@
   tool: pmd
   check: custom:NoUnmanagedThread
   xpath: >-
-    //ConstructorCall[pmd-java:typeIs('java.lang.Thread')][not(parent::ArgumentList/parent::MethodCall[@MethodName='addShutdownHook'][*[1][pmd-java:typeIs('java.lang.Runtime')]])][not(ancestor::MethodDeclaration[@Name='newThread'][ancestor::ClassDeclaration[pmd-java:typeIs('java.util.concurrent.ThreadFactory')]])]
+    //ConstructorCall[pmd-java:typeIs('java.lang.Thread')][not(parent::ArgumentList/parent::MethodCall[@MethodName='addShutdownHook'][*[1][pmd-java:typeIs('java.lang.Runtime')]])][not(ancestor::MethodDeclaration[@Name='newThread'][parent::ClassBody/parent::*[self::ClassDeclaration or self::AnonymousClassDeclaration][pmd-java:typeIs('java.util.concurrent.ThreadFactory')]])][not(ancestor::LambdaExpression[pmd-java:typeIs('java.util.concurrent.ThreadFactory')])]
   versions:
   - 8
   - 11
@@ -4837,7 +4774,7 @@
   false_positive_risk: medium
   note: >-
     採用：限定非資源管理元件；ThreadFactory、測試基礎設施及核准擁有者需精確例外；不涵蓋 Thread.ofVirtual().start 等其他建立 API，也不證明容量管理；實證：bad-17=1, good-17=0, good-21=0；原盤點 PMD 結果（未隨庫保存）；；實證版本：17、21。
-    排除 Runtime.addShutdownHook 與 ThreadFactory.newThread；核准的資源管理元件、測試基礎設施仍可能誤報，故 warn＋partial。 來源：inventory-inv-codex-b.yml 第 42／48 筆（JV-CA-002）。
+    已知漏報：ThreadFactory Lambda 區塊內額外 new Thread(r).start() 仍被排除，需人工審查建立與啟動點。 排除 Runtime.addShutdownHook、具名／匿名 ThreadFactory 的 newThread 與型別為 ThreadFactory 的 Lambda 建立點；核准的資源管理元件、測試基礎設施仍可能誤報，故 warn＋partial。 來源：inventory-inv-codex-b.yml 第 42／48 筆（JV-CA-002）。
   source:
   - inv-codex-b
 - id: JV-CA-003
@@ -4869,11 +4806,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    SpotBugs 4.10.5（統一目標版本；舊盤點 4.8.6 證據尚待重驗）／JDK 17 分析 --release 17 原範例：違反 1、符合 0；只證明該錯誤模式，不代表完整併發安全；非標準跨方法鎖擁有權轉移需要核准抑制；；實證版本：17。 本庫尚無可重跑測試，待
-    CI 層。 來源：inventory-inv-codex-b.yml 第 50 筆（JV-CA-004）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：SpotBugs 舊盤點 4.8.6／JDK 17 分析 --release 17 原範例：違反 1、符合 0；只證明該錯誤模式，不代表完整併發安全；非標準跨方法鎖擁有權轉移需要核准抑制；；實證版本：17。  來源：inventory-inv-codex-b.yml 第 50 筆（JV-CA-004）。"
   source:
   - inv-codex-b
 - id: JV-CA-005
@@ -5007,11 +4942,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    SpotBugs 4.10.5（統一目標版本；舊盤點 4.8.6 證據尚待重驗）／JDK 17 分析 --release 17 原範例：違反 1、符合 0；只證明該錯誤模式，不代表完整併發安全；非標準跨方法鎖擁有權轉移需要核准抑制；；實證版本：17。 本庫尚無可重跑測試，待
-    CI 層。 來源：inventory-inv-codex-b.yml 第 51 筆（JV-CA-012）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：原小節沒有此 JDK 可編譯的正反例配對；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：SpotBugs 舊盤點 4.8.6／JDK 17 分析 --release 17 原範例：違反 1、符合 0；只證明該錯誤模式，不代表完整併發安全；非標準跨方法鎖擁有權轉移需要核准抑制；；實證版本：17。  來源：inventory-inv-codex-b.yml 第 51 筆（JV-CA-012）。"
   source:
   - inv-codex-b
 - id: JV-CA-013
@@ -5295,9 +5228,12 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: unverified：無建置範例與專案 POM，本次僅查官方規則；限制執行 Maven 的 JDK 範圍，不保證 toolchain compiler、產物目標或部署版本。 來源：inventory-inv-codex-b.yml 第 58 筆（JV-VP-001）。
+  note: 前期研究（歷史）：unverified：無建置範例與專案 POM，本次僅查官方規則；限制執行 Maven 的 JDK 範圍，不保證 toolchain
+    compiler、產物目標或部署版本。 來源：inventory-inv-codex-b.yml 第 58 筆（JV-VP-001）。 第 3 期：tests/run-build-layer.sh
+    可重跑 Maven Enforcer 3.5.0 的允許 JDK 與 [99,) 拒絕案例（JDK 8／17）；僅限制 Maven JVM，不能證明文件、compiler
+    toolchain 或部署版本完整。
   source:
   - inv-codex-b
 - id: JV-VP-002
@@ -5329,11 +5265,13 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: >-
-    unverified：無 Gradle 專案，未實跑 Gradle；固定 toolchain 與 options.release，release 使用支援該旗標的 compiler；以新版 compiler 產生 Java 8 目標也適用。 來源：inventory-inv-codex-b.yml
-    第 61 筆（JV-VP-003）。
+  note: 前期研究（歷史）：unverified：無 Gradle 專案，未實跑 Gradle；固定 toolchain 與 options.release，release
+    使用支援該旗標的 compiler；以新版 compiler 產生 Java 8 目標也適用。 來源：inventory-inv-codex-b.yml 第
+    61 筆（JV-VP-003）。 第 3 期：tests/run-build-layer.sh 在 Gradle 8.14.3、JDK 8／17 實跑正例及
+    List.of 超出 Java 8 API 負例；17 用 options.release=8，8 用原生平台 source/target；原規範無建置範例，仍標
+    partial。
   source:
   - inv-codex-b
 - id: JV-VP-004
@@ -5349,9 +5287,7 @@
   - 21
   status: candidate
   false_positive_risk: medium
-  note: >-
-    unverified（原規範無 Java 對照範例）：補充 List.of 負例／Collections.singletonList 正例以 --release 8 在 11／17／21 通過預期；8 用真正 JDK 8 的 -source 8 -target 8；不得把補充實驗算原範例涵蓋。
-    來源：inventory-inv-codex-b.yml 第 56 筆（JV-VP-004）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：執行 JDK 8 不適用此映射；JDK 11：原小節沒有此 JDK 可編譯的正反例配對；JDK 17：原小節沒有此 JDK 可編譯的正反例配對；JDK 21：原小節沒有此 JDK 可編譯的正反例配對。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：unverified（原規範無 Java 對照範例）：補充 List.of 負例／Collections.singletonList 正例以 --release 8 在 11／17／21 通過預期；8 用真正 JDK 8 的 -source 8 -target 8；不得把補充實驗算原範例涵蓋。 來源：inventory-inv-codex-b.yml 第 56 筆（JV-VP-004）。"
   source:
   - inv-codex-b
 - id: JV-VP-005
@@ -5434,11 +5370,11 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: >-
-    unverified：無 Gradle 建置範例；搭配版本 constraints／reject 及 dependency locking；failOnVersionConflict 並非 Java 最低版本驗證。 來源：inventory-inv-codex-b.yml 第
-    62 筆（JV-VP-009）。
+  note: 前期研究（歷史）：unverified：無 Gradle 建置範例；搭配版本 constraints／reject 及 dependency locking；failOnVersionConflict
+    並非 Java 最低版本驗證。 來源：inventory-inv-codex-b.yml 第 62 筆（JV-VP-009）。 第 3 期：tests/run-build-layer.sh
+    在 Gradle 8.14.3、JDK 8／17 實跑允許依賴、禁用依賴與 hamcrest 衝突；不自動推斷最低 JDK，版本範圍與依賴鎖由專案補充。
   source:
   - inv-codex-b
 - id: JV-VP-010
@@ -5453,9 +5389,11 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: unverified：無依賴建置範例；可對已知不相容 GAV／版本區間禁用，searchTransitive=true；不能自動推導所有套件最低 JDK。 來源：inventory-inv-codex-b.yml 第 59／60 筆（JV-VP-010）。
+  note: 前期研究（歷史）：unverified：無依賴建置範例；可對已知不相容 GAV／版本區間禁用，searchTransitive=true；不能自動推導所有套件最低
+    JDK。 來源：inventory-inv-codex-b.yml 第 59／60 筆（JV-VP-010）。 第 3 期：tests/run-build-layer.sh
+    可重跑 Maven Enforcer 3.5.0 允許／禁用 junit 依賴（JDK 8／17）；GAV 清單須人工評估最低 JDK，相容性語意仍未全覆蓋。
   source:
   - inv-codex-b
 - id: JV-VP-011
@@ -5470,9 +5408,11 @@
   - 11
   - 17
   - 21
-  status: candidate
+  status: partial
   false_positive_risk: medium
-  note: unverified：無依賴建置範例；檢查同一依賴的版本路徑收斂，僅輔助依賴治理，不證明相容最低 JDK。 來源：inventory-inv-codex-b.yml 第 59／60 筆（JV-VP-011）。
+  note: 前期研究（歷史）：unverified：無依賴建置範例；檢查同一依賴的版本路徑收斂，僅輔助依賴治理，不證明相容最低 JDK。 來源：inventory-inv-codex-b.yml
+    第 59／60 筆（JV-VP-011）。 第 3 期：tests/run-build-layer.sh 在 JDK 8／17 以 junit 間接 hamcrest
+    1.3 與直接 1.1 實證 convergence／upper-bound 拒絕，無衝突正例通過；不證明第三方最低 JDK 相容。
   source:
   - inv-codex-b
 - id: JV-VP-012
@@ -5521,9 +5461,7 @@
   - 21
   status: candidate
   false_positive_risk: medium
-  note: >-
-    unverified：原小節無 Java 對照範例，未執行 Preview 案例；預設不傳 --enable-preview，獲准才開啟並用 -Xlint:preview 盤點；不可用 warning 判定核准。 來源：inventory-inv-codex-b.yml 第
-    57 筆（JV-VP-014）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=；JDK 8：執行 JDK 8 不適用此映射；JDK 11：執行 JDK 11 不適用此映射；JDK 17：原小節沒有此 JDK 可編譯的正反例配對；JDK 21：原小節沒有此 JDK 可編譯的正反例配對。未命中的原違反範例仍需其他檢查，不能以零診斷代表條文通過。候選不在預設設定啟用；此模式無法區分原小節正反例或缺少配對。 舊盤點限制（以本次重跑結果為準）：unverified：原小節無 Java 對照範例，未執行 Preview 案例；預設不傳 --enable-preview，獲准才開啟並用 -Xlint:preview 盤點；不可用 warning 判定核准。 來源：inventory-inv-codex-b.yml 第 57 筆（JV-VP-014）。"
   source:
   - inv-codex-b
 - id: JV-VP-015
@@ -5557,9 +5495,10 @@
   - 21
   status: partial
   false_positive_risk: low
-  note: >-
-    已驗證不涵蓋本節反射範例：違反與符合皆無輸出；8 使用 -jdkinternals，11+ 使用 --jdk-internals；額外 sun.misc.Unsafe 欄位控制案例四版均偵測靜態內部依賴，該控制案例不計規範涵蓋率；須搭配反射與啟動選項審查；；實證版本：8、11、17、21。
-    來源：inventory-inv-codex-b.yml 第 55 筆（JV-VP-016）。
+  note: 前期研究（歷史）：已驗證不涵蓋本節反射範例：違反與符合皆無輸出；8 使用 -jdkinternals，11+ 使用 --jdk-internals；額外
+    sun.misc.Unsafe 欄位控制案例四版均偵測靜態內部依賴，該控制案例不計規範涵蓋率；須搭配反射與啟動選項審查；；實證版本：8、11、17、21。
+    來源：inventory-inv-codex-b.yml 第 55 筆（JV-VP-016）。 第 3 期：tests/run-build-layer.sh
+    在 JDK 8／17 重現規範反射正反例均無診斷的漏報，另以 Unsafe 控制正反例驗證 wrapper 退出碼 1／0，錯誤路徑為 2；維持 partial。
   source:
   - inv-codex-b
 - id: JV-VP-017
@@ -5610,11 +5549,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    以實際 JDK 重跑 Integer(int)：8 未棄用所以合法無警告；11 命中 deprecation；17／21 使用 removal（另列）；此列正向涵蓋以 11 為實證，Java 8 的其他棄用 API 未測，不將 8 的零命中視為漏報；例外須精確限定，抑制會遮蔽診斷；；實證版本：11。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-codex-b.yml 第 52／53 筆（JV-VP-019）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=11；JDK 8：違反 0/1、符合誤報 0/1；JDK 11：違反 1/1、符合誤報 0/1；JDK 17：違反 0/1、符合誤報 0/1；JDK 21：違反 0/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：以實際 JDK 重跑 Integer(int)：8 未棄用所以合法無警告；11 命中 deprecation；17／21 使用 removal（另列）；此列正向涵蓋以 11 為實證，Java 8 的其他棄用 API 未測，不將 8 的零命中視為漏報；例外須精確限定，抑制會遮蔽診斷；；實證版本：11。  來源：inventory-inv-codex-b.yml 第 52／53 筆（JV-VP-019）。"
   source:
   - inv-codex-b
 - id: JV-VP-020
@@ -5628,11 +5565,9 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    Integer(int) 在 JDK 17／21 命中 removal；JDK 11 此建構子只有 deprecation，不應要求 removal 命中；JDK 8 沒有 removal 類別；；實證版本：17、21。 本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-codex-b.yml
-    第 52／53 筆（JV-VP-020）。
+  note: "本庫 tests/run-ci-tools.rb 原規範範例重跑（2026-11-11）；CI實證JDK=17,21；JDK 8：執行 JDK 8 不適用此映射；JDK 11：違反 0/1、符合誤報 0/1；JDK 17：違反 1/1、符合誤報 0/1；JDK 21：違反 1/1、符合誤報 0/1。 舊盤點限制（以本次重跑結果為準）：Integer(int) 在 JDK 17／21 命中 removal；JDK 11 此建構子只有 deprecation，不應要求 removal 命中；JDK 8 沒有 removal 類別；；實證版本：17、21。  來源：inventory-inv-codex-b.yml 第 52／53 筆（JV-VP-020）。"
   source:
   - inv-codex-b
 - id: JV-VP-021
@@ -5646,11 +5581,13 @@
   - 11
   - 17
   - 21
-  status: partial
+  status: verified
   false_positive_risk: low
-  note: >-
-    各 JDK 對其本版 bytecode 掃描：11 偵測 deprecated，17／21 多出 forRemoval=true；符合例無棄用使用；只掃 Java SE API；第三方棄用 API 不涵蓋；此工具回傳 0 不等於無違規，CI 必須檢查報告；；實證版本：11、17、21。
-    本庫尚無可重跑測試，待 CI 層。 來源：inventory-inv-codex-b.yml 第 54 筆（JV-VP-021）。
+  note: 前期研究（歷史）：各 JDK 對其本版 bytecode 掃描：11 偵測 deprecated，17／21 多出 forRemoval=true；符合例無棄用使用；只掃
+    Java SE API；第三方棄用 API 不涵蓋；此工具回傳 0 不等於無違規，CI 必須檢查報告；；實證版本：11、17、21。  來源：inventory-inv-codex-b.yml
+    第 54 筆（JV-VP-021）。 第 3 期：tests/run-build-layer.sh 直接抽取規範 IntegerFactory 正反例，在
+    JDK 17 --release 17 與 --for-removal 命中 new Integer，Integer.valueOf 不誤報；無效 release
+    為工具錯誤；8 明確跳過。僅 Java SE API，不含第三方 API 或遷移安排。
   source:
   - inv-codex-b
 - id: JV-VP-022

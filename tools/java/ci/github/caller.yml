@@ -1,0 +1,5 @@
+on: [push, pull_request]
+jobs:
+  java-rules:
+    uses: clarkeforwork-coder/dev-rule/.github/workflows/java-rules.yml@<40字元SHA>
+    with: {java-version: '17', build-tool: maven}

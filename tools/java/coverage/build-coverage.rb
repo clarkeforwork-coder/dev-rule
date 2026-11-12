@@ -77,22 +77,22 @@ rows.select { |r| r.is_a?(Hash) && r.key?('xpath') }.group_by { |r| r['check'] }
 end
 abort errors.join("\n") unless errors.empty?
 
-covered = rows.select { |r| r['status']=='verified' && %w[pmd checkstyle].include?(r['tool']) }.map { |r| r['rule'] }.uniq.size
+covered = rows.select { |r| r['status']=='verified' && %w[pmd checkstyle javac errorprone spotbugs archunit jdeps jdeprscan maven-enforcer gradle].include?(r['tool']) }.map { |r| r['rule'] }.uniq.size
 ratio = format('%.2f%%', covered * 100.0 / sections.size)
 lines = ['# Java 工具涵蓋率', '', '由 `ruby tools/java/coverage/build-coverage.rb` 產生；請修改 rule-map.yml 後重建，勿直接修改本檔。', '', '## 總表', '']
 summary = [['文件數',documents.size],['小節數',sections.size],['映射筆數',rows.size]]
 STATUSES.each { |s| summary << ["status：#{s}（筆）",rows.count { |r| r['status']==s }] }
 TIERS.each { |t| summary << ["tier：#{t}（筆）",rows.count { |r| r['tier']==t }] }
 TOOLS.each { |t| summary << ["tool：#{t}（筆）",rows.count { |r| r['tool']==t }] }
-summary << ['本庫 PMD／Checkstyle verified 小節數',covered]
-summary << ['CI 層候選（映射筆數；不計涵蓋率）',rows.count { |r| r['tier'].start_with?('ci-') }]
+summary << ['本庫 PMD／Checkstyle／CI 工具 verified 小節數',covered]
+summary << ['CI 層未 verified（映射筆數；不計涵蓋率）',rows.count { |r| r['tier'].start_with?('ci-') && r['status'] != 'verified' }]
 summary << ['涵蓋率（verified 小節／全部小節）',"#{covered}／#{sections.size} = #{ratio}"]
 table(lines,%w[項目 數量],summary)
-lines += ['每小節只要有一筆本庫可重跑的 PMD／Checkstyle verified 即計入分子，同小節多規則不重複計數；status／tier／tool 欄則按映射筆數計算。partial、candidate、manual 均不計分子；verified 不代表整個小節、所有版本或所有合法例外都已自動驗證。', '', 'manual 可與 verified 並存，表示該小節仍有工具無法替代的審查或尚待實作的契約測試；candidate 包含失敗候選，不是啟用建議。實證版本、合成範例與漏報限制見 rule-map.yml 的 note。', '']
+lines += ['每小節只要有一筆本庫可重跑的 PMD／Checkstyle／CI 工具 verified 即計入分子，同小節多規則不重複計數；status／tier／tool 欄則按映射筆數計算。partial、candidate、manual 均不計分子；verified 不代表整個小節、所有版本或所有合法例外都已自動驗證。', '', 'manual 可與 verified 並存，表示該小節仍有工具無法替代的審查或尚待實作的契約測試；candidate 包含失敗候選，不是啟用建議。實證版本、合成範例與漏報限制見 rule-map.yml 的 note。', '']
 documents.each do |doc|
   path = doc.relative_path_from(ROOT).to_s
   lines += ["## #{doc.basename}", '']
-  table(lines,%w[小節 錨點 等級 tier 工具與規則 status CI層候選],rows.select { |r| r['rule'].start_with?(path+'#') }.map { |r| [r['title'],r['rule'].split('#').last,r['level'],r['tier'],"#{r['tool']}：#{r['check']}（#{r['id']}）",r['status'],r['tier'].start_with?('ci-') ? '是（待本庫重跑）' : '—'] })
+  table(lines,%w[小節 錨點 等級 tier 工具與規則 status CI層候選],rows.select { |r| r['rule'].start_with?(path+'#') }.map { |r| [r['title'],r['rule'].split('#').last,r['level'],r['tier'],"#{r['tool']}：#{r['check']}（#{r['id']}）",r['status'],r['tier'].start_with?('ci-') ? (r['status'] == 'verified' ? '否（本庫已重跑）' : '是（未達 verified）') : '—'] })
 end
 lines += ['## 自訂規則清單', '', '同名規則可對應多個小節；XPath 為來源的完整字串，HTML 跳脫只為安全顯示，原值以 YAML 為準。ArchUnit 自訂規則不使用 XPath。', '']
 rows.select { |r| r['check'].start_with?('custom:') }.group_by { |r| [r['tool'],r['check']] }.each do |(tool,check),group|

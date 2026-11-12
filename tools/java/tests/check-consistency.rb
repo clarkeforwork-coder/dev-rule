@@ -64,5 +64,99 @@ check = ->(ok, message) { errors << message unless ok }
   end
 end
 check.call(!Dir.exist?(File.join(root, 'tools/java/pmd/rules')), '不應有獨立 PMD 自訂規則副本')
+ci_rows = rows.select { |r| %w[javac errorprone spotbugs].include?(r['tool']) }
+ci_rows.select { |r| r['status'] == 'verified' }.each do |row|
+  check.call(row['note'].match?(/CI實證JDK=(?:8|11|17|21)(?:,(?:8|11|17|21))*；/), "#{row['id']} 缺少 CI 實證平台")
+end
+%w[include include-candidates].each do |set|
+  content = File.read(File.join(root, "tools/java/spotbugs/#{set}.xml"))
+  patterns = REXML::XPath.match(REXML::Document.new(content), '//Bug').map { |n| n.attributes['pattern'] }
+  expected = rows.select { |r| r['tool'] == 'spotbugs' && (set == 'include-candidates' ? r['status'] == 'candidate' : %w[verified partial].include?(r['status'])) }
+  check.call(patterns.sort == expected.map { |r| r['check'] }.uniq.sort, "SpotBugs #{set} 集合不符或重複")
+  expected.each { |r| check.call(content.include?("[#{r['id']}] #{r['title']} → #{r['rule']}"), "#{r['id']} SpotBugs 訊息註解不符") }
+end
+properties = File.readlines(File.join(root, 'tools/java/spotbugs/pattern-map.properties')).reject { |s| s.start_with?('#') || s.strip.empty? }
+mapping = properties.to_h do |line|
+  key, value = line.strip.split('=', 2)
+  [key, value.gsub(/\\u([0-9a-f]{4})/i) { [$1.to_i(16)].pack('U') }]
+end
+expected = rows.select { |r| r['tool'] == 'spotbugs' }.group_by { |r| r['check'] }.transform_values do |group|
+  group.map { |r| "[#{r['id']}] #{r['title']} → #{r['rule']}" }.join('；')
+end
+rows.select { |r| r['tool'] == 'spotbugs' }.group_by { |r| r['check'] }.each { |name, group| expected[name + '.level'] = group.any? { |r| r['level'] == 'error' } ? 'error' : 'warn' }
+check.call(mapping == expected && mapping.size == properties.size, 'SpotBugs pattern-map 缺漏、重複或訊息不符')
+[8, 11, 17, 21].each do |jdk|
+  lint = File.readlines(File.join(root, "tools/java/javac/lint-jdk#{jdk}.txt")).grep(/^-Xlint:/).flat_map { |line| line.strip.delete_prefix('-Xlint:').split(',') }
+  mapped_lint = rows.select { |r| r['tool'] == 'javac' && r['versions'].include?(jdk) && r['check'].start_with?('-Xlint:') }.flat_map { |r| r['check'].delete_prefix('-Xlint:').split(/[ ,]/) }
+  required_lint = rows.select { |r| r['tool'] == 'javac' && %w[verified partial].include?(r['status']) && r['versions'].include?(jdk) && r['check'].start_with?('-Xlint:') }.flat_map { |r| r['check'].delete_prefix('-Xlint:').split(/[ ,]/).reject { |category| category.start_with?('-') } }
+  check.call((required_lint - lint).empty?, "javac JDK #{jdk} 缺少 verified／partial 類別：#{required_lint - lint}")
+  check.call((lint - mapped_lint).empty?, "javac JDK #{jdk} 啟用未映射類別")
+  content = File.read(File.join(root, "tools/java/errorprone/flags-jdk#{jdk}.txt"))
+  active = content.lines.map(&:strip).reject { |s| s.empty? || s.start_with?('#') }
+  check.call(active.first == '-XepDisableAllChecks' && active.uniq == active, "Error Prone JDK #{jdk} 預設檢查未關閉或重複參數")
+  expected = rows.select { |r| r['tool'] == 'errorprone' }.group_by { |r| r['check'] }
+  expected.each do |name, group|
+    group.each { |r| check.call(content.include?("[#{r['id']}] #{r['title']} → #{r['rule']}"), "#{r['id']} Error Prone 註解不符") }
+    severity = group.any? { |r| r['level'] == 'error' } ? 'ERROR' : 'WARN'
+    flag = "-Xep:#{name}:#{severity}"
+    unavailable = jdk <= 11 && %w[NonApiType IdentifierName].include?(name)
+    unavailable ||= jdk == 17 && name == 'SuppressWarningsWithoutExplanation'
+    enabled = !unavailable && group.any? { |r| %w[partial verified].include?(r['status']) }
+    check.call(enabled ? active.include?(flag) : !active.any? { |f| f.start_with?("-Xep:#{name}:") }, "Error Prone #{jdk}/#{name} 候選隔離、版本或等級不符")
+  end
+  check.call(active.drop(1).all? { |f| f.match?(/\A-Xep:[A-Za-z0-9]+:(?:ERROR|WARN)\z/) && expected.key?(f.split(':')[1]) }, "Error Prone #{jdk} 未登錄參數")
+end
+puts "CI 設定：#{ci_rows.size} 映射，SpotBugs 候選隔離／診斷對照與四版 Error Prone 參數。"
+# 合併完整性：全部工具、profile 鍵、CI build 映射與階段唯一性。
+known = %w[pmd checkstyle javac errorprone spotbugs archunit jdeps jdeprscan maven-enforcer gradle none]
+check.call((rows.map { |r| r['tool'] }.uniq - known).empty?, '未知工具')
+Dir.glob(File.join(root, 'tools/java/profiles/jdk*.env')).each do |file|
+  keys = File.readlines(file).map { |line| line[/\A([A-Z0-9_]+)=/, 1] }.compact
+  check.call(keys.uniq == keys, "#{file} 重複 profile 鍵")
+  %w[ERRORPRONE_VERSION ERRORPRONE_SHA256 SPOTBUGS_VERSION SPOTBUGS_SHA256 ARCHUNIT_VERSION ARCHUNIT_SHA256].each do |key|
+    check.call(keys.include?(key), "#{file} 缺少 #{key}")
+  end
+end
+sources = {
+  'archunit' => %w[archunit/RulesTemplate.java], 'jdeps' => %w[build/jdeps.sh],
+  'jdeprscan' => %w[build/jdeprscan.sh], 'maven-enforcer' => %w[build/maven-enforcer.xml],
+  'gradle' => %w[build/gradle-enforcer.gradle.kts]
+}
+sources.each do |tool, files|
+  content = files.map { |file| File.read(File.join(root, 'tools/java', file)) }.join("\n")
+  rows.select { |r| r['tool'] == tool && r['status'] != 'candidate' }.each do |row|
+    check.call(content.include?(row['id']), "#{tool} 缺少映射 #{row['id']}")
+  end
+end
+stages = File.readlines(File.join(root, 'tools/java/tests/run-all.sh')).grep(/^\s*run /).map(&:strip)
+check.call(stages.uniq == stages, 'run-all 重複階段')
+puts '建置設定：ArchUnit／jdeps／jdeprscan／Enforcer／Gradle、四版 profile 與階段完整性。'
+workflow = YAML.load_file(File.join(root, '.github/workflows/java-rules.yml'))
+caller = YAML.load_file(File.join(root, 'tools/java/ci/github/caller.yml'))
+events = workflow['on'] || workflow[true] # Psych YAML 1.1 將 on 視為 boolean。
+inputs = events.fetch('workflow_call').fetch('inputs')
+provided = caller.fetch('jobs').fetch('java-rules').fetch('with')
+check.call((provided.keys - inputs.keys).empty? && inputs.select { |_, v| v['required'] }.keys.all? { |key| provided.key?(key) }, '五行 caller 與 workflow inputs 不符')
+check.call(caller['jobs']['java-rules']['uses'].include?('/.github/workflows/java-rules.yml@'), 'caller 未引用正式 workflow')
+check.call(workflow['jobs']['rules']['steps'].any? { |step| step['run'].to_s.include?('dev-rule/tools/java/ci/github/run.sh') }, 'workflow 未使用正式 runner')
+upload = workflow['jobs']['rules']['steps'].find { |step| step['uses'].to_s.start_with?('actions/upload-artifact@') }.fetch('with')
+check.call(upload['include-hidden-files'] == true && upload['path'].include?('/java-rules-reports/'), 'workflow artifact 未使用可見報告路徑與隱藏檔保護')
+demo = File.join(root, 'tools/java/tests/demo-maven')
+fragment = File.read(File.join(root, 'tools/java/ci/maven/pom-fragment.xml')).sub('${maven.multiModuleProjectDirectory}/vendor/dev-rule', '${project.basedir}/../../../..')
+canonical_enforcer = REXML::Document.new(File.read(File.join(root, 'tools/java/build/maven-enforcer.xml'))).root
+fragment_enforcer = REXML::XPath.first(REXML::Document.new(fragment), '//build/plugins/plugin[artifactId="maven-enforcer-plugin"]')
+normalize_xml = lambda do |node|
+  [node.name, node.attributes.to_a.map { |a| [a.name, a.value] }.sort,
+   node.texts.map { |t| t.value.strip }.reject(&:empty?), node.elements.map { |child| normalize_xml.call(child) }]
+end
+check.call(normalize_xml.call(canonical_enforcer) == normalize_xml.call(fragment_enforcer), '正式片段與 Maven Enforcer 規則不同步')
+check.call(File.read(File.join(demo, 'pom.xml')) == fragment, '示範 POM 與正式片段不同步')
+check.call(File.read(File.join(demo, 'src/test/java/com/example/RulesTemplate.java')) == "package com.example;\n" + File.read(File.join(root, 'tools/java/archunit/RulesTemplate.java')), '示範架構範本不同步')
+demo_job = YAML.load_file(File.join(root, '.github/workflows/rules-check.yml')).fetch('jobs').fetch('java-demo')
+check.call(demo_job['uses'] == './.github/workflows/java-rules.yml' && demo_job.fetch('with') == {
+  'build-tool' => 'maven', 'java-version' => '17',
+  'project-directory' => 'tools/java/tests/demo-maven'
+}, '本庫示範 caller 未引用同一提交的正式 workflow')
+puts 'Workflow：正式 YAML、最小五行 caller 與輸入契約通過。'
 puts errors.empty? ? '一致性：零問題（雙向映射、候選隔離、訊息、等級、內嵌 XPath）。' : errors.join("\n")
 exit(errors.empty? ? 0 : 1)
