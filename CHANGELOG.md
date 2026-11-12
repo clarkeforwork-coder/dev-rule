@@ -6,7 +6,7 @@
 
 ### 修正
 
-- 依 PR #11 第二份審查修正：拒絕 Maven 靜默略過 JUnit 4、統一 ArchUnit 核心與 JUnit BOM、補空檔基準及專案內 helper 快取，啟用 strict checksums、Maven CI 快取與 checkout 憑證隔離；JUnit 4 標為 legacy 過渡。
+- 依 PR #11 第二份審查修正：拒絕 Maven 靜默略過 JUnit 4、統一 ArchUnit 核心與 JUnit BOM、補空檔基準及專案內 helper 快取，啟用 strict checksums、Maven CI 快取與 checkout 憑證隔離；JUnit 4 標為 legacy 過渡。複核補上兩種框架共用的 JUnit Platform 防護與遞移 JUnit 排除回歸、鎖逾時復原提示、Jupiter／Vintage BOM 優先序及離線／mirror 說明，移除不跑 Maven 的 job 快取並校正 baseline 快取環境需求。
 
 - Maven 測試依賴改以 `dev-rule.test-framework` 選擇 JUnit 5（預設）或 JUnit 4，補上原有測試與架構測試回歸；Gradle 明確傳入空 processor path，讓替換編譯與原生 annotation processor 探索一致；補充消費端 CODEOWNERS 治理及門檻設定在專案內的限制。
 

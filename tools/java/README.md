@@ -71,9 +71,13 @@ Gradle 不注入測試依賴或強制框架；Maven 以 `dev-rule.test-framework
 
 ### Maven 測試依賴對齊與 helper 快取
 
-預設 profile 以 `org.junit:junit-bom` import 管理 JUnit，`junit-jupiter` 不單獨指定版本；兩種框架一律只需 `com.tngtech.archunit:archunit:1.4.1`。有 `junit:junit` 卻沒有 Vintage 時，AntRun 3.1.0 在 validate 依 Maven 解析的 test 依賴座標拒絕建置，訊息指示選用 legacy profile 或加入 Vintage，消費端不需 Ruby／Python。Enforcer 的 bannedDependencies 無法用另一座標的存在作為豁免條件，因此採這個條件檢查。
+預設 profile 以 `org.junit:junit-bom` import 管理 JUnit，`junit-jupiter` 不單獨指定版本；兩種框架一律只需 `com.tngtech.archunit:archunit:1.4.1`。兩種框架選擇都會檢查：有 `junit:junit`、有 Jupiter／Platform engine 且沒有 Vintage 時（預設 JUnit 5 profile 本身注入 Jupiter，因此保留有 JUnit 4 無 Vintage 即拒絕的條件），AntRun 3.1.0 在 validate 依 Maven 解析的 test 依賴座標拒絕建置，訊息指示純 JUnit 4 專案選用 legacy profile，混用則加入 Vintage（不寫版本、由 BOM 管理），消費端不需 Ruby／Python。Enforcer 的 bannedDependencies 無法用另一座標的存在作為豁免條件，因此採這個條件檢查。
 
-Maven 3.9.9 實測：專案另 import `junit-bom:5.11.4` 時，profile BOM 優先，Jupiter aggregator／api／engine 都解析為 5.12.2、Platform 為 1.12.2。專案要使用 5.11.4，須將 `dev-rule.junit.version` 設為 5.11.4（POM properties 或 `-Ddev-rule.junit.version=5.11.4`），讓片段 BOM 與專案一致；不要僅覆寫單一 JUnit artifact。Vintage 同樣不另寫版本，交給此 BOM 管理。
+若 `junit:junit` 是遞移引入（例如 testcontainers 1.x），先執行 `mvn dependency:tree -Dincludes=junit:junit` 查詢來源，再在引入它的依賴加 `<exclusions><exclusion><groupId>junit</groupId><artifactId>junit</artifactId></exclusion></exclusions>` 排除，或升級至不再引入 JUnit 4 的版本。
+
+新增的 `maven-antrun-plugin:3.1.0` 與其 Ant 依賴需先取得；使用離線模式（`-o`）或內部 mirror 時，請預先快取或提供這些 artifacts。
+
+Maven 3.9.9 實測：專案另 import `junit-bom:5.11.4` 時，profile BOM 優先，Jupiter aggregator／api／engine 都解析為 5.12.2、Platform 為 1.12.2。專案要使用 5.11.4，須將 `dev-rule.junit.version` 設為 5.11.4（POM properties 或 `-Ddev-rule.junit.version=5.11.4`），讓片段 BOM 與專案一致；直接寫在依賴上的 Jupiter 版本也會被片段 BOM 覆寫，請改用 `dev-rule.junit.version`，不要僅覆寫單一 JUnit artifact。Vintage 同樣不另寫版本，交給此 BOM 管理。
 
 PolicyCompiler、SpotbugsSummary、ArchitectureReports 與建置內的 Baseline 以來源 SHA-256＋JDK 版本為鍵，在 Maven `target/dev-rule-tools/` 或 Gradle `build/dev-rule-tools/` 重用；來源改動便重編，clean 刪除快取。呼叫端可設 `DEV_RULE_TOOLS_DIR`（自訂 Maven build directory 時亦須設定），不得指向跨專案共用目錄。Java 8 相容的 bootstrap 以完整來源查找自己的 SHA-256 目錄，原始碼未改不重編；SHA-256 由 Java 計算，無新增雜湊命令依賴。所有編譯產物先寫同檔案系統的暫存目錄，再原子 rename 公開；僅信任專案建置目錄內的 class，不使用全域 class 快取。
 
@@ -103,7 +107,7 @@ jobs:
 | javac／jdeps | 隨 JDK | 隨 JDK | 隨 JDK | 隨 JDK |
 | jdeprscan | 不提供 | 隨 JDK | 隨 JDK | 隨 JDK |
 
-Maven 驗收 3.9.9、Gradle 8.14.3；Maven compiler 3.13.0、Checkstyle 3.6.0、PMD 3.28.0、SpotBugs 4.8.6.6、Enforcer 3.5.0、Surefire 3.5.2、JUnit Jupiter／BOM 5.12.2（JUnit 4 選項為 4.13.2）。URL／SHA-256 見 [profiles](profiles)、[建置工具鎖檔](build/tool-artifacts.lock) 與 PMD lock。建置工具 lock 的外掛固定雜湊僅供參考，全面固定雜湊仍是下一期。Maven CI 以 strict checksums（-C）校驗下載完整性，僅防傳輸損毀，非固定雜湊；Gradle 需消費端自行啟用 `gradle/verification-metadata.xml`；workflow 的 Maven 安裝器會讀取並驗證其中的 Maven SHA。JDK 8 Error Prone 另需已固定的 javac `9+181-r4173-1` bridge。工具執行 JDK 與產物 API 基線不同；不要只改 source／target 就宣稱跨版本 API 安全。
+Maven 驗收 3.9.9、Gradle 8.14.3；Maven compiler 3.13.0、Checkstyle 3.6.0、PMD 3.28.0、SpotBugs 4.8.6.6、Enforcer 3.5.0、Surefire 3.5.2、JUnit Jupiter／BOM 5.12.2（JUnit 4 選項為 4.13.2）。URL／SHA-256 見 [profiles](profiles)、[建置工具鎖檔](build/tool-artifacts.lock) 與 PMD lock。建置工具 lock 的外掛固定雜湊僅供參考，全面固定雜湊仍是下一期。Maven CI 以 strict checksums（-C）校驗下載完整性，僅防傳輸損毀，非固定雜湊；內部 mirror 必須提供 `.sha1`／`.md5` 校驗檔，缺少時 `-C` 也會失敗；Gradle 需消費端自行啟用 `gradle/verification-metadata.xml`；workflow 的 Maven 安裝器會讀取並驗證其中的 Maven SHA。JDK 8 Error Prone 另需已固定的 javac `9+181-r4173-1` bridge。工具執行 JDK 與產物 API 基線不同；不要只改 source／target 就宣稱跨版本 API 安全。
 
 ## 診斷與精確基準
 

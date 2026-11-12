@@ -10,7 +10,9 @@ JUnit 5 為預設；JUnit 4 僅供既有專案過渡（legacy）。兩份測試�
 
 - JUnit 5 專案：`junit5/RulesTemplateTest.java`，test scope 加入 `com.tngtech.archunit:archunit:1.4.1` 與 `org.junit.jupiter:junit-jupiter:5.12.2`。Maven 正式片段預設提供這組依賴；Surefire 3.5.2 自動選用 JUnit Platform。
 - JUnit 4 專案：`junit4/RulesTemplateTest.java`，test scope 加入 `com.tngtech.archunit:archunit:1.4.1` 與 `junit:junit:4.13.2`。Maven 設定 `-Ddev-rule.test-framework=junit4`（可寫入 `.mvn/maven.config`），由 profile 注入這組依賴；未指定或 `junit5` 則使用 JUnit 5。不要只在 POM properties 設定此選擇值，profile activation 不讀同一 POM 的屬性。
-- JUnit Platform 混跑 JUnit 4／5：另加入 test runtime `org.junit.vintage:junit-vintage-engine:5.12.2`；Maven 預設 profile 會拒絕有 JUnit 4 而沒有 Vintage 的依賴組合，避免靜默跳過測試。版本應與專案的 JUnit BOM 對齊。Maven profile BOM 預設 5.12.2 會優先於專案另 import 的 5.11.4；需要 5.11.4 時將 dev-rule.junit.version 設為 5.11.4，Jupiter／Vintage 不另寫版本。
+- JUnit Platform 混跑 JUnit 4／5：另加入 test runtime `org.junit.vintage:junit-vintage-engine`（不寫版本、由 BOM 管理）；Maven 兩種框架選擇都會拒絕同時有 JUnit 4、Jupiter／Platform engine 而沒有 Vintage 的依賴組合；預設 JUnit 5 profile 保留有 JUnit 4 無 Vintage 即拒絕的條件，避免靜默跳過測試。版本應與專案的 JUnit BOM 對齊。Maven profile BOM 預設 5.12.2 會優先於專案另 import 的 5.11.4；需要 5.11.4 時將 dev-rule.junit.version 設為 5.11.4，直接寫在依賴上的 Jupiter 版本也會被片段 BOM 覆寫，請改 `dev-rule.junit.version`；Jupiter／Vintage 不寫版本、由 BOM 管理。
+
+若 `junit:junit` 是遞移引入（例如 testcontainers 1.x），先用 `mvn dependency:tree -Dincludes=junit:junit` 查詢，再在該依賴加 `<exclusions><exclusion><groupId>junit</groupId><artifactId>junit</artifactId></exclusion></exclusions>` 排除或升級至不再引入 JUnit 4 的版本。
 
 Gradle 片段不注入任何測試依賴、不設定測試框架。JUnit 5 消費端範例：
 

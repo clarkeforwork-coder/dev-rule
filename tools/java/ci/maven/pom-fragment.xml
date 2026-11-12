@@ -23,6 +23,7 @@
     <!-- 以 -Ddev-rule.test-framework=junit4 選用 JUnit 4；未指定預設 JUnit 5。 -->
     <profile>
       <id>dev-rule-junit5</id>
+      <properties><dev-rule.junit5.active>true</dev-rule.junit5.active></properties>
       <activation>
         <property>
           <name>dev-rule.test-framework</name>
@@ -53,36 +54,6 @@
           <scope>test</scope>
         </dependency>
       </dependencies>
-      <!-- bannedDependencies 的 includes 只排除同一座標，無法表達有 A 且無 B。
-           AntRun 使用 Maven 解析的依賴座標（含 test／遞移），不依賴外部腳本語言。 -->
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>3.1.0</version>
-            <executions>
-              <execution>
-                <id>dev-rule-junit-provider</id>
-                <phase>validate</phase>
-                <goals><goal>run</goal></goals>
-                <configuration>
-                  <target>
-                    <fail message="JUnit 4 專案設 -Ddev-rule.test-framework=junit4（或寫在 .mvn/maven.config），混用加 org.junit.vintage:junit-vintage-engine">
-                      <condition>
-                        <and>
-                          <isset property="junit:junit:jar"/>
-                          <not><isset property="org.junit.vintage:junit-vintage-engine:jar"/></not>
-                        </and>
-                      </condition>
-                    </fail>
-                  </target>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
     <profile>
       <id>dev-rule-junit4</id>
@@ -171,6 +142,37 @@
   </profiles>
   <build>
     <plugins>
+      <!-- bannedDependencies 無法表達有 A 且無 B；共用檢查涵蓋兩種框架。
+           AntRun 使用 Maven 解析的依賴座標（含 test／遞移），不依賴外部腳本語言。 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>dev-rule-junit-provider</id>
+            <phase>validate</phase>
+            <goals><goal>run</goal></goals>
+            <configuration>
+              <target>
+                <fail message="純 JUnit 4 專案設 -Ddev-rule.test-framework=junit4（或寫在 .mvn/maven.config）；若同時有 JUnit Platform engine，混用須加 org.junit.vintage:junit-vintage-engine（不寫版本、由 JUnit BOM 管理）。若 junit:junit 是遞移引入（例如 testcontainers 1.x），在該依賴加 &lt;exclusion&gt; 排除或升級；以 mvn dependency:tree -Dincludes=junit:junit 查詢來源。">
+                  <condition>
+                    <and>
+                      <isset property="junit:junit:jar"/>
+                      <or>
+                        <equals arg1="${dev-rule.junit5.active}" arg2="true"/>
+                        <isset property="org.junit.jupiter:junit-jupiter-engine:jar"/>
+                        <isset property="org.junit.platform:junit-platform-engine:jar"/>
+                      </or>
+                      <not><isset property="org.junit.vintage:junit-vintage-engine:jar"/></not>
+                    </and>
+                  </condition>
+                </fail>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>

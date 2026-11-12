@@ -24,7 +24,7 @@ helper_classes() (
         attempts=0
         until mkdir "$lock" 2>/dev/null; do
             attempts=$((attempts + 1))
-            [ "$attempts" -lt 60 ] || { echo "helper 快取鎖逾時：$lock" >&2; exit 2; }
+            [ "$attempts" -lt 60 ] || { echo "helper 快取鎖逾時：${lock}；確認沒有其他建置執行後刪除此鎖目錄或執行 clean" >&2; exit 2; }
             sleep 1
         done
         work=

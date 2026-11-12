@@ -156,6 +156,14 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     puts "PASS #{tool}-junit4-original tests=1 skipped=0"
     check_reports.call('junit4')
     if tool == 'maven'
+      # junit4 選擇不能讓自帶 Platform engine 的專案靜默略過 JUnit 4。
+      [['org.junit.jupiter', 'junit-jupiter', '5.12.2'],
+       ['org.junit.platform', 'junit-platform-engine', '1.12.2']].each do |group, artifact, version|
+        engine = "<dependency><groupId>#{group}</groupId><artifactId>#{artifact}</artifactId><version>#{version}</version><scope>test</scope></dependency>"
+        File.write(build_file, junit4_build.sub('</dependencies>', engine + '</dependencies>'))
+        output = run(dir, "maven-junit4-with-#{artifact}-no-vintage", junit4_cmd + full, expected: 1)
+        raise '混用未由共用防護拒絕' unless output.include?('dev-rule-junit-provider') && output.include?('若同時有 JUnit Platform engine')
+      end
       # 合併頂層 dependencies，避免兩個同層元素。
       mixed = junit4_build.sub('</dependencies>', '<dependency><groupId>org.junit.vintage</groupId><artifactId>junit-vintage-engine</artifactId><scope>test</scope></dependency></dependencies>')
       File.write(build_file, mixed)
@@ -178,6 +186,32 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     File.delete(ordinary_test)
     File.write(build_file, original_build)
     File.write(test_file, test_source)
+    if tool == 'maven'
+      # 本機 Maven repository 模擬第三方函式庫遞移帶入 JUnit 4，不下載 testcontainers。
+      fixture_repo = "#{dir}/fixture-repository"
+      fixture_path = "#{fixture_repo}/example/transitive-junit/1.0"
+      FileUtils.mkdir_p(fixture_path)
+      FileUtils.mkdir_p("#{dir}/empty-jar")
+      run(dir, 'maven-transitive-fixture-jar', ["#{JDK}/bin/jar", 'cf', "#{fixture_path}/transitive-junit-1.0.jar", '-C', "#{dir}/empty-jar", '.'])
+      File.write("#{fixture_path}/transitive-junit-1.0.pom", <<~XML)
+        <project><modelVersion>4.0.0</modelVersion><groupId>example</groupId><artifactId>transitive-junit</artifactId><version>1.0</version>
+        <dependencies><dependency><groupId>junit</groupId><artifactId>junit</artifactId><version>4.13.2</version></dependency></dependencies></project>
+      XML
+      dependency = '<dependency><groupId>example</groupId><artifactId>transitive-junit</artifactId><version>1.0</version><scope>test</scope></dependency>'
+      repository = "<repositories><repository><id>transitive-fixture</id><url>file://#{fixture_repo}</url></repository></repositories>"
+      transitive = original_build.sub('  <profiles>', repository + '<dependencies>' + dependency + '</dependencies>  <profiles>')
+      File.write(build_file, transitive)
+      output = run(dir, 'maven-junit5-transitive-junit4', cmd + full, expected: 1)
+      raise '缺少遞移依賴修正指引' unless output.include?('dev-rule-junit-provider') && output.include?('<exclusion>') && output.include?('升級') && output.include?('mvn dependency:tree -Dincludes=junit:junit')
+      tree = run(dir, 'maven-junit5-transitive-tree', cmd + ['dependency:tree', '-Dincludes=junit:junit'])
+      raise 'fixture 未遞移引入 JUnit 4' unless tree.include?('example:transitive-junit:jar:1.0') && tree.include?('junit:junit:jar:4.13.2')
+      puts tree.lines.grep(/example:transitive-junit|junit:junit/)
+      exclusion = '<exclusions><exclusion><groupId>junit</groupId><artifactId>junit</artifactId></exclusion></exclusions>'
+      File.write(build_file, transitive.sub(dependency, dependency.sub('</dependency>', exclusion + '</dependency>')))
+      run(dir, 'maven-junit5-transitive-excluded', cmd + full)
+      check_reports.call('junit5-transitive-excluded')
+      File.write(build_file, original_build)
+    end
     if tool == 'gradle'
       processor_dir = "#{dir}/processor-classes"
       FileUtils.mkdir_p("#{processor_dir}/META-INF/services")

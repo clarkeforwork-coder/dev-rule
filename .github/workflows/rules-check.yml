@@ -21,10 +21,6 @@ jobs:
       - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
           distribution: temurin
-          cache: maven
-          cache-dependency-path: |
-            tools/java/ci/maven/pom-fragment.xml
-            tools/java/tests/demo-maven/pom.xml
           java-version: '21'
       - name: 檢查規範
         run: ruby scripts/check-rules.rb
