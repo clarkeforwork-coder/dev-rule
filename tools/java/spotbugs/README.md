@@ -26,7 +26,7 @@ java -jar /path/to/spotbugs-4.8.6/lib/spotbugs.jar -textui -effort:default -low 
 
 `-low` 必須保留，否則 REC／THROWS 等低優先模式可能不輸出。不要只用退出碼判斷沒有違規：未加 `-exitcode` 時成功產出報告可仍有 BugInstance。CI 應讀取 XML，檢查 Errors／MissingClass，依 rule-map 的 error／warn 決定阻擋；若使用 `-exitcode`，其 bitmask 同時包含違規、缺失類別與分析錯誤，不能把非零一律視為業務違規。
 
-使用 [Maven 正式片段](../ci/maven/pom-fragment.xml) 的 threshold=Low／effort=Max，或 [Gradle 正式片段](../ci/gradle/rules.gradle.kts) 的 JavaExec（-low／-effort:max）；Gradle 不使用額外 SpotBugs plugin。兩者固定 core 4.8.6，經 SpotbugsSummary 依 pattern-map 的 `.level` 判定：warn 只列出，error 才阻擋。消費端不需要 Ruby／Python。
+使用 [Maven 正式片段](../ci/maven/pom-fragment.xml) 的 threshold=Low／effort=Default，或 [Gradle 正式片段](../ci/gradle/rules.gradle.kts) 的 JavaExec（-low／-effort:default）；Gradle 不使用額外 SpotBugs plugin。兩者固定 core 4.8.6，經 SpotbugsSummary 依 pattern-map 的 `.level` 判定：warn 只列出，error 才阻擋。消費端不需要 Ruby／Python。
 
 ## 規範診斷
 
@@ -38,7 +38,7 @@ SpotBugs 原生訊息不能覆寫。`pattern-map.properties` 將 pattern 對應�
 
 ## effort 比較
 
-以 JDK 17.0.19、SpotBugs 4.8.6 重跑 `tests/run-ci-tools.rb` 的 16 筆 SpotBugs 映射（包含 candidate），只變更 effort：default 與 max 的逐例命中結果完全相同，皆為 8 筆正反例通過、0 筆工具錯誤／verified 回歸。建議新接入使用 default；目前正式 Maven／Gradle 片段仍保留 Max，收尾時可同步調整。
+以 JDK 17.0.19、SpotBugs 4.8.6 重跑 `tests/run-ci-tools.rb` 的 16 筆 SpotBugs 映射（包含 candidate），只變更 effort：default 與 max 的逐例命中結果完全相同，皆為 8 筆正反例通過、0 筆工具錯誤／verified 回歸。正式 Maven／Gradle 片段已統一使用 default；仍保留 Low threshold。
 
 | default 與 max 皆命中違反例，且符合例無誤報 | 兩者皆未命中原違反例 |
 | --- | --- |

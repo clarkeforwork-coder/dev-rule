@@ -11,7 +11,7 @@ val devRuleRoot = providers.gradleProperty("devRuleRoot").getOrElse("vendor/dev-
 apply(from = "$devRuleRoot/tools/java/ci/gradle/rules.gradle.kts")
 ```
 
-`run.sh` 只執行一次 `mvn -Pdev-rule-baseline clean verify` 或 `./gradlew -PdevRuleBaseline clean check`，接著以 Java XML parser 驗證首次建置的 `RulesTemplateTest` JUnit XML，須 `tests > 0` 且 `skipped < tests`。Maven 讀 `target/surefire-reports/TEST-*RulesTemplateTest.xml`；Gradle 讀 `build/test-results/*/TEST-*RulesTemplateTest.xml`。缺少報告、零測試或全部略過均失敗，不再用第二次建置補跑。JUnit 5 專案需提供可實際執行架構測試的 engine／測試版本。
+`run.sh` 只執行一次 `mvn -Pdev-rule-baseline clean verify` 或 `./gradlew -PdevRuleCompilerReplacement=on -PdevRuleBaseline clean check`，接著以 Java XML parser 驗證首次建置的 `RulesTemplateTest` JUnit XML，須 `tests > 0` 且 `skipped < tests`。Maven 讀 `target/surefire-reports/TEST-*RulesTemplateTest.xml`；Gradle 讀 `build/test-results/*/TEST-*RulesTemplateTest.xml`。缺少報告、零測試或全部略過均失敗，不再用第二次建置補跑。JUnit 5 專案需提供可實際執行架構測試的 engine／測試版本。
 
 Maven 一律使用 workflow 安裝的 3.9.9，不使用專案 `mvnw`；版本與 SHA-256 由 `build/tool-artifacts.lock` 供共用 `install-maven.sh` 讀取。Gradle 使用消費端 `./gradlew`，專案須提交 wrapper。setup-java 依建置工具快取依賴，另快取 `~/.cache/dev-rule`。
 

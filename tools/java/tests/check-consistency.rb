@@ -143,6 +143,13 @@ upload = workflow['jobs']['rules']['steps'].find { |step| step['uses'].to_s.star
 check.call(upload['include-hidden-files'] == true && upload['path'].include?('/java-rules-reports/'), 'workflow artifact 未使用可見報告路徑與隱藏檔保護')
 demo = File.join(root, 'tools/java/tests/demo-maven')
 fragment = File.read(File.join(root, 'tools/java/ci/maven/pom-fragment.xml')).sub('${maven.multiModuleProjectDirectory}/vendor/dev-rule', '${project.basedir}/../../../..')
+canonical_enforcer = REXML::Document.new(File.read(File.join(root, 'tools/java/build/maven-enforcer.xml'))).root
+fragment_enforcer = REXML::XPath.first(REXML::Document.new(fragment), '//build/plugins/plugin[artifactId="maven-enforcer-plugin"]')
+normalize_xml = lambda do |node|
+  [node.name, node.attributes.to_a.map { |a| [a.name, a.value] }.sort,
+   node.texts.map { |t| t.value.strip }.reject(&:empty?), node.elements.map { |child| normalize_xml.call(child) }]
+end
+check.call(normalize_xml.call(canonical_enforcer) == normalize_xml.call(fragment_enforcer), '正式片段與 Maven Enforcer 規則不同步')
 check.call(File.read(File.join(demo, 'pom.xml')) == fragment, '示範 POM 與正式片段不同步')
 check.call(File.read(File.join(demo, 'src/test/java/com/example/RulesTemplate.java')) == "package com.example;\n" + File.read(File.join(root, 'tools/java/archunit/RulesTemplate.java')), '示範架構範本不同步')
 demo_job = YAML.load_file(File.join(root, '.github/workflows/rules-check.yml')).fetch('jobs').fetch('java-demo')

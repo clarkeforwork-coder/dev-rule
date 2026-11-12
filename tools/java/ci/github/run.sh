@@ -34,7 +34,7 @@ maven)
     reports='target/pmd.xml target/checkstyle-result.xml target/spotbugsXml.xml'
     ;;
 gradle)
-    run verify ./gradlew --no-daemon "-PdevRuleRoot=$root" -PdevRuleBaseline clean check
+    run verify ./gradlew --no-daemon "-PdevRuleRoot=$root" -PdevRuleCompilerReplacement=on -PdevRuleBaseline clean check
     set -- build/test-results/*/TEST-*RulesTemplateTest.xml
     reports='build/reports/pmd/main.xml build/reports/pmd/test.xml build/reports/checkstyle/main.xml build/reports/checkstyle/test.xml build/reports/spotbugs/main.xml build/reports/spotbugs/test.xml'
     ;;

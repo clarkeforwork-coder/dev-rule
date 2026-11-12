@@ -2,7 +2,7 @@ package com.example;
 
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /** 驗證示範專案實際具備的內部套件邊界。 */
 public final class RulesTemplateTest {

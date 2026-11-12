@@ -16,7 +16,7 @@ abort '請指定 JAVA_HOME；完整矩陣另指定 JAVA8_HOME' if homes.empty?
 homes.each do |jdk|
   puts "執行期：#{jdk}"
   Dir.mktmpdir('baseline-test') do |dir|
-    env = {'JAVA_HOME'=>jdk, 'DEV_RULE_BASELINE_CACHE'=>File.join(dir, 'cache')}
+    env = {'JAVA_HOME'=>jdk}
     source = File.join(dir, 'Sample.java')
     baseline = File.join(dir, 'baseline.tsv')
     pmd = File.join(dir, 'pmd.xml')

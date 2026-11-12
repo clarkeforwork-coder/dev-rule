@@ -62,7 +62,7 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     package com.example;
     import com.tngtech.archunit.core.importer.ClassFileImporter;
     import com.tngtech.archunit.lang.ArchRule;
-    import org.junit.Test;
+    import org.junit.jupiter.api.Test;
     import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
     public final class RulesTemplateTest {
         /** 驗證已核准的內部套件可見性。 */
@@ -82,8 +82,8 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     .sub('[17,18)', "[#{major},#{major + 1})")
   File.write("#{dir}/pom.xml", pom)
   File.write("#{dir}/settings.gradle.kts", 'rootProject.name = "fixture"')
-  File.write("#{dir}/build.gradle.kts", "plugins { java }\nrepositories { mavenCentral() }\napply(from = \"${property(\"devRuleRoot\")}/tools/java/ci/gradle/rules.gradle.kts\")\n")
-  File.write("#{dir}/gradle.properties", "devRuleCompiler=#{major}\ndevRuleRelease=#{major}\ndevRuleBanned=no.such:artifact\norg.gradle.workers.max=2\n")
+  File.write("#{dir}/build.gradle.kts", "plugins { java }\nrepositories { mavenCentral() }\ndependencies { testImplementation(platform(\"org.junit:junit-bom:5.12.2\")); testImplementation(\"org.junit.jupiter:junit-jupiter\"); testImplementation(\"com.tngtech.archunit:archunit-junit5:1.4.1\"); testRuntimeOnly(\"org.junit.platform:junit-platform-launcher\") }\ntasks.test { useJUnitPlatform() }\napply(from = \"${property(\"devRuleRoot\")}/tools/java/ci/gradle/rules.gradle.kts\")\n")
+  File.write("#{dir}/gradle.properties", "devRuleCompiler=#{major}\ndevRuleRelease=#{major}\ndevRuleBanned=\norg.gradle.workers.max=2\n")
   {'maven'=>[mvn, '-B', "-Ddev-rule.root=#{ROOT}"], 'gradle'=>[gradle, '--no-daemon', '--console=plain', "-PdevRuleRoot=#{ROOT}"]}.each do |tool, cmd|
     unless available.call(cmd.first)
       skips << "#{tool} 整合：請設定 #{tool == 'maven' ? 'MVN_BIN' : 'GRADLE_BIN'} 或加入 PATH"
@@ -93,6 +93,28 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     full = tool == 'maven' ? %w[clean verify] : %w[clean check]
     compile = tool == 'maven' ? %w[clean test-compile] : %w[clean testClasses]
     run(dir, "#{tool}-good", cmd + full)
+    # 以兩種框架實際產生的首次建置 XML 驗證相同門檻。
+    checker_dir = File.join(OUT, 'architecture-checker')
+    FileUtils.mkdir_p(checker_dir)
+    run(dir, "#{tool}-checker-compile", ["#{JDK}/bin/javac", '-encoding', 'UTF-8', '-d', checker_dir, "#{ROOT}/tools/java/ci/github/ArchitectureReports.java"])
+    check_reports = lambda do |framework|
+      pattern = tool == 'maven' ? 'target/surefire-reports/TEST-*RulesTemplateTest.xml' : 'build/test-results/*/TEST-*RulesTemplateTest.xml'
+      run(dir, "#{tool}-#{framework}-xml", ["#{JDK}/bin/java", '-cp', checker_dir, 'ArchitectureReports'] + Dir.glob("#{dir}/#{pattern}"))
+    end
+    check_reports.call('junit5')
+    build_file = "#{dir}/#{tool == 'maven' ? 'pom.xml' : 'build.gradle.kts'}"
+    original_build = File.read(build_file)
+    junit4_build = if tool == 'maven'
+      original_build.sub('archunit-junit5', 'archunit-junit4').sub('<groupId>org.junit.jupiter</groupId>', '<groupId>junit</groupId>').sub('<artifactId>junit-jupiter</artifactId>', '<artifactId>junit</artifactId>').sub('<version>5.12.2</version>', '<version>4.13.2</version>')
+    else
+      original_build.sub(/dependencies \{.*?\}/, 'dependencies { testImplementation("junit:junit:4.13.2"); testImplementation("com.tngtech.archunit:archunit-junit4:1.4.1") }').sub('useJUnitPlatform()', 'useJUnit()')
+    end
+    File.write(build_file, junit4_build)
+    File.write(test_file, test_source.sub('org.junit.jupiter.api.Test', 'org.junit.Test'))
+    run(dir, "#{tool}-junit4-good", cmd + full)
+    check_reports.call('junit4')
+    File.write(build_file, original_build)
+    File.write(test_file, test_source)
     {
       'javac'=>["final class Hidden {\n java.util.List first;\n java.util.List second;\n java.util.List third;\n}", 'JV-TG-024'],
       'errorprone'=>['final class Hidden { void probe(String text) { text.trim(); } }', 'JV-LS-006']
@@ -108,7 +130,7 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     test = tool == 'maven' ? %w[clean test -Dtest=RulesTemplateTest] : %w[clean test --tests *RulesTemplateTest]
     run(dir, "#{tool}-archunit", cmd + test, expected: 1, id: 'JV-NP-023')
     File.write("#{src}/Hidden.java", good)
-    enforcer = tool == 'maven' ? %w[validate -Ddev-rule.banned=junit:junit] : %w[devRuleDependencies -PdevRuleBanned=junit:junit]
+    enforcer = tool == 'maven' ? %w[validate -Ddev-rule.banned=org.junit.jupiter:junit-jupiter-api] : %w[devRuleDependencies -PdevRuleBanned=org.junit.jupiter:junit-jupiter-api]
     run(dir, "#{tool}-enforcer", cmd + enforcer, expected: 1, id: tool == 'maven' ? 'JV-VP-010' : 'JV-VP-009')
     File.write("#{src}/Hidden.java", "package com.example.internal;\nfinal class Hidden { private volatile int value; void increment() { value++; } }\n")
     spot = tool == 'maven' ? %w[clean test-compile dependency:build-classpath -Dmdep.outputFile=target/dev-rule-classpath spotbugs:spotbugs exec:exec@dev-rule-bytecode] : %w[clean devRuleBytecode]
@@ -157,6 +179,13 @@ Dir.mktmpdir('java-ci-integration-') do |dir|
     if tool == 'gradle'
       output = run(dir, 'gradle-baseline-excluded-pmdMain', cmd + %w[-PdevRuleBaseline check -x pmdMain], expected: 1)
       raise '未拒絕必要工作排除' unless output.include?('基準必要工作被排除')
+    end
+    # 專案即使關閉替換，CI 入口也必須覆寫；用 rawtypes 負例確認不是只檢查參數字串。
+    if tool == 'gradle'
+      File.open("#{dir}/gradle.properties", 'a') { |file| file.puts('devRuleCompilerReplacement=off') }
+      File.write("#{src}/Hidden.java", "package com.example.internal;\nfinal class Hidden { java.util.List value; }\n")
+      run(dir, 'gradle-workflow-forces-compiler', ['env', "JAVA_VERSION=#{major}", 'BUILD_TOOL=gradle', 'sh', "#{ROOT}/tools/java/ci/github/run.sh"], expected: 1, id: 'JV-TG-024')
+      File.write("#{src}/Hidden.java", "package com.example.internal;\nfinal class Hidden { java.util.List<?> existing() { return java.util.Collections.emptyList(); } }\n")
     end
     run(dir, "#{tool}-workflow-runner", ['env', "MVN_BIN=#{mvn}", "PATH=#{File.dirname(mvn)}:#{ENV.fetch('PATH')}",
       "JAVA_VERSION=#{major}", "BUILD_TOOL=#{tool}", 'sh', "#{ROOT}/tools/java/ci/github/run.sh"])

@@ -33,6 +33,7 @@ run /bin/sh "${base}/tests/run-baseline.sh"
 run ruby "${base}/tests/run-compiler-regressions.rb"
 run ruby "${base}/tests/run-ci-tools.rb"
 run /bin/bash "${base}/tests/run-build-layer.sh"
+run ruby "${base}/build/run-enforcer-regressions.rb"
 run ruby "${base}/tests/run-ci-integration.rb" "${work}/integration"
 printf '\n略過情境總結：\n'
 grep '^SKIP' "${work}/stages.txt" || :

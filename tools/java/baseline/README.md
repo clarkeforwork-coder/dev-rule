@@ -92,8 +92,8 @@ JAVA_HOME=/path/to/jdk17 JAVA8_HOME=/path/to/jdk8 tools/java/tests/run-baseline.
 實際 Maven／Gradle 最小專案回歸（缺基準失敗、建立後舊違規通過、再新增違規失敗）：
 
 ```sh
-BASELINE_BUILD_INTEGRATION=1 MAVEN_BIN=/path/to/mvn GRADLE_BIN=/path/to/gradle \
-  JAVA_HOME=/path/to/jdk17 JAVA8_HOME=/path/to/jdk8 tools/java/tests/run-baseline.sh
+MVN_BIN=/path/to/mvn GRADLE_BIN=/path/to/gradle \
+  JAVA_HOME=/path/to/jdk17 ruby tools/java/tests/run-ci-integration.rb /tmp/java-ci-output
 ```
 
-此項需要取得已固定版本的建置外掛與分析器，因此以明確旗標啟用，適合完整 CI 環境；一般基準回歸不連網。
+此項需要取得已固定版本的建置外掛與分析器，已由 run-all 在各 JDK 執行；一般基準回歸不連網，整合回歸缺少工具時明確列出 SKIP。

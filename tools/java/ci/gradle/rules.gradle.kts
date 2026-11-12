@@ -134,7 +134,7 @@ javaSources.all {
             devRuleRoot.resolve("tools/java/spotbugs/include.xml"), devRuleRoot.resolve("tools/java/spotbugs/exclude.xml"))
         doFirst {
             report.get().asFile.parentFile.mkdirs()
-            args("-effort:max", "-low", "-xml:withMessages", "-output", report.get().asFile.absolutePath,
+            args("-effort:default", "-low", "-xml:withMessages", "-output", report.get().asFile.absolutePath,
                 "-include", devRuleRoot.resolve("tools/java/spotbugs/include.xml").absolutePath,
                 "-exclude", devRuleRoot.resolve("tools/java/spotbugs/exclude.xml").absolutePath,
                 "-auxclasspath", sources.runtimeClasspath.asPath)

@@ -6,6 +6,8 @@
 
 ### 修正
 
+- 依 PR #11 審查修正：統一 workflow revision／root、JUnit 4／5 架構驗證、編譯與 Enforcer 門檻及無快取基準；14 階段驗證納入 JDK 8／11／17／21 矩陣，verified 78 筆，涵蓋 48／143 小節（33.57%）。
+
 - Java 基準新增 `rekey`：人工審查後，以同工具／檔案／規則的一對一等量配對更新上下文指紋，保留負責人與期限；無法配對時拒絕且不寫入，新增診斷列印指紋，並同步主 README 的嚴格檢查、涵蓋率與 demo CI 說明。
 
 - Java CI 審閱修正：SpotBugs 低優先門檻與 error／warn 分流、基準 v2 上下文指紋及嚴格清償檢查、PMD 抑制相容、每行編譯診斷與 argfile 傳遞、固定 Maven 的可重用 workflow 與零違規示範專案；3 筆形狀巧合降 partial，明示剩餘漏報與人工審查界線。
