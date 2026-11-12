@@ -131,7 +131,7 @@ Dir.mktmpdir('java-ci-tools-') do |work|
           flags = check.split.reject { |f| f == '-Werror' }
           log, st = Open3.capture2e(javac, '-J-Duser.language=en', '-J-Duser.country=US', *common, *flags)
           if check.start_with?('-Xdoclint:')
-            hit = log.match?(/(?:warning|error):/)
+            hit = log.match?(/(?:warning|error): (?:no comment|no @param|no @return|no @throws|reference not found|invalid (?:input|use)|malformed HTML|unknown tag|element not closed|unexpected end tag|bad HTML entity)/)
           else
             raise "javac 失敗 #{id}：#{log}" unless st.success?
             categories = check[/\A-Xlint:([^ ]+)/, 1].to_s.split(',')

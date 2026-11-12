@@ -88,6 +88,8 @@ check.call(mapping == expected && mapping.size == properties.size, 'SpotBugs pat
 [8, 11, 17, 21].each do |jdk|
   lint = File.readlines(File.join(root, "tools/java/javac/lint-jdk#{jdk}.txt")).grep(/^-Xlint:/).flat_map { |line| line.strip.delete_prefix('-Xlint:').split(',') }
   mapped_lint = rows.select { |r| r['tool'] == 'javac' && r['versions'].include?(jdk) && r['check'].start_with?('-Xlint:') }.flat_map { |r| r['check'].delete_prefix('-Xlint:').split(/[ ,]/) }
+  required_lint = rows.select { |r| r['tool'] == 'javac' && %w[verified partial].include?(r['status']) && r['versions'].include?(jdk) && r['check'].start_with?('-Xlint:') }.flat_map { |r| r['check'].delete_prefix('-Xlint:').split(/[ ,]/).reject { |category| category.start_with?('-') } }
+  check.call((required_lint - lint).empty?, "javac JDK #{jdk} 缺少 verified／partial 類別：#{required_lint - lint}")
   check.call((lint - mapped_lint).empty?, "javac JDK #{jdk} 啟用未映射類別")
   content = File.read(File.join(root, "tools/java/errorprone/flags-jdk#{jdk}.txt"))
   active = content.lines.map(&:strip).reject { |s| s.empty? || s.start_with?('#') }
@@ -136,7 +138,7 @@ inputs = events.fetch('workflow_call').fetch('inputs')
 provided = caller.fetch('jobs').fetch('java-rules').fetch('with')
 check.call((provided.keys - inputs.keys).empty? && inputs.select { |_, v| v['required'] }.keys.all? { |key| provided.key?(key) }, '五行 caller 與 workflow inputs 不符')
 check.call(caller['jobs']['java-rules']['uses'].include?('/.github/workflows/java-rules.yml@'), 'caller 未引用正式 workflow')
-check.call(workflow['jobs']['rules']['steps'].any? { |step| step['run'].to_s.include?('vendor/dev-rule/tools/java/ci/github/run.sh') }, 'workflow 未使用正式 runner')
+check.call(workflow['jobs']['rules']['steps'].any? { |step| step['run'].to_s.include?('dev-rule/tools/java/ci/github/run.sh') }, 'workflow 未使用正式 runner')
 upload = workflow['jobs']['rules']['steps'].find { |step| step['uses'].to_s.start_with?('actions/upload-artifact@') }.fetch('with')
 check.call(upload['include-hidden-files'] == true && upload['path'].include?('/java-rules-reports/'), 'workflow artifact 未使用可見報告路徑與隱藏檔保護')
 demo = File.join(root, 'tools/java/tests/demo-maven')
@@ -145,7 +147,7 @@ check.call(File.read(File.join(demo, 'pom.xml')) == fragment, '示範 POM 與正
 check.call(File.read(File.join(demo, 'src/test/java/com/example/RulesTemplate.java')) == "package com.example;\n" + File.read(File.join(root, 'tools/java/archunit/RulesTemplate.java')), '示範架構範本不同步')
 demo_job = YAML.load_file(File.join(root, '.github/workflows/rules-check.yml')).fetch('jobs').fetch('java-demo')
 check.call(demo_job['uses'] == './.github/workflows/java-rules.yml' && demo_job.fetch('with') == {
-  'build-tool' => 'maven', 'java-version' => '17', 'dev-rule-ref' => '${{ github.sha }}',
+  'build-tool' => 'maven', 'java-version' => '17',
   'project-directory' => 'tools/java/tests/demo-maven'
 }, '本庫示範 caller 未引用同一提交的正式 workflow')
 puts 'Workflow：正式 YAML、最小五行 caller 與輸入契約通過。'

@@ -2,6 +2,16 @@
 # 正式片段即是本機與 Actions 的共同門檻；消費端不用 Ruby／Python。
 set -eu
 base=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
+root=$(CDPATH= cd -- "$base/../.." && pwd)
+[ -f "$base/ci/github/validate-inputs.sh" ] || { echo '缺少 workflow 輸入驗證腳本' >&2; exit 2; }
+sh "$base/ci/github/validate-inputs.sh"
+if [ -e vendor/dev-rule/.git ]; then
+    vendored=$(git -C vendor/dev-rule rev-parse HEAD 2>/dev/null || :)
+    selected=$(git -C "$root" rev-parse HEAD 2>/dev/null || :)
+    if [ "$vendored" != "$selected" ]; then
+        echo "警告：vendor/dev-rule revision $vendored 與 workflow 工具 $selected 不同；本次使用 $root" >&2
+    fi
+fi
 mkdir -p java-rules-reports
 summary=java-rules-reports/summary.md
 printf '# Java 規範檢查\n\n' > "$summary"
@@ -15,23 +25,28 @@ run() {
     grep '\[JV-' "java-rules-reports/$name.log" >> "$summary" || :
     if [ "$code" -ne 0 ]; then result=1; fi
 }
-case "$JAVA_VERSION" in 8|11|17|21) ;; *) echo '不支援的 Java 版本' >&2; exit 2;; esac
 [ -s "$base/javac/lint-jdk${JAVA_VERSION}.txt" ] || exit 2
 [ -s "$base/errorprone/flags-jdk${JAVA_VERSION}.txt" ] || exit 2
 case "$BUILD_TOOL" in
 maven)
-    run verify mvn -B -Pdev-rule-baseline clean verify
-    # 必須真的執行專案化架構測試，不能以其他單元測試取代。
-    run architecture mvn -B -Dtest=RulesTemplateTest -DfailIfNoTests=true test
+    run verify "${MVN_BIN:-mvn}" -B "-Ddev-rule.root=$root" -Pdev-rule-baseline clean verify
+    set -- target/surefire-reports/TEST-*RulesTemplateTest.xml
     reports='target/pmd.xml target/checkstyle-result.xml target/spotbugsXml.xml'
     ;;
 gradle)
-    run verify ./gradlew --no-daemon -PdevRuleBaseline clean check
-    run architecture ./gradlew --no-daemon test --tests '*RulesTemplateTest'
+    run verify ./gradlew --no-daemon "-PdevRuleRoot=$root" -PdevRuleBaseline clean check
+    set -- build/test-results/*/TEST-*RulesTemplateTest.xml
     reports='build/reports/pmd/main.xml build/reports/pmd/test.xml build/reports/checkstyle/main.xml build/reports/checkstyle/test.xml build/reports/spotbugs/main.xml build/reports/spotbugs/test.xml'
     ;;
 *) echo '不支援的 build-tool' >&2; exit 2;;
 esac
+# 編譯到本次暫存目錄，JDK 8 也可用；不信任長存 class 快取。
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT HUP INT TERM
+java_bin=${JAVA_HOME:+$JAVA_HOME/bin/}java
+javac_bin=${JAVA_HOME:+$JAVA_HOME/bin/}javac
+"$javac_bin" -encoding UTF-8 -d "$work" "$base/ci/github/ArchitectureReports.java"
+run architecture "$java_bin" -cp "$work" ArchitectureReports "$@"
 for report in $reports; do
     if [ -f "$report" ]; then
         target=$(printf '%s' "$report" | tr '/' '_')
